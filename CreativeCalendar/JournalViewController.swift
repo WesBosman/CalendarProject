@@ -8,12 +8,17 @@
 
 import UIKit
 
-class TabViewController: UIViewController {
+class JournalViewController: UIViewController {
 
+    
+    @IBOutlet weak var journalLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        journalLabel.text = "Journal"
+        
     }
 
     override func didReceiveMemoryWarning() {

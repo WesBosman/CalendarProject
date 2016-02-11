@@ -8,12 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		3F7115A41C5943F70071542F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115A31C5943F70071542F /* AppDelegate.swift */; };
-		3F7115A61C5943F70071542F /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115A51C5943F70071542F /* FirstViewController.swift */; };
-		3F7115A81C5943F70071542F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115A71C5943F70071542F /* SecondViewController.swift */; };
-		3F7115AB1C5943F70071542F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115A91C5943F70071542F /* Main.storyboard */; };
+		3F7115A61C5943F70071542F /* AppointmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115A51C5943F70071542F /* AppointmentViewController.swift */; };
+		3F7115A81C5943F70071542F /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115A71C5943F70071542F /* TaskViewController.swift */; };
 		3F7115AD1C5943F70071542F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AC1C5943F70071542F /* Images.xcassets */; };
 		3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AE1C5943F70071542F /* LaunchScreen.xib */; };
 		3F7115BC1C5943F70071542F /* CreativeCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115BB1C5943F70071542F /* CreativeCalendarTests.swift */; };
+		DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06631E1C6D321600DE42CA /* HomeViewController.swift */; };
+		DE2DCB4E1C650B44004D3220 /* FullSizeRender.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */; };
+		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
+		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,14 +33,17 @@
 		3F71159E1C5943F70071542F /* CreativeCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CreativeCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7115A21C5943F70071542F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F7115A31C5943F70071542F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3F7115A51C5943F70071542F /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		3F7115A71C5943F70071542F /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
-		3F7115AA1C5943F70071542F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3F7115A51C5943F70071542F /* AppointmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentViewController.swift; sourceTree = "<group>"; };
+		3F7115A71C5943F70071542F /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		3F7115AC1C5943F70071542F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3F7115AF1C5943F70071542F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		3F7115B51C5943F70071542F /* CreativeCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CreativeCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7115BA1C5943F70071542F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F7115BB1C5943F70071542F /* CreativeCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreativeCalendarTests.swift; sourceTree = "<group>"; };
+		DE06631E1C6D321600DE42CA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FullSizeRender.jpg; sourceTree = "<group>"; };
+		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
+		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,9 +86,12 @@
 			isa = PBXGroup;
 			children = (
 				3F7115A31C5943F70071542F /* AppDelegate.swift */,
-				3F7115A51C5943F70071542F /* FirstViewController.swift */,
-				3F7115A71C5943F70071542F /* SecondViewController.swift */,
-				3F7115A91C5943F70071542F /* Main.storyboard */,
+				DE06631E1C6D321600DE42CA /* HomeViewController.swift */,
+				3F7115A51C5943F70071542F /* AppointmentViewController.swift */,
+				3F7115A71C5943F70071542F /* TaskViewController.swift */,
+				DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */,
+				DE2DCB511C652907004D3220 /* Main.storyboard */,
+				DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */,
 				3F7115AC1C5943F70071542F /* Images.xcassets */,
 				3F7115AE1C5943F70071542F /* LaunchScreen.xib */,
 				3F7115A11C5943F70071542F /* Supporting Files */,
@@ -195,9 +204,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F7115AB1C5943F70071542F /* Main.storyboard in Resources */,
 				3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */,
 				3F7115AD1C5943F70071542F /* Images.xcassets in Resources */,
+				DE2DCB4E1C650B44004D3220 /* FullSizeRender.jpg in Resources */,
+				DE2DCB531C652907004D3220 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,9 +225,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F7115A81C5943F70071542F /* SecondViewController.swift in Sources */,
+				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
+				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
+				3F7115A81C5943F70071542F /* TaskViewController.swift in Sources */,
 				3F7115A41C5943F70071542F /* AppDelegate.swift in Sources */,
-				3F7115A61C5943F70071542F /* FirstViewController.swift in Sources */,
+				3F7115A61C5943F70071542F /* AppointmentViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,20 +252,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3F7115A91C5943F70071542F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3F7115AA1C5943F70071542F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3F7115AE1C5943F70071542F /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				3F7115AF1C5943F70071542F /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		DE2DCB511C652907004D3220 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE2DCB521C652907004D3220 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -415,6 +427,7 @@
 				3F7115C11C5943F70071542F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3F7115C21C5943F70071542F /* Build configuration list for PBXNativeTarget "CreativeCalendarTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +436,7 @@
 				3F7115C41C5943F70071542F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

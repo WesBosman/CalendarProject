@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  TaskViewController.swift
 //  CreativeCalendar
 //
 //  Created by student on 1/27/16.
@@ -8,11 +8,15 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class TaskViewController: UIViewController {
 
+    @IBOutlet weak var toDoLabel: UILabel!
+    @IBOutlet weak var toDoListContainer: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        toDoLabel.text = "To-Do List"
     }
 
     override func didReceiveMemoryWarning() {
