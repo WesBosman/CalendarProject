@@ -9,9 +9,21 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    @IBOutlet weak var appointmentLabel: UILabel!
+    @IBOutlet weak var taskLabel: UILabel!
+    @IBOutlet weak var journalLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set color and text of the text labels
+        appointmentLabel.text = "Appointments"
+        appointmentLabel.textColor = UIColor.whiteColor()
+        taskLabel.text = "To-Do List"
+        taskLabel.textColor = UIColor.whiteColor()
+        journalLabel.text = "Journal"
+        journalLabel.textColor = UIColor.whiteColor()
+        
 
         // Do any additional setup after loading the view.
     }
