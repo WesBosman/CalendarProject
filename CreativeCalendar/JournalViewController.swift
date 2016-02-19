@@ -10,14 +10,18 @@ import UIKit
 
 class JournalViewController: UIViewController {
 
-    
-    @IBOutlet weak var journalLabel: UILabel!
+    // Label that says type
+    @IBOutlet weak var journalType: UILabel!
+    // Picker that displays the same info from add app page
+    @IBOutlet weak var journalPicker: UIPickerView!
+    // Text box for user to enter journal enteries
+    @IBOutlet weak var journalTextBox: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        journalLabel.text = "Journal"
+        
         
     }
 
