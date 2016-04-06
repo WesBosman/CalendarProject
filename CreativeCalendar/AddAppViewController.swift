@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddAppViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource{
+class AddAppViewController:  UIViewController, UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
 
     @IBOutlet weak var typeOfEventPicker: UIPickerView!
     @IBOutlet weak var eventNameLabel: UITextField!
@@ -17,7 +17,8 @@ class AddAppViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet weak var locationDescription: UITextField!
     @IBOutlet weak var additionalInfoDescription: UITextView!
     
-    var pickerData: [String] = [String]()
+    //var pickerData: [String] = [String]()
+    var pickerData = ["Diet", "Doctor", "Exercise", "Household Chores", "Mediction", "Leisure", "Project", "Self Care", "Social", "Travel"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,6 @@ class AddAppViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         self.typeOfEventPicker.delegate = self
         self.typeOfEventPicker.dataSource = self
         
-        pickerData = ["Diet", "Doctor", "Exercise", "Household Chores", "Mediction", "Leisure", "Project", "Self Care", "Social", "Travel"]
 
         // Do any additional setup after loading the view.
     }
@@ -38,13 +38,25 @@ class AddAppViewController: UIViewController, UIPickerViewDelegate, UIPickerView
 
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "addPop"{
+            let popOverViewController = segue.destinationViewController as! UIViewController
+            popOverViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
+            //popOverViewController.popoverPresentationController!.delegate = self
+            
+        }
+        
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.None
     }
     */
+    
+    
     
    /* -----------------------------------------------------------------------------------------------------
     *  The Methods below are for the type of event picker.

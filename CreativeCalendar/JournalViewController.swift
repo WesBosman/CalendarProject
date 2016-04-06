@@ -12,15 +12,18 @@ class JournalViewController: UIViewController {
 
     // Label that says type
     @IBOutlet weak var journalType: UILabel!
-    // Picker that displays the same info from add app page
+    // Picker that displays the same info from add appointment page
     @IBOutlet weak var journalPicker: UIPickerView!
     // Text box for user to enter journal enteries
     @IBOutlet weak var journalTextBox: UITextView!
+    
+    var journalData: [String] = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        journalData = ["Diet", "Doctor", "Exercise", "Household Chores", "Mediction", "Leisure", "Project", "Self Care", "Social", "Travel"]
         
         
     }
