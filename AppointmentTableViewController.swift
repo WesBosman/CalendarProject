@@ -27,7 +27,10 @@ class AppointmentTableViewController: UITableViewController, UIPopoverController
         arrayOfBooleans = [0, 0]
         titleOfSections = ["Type Of Appointment", "Start Time"]
         let typeOfAppointments = ["Recreation", "Doctor", "Family"]
+        
         var stringOne = titleOfSections.objectAtIndex(0) as? String
+        var stringTwo = titleOfSections.objectAtIndex(1) as? String
+        
         [typeOfEventDictionary.setValue(typeOfAppointments, forKey: stringOne!)]
         
         
@@ -76,7 +79,7 @@ class AppointmentTableViewController: UITableViewController, UIPopoverController
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (arrayOfBooleans.objectAtIndex(indexPath.section).boolValue == true){
-            return 120
+            return 60
         }
         return 2
     }

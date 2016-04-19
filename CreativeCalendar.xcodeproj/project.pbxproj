@@ -15,6 +15,7 @@
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
 		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
 		DE3ABD691C77AA2B001E91D5 /* AddAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3ABD681C77AA2B001E91D5 /* AddAppViewController.swift */; };
+		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
 		DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE539DA61CAEDFB0000615CD /* AppDelegate.swift */; };
@@ -44,6 +45,7 @@
 		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
 		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE3ABD681C77AA2B001E91D5 /* AddAppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAppViewController.swift; sourceTree = "<group>"; };
+		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
 		DE539DA61CAEDFB0000615CD /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				DE539DA61CAEDFB0000615CD /* AppDelegate.swift */,
 				DE71ED571CB8020600B0E47D /* AppointmentDatePickerCell.swift */,
 				DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */,
+				DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */,
 				DE3ABD681C77AA2B001E91D5 /* AddAppViewController.swift */,
 				DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */,
 				DE06631E1C6D321600DE42CA /* HomeViewController.swift */,
@@ -236,6 +239,7 @@
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
+				DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */,
 				DE3ABD691C77AA2B001E91D5 /* AddAppViewController.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
