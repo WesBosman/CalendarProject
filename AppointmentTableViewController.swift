@@ -31,7 +31,8 @@ class AppointmentTableViewController: UITableViewController, UIPopoverController
         var stringOne = titleOfSections.objectAtIndex(0) as? String
         var stringTwo = titleOfSections.objectAtIndex(1) as? String
         
-        [typeOfEventDictionary.setValue(typeOfAppointments, forKey: stringOne!)]
+        [typeOfEventDictionary.setValue(typeOfAppointments, forKey: stringOne!) ,
+        typeOfEventDictionary.setValue(dummyTestList, forKey: stringTwo!)]
         
         
         // Uncomment the following line to preserve selection between presentations

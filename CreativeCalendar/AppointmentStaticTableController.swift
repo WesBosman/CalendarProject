@@ -8,9 +8,8 @@
 
 import UIKit
 
-class AppointmentStaticTableViewController: UITableViewController , UIPopoverControllerDelegate{
+class AppointmentStaticTableViewController: UITableViewController {
     
- 
     @IBOutlet weak var appointmentNameDetailLabel: UILabel!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentStartDate: UIDatePicker!
@@ -25,7 +24,6 @@ class AppointmentStaticTableViewController: UITableViewController , UIPopoverCon
     @IBOutlet weak var appointmentDropDown: UITableView!
     @IBOutlet weak var nameOfAppointmentTextBox: UITextField!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Sets the initial positions for the cells and date pickers.
@@ -36,9 +34,11 @@ class AppointmentStaticTableViewController: UITableViewController , UIPopoverCon
         toggleStartDatePicker()
         toggleEndDatePicker()
 
+        var labelForDrop: String = "Type Of Appointment"
         
         typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household"]
-        
+        //appointmentDropDown.registerClass(AppointmentDatePickerCell.self, forHeaderFooterViewReuseIdentifier: cellID)
+        appointmentDropDown.numberOfRowsInSection(typeOfAppointments.count)
         
     }
     @IBAction func enterButtonPressed(sender: AnyObject) {
