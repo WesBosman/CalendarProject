@@ -21,8 +21,9 @@ class AppointmentStaticTableViewController: UITableViewController {
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
-    @IBOutlet weak var appointmentDropDown: UITableView!
+    //@IBOutlet weak var appointmentDropDown: UITableView!
     @IBOutlet weak var nameOfAppointmentTextBox: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +39,18 @@ class AppointmentStaticTableViewController: UITableViewController {
         
         typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household"]
         //appointmentDropDown.registerClass(AppointmentDatePickerCell.self, forHeaderFooterViewReuseIdentifier: cellID)
-        appointmentDropDown.numberOfRowsInSection(typeOfAppointments.count)
+        //appointmentDropDown.numberOfRowsInSection(typeOfAppointments.count)
         
     }
+    // Update the right detail of the name of the event
     @IBAction func enterButtonPressed(sender: AnyObject) {
         appointmentNameDetailLabel.text = nameOfAppointmentTextBox.text
         toggleNameOfEvent()
+    }
+    
+    // Pass the information from this view to the previous view
+    @IBAction func saveButtonPressed(sender: AnyObject) {
+        
     }
 
     // Update the right detail start date when the user moves date or time.

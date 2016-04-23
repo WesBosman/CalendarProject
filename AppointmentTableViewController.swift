@@ -16,13 +16,16 @@ var titleOfSections: NSMutableArray = NSMutableArray()
 var typeOfEventDictionary: NSMutableDictionary = NSMutableDictionary()
 var arrayOfBooleans: NSMutableArray = NSMutableArray()
 
-class AppointmentTableViewController: UITableViewController, UIPopoverControllerDelegate{
+class AppointmentTableViewController: UITableViewController{
     
     var dummyTestList=[String] ();
     var selectedIndexPath: NSIndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    /**
         dummyTestList = ["Test 1" , "Test 2"]
         arrayOfBooleans = [0, 0]
         titleOfSections = ["Type Of Appointment", "Start Time"]
@@ -64,10 +67,6 @@ class AppointmentTableViewController: UITableViewController, UIPopoverController
         }
         //return dummyTestList.count
         return 0
-    }
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Title..."
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -137,14 +136,13 @@ class AppointmentTableViewController: UITableViewController, UIPopoverController
         
         return cell
     }
-/*
+    
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return NO if you do not want the specified item to be editable.
         return false
     }
     
-
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
@@ -152,74 +150,25 @@ class AppointmentTableViewController: UITableViewController, UIPopoverController
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
-*/
 
-/** FROM TUTORIAL NOT WORKING CORRECTLY
-
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let previousIndexPath = selectedIndexPath
-        if indexPath == selectedIndexPath{
-            selectedIndexPath = nil
-        }
-        else {
-            selectedIndexPath = indexPath
-        }
-        var indexPaths : Array<NSIndexPath> = []
-        if let previous = previousIndexPath{
-            indexPaths += [previous]
-        }
-        if let current = selectedIndexPath{
-            indexPaths += [current]
-        }
-        if indexPaths.count > 0{
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
-        }
-    }
-
-    
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        (cell as! AppointmentDatePickerCell).watchFrameChanges()
-    }
-    
-    override func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        (cell as! AppointmentDatePickerCell).ignoreFrameChanges()
-    }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath == selectedIndexPath{
-            return AppointmentDatePickerCell.expandedHeight
-        }
-        else{
-            return AppointmentDatePickerCell.defaultHeight
-        }
-    }
-**/
-
-
-    /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
 
     }
-    */
 
-    /*
     // Override to support conditional rearranging of the table view.
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return NO if you do not want the item to be re-orderable.
         return true
     }
-    */
 
-    
     // MARK: - Navigation
-/*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
 
     }
-*/
+    */
 
 }
