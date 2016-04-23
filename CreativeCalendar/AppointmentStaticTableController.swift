@@ -13,16 +13,19 @@ class AppointmentStaticTableViewController: UITableViewController{
  
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentStartDate: UIDatePicker!
-    var startDatePickerHidden = true
-    var endDatePickerHidden = true
+    private var startDatePickerHidden = false
+    private var endDatePickerHidden = false
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //startDatePickerHidden = appointmentStartDate.hidden
-        //endDatePickerHidden = true
+        // Sets the initial values for the date pickers.
+        startDatePickerDidChange()
+        endDatePickerDidChange()
+        toggleStartDatePicker()
+        toggleEndDatePicker()
         
     }
     // Update the right detail start date when the user moves date or time.
@@ -52,9 +55,11 @@ class AppointmentStaticTableViewController: UITableViewController{
         if indexPath.section == 2 && indexPath.row == 0{
             toggleStartDatePicker()
         }
-        if indexPath.section == 2 && indexPath.row == 2{
+        else if indexPath.section == 2 && indexPath.row == 2{
             toggleEndDatePicker()
         }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
