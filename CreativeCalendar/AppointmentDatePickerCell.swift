@@ -8,10 +8,11 @@
 
 import UIKit
 
-class AppointmentDatePickerCell: UITableViewCell{
+class AppointmentDatePickerCell: UITableViewCell {
     
     
     //@IBOutlet weak var startLabel: UILabel!
+    /**
     @IBOutlet weak var startDatePicker: UIView!
     class var expandedHeight: CGFloat { get { return 200} }
     class var defaultHeight: CGFloat { get { return 44 } }
@@ -34,4 +35,5 @@ class AppointmentDatePickerCell: UITableViewCell{
             checkHeight()
         }
     }
+*/
 }

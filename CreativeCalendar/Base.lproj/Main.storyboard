@@ -127,7 +127,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Appointment Type" id="uEs-qM-2iO">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AppType" textLabel="XCp-kV-wLF" style="IBUITableViewCellStyleDefault" id="s7z-kT-vaa">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AppType" textLabel="XCp-kV-wLF" detailTextLabel="JPB-g0-DFq" style="IBUITableViewCellStyleValue1" id="s7z-kT-vaa">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s7z-kT-vaa" id="2Fy-vS-ZbN">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -135,16 +135,32 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Type of Appointment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XCp-kV-wLF">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JPB-g0-DFq">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppType" rowHeight="44" id="rQ5-xV-on3" userLabel="AppTypeDropDown">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppType" rowHeight="144" id="rQ5-xV-on3" userLabel="AppTypeDropDown">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rQ5-xV-on3" id="5y5-BX-xm5">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView contentMode="scaleToFill" misplaced="YES" restorationIdentifier="AppointmentPicker" translatesAutoresizingMaskIntoConstraints="NO" id="DFx-tk-AaL">
+                                                    <rect key="frame" x="-8" y="-16" width="608" height="162"/>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="DFx-tk-AaL" secondAttribute="trailing" id="Hbi-JM-5mZ"/>
+                                                <constraint firstItem="DFx-tk-AaL" firstAttribute="leading" secondItem="5y5-BX-xm5" secondAttribute="leadingMargin" constant="-23" id="hnF-TP-fdC"/>
+                                                <constraint firstItem="DFx-tk-AaL" firstAttribute="top" secondItem="5y5-BX-xm5" secondAttribute="topMargin" constant="-24" id="sc6-6N-0qG"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -305,10 +321,12 @@
                         <outlet property="AppointmentStartDate" destination="sWl-Fx-XGg" id="j3J-N8-rle"/>
                         <outlet property="appointmentEndDate" destination="rQT-jg-cqX" id="jPh-2e-Q3e"/>
                         <outlet property="appointmentNameDetailLabel" destination="y1Q-qe-UDS" id="yTb-g3-lYc"/>
+                        <outlet property="appointmentPicker" destination="DFx-tk-AaL" id="sCM-fL-HLW"/>
                         <outlet property="appointmentStartDate" destination="sWl-Fx-XGg" id="BkW-2n-mr2"/>
                         <outlet property="endingTimeDetailLabel" destination="k1J-9O-w75" id="bVq-oF-LkO"/>
                         <outlet property="nameOfAppointmentTextBox" destination="sQr-JH-B6H" id="qzj-ht-v3I"/>
                         <outlet property="startingTimeDetailLabel" destination="kGR-jt-fnx" id="Xc5-p8-TrH"/>
+                        <outlet property="typeOfAppointmentRightDetail" destination="JPB-g0-DFq" id="Rff-TN-Hv0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XDb-xW-Gnf" userLabel="First Responder" sceneMemberID="firstResponder"/>

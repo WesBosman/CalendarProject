@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppointmentStaticTableViewController: UITableViewController {
+class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource{
     
     @IBOutlet weak var appointmentNameDetailLabel: UILabel!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
@@ -17,13 +17,14 @@ class AppointmentStaticTableViewController: UITableViewController {
     private var endDatePickerHidden = false
     private var appointmentTypeHidden = false
     private var appointmentNameHidden = false
-    private var typeOfAppointments: NSArray = []
+    let typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household"]
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
     //@IBOutlet weak var appointmentDropDown: UITableView!
     @IBOutlet weak var nameOfAppointmentTextBox: UITextField!
-    
+    @IBOutlet weak var appointmentPicker: UIPickerView!
+    @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,14 +35,29 @@ class AppointmentStaticTableViewController: UITableViewController {
         endDatePickerDidChange()
         toggleStartDatePicker()
         toggleEndDatePicker()
-
-        var labelForDrop: String = "Type Of Appointment"
+        appointmentPicker.dataSource = self
+        appointmentPicker.delegate = self
         
-        typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household"]
-        //appointmentDropDown.registerClass(AppointmentDatePickerCell.self, forHeaderFooterViewReuseIdentifier: cellID)
-        //appointmentDropDown.numberOfRowsInSection(typeOfAppointments.count)
+        //appointmentPicker.backgroundColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
         
     }
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        return typeOfAppointments[row]
+    }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return typeOfAppointments.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        typeOfAppointmentRightDetail.text = typeOfAppointments[row]
+    }
+    
+    
     // Update the right detail of the name of the event
     @IBAction func enterButtonPressed(sender: AnyObject) {
         appointmentNameDetailLabel.text = nameOfAppointmentTextBox.text
