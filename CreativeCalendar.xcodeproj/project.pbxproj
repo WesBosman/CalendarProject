@@ -18,8 +18,9 @@
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
+		DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */; };
+		DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */; };
 		DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE539DA61CAEDFB0000615CD /* AppDelegate.swift */; };
-		DE71ED581CB8020600B0E47D /* AppointmentDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE71ED571CB8020600B0E47D /* AppointmentDatePickerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,8 +49,9 @@
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
+		DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItem.swift; sourceTree = "<group>"; };
+		DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItemList.swift; sourceTree = "<group>"; };
 		DE539DA61CAEDFB0000615CD /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DE71ED571CB8020600B0E47D /* AppointmentDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentDatePickerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				DE539DA61CAEDFB0000615CD /* AppDelegate.swift */,
-				DE71ED571CB8020600B0E47D /* AppointmentDatePickerCell.swift */,
+				DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */,
+				DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */,
 				DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */,
 				DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */,
 				DE3ABD681C77AA2B001E91D5 /* AddAppViewController.swift */,
@@ -235,13 +238,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE71ED581CB8020600B0E47D /* AppointmentDatePickerCell.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
 				DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */,
 				DE3ABD691C77AA2B001E91D5 /* AddAppViewController.swift in Sources */,
+				DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
+				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

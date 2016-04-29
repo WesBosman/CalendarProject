@@ -12,6 +12,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var journalLabel: UILabel!
+    @IBOutlet weak var appointmentViewTable: UITableView!
+    @IBOutlet weak var taskViewTable: UITableView!
+    @IBOutlet weak var journalViewBox: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()

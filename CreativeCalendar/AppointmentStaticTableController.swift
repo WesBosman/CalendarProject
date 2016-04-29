@@ -37,10 +37,10 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         toggleEndDatePicker()
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
-        
         //appointmentPicker.backgroundColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
         
     }
+    
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         return typeOfAppointments[row]
     }
@@ -66,6 +66,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     // Pass the information from this view to the previous view
     @IBAction func saveButtonPressed(sender: AnyObject) {
+        let appointmentItem = AppointmentItem(deadline: appointmentStartDate.date, title: appointmentNameDetailLabel.text!, UUID: NSUUID().UUIDString)
+        AppointmentItemList.sharedInstance.addItem(appointmentItem)
+        self.navigationController?.popToRootViewControllerAnimated(true)
         
     }
 
