@@ -28,7 +28,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Sets the initial positions for the cells and date pickers.
+        // Sets the initial positions for the cells and date pickers to be hidden.
         toggleNameOfEvent()
         toggleAppointmentDropDown()
         startDatePickerDidChange()
@@ -37,6 +37,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         toggleEndDatePicker()
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
+        appointmentNameDetailLabel.text = " "
+        typeOfAppointmentRightDetail.text = typeOfAppointments[0]
         //appointmentPicker.backgroundColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
         
     }
@@ -96,15 +98,19 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // Starting date picker
         if indexPath.section == 2 && indexPath.row == 0{
             toggleStartDatePicker()
         }
+        // Ending date picker
         else if indexPath.section == 2 && indexPath.row == 2{
             toggleEndDatePicker()
         }
+        // Appointment drop down
         else if indexPath.section == 1 && indexPath.row == 0{
             toggleAppointmentDropDown()
         }
+        // Name of the event/appointment
         else if indexPath.section == 0 && indexPath.row == 0{
             toggleNameOfEvent()
         }
@@ -112,19 +118,25 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    // This method hides the cells for the larger data collection objects
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        // Hide the second cell that is under the starting time label
         if startDatePickerHidden && indexPath.section == 2 && indexPath.row == 1{
             return 0
         }
+        // Hide the second cell under the ending time label
         else if endDatePickerHidden && indexPath.section == 2 && indexPath.row == 3{
             return 0
         }
+        // Hide the cell beneath the appointment type label
         else if appointmentTypeHidden && indexPath.section == 1 && indexPath.row == 1{
             return 0
         }
+        // Hide the cell under the name of the appointment
         else if appointmentNameHidden && indexPath.section == 0 && indexPath.row == 1{
             return 0
         }
+        // Return the normal height otherwise
         else{
             return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         }

@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var appointmentViewTable: UITableView!
     @IBOutlet weak var taskViewTable: UITableView!
     @IBOutlet weak var journalViewBox: UITextView!
+    var secondArray: [AppointmentItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()

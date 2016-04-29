@@ -20,7 +20,9 @@ class AppointmentTableViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshList", name: "AppointmentListShouldRefresh", object: nil)
+        NSNotificationCenter
+            .defaultCenter()
+            .addObserver(self, selector: "refreshList", name: "AppointmentListShouldRefresh", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -28,7 +30,7 @@ class AppointmentTableViewController: UITableViewController{
         refreshList()
     }
     
-    // Refresh the list.
+    // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){
         appointmentTestList = AppointmentItemList.sharedInstance.allItems()
         if appointmentTestList.count > 64{
@@ -49,18 +51,30 @@ class AppointmentTableViewController: UITableViewController{
     
     // Make a cell where the title and the start date are retrieved from the add segue
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! UITableViewCell // retrieve the prototype cell (subtitle style)
+        // The type of this cell is the subtitle type
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! UITableViewCell
         let appItem = appointmentTestList[indexPath.row] as AppointmentItem
         cell.textLabel?.text = appItem.title as String!
+        
         if (appItem.isOverdue) { // the current time is later than the to-do item's deadline
             cell.detailTextLabel?.textColor = UIColor.redColor()
-        } else {
-            cell.detailTextLabel?.textColor = UIColor.blackColor() // we need to reset this because a cell with red subtitle may be returned by dequeueReusableCellWithIdentifier:indexPath:
+        }
+        // If its not true that the event has happened the text should be black
+        else {
+            cell.detailTextLabel?.textColor = UIColor.blackColor()
         }
         
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "'Due' MMM dd 'at' h:mm a" // example: "Due Jan 01 at 12:00 PM"
+        dateFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
         cell.detailTextLabel?.text = dateFormatter.stringFromDate(appItem.deadline)
+        /**
+        let indexPath = tableView.indexPathForSelectedRow();
+        let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!;
+        let storyboard = UIStoryboard(name: "HomeViewController", bundle: nil)
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("HomeViewController") as! HomeViewController
+        //viewController.appointmentViewTable. = currentCell.textLabel?.text
+        self.presentViewController(viewContoller, animated: true , completion: nil)
+        **/
         return cell
     }
     
@@ -98,14 +112,12 @@ class AppointmentTableViewController: UITableViewController{
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        // Pass the selected object to the Home View.
         if segue.identifier == "Home"{
-            var view = segue.destinationViewController as! HomeViewController
-            let homeAppointmentCell = tableView.dequeueReusableCellWithIdentifier("homeAppointmentCell")
-            
-            
-            //view.appointmentViewTable.dataSource = AppointmentTableViewController()
+            let view = segue.destinationViewController as! HomeViewController
+            view.secondArray = appointmentTestList
+            //let selectedRow = tableView.indexPathForSelectedRow()!.row
+            //view.appointmentViewTable.cellForRowAtIndexPath(selectedRow) = appointmentTestList[selectedRow]
         }
     }
-
 }
