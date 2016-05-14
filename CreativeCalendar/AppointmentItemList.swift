@@ -25,6 +25,8 @@ class AppointmentItemList{
         todoDictionary[item.UUID] = ["start": item.startingTime,
                                     "ending": item.endingTime,
                                     "title": item.title,
+                                    "location": item.appLocation,
+                                    "additional": item.additionalInfo ,
                                     "UUID": item.UUID] // store NSData representation of todo item in dictionary with UUID as key
         NSUserDefaults.standardUserDefaults().setObject(todoDictionary, forKey: ITEMS_KEY) // save/overwrite todo item list
         
@@ -65,6 +67,8 @@ class AppointmentItemList{
         return items.map( {AppointmentItem(startTime: $0["start"] as! NSDate,
                                         endTime: $0["ending"] as! NSDate,
                                         title: $0["title"] as! String,
+                                        location: $0["location"] as! String,
+                                        additional: $0["additional"] as! String,
                                         UUID: $0["UUID"] as! String!)} )
             
             .sorted({ (left: AppointmentItem, right:AppointmentItem) -> Bool in (left.startingTime.compare(right.startingTime) == .OrderedAscending)} )

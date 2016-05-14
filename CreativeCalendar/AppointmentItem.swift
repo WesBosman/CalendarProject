@@ -12,15 +12,21 @@ struct AppointmentItem {
     var title: String
     var startingTime: NSDate
     var endingTime: NSDate
+    var appLocation: String
+    var additionalInfo: String
     var UUID: String
     
     init(startTime: NSDate,
          endTime: NSDate,
          title: String,
+         location: String,
+         additional: String,
          UUID: String) {
         self.startingTime = startTime
         self.endingTime = endTime
         self.title = title
+        self.appLocation = location
+        self.additionalInfo = additional
         self.UUID = UUID
     }
     

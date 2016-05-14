@@ -51,25 +51,30 @@ class AppointmentTableViewController: UITableViewController{
     
     // Make a cell where the title and the start date are retrieved from the save button being pressed
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        // The type of this cell is the subtitle type
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell //Changed from UITableViewCell
+        // The cell is a custom appointment cell that we have created.
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell
+        // The cell gets updated from the information stored in the appointment item object
         let appItem = appointmentTestList[indexPath.row] as AppointmentItem
         cell.appointmentTitle.text = appItem.title as String!
         // If the current time is later than the starting time of the appointment then the color is set to red.
         if (appItem.isOverdue) {
-            cell.detailTextLabel?.textColor = UIColor.redColor()
+            cell.appointmentStart.textColor = UIColor.redColor()
         }
         // If its not true that the event has happened the text should be black
         else {
-            cell.detailTextLabel?.textColor = UIColor.blackColor()
+            cell.appointmentStart.textColor = UIColor.blackColor()
         }
         
         let startFormatter = NSDateFormatter()
         let endFormatter = NSDateFormatter()
         startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
         endFormatter.dateFormat = "'Ending Time: ' MMM dd 'at' h:mm a"
+        
+        cell.appointmentTitle.text = "Event: \(appItem.title)"
         cell.appointmentStart.text = startFormatter.stringFromDate(appItem.startingTime)
         cell.appointmentEnd.text = endFormatter.stringFromDate(appItem.endingTime)
+        cell.appointmentLocation.text = "Location: \(appItem.appLocation)"
+        cell.appointmentAdditionalInfo.text = "Additional Info: \(appItem.additionalInfo)"
         
         return cell
     }
