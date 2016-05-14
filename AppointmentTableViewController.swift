@@ -12,8 +12,6 @@ import UIKit
 class AppointmentTableViewController: UITableViewController{
     
     let cellID = "AppointmentCells"
-    @IBOutlet weak var titleOfAppointmentCell: UILabel!
-    @IBOutlet weak var subtitleOfAppointmentCell: UILabel!
     var appointmentTestList:[AppointmentItem] = [];
     var selectedIndexPath: NSIndexPath?
     
@@ -68,12 +66,12 @@ class AppointmentTableViewController: UITableViewController{
         let startFormatter = NSDateFormatter()
         let endFormatter = NSDateFormatter()
         startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
-        endFormatter.dateFormat = "'Ending Time: ' MMM dd 'at' h:mm a"
+        endFormatter.dateFormat = "'Ending Time:  ' MMM dd 'at' h:mm a"
         
         cell.appointmentTitle.text = "Event: \(appItem.title)"
         cell.appointmentStart.text = startFormatter.stringFromDate(appItem.startingTime)
         cell.appointmentEnd.text = endFormatter.stringFromDate(appItem.endingTime)
-        cell.appointmentLocation.text = "Location: \(appItem.appLocation)"
+        cell.appointmentLocation.text = "Location:        \(appItem.appLocation)"
         cell.appointmentAdditionalInfo.text = "Additional Info: \(appItem.additionalInfo)"
         
         return cell
@@ -116,9 +114,9 @@ class AppointmentTableViewController: UITableViewController{
         // Pass the selected object to the Home View.
         if segue.identifier == "Home"{
             let view = segue.destinationViewController as! HomeViewController
-            view.secondArray = appointmentTestList
-            //let selectedRow = tableView.indexPathForSelectedRow()!.row
-            //view.appointmentViewTable.cellForRowAtIndexPath(selectedRow) = appointmentTestList[selectedRow]
+            let indexPath = sender as! NSIndexPath
+            
+            
         }
     }
 }

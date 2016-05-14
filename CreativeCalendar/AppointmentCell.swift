@@ -18,6 +18,9 @@ class AppointmentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        // Wrap the text from the additional information section as it could easily fit on more than one line.
+        appointmentAdditionalInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        appointmentAdditionalInfo.numberOfLines = 0
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

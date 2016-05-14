@@ -23,7 +23,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
-    //@IBOutlet weak var appointmentDropDown: UITableView!
     @IBOutlet weak var nameOfAppointmentTextBox: UITextField!
     @IBOutlet weak var locationOfAppointmentTextBox: UITextField!
     @IBOutlet weak var additionalInfoTextBox: UITextView!
@@ -213,7 +212,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Return the number of rows in the section.
         return 0
     }
-**/
+    **/
 
     
 }
