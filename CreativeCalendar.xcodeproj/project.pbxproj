@@ -20,6 +20,7 @@
 		DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */; };
 		DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */; };
 		DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE539DA61CAEDFB0000615CD /* AppDelegate.swift */; };
+		DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE553AB01CE781B4006288E6 /* AppointmentCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItem.swift; sourceTree = "<group>"; };
 		DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItemList.swift; sourceTree = "<group>"; };
 		DE539DA61CAEDFB0000615CD /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DE553AB01CE781B4006288E6 /* AppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				DE539DA61CAEDFB0000615CD /* AppDelegate.swift */,
+				DE553AB01CE781B4006288E6 /* AppointmentCell.swift */,
 				DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */,
 				DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */,
 				DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */,
@@ -235,6 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,

@@ -68,7 +68,10 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     // Pass the information from this view to the previous view
     @IBAction func saveButtonPressed(sender: AnyObject) {
-        let appointmentItem = AppointmentItem(deadline: appointmentStartDate.date, title: appointmentNameDetailLabel.text!, UUID: NSUUID().UUIDString)
+        let appointmentItem = AppointmentItem(startTime: appointmentStartDate.date,
+                                              endTime: appointmentEndDate.date,
+                                              title: appointmentNameDetailLabel.text!,
+                                              UUID: NSUUID().UUIDString)
         AppointmentItemList.sharedInstance.addItem(appointmentItem)
         self.navigationController?.popToRootViewControllerAnimated(true)
         

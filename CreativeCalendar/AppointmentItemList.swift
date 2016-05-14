@@ -22,14 +22,17 @@ class AppointmentItemList{
     func addItem(item: AppointmentItem) { // persist a representation of this todo item in NSUserDefaults
         var todoDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? Dictionary() // if todoItems hasn't been set in user defaults, initialize todoDictionary to an empty dictionary using nil-coalescing operator (??)
         
-        todoDictionary[item.UUID] = ["deadline": item.deadline, "title": item.title, "UUID": item.UUID] // store NSData representation of todo item in dictionary with UUID as key
+        todoDictionary[item.UUID] = ["start": item.startingTime,
+                                    "ending": item.endingTime,
+                                    "title": item.title,
+                                    "UUID": item.UUID] // store NSData representation of todo item in dictionary with UUID as key
         NSUserDefaults.standardUserDefaults().setObject(todoDictionary, forKey: ITEMS_KEY) // save/overwrite todo item list
         
         // create a corresponding local notification
         var notification = UILocalNotification()
         notification.alertBody = "Appointment \"\(item.title)\" Is Overdue" // text that will be displayed in the notification
         notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
-        notification.fireDate = item.deadline // todo item due date (when notification will be fired)
+        notification.fireDate = item.startingTime // todo item due date (when notification will be fired)
         notification.soundName = UILocalNotificationDefaultSoundName // play default sound
         notification.userInfo = ["UUID": item.UUID, ] // assign a unique identifier to the notification so that we can retrieve it later
         notification.category = "APPOINTMENT_CATEGORY"
@@ -39,6 +42,7 @@ class AppointmentItemList{
     func removeItem(item: AppointmentItem){
         // Loop through the notifications
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications as! [UILocalNotification]{
+            // Retrieve the notification based on the unique identifier
             if notification.userInfo!["UUID"] as! String == item.UUID{
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
                 break
@@ -57,8 +61,13 @@ class AppointmentItemList{
     func allItems() -> [AppointmentItem] {
         var appointmentDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? [:]
         let items = Array(appointmentDictionary.values)
-        return items.map( {AppointmentItem(deadline: $0["deadline"] as! NSDate, title: $0["title"] as! String, UUID: $0["UUID"] as! String!)} )
-            .sorted({ (left: AppointmentItem, right:AppointmentItem) -> Bool in (left.deadline.compare(right.deadline) == .OrderedAscending)} )
+        print(items)
+        return items.map( {AppointmentItem(startTime: $0["start"] as! NSDate,
+                                        endTime: $0["ending"] as! NSDate,
+                                        title: $0["title"] as! String,
+                                        UUID: $0["UUID"] as! String!)} )
+            
+            .sorted({ (left: AppointmentItem, right:AppointmentItem) -> Bool in (left.startingTime.compare(right.startingTime) == .OrderedAscending)} )
     }
         
 }

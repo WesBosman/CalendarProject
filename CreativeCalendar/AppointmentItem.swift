@@ -10,16 +10,21 @@ import Foundation
 
 struct AppointmentItem {
     var title: String
-    var deadline: NSDate
+    var startingTime: NSDate
+    var endingTime: NSDate
     var UUID: String
     
-    init(deadline: NSDate, title: String, UUID: String) {
-        self.deadline = deadline
+    init(startTime: NSDate,
+         endTime: NSDate,
+         title: String,
+         UUID: String) {
+        self.startingTime = startTime
+        self.endingTime = endTime
         self.title = title
         self.UUID = UUID
     }
     
     var isOverdue: Bool {
-        return (NSDate().compare(self.deadline) == NSComparisonResult.OrderedDescending) // deadline is earlier than current date
+        return (NSDate().compare(self.startingTime) == NSComparisonResult.OrderedDescending) // deadline is earlier than current date
     }
 }

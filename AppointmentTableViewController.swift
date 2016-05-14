@@ -13,9 +13,9 @@ class AppointmentTableViewController: UITableViewController{
     
     let cellID = "AppointmentCells"
     @IBOutlet weak var titleOfAppointmentCell: UILabel!
+    @IBOutlet weak var subtitleOfAppointmentCell: UILabel!
     var appointmentTestList:[AppointmentItem] = [];
     var selectedIndexPath: NSIndexPath?
-    @IBOutlet weak var subtitleOfAppointmentCell: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,14 +49,14 @@ class AppointmentTableViewController: UITableViewController{
         return 1
     }
     
-    // Make a cell where the title and the start date are retrieved from the add segue
+    // Make a cell where the title and the start date are retrieved from the save button being pressed
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // The type of this cell is the subtitle type
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell //Changed from UITableViewCell
         let appItem = appointmentTestList[indexPath.row] as AppointmentItem
-        cell.textLabel?.text = appItem.title as String!
-        
-        if (appItem.isOverdue) { // the current time is later than the to-do item's deadline
+        cell.appointmentTitle.text = appItem.title as String!
+        // If the current time is later than the starting time of the appointment then the color is set to red.
+        if (appItem.isOverdue) {
             cell.detailTextLabel?.textColor = UIColor.redColor()
         }
         // If its not true that the event has happened the text should be black
@@ -64,17 +64,13 @@ class AppointmentTableViewController: UITableViewController{
             cell.detailTextLabel?.textColor = UIColor.blackColor()
         }
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
-        cell.detailTextLabel?.text = dateFormatter.stringFromDate(appItem.deadline)
-        /**
-        let indexPath = tableView.indexPathForSelectedRow();
-        let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!;
-        let storyboard = UIStoryboard(name: "HomeViewController", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("HomeViewController") as! HomeViewController
-        //viewController.appointmentViewTable. = currentCell.textLabel?.text
-        self.presentViewController(viewContoller, animated: true , completion: nil)
-        **/
+        let startFormatter = NSDateFormatter()
+        let endFormatter = NSDateFormatter()
+        startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
+        endFormatter.dateFormat = "'Ending Time: ' MMM dd 'at' h:mm a"
+        cell.appointmentStart.text = startFormatter.stringFromDate(appItem.startingTime)
+        cell.appointmentEnd.text = endFormatter.stringFromDate(appItem.endingTime)
+        
         return cell
     }
     
