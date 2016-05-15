@@ -16,7 +16,19 @@ class TaskTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        
+    }
+    
+    // View did appear needs to be called because we animated the view from the static table save button being pressed.
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        refreshList()
+    }
+    
+    // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
+    func refreshList(){
         taskTestList = TaskItemList.sharedInstance.allTasks()
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {

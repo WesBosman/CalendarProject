@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController{
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var journalLabel: UILabel!
@@ -16,6 +16,10 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var taskViewTable: UITableView!
     @IBOutlet weak var journalViewBox: UITextView!
     var secondArray: [AppointmentItem] = []
+    var thirdArray: [TaskItem] = []
+    let secondCell = "AppointmentHomeCell"
+    let thirdCell = "TaskHomeCell"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +32,9 @@ class HomeViewController: UIViewController {
         journalLabel.text = "Journal"
         journalLabel.textColor = UIColor.whiteColor()
         
-
+        secondArray = AppointmentItemList.sharedInstance.allItems()
+        thirdArray = TaskItemList.sharedInstance.allTasks()
+        
         // Do any additional setup after loading the view.
     }
 

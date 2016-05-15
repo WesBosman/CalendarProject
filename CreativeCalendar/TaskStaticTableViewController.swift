@@ -15,6 +15,7 @@ class TaskStaticTableViewController: UITableViewController {
     private var taskNameHidden = false
     private var taskAdditionalInfoHidden = false
     @IBOutlet weak var titleOfTaskTextBox: UITextField!
+    @IBOutlet weak var additionalInfoTextBox: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,11 @@ class TaskStaticTableViewController: UITableViewController {
     @IBAction func enterTaskTitlePressed(sender: AnyObject) {
         taskNameRightDetail.text = titleOfTaskTextBox.text
         toggleNameOfTask()
+    }
+    
+    @IBAction func enterAdditionalInfoPressed(sender: AnyObject) {
+        taskAdditionalRightDetail.text = additionalInfoTextBox.text
+        toggleAdditionalInfoOfTask()
     }
     
     // Save the information to pass it to the previous view

@@ -53,7 +53,10 @@ class AppointmentTableViewController: UITableViewController{
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell
         // The cell gets updated from the information stored in the appointment item object
         let appItem = appointmentTestList[indexPath.row] as AppointmentItem
-        cell.appointmentTitle.text = appItem.title as String!
+        
+        // Do I need to set the title twice?
+        //cell.appointmentTitle.text = appItem.title as String!
+        
         // If the current time is later than the starting time of the appointment then the color is set to red.
         if (appItem.isOverdue) {
             cell.appointmentStart.textColor = UIColor.redColor()
