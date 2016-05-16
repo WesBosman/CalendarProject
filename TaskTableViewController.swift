@@ -55,8 +55,6 @@ class TaskTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskTableViewCell
         let taskItem = taskTestList[indexPath.row] as TaskItem
         // Configure the cell...
-        //cell.taskName.text = taskItem.taskTitle as String!
-        //cell.taskAdditionalInfo.text = taskItem.taskInfo as String!
         
         cell.taskName.text = "Event: \(taskItem.taskTitle)"
         cell.taskAdditionalInfo.text = "Additional Info: \(taskItem.taskInfo)"

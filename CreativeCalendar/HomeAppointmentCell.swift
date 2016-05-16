@@ -1,23 +1,20 @@
 //
-//  TaskTableViewCell.swift
+//  HomeAppointmentCell.swift
 //  CreativeCalendar
 //
-//  Created by Wes on 5/14/16.
+//  Created by Wes on 5/16/16.
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
 //
 
 import UIKit
 
-class TaskTableViewCell: UITableViewCell {
-    @IBOutlet weak var uncheckedImage: UIImageView!
-    @IBOutlet weak var taskName: UILabel!
-    @IBOutlet weak var taskAdditionalInfo: UILabel!
-    
+class HomeAppointmentCell: UITableViewCell {
+    @IBOutlet weak var homeAppointmentTitle: UILabel!
+    @IBOutlet weak var homeAppointmentSubtitle: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController{
+class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var journalLabel: UILabel!
@@ -20,6 +20,9 @@ class HomeViewController: UIViewController{
     let secondCell = "AppointmentHomeCell"
     let thirdCell = "TaskHomeCell"
     
+    @IBOutlet weak var uncheckedTask: UIImageView!
+    @IBOutlet weak var labelTask: UILabel!
+    @IBOutlet weak var labelTaskInfo: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +34,15 @@ class HomeViewController: UIViewController{
         taskLabel.textColor = UIColor.whiteColor()
         journalLabel.text = "Journal"
         journalLabel.textColor = UIColor.whiteColor()
-        
+        // Get all appointments and tasks.
         secondArray = AppointmentItemList.sharedInstance.allItems()
         thirdArray = TaskItemList.sharedInstance.allTasks()
+        // Set this class up to be the delegate for the two different table views
+        self.taskViewTable.delegate = self
+        self.taskViewTable.dataSource = self
+        //self.tasks = TaskItemList.sharedInstance.allTasks()
+        
+        
         
         // Do any additional setup after loading the view.
     }
@@ -41,6 +50,41 @@ class HomeViewController: UIViewController{
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == taskViewTable{
+            return thirdArray.count
+        }
+        else{
+            return secondArray.count
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if tableView == taskViewTable{
+            let task = thirdArray[indexPath.row] as TaskItem
+            let cell = taskViewTable.dequeueReusableCellWithIdentifier(thirdCell, forIndexPath: indexPath) as! HomeTaskCell
+            //let picImage = UIImage(named: "uncheckbox")
+            //cell.uncheckedImage = UIImageView(image: picImage)
+            print("Task Title: \(task.taskTitle)\n")
+            print("Task Info: \(task.taskInfo)\n")
+            cell.homeTaskTitle.text = task.taskTitle
+            cell.homeTaskInfo.text = task.taskInfo
+            return cell
+        }
+        else{
+            let appointment = secondArray[indexPath.row] as AppointmentItem
+            let cell = appointmentViewTable.dequeueReusableCellWithIdentifier(secondCell, forIndexPath: indexPath) as! HomeAppointmentCell
+            print("Appointment Title: \(appointment.title)\n")
+            print("Appointment Start: \(appointment.startingTime)\n")
+            print("Appointment End: \(appointment.endingTime)\n")
+            print("Appointment Location: \(appointment.appLocation)\n")
+            print("Appointment Additional Info: \(appointment.additionalInfo)\n")
+            cell.homeAppointmentTitle.text = appointment.title
+            cell.homeAppointmentSubtitle.text = "start: \(appointment.startingTime) end: \(appointment.endingTime) location: \(appointment.appLocation)"
+            return cell
+        }
     }
     
 
