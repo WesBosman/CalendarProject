@@ -1253,7 +1253,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="homeAppointmentSubtitle" destination="02D-oh-r6U" id="Mtc-Ib-vgc"/>
+                                            <outlet property="homeAppointmentSubtitle" destination="02D-oh-r6U" id="RVP-f7-H0I"/>
                                             <outlet property="homeAppointmentTitle" destination="J0q-bL-r12" id="YAo-Rs-K0C"/>
                                         </connections>
                                     </tableViewCell>
