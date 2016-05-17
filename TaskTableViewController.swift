@@ -12,11 +12,12 @@ class TaskTableViewController: UITableViewController {
     let taskId = "TaskCells"
     var taskTestList:[TaskItem] = []
     var selectedIndexPath = NSIndexPath?.self
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set the left navigation button to be the edit button.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        
     }
     
     // View did appear needs to be called because we animated the view from the static table save button being pressed.
@@ -28,6 +29,7 @@ class TaskTableViewController: UITableViewController {
     // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
     func refreshList(){
         taskTestList = TaskItemList.sharedInstance.allTasks()
+        //taskDataForCells.refresh()
         tableView.reloadData()
     }
 
@@ -76,7 +78,6 @@ class TaskTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             var itemToDelete = taskTestList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             TaskItemList.sharedInstance.removeItem(itemToDelete)

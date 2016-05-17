@@ -15,6 +15,8 @@ class HomeAppointmentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        homeAppointmentSubtitle.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        homeAppointmentSubtitle.numberOfLines = 0
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

@@ -36,7 +36,7 @@ class AppointmentTableViewController: UITableViewController{
         }
         tableView.reloadData()
     }
-    
+
     // Return the number of elements in the array
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appointmentTestList.count
@@ -115,11 +115,13 @@ class AppointmentTableViewController: UITableViewController{
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the Home View.
+        /**
         if segue.identifier == "Home"{
             let view = segue.destinationViewController as! HomeViewController
             let indexPath = sender as! NSIndexPath
             
             
         }
+        **/
     }
 }
