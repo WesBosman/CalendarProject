@@ -8,15 +8,22 @@
 //  This is supposed to make a singleton class so that this list doesn't get made more than once.
 
 import UIKit
+
+private let sharedAppointmentList = AppointmentItemList()
+
 class AppointmentItemList{
     private let ITEMS_KEY = "appointmentItems"
+    // New simpler singleton code
+    static let sharedInstance = sharedAppointmentList
     
+    /** Old Singleton code
     class var sharedInstance : AppointmentItemList{
         struct Static{
             static let instance: AppointmentItemList = AppointmentItemList()
         }
     return Static.instance
     }
+    **/
     
     // Create a notification that will show up on the home screen.
     func addItem(item: AppointmentItem) { // persist a representation of this todo item in NSUserDefaults

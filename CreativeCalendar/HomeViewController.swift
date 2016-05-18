@@ -15,12 +15,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     @IBOutlet weak var appointmentViewTable: UITableView!
     @IBOutlet weak var taskViewTable: UITableView!
     @IBOutlet weak var journalViewBox: UITextView!
-    var appointmentArray: [AppointmentItem] = []
-    var taskArray: [TaskItem] = []
     let appointmentCellID = "AppointmentHomeCell"
     let taskCellID = "TaskHomeCell"
     private var taskCell: HomeTaskCell = HomeTaskCell()
     private var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
+    var appointmentArray: [AppointmentItem] = [] // = AppointmentItemList.sharedInstance.allItems()
+    var taskArray: [TaskItem] = [] //= TaskItemList.sharedInstance.allTasks()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +34,21 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         journalLabel.text = "Journal"
         journalLabel.textColor = UIColor.whiteColor()
         
-        // Get all appointments and tasks.
-        appointmentArray = AppointmentItemList.sharedInstance.allItems()
-        taskArray = TaskItemList.sharedInstance.allTasks()
-        
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
         self.taskViewTable.dataSource = self
         self.appointmentViewTable.delegate = self
         self.appointmentViewTable.dataSource = self
+        
+    }
+    
+    // When the home screen appears we set the appointment and task arrays based on the data stored there
+    // We then reload the tables so that the changes from the other tabs are reflected here.
+    override func viewWillAppear(animated: Bool) {
+        appointmentArray = AppointmentItemList.sharedInstance.allItems()
+        taskArray = TaskItemList.sharedInstance.allTasks()
+        taskViewTable.reloadData()
+        appointmentViewTable.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,6 +69,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // If the user deselects the row what do we do?
         if tableView == taskViewTable{
             //taskCell.uncheckedTaskImage.image = UIImage(named: "uncheckbox")
+            
         }
     }
     
@@ -100,9 +108,14 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
     }
     
+    
+/** NEED A TABLE VIEW CONTROLLER FOR INDEXED LIST
+    
     func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        return 1
+        var theSections = indexedNumbers as NSArray
+        return theSections.indexOfObject(title)
     }
+**/
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // fill the appointment table view cell and return it
@@ -120,7 +133,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             endFormatter.dateFormat = " MMM dd ',' h:mm a"
             
             appointmentCell.homeAppointmentTitle.text = appointment.title
-            appointmentCell.homeAppointmentSubtitle.text = "start: \(startFormatter.stringFromDate(appointment.startingTime)) \nend: \(endFormatter.stringFromDate(appointment.endingTime)) \nlocation: \(appointment.appLocation)"
+            appointmentCell.homeAppointmentSubtitle.text = "start: \(startFormatter.stringFromDate(appointment.startingTime)) end: \(endFormatter.stringFromDate(appointment.endingTime)) \nlocation: \(appointment.appLocation)"
             return appointmentCell
         }
         

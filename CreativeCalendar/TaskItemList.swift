@@ -7,16 +7,22 @@
 //
 
 import UIKit
+// Global singleton declaration so this class can be instantiated only once
+private let sharedTaskList = TaskItemList()
 
 class TaskItemList{
     private let TASK_KEY = "taskItems"
+    // New singleton code
+    static let sharedInstance = sharedTaskList
     
+    /** Old Singleton code
     class var sharedInstance : TaskItemList{
         struct Static{
             static let instance: TaskItemList = TaskItemList()
         }
         return Static.instance
     }
+    **/
     
     // Create notifications for tasks??? They aren't really associated with time.
     // Add item to the dictionary

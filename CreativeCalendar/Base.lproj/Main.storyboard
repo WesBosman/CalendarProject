@@ -10,9 +10,9 @@
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabBarController" id="49e-Tb-3d3" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
+                    <tabBar key="tabBar" contentMode="scaleToFill" restorationIdentifier="tabBar" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -609,51 +609,62 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Make a Journal Entry:" translatesAutoresizingMaskIntoConstraints="NO" id="sCB-3v-Aha">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCB-3v-Aha">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="45" y="83" width="706" height="543"/>
+                                </variation>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Whv-xF-flI">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Save Journal Entry">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="45" y="656" width="706" height="50"/>
+                                </variation>
+                                <connections>
+                                    <action selector="saveJournalEntryIsPressed:" destination="3Sd-Ee-9Ka" eventType="touchUpInside" id="em8-3t-Ey2"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make a Journal Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyU-Nc-bpF">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="45" y="33" width="706" height="21"/>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.5014498356" green="0.69720708789999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="sCB-3v-Aha" firstAttribute="leading" secondItem="Maq-Pr-o0a" secondAttribute="leadingMargin" constant="29" id="US1-H9-b6V"/>
-                            <constraint firstItem="sCB-3v-Aha" firstAttribute="top" secondItem="Vpq-id-wdN" secondAttribute="bottom" constant="41" id="VmJ-fx-oJG"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="sCB-3v-Aha" secondAttribute="trailing" constant="33" id="XQC-Y2-ibT"/>
-                            <constraint firstItem="9sR-Jf-YDE" firstAttribute="top" secondItem="sCB-3v-Aha" secondAttribute="bottom" constant="21" id="uLp-EQ-daN"/>
-                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="sCB-3v-Aha"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="uLp-EQ-daN"/>
-                                <exclude reference="US1-H9-b6V"/>
-                                <exclude reference="VmJ-fx-oJG"/>
-                                <exclude reference="XQC-Y2-ibT"/>
+                                <exclude reference="Whv-xF-flI"/>
+                                <exclude reference="wyU-Nc-bpF"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="subviews">
                                 <include reference="sCB-3v-Aha"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="uLp-EQ-daN"/>
-                                <include reference="US1-H9-b6V"/>
-                                <include reference="VmJ-fx-oJG"/>
-                                <include reference="XQC-Y2-ibT"/>
+                                <include reference="Whv-xF-flI"/>
+                                <include reference="wyU-Nc-bpF"/>
                             </mask>
                         </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Journal" image="Journals" id="Dbj-on-x2N"/>
                     <connections>
+                        <outlet property="journalLabel" destination="wyU-Nc-bpF" id="ImK-ps-kIv"/>
                         <outlet property="journalTextBox" destination="sCB-3v-Aha" id="eJe-hC-7Z9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1TF-sd-kkj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="912" y="985"/>
+            <point key="canvasLocation" x="912" y="984.75"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="mtx-fx-89k">

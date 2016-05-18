@@ -39,7 +39,6 @@ class TaskTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
@@ -102,14 +101,22 @@ class TaskTableViewController: UITableViewController {
     }
     */
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
+/**
+        print("\nSegue Identifier: \(segue.identifier)\n")
+        
+        if segue.identifier == "TabBarController"{
+            var tabBarC: UITabBarController = segue.destinationViewController as! UITabBarController
+            var destination: HomeViewController = tabBarC.viewControllers?.first as! HomeViewController
+            destination.taskArray = self.taskTestList
+            print("Destination task array: \(destination.taskArray)")
+        }
+**/
     }
-    */
-
 }
