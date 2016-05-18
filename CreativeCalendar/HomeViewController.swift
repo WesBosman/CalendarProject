@@ -21,6 +21,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     private var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
     var appointmentArray: [AppointmentItem] = [] // = AppointmentItemList.sharedInstance.allItems()
     var taskArray: [TaskItem] = [] //= TaskItemList.sharedInstance.allTasks()
+    //let tabBarController = TabBarController?.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
 
     
     override func viewDidLoad() {
@@ -65,11 +66,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
     }
     
+    // This function should let me deselect a row but I am unsure if it is working. 
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         // If the user deselects the row what do we do?
         if tableView == taskViewTable{
             //taskCell.uncheckedTaskImage.image = UIImage(named: "uncheckbox")
-            
+            var deselectedTask = taskViewTable.cellForRowAtIndexPath(indexPath)
+            deselectedTask?.backgroundColor = UIColor.clearColor()
         }
     }
     
@@ -95,6 +98,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 newTaskCell.homeTaskTitle.attributedText = strikeThroughLabel
                 newTaskCell.homeTaskInfo.text = task.taskInfo
                 
+                
             } ))
             
             // Non Destructive action
@@ -102,8 +106,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 newTaskCell.uncheckedTaskImage.image = UIImage(named: "uncheckbox")
                 newTaskCell.homeTaskTitle.text = task.taskTitle
                 newTaskCell.homeTaskInfo.text = task.taskInfo
+                
             } ))
             self.presentViewController(alert, animated: true, completion: nil)
+            
             
         }
     }
