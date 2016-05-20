@@ -18,6 +18,10 @@ class JournalViewController: UIViewController {
         super.viewDidLoad()
         journalLabel.text = "Make a Journal Entry"
         journalLabel.textColor = UIColor.whiteColor()
+        let date = NSDate()
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
+        journalTextBox.text = "\(dateFormat.stringFromDate(date)) : "
         
     }
 

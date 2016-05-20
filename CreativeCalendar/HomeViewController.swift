@@ -19,14 +19,11 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     let taskCellID = "TaskHomeCell"
     private var taskCell: HomeTaskCell = HomeTaskCell()
     private var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
-    var appointmentArray: [AppointmentItem] = [] // = AppointmentItemList.sharedInstance.allItems()
-    var taskArray: [TaskItem] = [] //= TaskItemList.sharedInstance.allTasks()
-    //let tabBarController = TabBarController?.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
-
+    var appointmentArray: [AppointmentItem] = []
+    var taskArray: [TaskItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //Set color and text of the text labels
         appointmentLabel.text = "Appointments"
         appointmentLabel.textColor = UIColor.whiteColor()
@@ -34,7 +31,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskLabel.textColor = UIColor.whiteColor()
         journalLabel.text = "Journal"
         journalLabel.textColor = UIColor.whiteColor()
-        
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
         self.taskViewTable.dataSource = self
@@ -46,9 +42,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
-        print("\nView will appear animated")
+        println("View will appear animated")
         appointmentArray = AppointmentItemList.sharedInstance.allItems()
         taskArray = TaskItemList.sharedInstance.allTasks()
+                
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
     }
@@ -67,52 +64,28 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
     }
     
-    // This function seems to work but I am unsure that I need it.
-    /**
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        // If the user deselects the row what do we do?
-        if tableView == taskViewTable{
-            
-            println("Did Deselect Row at index path: \(indexPath.row)")
-            var deselectedTask = taskViewTable.cellForRowAtIndexPath(indexPath)
-            deselectedTask?.backgroundColor = UIColor.clearColor()
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        }
-    }
-    **/
-
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
-        
         var task = taskArray[indexPath.row] as TaskItem
         var taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
-        taskCell.homeTaskTitle.text = task.taskTitle
-        taskCell.homeTaskInfo.text = task.taskInfo
+        //taskCell.homeTaskTitle.text = task.taskTitle
+        //taskCell.homeTaskInfo.text = task.taskInfo
         
         if tableView == taskViewTable{
             // Create an Alert to ask the user if they have completed the task.
             var alert = UIAlertController(title: "Hello", message: "Have you completed this task?", preferredStyle: UIAlertControllerStyle.Alert)
-            println("Alert Created")
             
             // If the user confirms that a task was completed then update the image to a green checkbox
             alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction!) in
-                println("Yes was pressed")
                 // Update the cell image and labels with strikethroughs and the green checkbox
-                taskCell.taskCompleted()
-                let strikeThroughLabel: NSMutableAttributedString = NSMutableAttributedString(string: task.taskTitle)
-                strikeThroughLabel.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, strikeThroughLabel.length))
-                taskCell.homeTaskTitle.attributedText = strikeThroughLabel
-                taskCell.homeTaskInfo.text = task.taskInfo
-                
+                taskCell.taskCompleted(task)
             } ))
             
             // If no is clicked make the image a sepia toned image
             alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction!) in
-                print("\nNo was pressed")
                 // Update the cell image to an uncompleted task
-                taskCell.taskNotCompleted()
+                taskCell.taskNotCompleted(task)
                 
             } ))
             // Show the alert to the user

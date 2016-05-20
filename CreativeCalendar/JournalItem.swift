@@ -13,5 +13,6 @@ class JournalItem{
     var journalEntry: String = ""
     init(journal: String){
         self.journalEntry = journal
+        println("Journal Entry: \(journal)")
     }
 }
