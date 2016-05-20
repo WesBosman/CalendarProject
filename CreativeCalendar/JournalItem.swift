@@ -11,8 +11,13 @@ import Foundation
 
 class JournalItem{
     var journalEntry: String = ""
-    init(journal: String){
+    var journalUUID: String = ""
+    var journalDate: String = ""
+    
+    init(journal: String, UUID: String, date: String){
         self.journalEntry = journal
-        println("Journal Entry: \(journal)")
+        self.journalUUID = UUID
+        self.journalDate = date
+        println("Journal Entry: \(journal) UUID: \(journalUUID) Date: \(journalDate)")
     }
 }

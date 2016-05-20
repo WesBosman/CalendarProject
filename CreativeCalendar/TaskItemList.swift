@@ -44,7 +44,7 @@ class TaskItemList{
     func allTasks() -> [TaskItem] {
         var taskDict = NSUserDefaults.standardUserDefaults().dictionaryForKey(TASK_KEY) ?? [:]
         let task_items = Array(taskDict.values)
-        print(task_items)
+        //print(task_items)
         return task_items.map({TaskItem(title: $0["title"] as! String,
                                         info: $0["info"] as! String,
                                         UUID: $0["UUID"] as! String)})

@@ -71,7 +71,7 @@ class AppointmentItemList{
     func allItems() -> [AppointmentItem] {
         var appointmentDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? [:]
         let items = Array(appointmentDictionary.values)
-        print(items)
+        //print(items)
         return items.map( {AppointmentItem(startTime: $0["start"] as! NSDate,
                                         endTime: $0["ending"] as! NSDate,
                                         title: $0["title"] as! String,

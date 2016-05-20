@@ -21,6 +21,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     private var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
     var appointmentArray: [AppointmentItem] = []
     var taskArray: [TaskItem] = []
+    var journalArray: [JournalItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskLabel.textColor = UIColor.whiteColor()
         journalLabel.text = "Journal"
         journalLabel.textColor = UIColor.whiteColor()
+        
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
         self.taskViewTable.dataSource = self
@@ -45,9 +47,18 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         println("View will appear animated")
         appointmentArray = AppointmentItemList.sharedInstance.allItems()
         taskArray = TaskItemList.sharedInstance.allTasks()
-                
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
+        
+        println("Journal code for view will appear method.")
+        journalArray = JournalItemList.sharedInstance.allJournals()
+        for journal in journalArray{
+            if !journalArray.isEmpty{
+                println("Journal Entry: \(journal.journalEntry)")
+                journalViewBox.text = journal.journalEntry
+            }
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {

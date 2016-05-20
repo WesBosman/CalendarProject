@@ -677,16 +677,16 @@
                                 <exclude reference="Whv-xF-flI"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="iIU-Za-S1W"/>
                                 <exclude reference="Cv4-S2-EOh"/>
                                 <exclude reference="DS7-yS-ma8"/>
                                 <exclude reference="Xtd-Vb-R4k"/>
                                 <exclude reference="eTL-AC-8UY"/>
                                 <exclude reference="jbl-56-LG0"/>
-                                <exclude reference="nhL-zp-xGG"/>
-                                <exclude reference="x4l-4k-XG3"/>
                                 <exclude reference="rGy-sn-6Se"/>
                                 <exclude reference="ss1-jf-YJW"/>
-                                <exclude reference="iIU-Za-S1W"/>
+                                <exclude reference="nhL-zp-xGG"/>
+                                <exclude reference="x4l-4k-XG3"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -696,16 +696,16 @@
                                 <include reference="Whv-xF-flI"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="iIU-Za-S1W"/>
                                 <include reference="Cv4-S2-EOh"/>
                                 <include reference="DS7-yS-ma8"/>
                                 <include reference="Xtd-Vb-R4k"/>
                                 <include reference="eTL-AC-8UY"/>
                                 <include reference="jbl-56-LG0"/>
-                                <include reference="nhL-zp-xGG"/>
-                                <include reference="x4l-4k-XG3"/>
                                 <include reference="rGy-sn-6Se"/>
                                 <include reference="ss1-jf-YJW"/>
-                                <include reference="iIU-Za-S1W"/>
+                                <include reference="nhL-zp-xGG"/>
+                                <include reference="x4l-4k-XG3"/>
                             </mask>
                         </variation>
                     </view>
@@ -717,7 +717,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1TF-sd-kkj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="912" y="984.75"/>
+            <point key="canvasLocation" x="649.5" y="984.75"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="mtx-fx-89k">
