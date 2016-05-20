@@ -23,5 +23,15 @@ class HomeTaskCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func taskCompleted(){
+        uncheckedTaskImage.image = UIImage(named: "checkbox")
+        
+    }
+    
+    func taskNotCompleted(){
+        uncheckedTaskImage.image = UIImage(named: "uncheckbox")
+        
+    }
 
 }

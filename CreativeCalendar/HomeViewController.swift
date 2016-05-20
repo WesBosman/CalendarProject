@@ -46,6 +46,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
+        print("\nView will appear animated")
         appointmentArray = AppointmentItemList.sharedInstance.allItems()
         taskArray = TaskItemList.sharedInstance.allTasks()
         taskViewTable.reloadData()
@@ -66,50 +67,56 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
     }
     
-    // This function should let me deselect a row but I am unsure if it is working. 
+    // This function seems to work but I am unsure that I need it.
+    /**
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         // If the user deselects the row what do we do?
         if tableView == taskViewTable{
-            //taskCell.uncheckedTaskImage.image = UIImage(named: "uncheckbox")
+            
+            println("Did Deselect Row at index path: \(indexPath.row)")
             var deselectedTask = taskViewTable.cellForRowAtIndexPath(indexPath)
             deselectedTask?.backgroundColor = UIColor.clearColor()
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
+    **/
+
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
-        // When you select a task on the home screen change the picture to a green checkbox
+        // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
+        
+        var task = taskArray[indexPath.row] as TaskItem
+        var taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
+        taskCell.homeTaskTitle.text = task.taskTitle
+        taskCell.homeTaskInfo.text = task.taskInfo
         
         if tableView == taskViewTable{
-            let task = taskArray[indexPath.row] as TaskItem
-            let newTaskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
-            newTaskCell.homeTaskTitle.text = task.taskTitle
-            newTaskCell.homeTaskInfo.text = task.taskInfo
-            
-            // This does not seem to reset the values unless you get it right on the first try??????
+            // Create an Alert to ask the user if they have completed the task.
             var alert = UIAlertController(title: "Hello", message: "Have you completed this task?", preferredStyle: UIAlertControllerStyle.Alert)
+            println("Alert Created")
             
-            // Destructive action
+            // If the user confirms that a task was completed then update the image to a green checkbox
             alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction!) in
-                
-                newTaskCell.uncheckedTaskImage.image = UIImage(named: "checkbox")
+                println("Yes was pressed")
+                // Update the cell image and labels with strikethroughs and the green checkbox
+                taskCell.taskCompleted()
                 let strikeThroughLabel: NSMutableAttributedString = NSMutableAttributedString(string: task.taskTitle)
                 strikeThroughLabel.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, strikeThroughLabel.length))
-                newTaskCell.homeTaskTitle.attributedText = strikeThroughLabel
-                newTaskCell.homeTaskInfo.text = task.taskInfo
-                
+                taskCell.homeTaskTitle.attributedText = strikeThroughLabel
+                taskCell.homeTaskInfo.text = task.taskInfo
                 
             } ))
             
-            // Non Destructive action
+            // If no is clicked make the image a sepia toned image
             alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction!) in
-                newTaskCell.uncheckedTaskImage.image = UIImage(named: "uncheckbox")
-                newTaskCell.homeTaskTitle.text = task.taskTitle
-                newTaskCell.homeTaskInfo.text = task.taskInfo
+                print("\nNo was pressed")
+                // Update the cell image to an uncompleted task
+                taskCell.taskNotCompleted()
                 
             } ))
+            // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
-            
             
         }
     }
@@ -142,16 +149,17 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.homeAppointmentSubtitle.text = "start: \(startFormatter.stringFromDate(appointment.startingTime)) end: \(endFormatter.stringFromDate(appointment.endingTime)) \nlocation: \(appointment.appLocation)"
             return appointmentCell
         }
-        
-        // Other wise fill the task table view cell and return it
-        let task = taskArray[indexPath.row] as TaskItem
-        taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
-        print("\nTask Title: \(task.taskTitle)\n")
-        print("Task Info: \(task.taskInfo)\n")
-        taskCell.homeTaskTitle.text = task.taskTitle
-        taskCell.homeTaskInfo.text = task.taskInfo
-        
-        return taskCell
+        // Otherwise fill the task table cell and return it
+        else{
+            let task = taskArray[indexPath.row] as TaskItem
+            taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
+            print("\nTask Title: \(task.taskTitle)\n")
+            print("Task Info: \(task.taskInfo)\n")
+            
+            taskCell.homeTaskTitle.text = task.taskTitle
+            taskCell.homeTaskInfo.text = task.taskInfo
+            return taskCell
+        }
     }
     
 
