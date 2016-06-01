@@ -39,7 +39,7 @@ class AppointmentItemList{
         NSUserDefaults.standardUserDefaults().setObject(todoDictionary, forKey: ITEMS_KEY) // save/overwrite todo item list
         
         // create a corresponding local notification
-        var notification = UILocalNotification()
+        let notification = UILocalNotification()
         notification.alertBody = "Appointment \"\(item.title)\" Has Started" // text that will be displayed in the notification
         notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
         notification.fireDate = item.startingTime // todo item due date (when notification will be fired)
@@ -51,7 +51,7 @@ class AppointmentItemList{
     
     func removeItem(item: AppointmentItem){
         // Loop through the notifications
-        for notification in UIApplication.sharedApplication().scheduledLocalNotifications as! [UILocalNotification]{
+        for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {
             // Retrieve the notification based on the unique identifier
             if notification.userInfo!["UUID"] as! String == item.UUID{
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
@@ -69,7 +69,7 @@ class AppointmentItemList{
     
     // Return an array of appointment items for the user to see.
     func allItems() -> [AppointmentItem] {
-        var appointmentDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? [:]
+        let appointmentDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? [:]
         let items = Array(appointmentDictionary.values)
         //print(items)
         return items.map( {AppointmentItem(startTime: $0["start"] as! NSDate,
@@ -79,7 +79,7 @@ class AppointmentItemList{
                                         additional: $0["additional"] as! String,
                                         UUID: $0["UUID"] as! String!)} )
             
-            .sorted({ (left: AppointmentItem, right:AppointmentItem) -> Bool in (left.startingTime.compare(right.startingTime) == .OrderedAscending)} )
+            .sort({ (left: AppointmentItem, right:AppointmentItem) -> Bool in (left.startingTime.compare(right.startingTime) == .OrderedAscending)} )
     }
         
 }

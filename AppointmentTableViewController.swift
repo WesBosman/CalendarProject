@@ -20,7 +20,7 @@ class AppointmentTableViewController: UITableViewController{
         navigationItem.leftBarButtonItem = editButtonItem()
         NSNotificationCenter
             .defaultCenter()
-            .addObserver(self, selector: "refreshList", name: "AppointmentListShouldRefresh", object: nil)
+            .addObserver(self, selector: #selector(AppointmentTableViewController.refreshList), name: "AppointmentListShouldRefresh", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -91,7 +91,7 @@ class AppointmentTableViewController: UITableViewController{
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            var itemToDelete = appointmentTestList.removeAtIndex(indexPath.row)
+            let itemToDelete = appointmentTestList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             AppointmentItemList.sharedInstance.removeItem(itemToDelete)
             self.navigationItem.rightBarButtonItem?.enabled = true

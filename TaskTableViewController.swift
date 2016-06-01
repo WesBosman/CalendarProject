@@ -77,7 +77,7 @@ class TaskTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            var itemToDelete = taskTestList.removeAtIndex(indexPath.row)
+            let itemToDelete = taskTestList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             TaskItemList.sharedInstance.removeItem(itemToDelete)
             self.navigationItem.rightBarButtonItem?.enabled = true

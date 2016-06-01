@@ -52,7 +52,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     // Picker View Functions for the types of appointments the user can pick from.
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return typeOfAppointments[row]
     }
     

@@ -42,12 +42,12 @@ class TaskItemList{
     
     // Return items for the user to see in the table view
     func allTasks() -> [TaskItem] {
-        var taskDict = NSUserDefaults.standardUserDefaults().dictionaryForKey(TASK_KEY) ?? [:]
+        let taskDict = NSUserDefaults.standardUserDefaults().dictionaryForKey(TASK_KEY) ?? [:]
         let task_items = Array(taskDict.values)
         //print(task_items)
         return task_items.map({TaskItem(title: $0["title"] as! String,
                                         info: $0["info"] as! String,
                                         UUID: $0["UUID"] as! String)})
-            .sorted({(left: TaskItem, right: TaskItem) -> Bool in (left.taskTitle.compare(right.taskTitle) == .OrderedAscending)})
+            .sort({(left: TaskItem, right: TaskItem) -> Bool in (left.taskTitle.compare(right.taskTitle) == .OrderedAscending)})
     }
 }

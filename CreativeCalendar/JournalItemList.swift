@@ -24,7 +24,7 @@ class JournalItemList{
         journalDictionary[item.journalUUID] = ["journal" : item.journalEntry,
                                                "UUID" : item.journalUUID,
                                                "date" : item.journalDate]
-        println("Journal Keys: \(journalDictionary.keys) Journal Values: \(journalDictionary.values)")
+        print("Journal Keys: \(journalDictionary.keys) Journal Values: \(journalDictionary.values)")
         
         // Save or Overwrite information in the dictionary
         NSUserDefaults.standardUserDefaults().setObject(journalDictionary, forKey: JOURNAL_KEY)
@@ -43,11 +43,11 @@ class JournalItemList{
     
     // Return items for the user to see in the table view
     func allJournals() -> [JournalItem] {
-        var journalDict = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY) ?? [:]
+        let journalDict = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY) ?? [:]
         // Use the key to get the journal items out of the dictionary
         let journal_items = Array(journalDict.values)
-        println("All journals is not being saved throughout multiple instances of the application.")
-        println("All Journal Items \(journal_items)")
+        print("All journals is not being saved throughout multiple instances of the application.")
+        print("All Journal Items \(journal_items)")
         return journal_items.map({JournalItem(journal: $0["journal"] as! String,
                                                 UUID: $0["UUID"] as! String,
                                                 date: $0["date"] as! String)})
