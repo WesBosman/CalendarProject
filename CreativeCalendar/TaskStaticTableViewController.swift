@@ -19,8 +19,8 @@ class TaskStaticTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        taskAdditionalRightDetail.text = " "
-        taskNameRightDetail.text = " "
+        taskAdditionalRightDetail.text = ""
+        taskNameRightDetail.text = ""
         toggleNameOfTask()
         toggleAdditionalInfoOfTask()
 
@@ -38,11 +38,24 @@ class TaskStaticTableViewController: UITableViewController {
     
     // Save the information to pass it to the previous view
     @IBAction func saveTaskPressed(sender: AnyObject) {
-        let taskItem = TaskItem(title: taskNameRightDetail.text!,
+        // Make sure there is atleast a task title in order to let the user save the task
+        print("Task name Right Detail: \(taskNameRightDetail.text!.isEmpty)")
+        
+        if (!taskNameRightDetail.text!.isEmpty){
+            let taskItem = TaskItem(title: taskNameRightDetail.text!,
                                 info: taskAdditionalRightDetail.text!,
                                 UUID: NSUUID().UUIDString)
-        TaskItemList.sharedInstance.addItem(taskItem)
-        self.navigationController?.popToRootViewControllerAnimated(true)
+            TaskItemList.sharedInstance.addItem(taskItem)
+            self.navigationController?.popToRootViewControllerAnimated(true)
+        }
+        else{
+            // This is similar to the code for the static appointment alert.
+            let someFieldMissing = UIAlertController(title: "Missing Task Title", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
+            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
+                // Essentially do nothing. Unless we want to print some sort of log message.
+            }))
+            self.presentViewController(someFieldMissing, animated: true, completion: nil)
+        }
     }
     
     // Toggle the hidden feature of the task name

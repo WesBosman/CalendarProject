@@ -22,6 +22,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     var appointmentArray: [AppointmentItem] = []
     var taskArray: [TaskItem] = []
     var journalArray: [JournalItem] = []
+    var todaysDate: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         journalLabel.text = "Journal"
         journalLabel.textColor = UIColor.whiteColor()
         
+        // Current Date
+        let dateFormat = NSDateFormatter()
+        let date = NSDate()
+        dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
+        todaysDate = dateFormat.stringFromDate(date)
+        
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
         self.taskViewTable.dataSource = self
@@ -41,23 +48,31 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         
     }
     
+    // Clear all NSUser Defaults
+    func clearAllUserDefaults(){
+        // The below two lines of code can clear out NSUser Defaults
+        let appDomain = NSBundle.mainBundle().bundleIdentifier!
+        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
+    }
+    
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
-        print("View will appear animated")
+        print("Home View will appear animated")
         appointmentArray = AppointmentItemList.sharedInstance.allItems()
         taskArray = TaskItemList.sharedInstance.allTasks()
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         
-        print("Journal code for view will appear method.")
+        //print("Journal code for view will appear method.")
+        
         journalArray = JournalItemList.sharedInstance.allJournals()
         for journal in journalArray{
             if !journalArray.isEmpty{
                 print("Journal Entry: \(journal.journalEntry)")
+                //journalArray.removeAll()
                 journalViewBox.text = journal.journalEntry
             }
-            
         }
     }
 

@@ -18,6 +18,10 @@ class JournalItem{
         self.journalEntry = journal
         self.journalUUID = UUID
         self.journalDate = date
-        print("Journal Entry: \(journal) UUID: \(journalUUID) Date: \(journalDate)")
+        
+        //print("Journal Entry: \(journal)")
+        //print("UUID: \(journalUUID)")
+        //print("Date: \(journalDate)")
+        //print()
     }
 }

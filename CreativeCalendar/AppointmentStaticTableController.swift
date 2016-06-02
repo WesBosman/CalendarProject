@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource{
+class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
     @IBOutlet weak var appointmentNameDetailLabel: UILabel!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
@@ -42,11 +42,15 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Set the data source and delegate for the appointment picker
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
+        additionalInfoTextBox.delegate = self
         // Make the right details for the location and name empty at start
         appointmentNameDetailLabel.text = " "
         appointmentLocationDetailLabel.text = " "
         // Set the initial type of appointment to the first object when clicked
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
+        // Set some initial default text for the TextView so the user knows where to type.
+        additionalInfoTextBox.text = "Additional Information..."
+        additionalInfoTextBox.textColor = UIColor.lightGrayColor()
         //appointmentPicker.backgroundColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
         
     }
@@ -68,6 +72,13 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         typeOfAppointmentRightDetail.text = typeOfAppointments[row]
     }
     
+    // This is for the text view delegate so that the user can tell where the additional info text box is.
+    func textViewDidBeginEditing(textView: UITextView) {
+        if additionalInfoTextBox.textColor == UIColor.lightGrayColor(){
+            additionalInfoTextBox.text = nil
+            additionalInfoTextBox.textColor = UIColor.blackColor()
+        }
+    }
     
     // Update the right detail of the name of the event
     @IBAction func enterButtonPressed(sender: AnyObject) {
@@ -77,14 +88,30 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     // Pass the information from this view to the previous view
     @IBAction func saveButtonPressed(sender: AnyObject) {
-        let appointmentItem = AppointmentItem(startTime: appointmentStartDate.date,
+        
+        // If all the required fields are filled in then save the appointment otherwise show an alert
+        if ((!appointmentNameDetailLabel.text!.isEmpty) && (!typeOfAppointmentRightDetail.text!.isEmpty) &&
+            (!startingTimeDetailLabel.text!.isEmpty) && (!endingTimeDetailLabel.text!.isEmpty) &&
+            (!appointmentLocationDetailLabel.text!.isEmpty)){
+        
+            let appointmentItem = AppointmentItem(startTime: appointmentStartDate.date,
                                               endTime: appointmentEndDate.date,
                                               title: appointmentNameDetailLabel.text!,
                                               location: appointmentLocationDetailLabel.text!,
                                               additional: additionalInfoTextBox.text!,
                                               UUID: NSUUID().UUIDString)
-        AppointmentItemList.sharedInstance.addItem(appointmentItem)
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        
+            AppointmentItemList.sharedInstance.addItem(appointmentItem)
+            self.navigationController?.popToRootViewControllerAnimated(true)
+        }
+        else{
+            let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
+            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
+                    // Essentially do nothing. Unless we want to print some sort of log message.
+                    //print("Action for stoping the saving of incomplete appointment form")
+                }))
+            self.presentViewController(someFieldMissing, animated: true, completion: nil)
+        }
         
     }
     @IBAction func locationButtonPressed(sender: AnyObject) {
