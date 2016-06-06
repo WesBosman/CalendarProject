@@ -119,14 +119,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     }
     
     
-/** NEED A TABLE VIEW CONTROLLER FOR INDEXED LIST
-    
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        var theSections = indexedNumbers as NSArray
-        return theSections.indexOfObject(title)
-    }
-**/
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // fill the appointment table view cell and return it
         if tableView == appointmentViewTable{

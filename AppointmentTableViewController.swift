@@ -13,6 +13,7 @@ class AppointmentTableViewController: UITableViewController{
     
     let cellID = "AppointmentCells"
     var appointmentTestList:[AppointmentItem] = [];
+    var appointmentDateSections = Set<NSDate>()
     var selectedIndexPath: NSIndexPath?
     
     override func viewDidLoad() {
@@ -31,6 +32,11 @@ class AppointmentTableViewController: UITableViewController{
     // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){
         appointmentTestList = AppointmentItemList.sharedInstance.allItems()
+        for app in appointmentTestList{
+            appointmentDateSections.insert(app.startingTime)
+        }
+        print(appointmentDateSections)
+        
         if appointmentTestList.count > 64{
             self.navigationItem.rightBarButtonItem?.enabled = false
         }
@@ -44,8 +50,27 @@ class AppointmentTableViewController: UITableViewController{
     
     // Return 1 section
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 1 //appointmentDateSections.count
     }
+    /**
+     May want to set up a way for the sections in the table to be sorted by their dates
+     Like in the medication application on my phone
+     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var date:NSDate
+        var dateFormat: NSDateFormatter
+        var stringDate: String
+        
+        //for app in appointmentDateSections{
+            date = appointmentDateSections.first!
+            dateFormat = NSDateFormatter()
+            stringDate = dateFormat.stringFromDate(date)
+            return stringDate
+       // }
+        
+        //return stringDate
+    }
+    */
     
     // Make a cell where the title and the start date are retrieved from the save button being pressed
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -53,9 +78,6 @@ class AppointmentTableViewController: UITableViewController{
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell
         // The cell gets updated from the information stored in the appointment item object
         let appItem = appointmentTestList[indexPath.row] as AppointmentItem
-        
-        // Do I need to set the title twice?
-        //cell.appointmentTitle.text = appItem.title as String!
         
         // If the current time is later than the starting time of the appointment then the color is set to red.
         if (appItem.isOverdue) {
@@ -97,18 +119,7 @@ class AppointmentTableViewController: UITableViewController{
             self.navigationItem.rightBarButtonItem?.enabled = true
         }
     }
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
 
-    }
-
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation

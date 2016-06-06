@@ -38,7 +38,7 @@ class JournalItemList{
     func removeItem(item: JournalItem){
 
         if var journals = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY){
-            journals.removeValueForKey(item.journalUUID)
+            journals.removeValueForKey(item.journalDate)
             // Save item
             NSUserDefaults.standardUserDefaults().setObject(journals, forKey: JOURNAL_KEY)
         }

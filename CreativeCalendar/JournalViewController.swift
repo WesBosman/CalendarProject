@@ -45,16 +45,18 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         
     }
     
+    /**
     func textViewDidChange(textView: UITextView) {
         
     }
+    */
     
     // When the save button is clicked pass the information to a journal item.
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
-        JournalItemList.sharedInstance.removeAllJournals()
         let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: currentDate)
         JournalItemList.sharedInstance.addItem(journalItem)
         // Maybe just send the journalText to a variable on the home screen?
+        self.navigationController?.popViewControllerAnimated(true)
         
     }
 

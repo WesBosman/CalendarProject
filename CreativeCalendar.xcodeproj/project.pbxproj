@@ -11,6 +11,7 @@
 		3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AE1C5943F70071542F /* LaunchScreen.xib */; };
 		3F7115BC1C5943F70071542F /* CreativeCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7115BB1C5943F70071542F /* CreativeCalendarTests.swift */; };
 		DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06631E1C6D321600DE42CA /* HomeViewController.swift */; };
+		DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2736251D05CF26000583A7 /* JournalTableViewController.swift */; };
 		DE2DCB4E1C650B44004D3220 /* FullSizeRender.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */; };
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
 		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
@@ -50,6 +51,7 @@
 		3F7115BA1C5943F70071542F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F7115BB1C5943F70071542F /* CreativeCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreativeCalendarTests.swift; sourceTree = "<group>"; };
 		DE06631E1C6D321600DE42CA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		DE2736251D05CF26000583A7 /* JournalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalTableViewController.swift; sourceTree = "<group>"; };
 		DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FullSizeRender.jpg; sourceTree = "<group>"; };
 		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
 		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				DE58D3C91CECE0B30032CB9C /* JournalItem.swift */,
 				DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */,
 				DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */,
+				DE2736251D05CF26000583A7 /* JournalTableViewController.swift */,
 				DE2DCB511C652907004D3220 /* Main.storyboard */,
 				DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */,
 				3F7115AC1C5943F70071542F /* Images.xcassets */,
@@ -280,6 +283,7 @@
 				DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
+				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

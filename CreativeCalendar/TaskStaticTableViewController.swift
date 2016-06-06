@@ -39,8 +39,6 @@ class TaskStaticTableViewController: UITableViewController {
     // Save the information to pass it to the previous view
     @IBAction func saveTaskPressed(sender: AnyObject) {
         // Make sure there is atleast a task title in order to let the user save the task
-        print("Task name Right Detail: \(taskNameRightDetail.text!.isEmpty)")
-        
         if (!taskNameRightDetail.text!.isEmpty){
             let taskItem = TaskItem(title: taskNameRightDetail.text!,
                                 info: taskAdditionalRightDetail.text!,
