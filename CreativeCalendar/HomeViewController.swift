@@ -55,6 +55,24 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
     }
     
+    // This function is used for printing journals to the home screen 
+    func printJournals(){
+        //print("Journal code for view will appear method.")
+        var journalText: String = ""
+        var journalCount: Int = 0
+        journalArray = JournalItemList.sharedInstance.allJournals()
+        for journal in journalArray{
+            if !journalArray.isEmpty && journal.journalDate == todaysDate{
+                print("Journal Entry: \(journal.journalEntry)")
+                journalCount += 1
+                print("Number of journals \(journalCount)")
+                journalText += journal.journalEntry + "\n"
+            }
+        }
+        let firstString = "You have (\(journalCount)) journal entries for today.\n"
+        journalViewBox.text = firstString + journalText
+    }
+    
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
@@ -63,17 +81,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskArray = TaskItemList.sharedInstance.allTasks()
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
+        printJournals()
         
-        //print("Journal code for view will appear method.")
-        
-        journalArray = JournalItemList.sharedInstance.allJournals()
-        for journal in journalArray{
-            if !journalArray.isEmpty{
-                print("Journal Entry: \(journal.journalEntry)")
-                //journalArray.removeAll()
-                journalViewBox.text = journal.journalEntry
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {

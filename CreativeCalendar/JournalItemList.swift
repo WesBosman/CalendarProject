@@ -13,6 +13,7 @@ private let sharedJournalList = JournalItemList()
 
 class JournalItemList{
     private let JOURNAL_KEY = "journalItems"
+    private var numberOfEntries = 0
     // New singleton code
     static let sharedInstance = sharedJournalList
 
@@ -23,7 +24,7 @@ class JournalItemList{
         // Create the dictionary object to hold journal item objects
         var journalDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY) ?? Dictionary()
         
-        journalDictionary[item.journalDate] = ["journal" : item.journalEntry,
+        journalDictionary[item.journalUUID] = ["journal" : item.journalEntry,
                                                "UUID" : item.journalUUID,
                                                "date" : item.journalDate]
         
@@ -33,21 +34,33 @@ class JournalItemList{
         NSUserDefaults.standardUserDefaults().setObject(journalDictionary, forKey: JOURNAL_KEY)
 
     }
+    /**
+    func dictionaryContainsKey(item: JournalItem) -> Bool{
+        var journalDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY) ?? Dictionary()
+        if journalDictionary[item.journalUUID] != nil{
+            return true
+        }
+        else{
+            return false
+        }
+    }
+     
+     func getTodaysJournals(date:String) -> Any{
+        let journalDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY) ?? [:]
+        let todays_journals = journalDictionary[date]
+        let str = todays_journals!["journal"]
+        return str!!
+     }
+    **/
     
     // remove a journal item
     func removeItem(item: JournalItem){
 
         if var journals = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY){
-            journals.removeValueForKey(item.journalDate)
+            journals.removeValueForKey(item.journalUUID)
             // Save item
             NSUserDefaults.standardUserDefaults().setObject(journals, forKey: JOURNAL_KEY)
         }
-    }
-    
-    func getTodaysJournals(date:String) {
-        let journalDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(JOURNAL_KEY) ?? [:]
-        let todays_journals = journalDictionary[date]
-        print("Todays Journals: \(todays_journals)")
     }
     
     func removeAllJournals() {

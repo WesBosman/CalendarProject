@@ -133,7 +133,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dhx-yn-8xg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1767" y="-1003.5"/>
+            <point key="canvasLocation" x="1453.5" y="-1008"/>
         </scene>
         <!--Appointment Static Table View Controller-->
         <scene sceneID="4lv-xe-DYv">
@@ -664,7 +664,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XDb-xW-Gnf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2664" y="-1003.5"/>
+            <point key="canvasLocation" x="2151" y="-1008"/>
         </scene>
         <!--Journal-->
         <scene sceneID="KBQ-ok-L9h">
@@ -787,17 +787,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1TF-sd-kkj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2066.25" y="984.75"/>
+            <point key="canvasLocation" x="2151" y="392.25"/>
         </scene>
         <!--Journal Table View Controller-->
         <scene sceneID="H8X-ez-rym">
             <objects>
                 <tableViewController id="Bix-Qt-TED" customClass="JournalTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="2nO-Bd-pcF">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="2nO-Bd-pcF">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Journal Cells" textLabel="b1j-FA-ePf" detailTextLabel="9ru-iE-1KK" style="IBUITableViewCellStyleSubtitle" id="KEF-lW-tvd">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Journal Cells" textLabel="b1j-FA-ePf" detailTextLabel="9ru-iE-1KK" rowHeight="70" style="IBUITableViewCellStyleSubtitle" id="KEF-lW-tvd">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KEF-lW-tvd" id="Ucc-G4-fA0">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -839,7 +839,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7k-y5-2wn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1404" y="984.75"/>
+            <point key="canvasLocation" x="1453.5" y="392.25"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="mtx-fx-89k">
@@ -915,7 +915,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T9n-9X-twW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1783" y="0.0"/>
+            <point key="canvasLocation" x="1453.5" y="-306"/>
         </scene>
         <!--Task Static Table View Controller-->
         <scene sceneID="oTJ-gF-oWO">
@@ -1273,7 +1273,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kfc-5r-zb7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2664" y="0.0"/>
+            <point key="canvasLocation" x="2151" y="-306"/>
         </scene>
         <!--Home-->
         <scene sceneID="Jkv-jn-SbO">
@@ -1573,7 +1573,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fib-m2-4gj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="0.0" y="984.75"/>
+            <point key="canvasLocation" x="777" y="1082.25"/>
         </scene>
         <!--Appointments-->
         <scene sceneID="87G-OL-Q3K">
@@ -1592,7 +1592,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mzq-bs-yZw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="869" y="-1003"/>
+            <point key="canvasLocation" x="777" y="-1008"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="FtV-Ge-PGy">
@@ -1611,7 +1611,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QhJ-Es-7IR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="922" y="0.0"/>
+            <point key="canvasLocation" x="777" y="-306"/>
         </scene>
         <!--Journals-->
         <scene sceneID="Dmj-Oa-ScE">
@@ -1630,7 +1630,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TSh-uh-AVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="645" y="984.75"/>
+            <point key="canvasLocation" x="777" y="392.25"/>
         </scene>
     </scenes>
     <resources>
