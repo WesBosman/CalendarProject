@@ -19,7 +19,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var appointmentTypeHidden = false
     private var appointmentNameHidden = false
     private var appointmentLocationHidden = false
-    let typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household"]
+    private var otherIsHidden = false
+    let typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household", "Other"]
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
@@ -28,6 +29,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var additionalInfoTextBox: UITextView!
     @IBOutlet weak var appointmentPicker: UIPickerView!
     @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
+    @IBOutlet weak var otherTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         endDatePickerDidChange()
         toggleStartDatePicker()
         toggleEndDatePicker()
+        toggleOther()
         // Set the data source and delegate for the appointment picker
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
@@ -51,7 +54,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
         additionalInfoTextBox.textColor = UIColor.lightGrayColor()
-        //appointmentPicker.backgroundColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
+        otherTextField.placeholder = "Please enter the type of appointment"
         
     }
     
@@ -70,6 +73,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeOfAppointmentRightDetail.text = typeOfAppointments[row]
+        if typeOfAppointments[row] == "Other"{
+            toggleOther()
+        }
     }
     
     // This is for the text view delegate so that the user can tell where the additional info text box is.
@@ -119,6 +125,12 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         toggleLocationOfEvent()
     }
 
+    @IBAction func otherButtonPressed(sender: AnyObject) {
+        typeOfAppointmentRightDetail.text = otherTextField.text
+        toggleOther()
+        toggleAppointmentDropDown()
+    }
+    
     // Update the right detail start date when the user moves date or time.
     @IBAction func startDatePickerAction(sender: AnyObject) {
         startDatePickerDidChange()
@@ -190,11 +202,23 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         else if appointmentLocationHidden && indexPath.section == 3 && indexPath.row == 1{
             return 0
         }
+        // Not sure how to get the correct picker view item.
+        else if otherIsHidden && indexPath.section == 1 && indexPath.row == 2{
+            return 0
+        }
         // Return the normal height otherwise
         else{
             return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         }
     }
+    
+    // Toggle when picker selection is other
+    func toggleOther(){
+        otherIsHidden = !otherIsHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
     // Toggle name of event drop down
     func toggleNameOfEvent(){
         appointmentNameHidden = !appointmentNameHidden

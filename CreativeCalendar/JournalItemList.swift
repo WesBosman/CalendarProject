@@ -75,9 +75,11 @@ class JournalItemList{
         let journal_items = Array(journalDict.values)
         //print("All journals is not being saved throughout multiple instances of the application.")
         //print("All Journal Items \(journal_items)")
+        // Order the journal enteries by their dates. 
         return journal_items.map({JournalItem(journal: $0["journal"] as! String,
                                                  UUID: $0["UUID"] as! String,
                                                  date: $0["date"] as! String)})
+            .sort({(left:JournalItem, right:JournalItem) -> Bool in (left.journalDate.compare(right.journalDate) == .OrderedAscending)})
         
     }
 }

@@ -26,6 +26,10 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         currentDate = dateFormat.stringFromDate(date)
         journalTextBox.text = "\(currentDate) : "
         journalTextBox.delegate = self
+        let nav = self.navigationController?.navigationBar
+        let barColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
+        nav?.barTintColor = barColor
+        nav?.tintColor = UIColor.blueColor()
     }
 
     override func didReceiveMemoryWarning() {

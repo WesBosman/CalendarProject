@@ -18,6 +18,10 @@ class TaskTableViewController: UITableViewController {
         super.viewDidLoad()
         // Set the left navigation button to be the edit button.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        let nav = self.navigationController?.navigationBar
+        let barColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
+        nav?.barTintColor = barColor
+        nav?.tintColor = UIColor.blueColor()
     }
     
     // View did appear needs to be called because we animated the view from the static table save button being pressed.

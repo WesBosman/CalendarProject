@@ -5,6 +5,12 @@
 //  Created by Wes on 2/11/16.
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
 //
+//  Using Icon Beast Lite for images for this application
+//  Link to their information
+//  Author: Charlene
+//  Website: http://www.iconbeast.com
+//  Email: thebeast@iconbeast.com
+//
 
 import UIKit
 
