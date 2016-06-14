@@ -32,7 +32,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         super.viewDidLoad()
         // Sets the initial positions for the cells and date pickers to be hidden.
         toggleAppointmentDropDown()
-//        toggleLocationOfEvent()
         startDatePickerDidChange()
         endDatePickerDidChange()
         toggleStartDatePicker()
@@ -53,6 +52,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         
     }
     
+    // MARK - Picker View Methods
     // Picker View Functions for the types of appointments the user can pick from.
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return typeOfAppointments[row]
@@ -73,6 +73,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
+    // MARK - Table View Methods
     // This is for the text view delegate so that the user can tell where the additional info text box is.
     func textViewDidBeginEditing(textView: UITextView) {
         if additionalInfoTextBox.textColor == UIColor.lightGrayColor(){
@@ -207,21 +208,4 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         tableView.endUpdates()
     }
     
-    // MARK: - Table view data source
-    /**
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 0
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return 0
-    }
-    **/
-
-    
 }
-
