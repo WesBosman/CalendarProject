@@ -10,22 +10,19 @@ import UIKit
 
 class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
-    @IBOutlet weak var appointmentNameDetailLabel: UILabel!
+    @IBOutlet weak var appointmentNameTextField: UITextField!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentStartDate: UIDatePicker!
-    @IBOutlet weak var appointmentLocationDetailLabel: UILabel!
     private var startDatePickerHidden = false
     private var endDatePickerHidden = false
     private var appointmentTypeHidden = false
-    private var appointmentNameHidden = false
-    private var appointmentLocationHidden = false
     private var otherIsHidden = false
     let typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household", "Other"]
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
     @IBOutlet weak var nameOfAppointmentTextBox: UITextField!
-    @IBOutlet weak var locationOfAppointmentTextBox: UITextField!
+    @IBOutlet weak var appointmentLocationTextBox: UITextField!
     @IBOutlet weak var additionalInfoTextBox: UITextView!
     @IBOutlet weak var appointmentPicker: UIPickerView!
     @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
@@ -34,9 +31,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Sets the initial positions for the cells and date pickers to be hidden.
-        toggleNameOfEvent()
         toggleAppointmentDropDown()
-        toggleLocationOfEvent()
+//        toggleLocationOfEvent()
         startDatePickerDidChange()
         endDatePickerDidChange()
         toggleStartDatePicker()
@@ -46,10 +42,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
         additionalInfoTextBox.delegate = self
-        // Make the right details for the location and name empty at start
-        appointmentNameDetailLabel.text = " "
-        appointmentLocationDetailLabel.text = " "
-        // Set the initial type of appointment to the first object when clicked
+        
+        appointmentNameTextField.placeholder = "Name of Appointment"
+        appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
@@ -86,24 +81,19 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
-    // Update the right detail of the name of the event
-    @IBAction func enterButtonPressed(sender: AnyObject) {
-        appointmentNameDetailLabel.text = nameOfAppointmentTextBox.text
-        toggleNameOfEvent()
-    }
-    
     // Pass the information from this view to the previous view
     @IBAction func saveButtonPressed(sender: AnyObject) {
         
         // If all the required fields are filled in then save the appointment otherwise show an alert
-        if ((!appointmentNameDetailLabel.text!.isEmpty) && (!typeOfAppointmentRightDetail.text!.isEmpty) &&
-            (!startingTimeDetailLabel.text!.isEmpty) && (!endingTimeDetailLabel.text!.isEmpty) &&
-            (!appointmentLocationDetailLabel.text!.isEmpty)){
+        if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
+            (!startingTimeDetailLabel.text!.isEmpty) &&
+            (!endingTimeDetailLabel.text!.isEmpty) &&
+            (!appointmentLocationTextBox.text!.isEmpty)){
         
             let appointmentItem = AppointmentItem(startTime: appointmentStartDate.date,
                                               endTime: appointmentEndDate.date,
-                                              title: appointmentNameDetailLabel.text!,
-                                              location: appointmentLocationDetailLabel.text!,
+                                              title: appointmentNameTextField.text!,
+                                              location: appointmentLocationTextBox.text!,
                                               additional: additionalInfoTextBox.text!,
                                               UUID: NSUUID().UUIDString)
         
@@ -119,10 +109,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             self.presentViewController(someFieldMissing, animated: true, completion: nil)
         }
         
-    }
-    @IBAction func locationButtonPressed(sender: AnyObject) {
-        appointmentLocationDetailLabel.text = locationOfAppointmentTextBox.text
-        toggleLocationOfEvent()
     }
 
     @IBAction func otherButtonPressed(sender: AnyObject) {
@@ -155,12 +141,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // Name of the event/appointment
-        if indexPath.section == 0 && indexPath.row == 0{
-            toggleNameOfEvent()
-        }
         // Appointment drop down
-        else if indexPath.section == 1 && indexPath.row == 0{
+        if indexPath.section == 1 && indexPath.row == 0{
             toggleAppointmentDropDown()
         }
         // Starting date picker
@@ -171,23 +153,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         else if indexPath.section == 2 && indexPath.row == 2{
             toggleEndDatePicker()
         }
-        // Appointment location drop down
-        else if indexPath.section == 3 && indexPath.row == 0{
-            toggleLocationOfEvent()
-        }
-        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // This method hides the cells for the larger data collection objects
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        // Hide the appointment name entry, text box and button
-        if appointmentNameHidden && indexPath.section == 0 && indexPath.row == 1{
-            return 0
-        }
         // Hide the cell beneath the appointment type label
-        else if appointmentTypeHidden && indexPath.section == 1 && indexPath.row == 1{
+        if appointmentTypeHidden && indexPath.section == 1 && indexPath.row == 1{
             return 0
         }
         // Hide the stating date picker
@@ -196,10 +169,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
         // Hide ending date picker
         else if endDatePickerHidden && indexPath.section == 2 && indexPath.row == 3{
-            return 0
-        }
-        // Hide the location entry, text box and button
-        else if appointmentLocationHidden && indexPath.section == 3 && indexPath.row == 1{
             return 0
         }
         // Not sure how to get the correct picker view item.
@@ -218,13 +187,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-    
-    // Toggle name of event drop down
-    func toggleNameOfEvent(){
-        appointmentNameHidden = !appointmentNameHidden
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
+
     // Toggle appointment drop down
     func toggleAppointmentDropDown(){
         appointmentTypeHidden = !appointmentTypeHidden
@@ -240,12 +203,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     // Toggle the ending date picker
     func toggleEndDatePicker(){
         endDatePickerHidden = !endDatePickerHidden
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
-    func toggleLocationOfEvent(){
-        appointmentLocationHidden = !appointmentLocationHidden
         tableView.beginUpdates()
         tableView.endUpdates()
     }
