@@ -16,15 +16,6 @@ class AppointmentItemList{
     // New simpler singleton code
     static let sharedInstance = sharedAppointmentList
     
-    /** Old Singleton code
-    class var sharedInstance : AppointmentItemList{
-        struct Static{
-            static let instance: AppointmentItemList = AppointmentItemList()
-        }
-    return Static.instance
-    }
-    **/
-    
     // Create a notification that will show up on the home screen.
     func addItem(item: AppointmentItem) { // persist a representation of this todo item in NSUserDefaults
         var todoDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? Dictionary()
@@ -36,15 +27,17 @@ class AppointmentItemList{
                                     "location": item.appLocation,
                                     "additional": item.additionalInfo ,
                                     "UUID": item.UUID] // store NSData representation of todo item in dictionary with UUID as key
-        NSUserDefaults.standardUserDefaults().setObject(todoDictionary, forKey: ITEMS_KEY) // save/overwrite todo item list
+        NSUserDefaults.standardUserDefaults().setObject(todoDictionary, forKey: ITEMS_KEY) // save/overwrite 
+        
+        print("Appointment starting time: \(item.startingTime)")
         
         // create a corresponding local notification
         let notification = UILocalNotification()
-        notification.alertBody = "Appointment \"\(item.title)\" Has Started" // text that will be displayed in the notification
-        notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
-        notification.fireDate = item.startingTime // todo item due date (when notification will be fired)
-        notification.soundName = UILocalNotificationDefaultSoundName // play default sound
-        notification.userInfo = ["UUID": item.UUID, ] // assign a unique identifier to the notification so that we can retrieve it later
+        notification.alertBody = "Appointment \"\(item.title)\" Has Started"
+        notification.alertAction = "open"
+        notification.fireDate = item.startingTime
+        notification.soundName = UILocalNotificationDefaultSoundName
+        notification.userInfo = ["UUID": item.UUID, ]
         notification.category = "APPOINTMENT_CATEGORY"
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
     }

@@ -56,25 +56,6 @@ class AppointmentTableViewController: UITableViewController{
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1 //appointmentDateSections.count
     }
-    /**
-     May want to set up a way for the sections in the table to be sorted by their dates
-     Like in the medication application on my phone
-     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var date:NSDate
-        var dateFormat: NSDateFormatter
-        var stringDate: String
-        
-        //for app in appointmentDateSections{
-            date = appointmentDateSections.first!
-            dateFormat = NSDateFormatter()
-            stringDate = dateFormat.stringFromDate(date)
-            return stringDate
-       // }
-        
-        //return stringDate
-    }
-    */
     
     // Make a cell where the title and the start date are retrieved from the save button being pressed
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

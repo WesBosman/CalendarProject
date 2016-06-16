@@ -68,8 +68,17 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeOfAppointmentRightDetail.text = typeOfAppointments[row]
+        // Show the other appointment cell when user highlights other.
         if typeOfAppointments[row] == "Other"{
-            toggleOther()
+            if otherIsHidden{
+                toggleOther()
+            }
+        }
+        // Hide the other appointment cell when user picks a different category.
+        else{
+            if !otherIsHidden{
+                toggleOther()
+            }
         }
     }
     
@@ -134,11 +143,13 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     func startDatePickerDidChange(){
         startingTimeDetailLabel.text = NSDateFormatter.localizedStringFromDate(appointmentStartDate.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        print(appointmentStartDate.date)
         
     }
     
     func endDatePickerDidChange(){
         endingTimeDetailLabel.text = NSDateFormatter.localizedStringFromDate(appointmentEndDate.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        print(appointmentEndDate.date)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

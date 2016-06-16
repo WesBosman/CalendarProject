@@ -108,10 +108,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
-        let task = taskArray[indexPath.row] as TaskItem
-        let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
         
         if tableView == taskViewTable{
+            let task = taskArray[indexPath.row] as TaskItem
+            let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
             // Create an Alert to ask the user if they have completed the task.
             let alert = UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
             
@@ -129,6 +129,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             } ))
             // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
+        }
+        else if tableView == appointmentViewTable{
             
         }
     }
