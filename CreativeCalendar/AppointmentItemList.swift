@@ -29,7 +29,7 @@ class AppointmentItemList{
                                     "UUID": item.UUID] // store NSData representation of todo item in dictionary with UUID as key
         NSUserDefaults.standardUserDefaults().setObject(todoDictionary, forKey: ITEMS_KEY) // save/overwrite 
         
-        print("Appointment starting time: \(item.startingTime)")
+        print("Appointment starting time Notification!!!: \(item.startingTime)")
         
         // create a corresponding local notification
         let notification = UILocalNotification()

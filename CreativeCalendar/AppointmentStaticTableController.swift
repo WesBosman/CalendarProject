@@ -27,6 +27,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var appointmentPicker: UIPickerView!
     @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     @IBOutlet weak var otherTextField: UITextField!
+    var startDate:NSDate? = nil
+    var endDate: NSDate? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,8 +102,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             (!endingTimeDetailLabel.text!.isEmpty) &&
             (!appointmentLocationTextBox.text!.isEmpty)){
         
-            let appointmentItem = AppointmentItem(startTime: appointmentStartDate.date,
-                                              endTime: appointmentEndDate.date,
+            let appointmentItem = AppointmentItem(startTime: startDate!,
+                                              endTime: endDate!,
                                               title: appointmentNameTextField.text!,
                                               location: appointmentLocationTextBox.text!,
                                               additional: additionalInfoTextBox.text!,
@@ -141,15 +143,39 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Dispose of any resources that can be recreated.
     }
     
+    func calcNotificationTime(date:NSDate) -> NSDate{
+        let calendar = NSCalendar.currentCalendar()
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "MM/dd/yyy HH:mm"
+        let dateComp = calendar.components([.Month, .Year, .Day, .Hour, .Minute], fromDate: date)
+        let month = dateComp.month
+        let day = dateComp.day
+        let year = dateComp.year
+        let hour = dateComp.hour
+        let minute = dateComp.minute
+        let newDate = String(month) + "/" + String(day) + "/" + String(year) + " " + String(hour) + ":" + String(minute)
+        let dateFromString = dateFormat.dateFromString(newDate)
+//        print("Date from String: \(dateFromString)")
+//        print("New Date: \(newDate)")
+        return dateFromString!
+    }
+    
     func startDatePickerDidChange(){
+        let date = calcNotificationTime(appointmentStartDate.date)
+        startDate = date
+//        print("START DATE: \(startDate!)")
+        
         startingTimeDetailLabel.text = NSDateFormatter.localizedStringFromDate(appointmentStartDate.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-        print(appointmentStartDate.date)
+
+//        print("Appointment Start Date: \(appointmentStartDate.date)")
         
     }
     
     func endDatePickerDidChange(){
+        let date = calcNotificationTime(appointmentEndDate.date)
+        endDate = date
         endingTimeDetailLabel.text = NSDateFormatter.localizedStringFromDate(appointmentEndDate.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-        print(appointmentEndDate.date)
+//        print("Appointment End Date: \(appointmentEndDate.date)")
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

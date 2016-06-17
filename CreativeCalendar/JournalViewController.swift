@@ -39,13 +39,18 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
         journalText = textView.text
+        print("Text View Did End Editing")
+        print(journalText)
     }
 
     
     // When the save button is clicked pass the information to a journal item.
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
+        journalText = journalTextBox.text
         let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: currentDate)
         JournalItemList.sharedInstance.addItem(journalItem)
+        print("Save Button Pressed.")
+        print(journalItem.journalEntry)
         self.navigationController?.popViewControllerAnimated(true)
     }
 

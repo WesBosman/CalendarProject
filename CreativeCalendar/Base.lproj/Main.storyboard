@@ -227,8 +227,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="165" id="Rfc-L4-svb"/>
                                                     </constraints>
-                                                    <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
-                                                        <rect key="frame" x="0.0" y="0.0" width="800" height="150"/>
+                                                    <variation key="heightClass=regular-widthClass=regular">
                                                         <mask key="constraints">
                                                             <exclude reference="Rfc-L4-svb"/>
                                                         </mask>
@@ -236,15 +235,31 @@
                                                 </pickerView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="DFx-tk-AaL" firstAttribute="top" secondItem="5y5-BX-xm5" secondAttribute="top" id="HU4-jB-ZuQ"/>
+                                                <constraint firstItem="DFx-tk-AaL" firstAttribute="leading" secondItem="5y5-BX-xm5" secondAttribute="leading" id="J0H-cE-gAD"/>
                                                 <constraint firstItem="DFx-tk-AaL" firstAttribute="trailing" secondItem="5y5-BX-xm5" secondAttribute="trailingMargin" id="Zfu-ap-0h8"/>
                                                 <constraint firstItem="DFx-tk-AaL" firstAttribute="leading" secondItem="5y5-BX-xm5" secondAttribute="leadingMargin" id="jy6-Mm-flx"/>
+                                                <constraint firstItem="DFx-tk-AaL" firstAttribute="centerY" secondItem="5y5-BX-xm5" secondAttribute="centerY" id="oRi-Uk-IbZ"/>
                                                 <constraint firstItem="DFx-tk-AaL" firstAttribute="top" secondItem="5y5-BX-xm5" secondAttribute="topMargin" id="sOF-G1-uf9"/>
+                                                <constraint firstAttribute="trailing" secondItem="DFx-tk-AaL" secondAttribute="trailing" id="y2E-Ov-KM3"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="HU4-jB-ZuQ"/>
+                                                    <exclude reference="J0H-cE-gAD"/>
+                                                    <exclude reference="oRi-Uk-IbZ"/>
+                                                    <exclude reference="y2E-Ov-KM3"/>
+                                                </mask>
+                                            </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
                                                 <mask key="constraints">
+                                                    <include reference="HU4-jB-ZuQ"/>
+                                                    <include reference="J0H-cE-gAD"/>
                                                     <exclude reference="Zfu-ap-0h8"/>
                                                     <exclude reference="jy6-Mm-flx"/>
+                                                    <include reference="oRi-Uk-IbZ"/>
                                                     <exclude reference="sOF-G1-uf9"/>
+                                                    <include reference="y2E-Ov-KM3"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
