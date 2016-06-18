@@ -33,6 +33,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set color and text of the text labels
+        //clearAllUserDefaults()
         appointmentLabel.text = "Appointments"
         appointmentLabel.textColor = UIColor.whiteColor()
         taskLabel.text = "To-Do List"

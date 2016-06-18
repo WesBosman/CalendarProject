@@ -102,7 +102,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             (!endingTimeDetailLabel.text!.isEmpty) &&
             (!appointmentLocationTextBox.text!.isEmpty)){
         
-            let appointmentItem = AppointmentItem(startTime: startDate!,
+            let appointmentItem = AppointmentItem(type: typeOfAppointmentRightDetail.text!,
+                                              startTime: startDate!,
                                               endTime: endDate!,
                                               title: appointmentNameTextField.text!,
                                               location: appointmentLocationTextBox.text!,
@@ -110,6 +111,18 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                               UUID: NSUUID().UUIDString)
         
             AppointmentItemList.sharedInstance.addItem(appointmentItem)
+            
+            // Try to put this information into a wrapped sqlite database.
+            let db = DatabaseFunctions()
+            
+            // IF the additional information text box has not been changed then add an empty string to that field of the database
+            if additionalInfoTextBox.text == "Additional Information..."{
+                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: "")
+            }
+            // Otherwise add what is in the additional information text box.
+            else{
+                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: additionalInfoTextBox.text!)
+            }
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
         else{
@@ -141,6 +154,38 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func testSQLDatabase(type: String, start: NSDate, end:NSDate, title: String, location:String, additional:String){
+        let current = NSDate()
+        let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+
+        let fileURL = documents.URLByAppendingPathComponent("test.sqlite")
+        let dataBase = FMDatabase(path: fileURL.path)
+        
+        if(!dataBase.open()){
+            print("Sorry but we were unable to open the database.")
+            return
+        }
+        do{
+            try dataBase.executeUpdate("create table Appointments(date text, title text, type text, start text, end text, location text, additional text)", values: nil)
+            try dataBase.executeUpdate("insert into Appointments(date, title, type, start, end, location, additional) values(?, ?, ?, ?, ?, ?, ?)", values:[current, title, type, start, end, location, additional])
+            let rs = try dataBase.executeQuery("select date, title, type, start, end, location, additional from Appointments", values: nil)
+            print("***************************")
+            
+            while rs.next(){
+                print("date \(current)")
+                print("title: \(title)")
+                print("type: \(type)")
+                print("start: \(start)")
+                print("end: \(end)")
+                print("location: \(location)")
+                print("additional: \(additional)")
+                print("****************************")
+            }
+        } catch let err as NSError{
+            print("ERROR: \(err.localizedDescription)")
+        }
     }
     
     func calcNotificationTime(date:NSDate) -> NSDate{

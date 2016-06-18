@@ -14,9 +14,11 @@ struct AppointmentItem {
     var endingTime: NSDate
     var appLocation: String
     var additionalInfo: String
+    var type:String
     var UUID: String
     
-    init(startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, UUID: String) {
+    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, UUID: String) {
+        self.type = type
         self.startingTime = startTime
         self.endingTime = endTime
         self.title = title

@@ -21,7 +21,8 @@ class AppointmentItemList{
         var todoDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? Dictionary()
         // if todoItems hasn't been set in user defaults, initialize todoDictionary to an empty dictionary using nil-coalescing operator (??)
         
-        todoDictionary[item.UUID] = ["start": item.startingTime,
+        todoDictionary[item.UUID] = ["type": item.type,
+                                    "start": item.startingTime,
                                     "ending": item.endingTime,
                                     "title": item.title,
                                     "location": item.appLocation,
@@ -65,7 +66,8 @@ class AppointmentItemList{
         let appointmentDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(ITEMS_KEY) ?? [:]
         let items = Array(appointmentDictionary.values)
         //print(items)
-        return items.map( {AppointmentItem(startTime: $0["start"] as! NSDate,
+        return items.map( {AppointmentItem(type: $0["type"] as! String,
+                                        startTime: $0["start"] as! NSDate,
                                         endTime: $0["ending"] as! NSDate,
                                         title: $0["title"] as! String,
                                         location: $0["location"] as! String,

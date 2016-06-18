@@ -31,6 +31,13 @@
 		DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */; };
 		DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE553AB01CE781B4006288E6 /* AppointmentCell.swift */; };
 		DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE58D3C91CECE0B30032CB9C /* JournalItem.swift */; };
+		DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFF81D14787E003ED54E /* FMDatabase.m */; };
+		DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFFC1D1479F3003ED54E /* FMResultSet.m */; };
+		DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0001D147AAD003ED54E /* FMDatabaseAdditions.m */; };
+		DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0021D147B26003ED54E /* FMDatabaseQueue.m */; };
+		DE62D0081D14861E003ED54E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62D0071D14861E003ED54E /* libsqlite3.0.tbd */; };
+		DE62D00A1D148627003ED54E /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62D0091D148627003ED54E /* libsqlite3.tbd */; };
+		DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +88,19 @@
 		DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAppointmentCell.swift; sourceTree = "<group>"; };
 		DE553AB01CE781B4006288E6 /* AppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentCell.swift; sourceTree = "<group>"; };
 		DE58D3C91CECE0B30032CB9C /* JournalItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
+		DE62CFF81D14787E003ED54E /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		DE62CFFA1D1478E0003ED54E /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		DE62CFFB1D14797B003ED54E /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		DE62CFFC1D1479F3003ED54E /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		DE62CFFF1D147A65003ED54E /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		DE62D0001D147AAD003ED54E /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		DE62D0021D147B26003ED54E /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		DE62D0041D147B59003ED54E /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		DE62D0051D147BCC003ED54E /* CreativeCalendar-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CreativeCalendar-Bridging-Header.h"; sourceTree = "<group>"; };
+		DE62D0061D148214003ED54E /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		DE62D0071D14861E003ED54E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		DE62D0091D148627003ED54E /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE62D00A1D148627003ED54E /* libsqlite3.tbd in Frameworks */,
+				DE62D0081D14861E003ED54E /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +133,8 @@
 		3F7115951C5943F70071542F = {
 			isa = PBXGroup;
 			children = (
+				DE62D0091D148627003ED54E /* libsqlite3.tbd */,
+				DE62D0071D14861E003ED54E /* libsqlite3.0.tbd */,
 				3F7115A01C5943F70071542F /* CreativeCalendar */,
 				3F7115B81C5943F70071542F /* CreativeCalendarTests */,
 				DE25D7C81D108DE0000D657D /* CreativeCalendarUITests */,
@@ -149,11 +173,22 @@
 				DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */,
 				DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */,
 				DE2736251D05CF26000583A7 /* JournalTableViewController.swift */,
+				DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */,
 				DE2DCB511C652907004D3220 /* Main.storyboard */,
 				DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */,
 				3F7115AC1C5943F70071542F /* Images.xcassets */,
 				3F7115AE1C5943F70071542F /* LaunchScreen.xib */,
 				3F7115A11C5943F70071542F /* Supporting Files */,
+				DE62CFF81D14787E003ED54E /* FMDatabase.m */,
+				DE62CFFA1D1478E0003ED54E /* FMDatabase.h */,
+				DE62CFFB1D14797B003ED54E /* FMResultSet.h */,
+				DE62CFFC1D1479F3003ED54E /* FMResultSet.m */,
+				DE62CFFF1D147A65003ED54E /* FMDatabaseAdditions.h */,
+				DE62D0001D147AAD003ED54E /* FMDatabaseAdditions.m */,
+				DE62D0021D147B26003ED54E /* FMDatabaseQueue.m */,
+				DE62D0041D147B59003ED54E /* FMDatabaseQueue.h */,
+				DE62D0051D147BCC003ED54E /* CreativeCalendar-Bridging-Header.h */,
+				DE62D0061D148214003ED54E /* FMDB.h */,
 			);
 			path = CreativeCalendar;
 			sourceTree = "<group>";
@@ -327,9 +362,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */,
+				DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */,
 				DE53EF211CEA385C00E629A2 /* HomeTaskCell.swift in Sources */,
 				DE4D91681CE7DACE00CF89C4 /* TaskItemList.swift in Sources */,
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
+				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
 				DE4D91641CE7CB3100CF89C4 /* TaskTableViewCell.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
@@ -339,9 +376,12 @@
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
 				DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */,
 				DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */,
+				DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */,
 				DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */,
+				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
+				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
 			);
@@ -486,6 +526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = CreativeCalendar/Info.plist;
@@ -494,6 +535,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "CreativeCalendar/CreativeCalendar-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -502,6 +545,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = CreativeCalendar/Info.plist;
@@ -510,6 +554,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "CreativeCalendar/CreativeCalendar-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
