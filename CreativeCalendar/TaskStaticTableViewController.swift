@@ -27,6 +27,17 @@ class TaskStaticTableViewController: UITableViewController {
                                 info: taskAdditionalInfoTextBox.text!,
                                 UUID: NSUUID().UUIDString)
             TaskItemList.sharedInstance.addItem(taskItem)
+            
+            // add the task to the database.
+            let db = DatabaseFunctions.sharedInstance
+            
+            if !(taskAdditionalInfoTextBox.text! == "Additional Information") {
+                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: taskAdditionalInfoTextBox.text!, uuid: taskItem.UUID)
+            }
+            else{
+                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: "", uuid: taskItem.UUID)
+            }
+            
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
         else{

@@ -113,15 +113,15 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             AppointmentItemList.sharedInstance.addItem(appointmentItem)
             
             // Try to put this information into a wrapped sqlite database.
-            let db = DatabaseFunctions()
+            let db = DatabaseFunctions.sharedInstance
             
             // IF the additional information text box has not been changed then add an empty string to that field of the database
             if additionalInfoTextBox.text == "Additional Information..."{
-                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: "")
+                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: "", uuid: appointmentItem.UUID)
             }
             // Otherwise add what is in the additional information text box.
             else{
-                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: additionalInfoTextBox.text!)
+                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: additionalInfoTextBox.text!, uuid: appointmentItem.UUID)
             }
             self.navigationController?.popToRootViewControllerAnimated(true)
         }

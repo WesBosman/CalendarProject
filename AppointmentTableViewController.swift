@@ -101,6 +101,11 @@ class AppointmentTableViewController: UITableViewController{
             let itemToDelete = appointmentTestList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             AppointmentItemList.sharedInstance.removeItem(itemToDelete)
+            
+            //Delete from database
+            let db = DatabaseFunctions.sharedInstance
+            db.deleteFromDatabase("Appointments", uuid: itemToDelete.UUID)
+            
             self.navigationItem.rightBarButtonItem?.enabled = true
         }
     }

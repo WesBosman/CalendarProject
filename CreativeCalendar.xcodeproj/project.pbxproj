@@ -13,7 +13,6 @@
 		DE25D7CA1D108DE0000D657D /* CreativeCalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */; };
 		DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2736251D05CF26000583A7 /* JournalTableViewController.swift */; };
 		DE2B1D911D107A470069761D /* CreativeCalendarUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */; };
-		DE2DCB4E1C650B44004D3220 /* FullSizeRender.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */; };
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
 		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
 		DE3CE3201CEF8E1B003294FD /* JournalItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */; };
@@ -70,7 +69,6 @@
 		DE25D7CB1D108DE0000D657D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE2736251D05CF26000583A7 /* JournalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalTableViewController.swift; sourceTree = "<group>"; };
 		DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreativeCalendarUITest.swift; sourceTree = "<group>"; };
-		DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FullSizeRender.jpg; sourceTree = "<group>"; };
 		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
 		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalItemList.swift; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 				DE2736251D05CF26000583A7 /* JournalTableViewController.swift */,
 				DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */,
 				DE2DCB511C652907004D3220 /* Main.storyboard */,
-				DE2DCB4D1C650B44004D3220 /* FullSizeRender.jpg */,
 				3F7115AC1C5943F70071542F /* Images.xcassets */,
 				3F7115AE1C5943F70071542F /* LaunchScreen.xib */,
 				3F7115A11C5943F70071542F /* Supporting Files */,
@@ -335,7 +332,6 @@
 			files = (
 				3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */,
 				3F7115AD1C5943F70071542F /* Images.xcassets in Resources */,
-				DE2DCB4E1C650B44004D3220 /* FullSizeRender.jpg in Resources */,
 				DE2DCB531C652907004D3220 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

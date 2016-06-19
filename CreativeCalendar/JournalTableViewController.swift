@@ -69,6 +69,9 @@ class JournalTableViewController: UITableViewController {
             let journal = journalItems.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             JournalItemList.sharedInstance.removeItem(journal)
+            
+            let db = DatabaseFunctions.sharedInstance
+            db.deleteFromDatabase("Journals", uuid: journal.journalUUID)
 
         }
     }
