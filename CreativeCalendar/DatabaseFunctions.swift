@@ -13,7 +13,9 @@ import Foundation
 private let database = DatabaseFunctions()
 
 class DatabaseFunctions{
+    // Only ever want one instance of this class.
     static let sharedInstance = database
+    private init(){}
     
     // Make the database and store it in the documents section
     func makeDb() -> FMDatabase{
@@ -28,9 +30,10 @@ class DatabaseFunctions{
         do{
             try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date date, title text, type text, start date, end date, location text, additional text, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date text, task text, additional text, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date text, task text, additional text, completed bool, uuid text)", values: nil)
             
             try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, uuid text)", values: nil)
+            print("Database File Path: \(fileURL.path!)")
         }
         catch let err as NSError{
             print("Creating Database Error: \(err.localizedDescription)")
@@ -73,7 +76,7 @@ class DatabaseFunctions{
     }
     
     // Add a task to the task table
-    func addToTaskDatabase(taskTitle: String, taskAdditional:String, uuid:String){
+    func addToTaskDatabase(taskTitle: String, taskAdditional:String, completed: Bool, uuid:String){
         let db = makeDb()
         let current = NSDate()
         let dateFormat = NSDateFormatter()
@@ -86,7 +89,7 @@ class DatabaseFunctions{
         }
         
         do{
-            let rs = try db.executeQuery("select date, task, additional, uuid from Tasks", values: nil)
+            let rs = try db.executeQuery("select date, task, additional, completed uuid from Tasks", values: nil)
             print("TTTTTTTTTTTTTTTTTTTTTTTTTTTT")
             
             var count:Int = 1
@@ -96,7 +99,7 @@ class DatabaseFunctions{
             }
             print("Number of items in Task Table database: \(count)")
 
-            try db.executeUpdate("insert into Tasks(date, task, additional, uuid) values(?, ?, ?, ?)", values:[ currentDateString, taskTitle, taskAdditional, uuid])
+            try db.executeUpdate("insert into Tasks(date, task, additional, completed, uuid) values(?, ?, ?, ?, ?)", values:[ currentDateString, taskTitle, taskAdditional, completed, uuid])
             print("TTTTTTTTTTTTTTTTTTTTTTTTTTTT")
             
         } catch let err as NSError{

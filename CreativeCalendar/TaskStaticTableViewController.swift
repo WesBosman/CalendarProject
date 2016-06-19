@@ -32,10 +32,10 @@ class TaskStaticTableViewController: UITableViewController {
             let db = DatabaseFunctions.sharedInstance
             
             if !(taskAdditionalInfoTextBox.text! == "Additional Information") {
-                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: taskAdditionalInfoTextBox.text!, uuid: taskItem.UUID)
+                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: taskAdditionalInfoTextBox.text!, completed: false, uuid: taskItem.UUID)
             }
             else{
-                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: "", uuid: taskItem.UUID)
+                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: "", completed: false, uuid: taskItem.UUID)
             }
             
             self.navigationController?.popToRootViewControllerAnimated(true)
