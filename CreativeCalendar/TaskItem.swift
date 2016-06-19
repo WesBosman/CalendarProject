@@ -12,11 +12,13 @@ import Foundation
 struct TaskItem{
     var taskTitle: String
     var taskInfo: String
+    var completed: Bool
     var UUID: String
     
-    init(title: String, info: String, UUID: String){
+    init(title: String, info: String, completed:Bool, UUID: String){
         self.taskTitle = title
         self.taskInfo = info
+        self.completed = completed
         self.UUID = UUID
     }
     

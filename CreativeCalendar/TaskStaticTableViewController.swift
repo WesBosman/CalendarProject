@@ -12,6 +12,7 @@ class TaskStaticTableViewController: UITableViewController {
     
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var taskAdditionalInfoTextBox: UITextField!
+    let db = DatabaseFunctions.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,17 +26,21 @@ class TaskStaticTableViewController: UITableViewController {
         if (!taskNameTextField.text!.isEmpty){
             let taskItem = TaskItem(title: taskNameTextField.text!,
                                 info: taskAdditionalInfoTextBox.text!,
+                                completed: false,
                                 UUID: NSUUID().UUIDString)
-            TaskItemList.sharedInstance.addItem(taskItem)
             
-            // add the task to the database.
-            let db = DatabaseFunctions.sharedInstance
+//            TaskItemList.sharedInstance.addItem(taskItem)
             
+            // add the task to the database.            
             if !(taskAdditionalInfoTextBox.text! == "Additional Information") {
-                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: taskAdditionalInfoTextBox.text!, completed: false, uuid: taskItem.UUID)
+                db.addToTaskDatabase(taskItem)
             }
             else{
-                db.addToTaskDatabase(taskNameTextField.text!, taskAdditional: "", completed: false, uuid: taskItem.UUID)
+                let newTaskItem = TaskItem(title: taskItem.taskTitle,
+                                        info: "",
+                                        completed: false,
+                                        UUID: taskItem.UUID)
+                db.addToTaskDatabase(newTaskItem)
             }
             
             self.navigationController?.popToRootViewControllerAnimated(true)

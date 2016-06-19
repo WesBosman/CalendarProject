@@ -13,7 +13,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     // Text box for user to enter journal enteries
     @IBOutlet weak var journalTextBox: UITextView!
     @IBOutlet weak var journalLabel: UILabel!
-    let date = NSDate()
+    var date = NSDate()
     let dateFormat = NSDateFormatter()
     var currentDate: String = ""
     var journalText:String = ""
@@ -39,18 +39,23 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
         journalText = textView.text
-        print("Text View Did End Editing")
-        print(journalText)
+//        print("Text View Did End Editing")
+//        print(journalText)
     }
 
     
     // When the save button is clicked pass the information to a journal item.
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
+        date = NSDate()
+        dateFormat.dateFormat = "EEEE, MMMM dd, yyyy - hh:mm:ss"
+        let currentDate = dateFormat.stringFromDate(date)
         journalText = journalTextBox.text
+        
         let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: currentDate)
-        JournalItemList.sharedInstance.addItem(journalItem)
+//        JournalItemList.sharedInstance.addItem(journalItem)
+        
         let db = DatabaseFunctions.sharedInstance
-        db.addToJournalDatabase(journalText, uuid: journalItem.journalUUID)
+        db.addToJournalDatabase(journalItem)
         
         self.navigationController?.popViewControllerAnimated(true)
     }

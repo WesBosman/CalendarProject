@@ -11,14 +11,10 @@ import UIKit
 class JournalTableViewController: UITableViewController {
     private var journalItems:[JournalItem] = []
     private let journalIdentifier = "Journal Cells"
+    private let db = DatabaseFunctions.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
     }
 
@@ -28,7 +24,7 @@ class JournalTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        journalItems = JournalItemList.sharedInstance.allJournals()
+        journalItems = db.getAllJournals()
         tableView.reloadData()
     }
 
@@ -49,7 +45,7 @@ class JournalTableViewController: UITableViewController {
 
         // Configure the cell...
         let journalCell = journalItems[indexPath.row] 
-        cell.textLabel!.text = journalCell.journalDate
+        cell.textLabel!.text = journalCell.getSimplifiedDate()
         cell.detailTextLabel!.text = journalCell.journalEntry
         return cell
     }
@@ -68,9 +64,7 @@ class JournalTableViewController: UITableViewController {
             // Delete the row from the data source
             let journal = journalItems.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            JournalItemList.sharedInstance.removeItem(journal)
             
-            let db = DatabaseFunctions.sharedInstance
             db.deleteFromDatabase("Journals", uuid: journal.journalUUID)
 
         }

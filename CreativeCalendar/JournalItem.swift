@@ -18,10 +18,18 @@ class JournalItem{
         self.journalEntry = journal
         self.journalUUID = UUID
         self.journalDate = date
-        
-        //print("Journal Entry: \(journal)")
-        //print("UUID: \(journalUUID)")
-        //print("Date: \(journalDate)")
-        //print()
+    }
+    
+    // Get a simplified date that does not contain the hours and seconds
+    func getSimplifiedDate() -> String{
+        var newMatchDate:String
+        if let range = journalDate.characters.indexOf("-"){
+            newMatchDate = self.journalDate.substringToIndex(range)
+            print("New Match Date: \(newMatchDate)")
+            return newMatchDate
+        }
+        else{
+            return ""
+        }
     }
 }

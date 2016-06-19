@@ -21,6 +21,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     @IBOutlet weak var appointmentViewTable: UITableView!
     @IBOutlet weak var taskViewTable: UITableView!
     @IBOutlet weak var journalViewBox: UITextView!
+    let db = DatabaseFunctions.sharedInstance
     let appointmentCellID = "AppointmentHomeCell"
     let taskCellID = "TaskHomeCell"
     private var taskCell: HomeTaskCell = HomeTaskCell()
@@ -67,9 +68,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         //print("Journal code for view will appear method.")
         var journalText: String = ""
         var journalCount: Int = 0
-        journalArray = JournalItemList.sharedInstance.allJournals()
+        journalArray = DatabaseFunctions.sharedInstance.getAllJournals()
         for journal in journalArray{
-            if !journalArray.isEmpty && journal.journalDate == todaysDate{
+            if !journalArray.isEmpty && (journal.getSimplifiedDate().hasPrefix(todaysDate)){
                 print("Journal Entry: \(journal.journalEntry)")
                 journalCount += 1
                 print("Number of journals \(journalCount)")
@@ -78,14 +79,16 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
         let firstString = "You have (\(journalCount)) journal entries for today.\n"
         journalViewBox.text = firstString + journalText
+        print("Try to get journals from database")
+        
     }
     
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
         print("Home View will appear animated")
-        appointmentArray = AppointmentItemList.sharedInstance.allItems()
-        taskArray = TaskItemList.sharedInstance.allTasks()
+        appointmentArray = db.getAllAppointments()
+        taskArray = db.getAllTasks()
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()

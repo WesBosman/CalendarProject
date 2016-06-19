@@ -10,8 +10,9 @@ import UIKit
 
 class TaskTableViewController: UITableViewController {
     let taskId = "TaskCells"
-    var taskTestList:[TaskItem] = []
+    var taskList:[TaskItem] = []
     var selectedIndexPath = NSIndexPath?.self
+    let db = DatabaseFunctions.sharedInstance
     
 
     override func viewDidLoad() {
@@ -32,8 +33,7 @@ class TaskTableViewController: UITableViewController {
     
     // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
     func refreshList(){
-        taskTestList = TaskItemList.sharedInstance.allTasks()
-        //taskDataForCells.refresh()
+        taskList = db.getAllTasks()
         tableView.reloadData()
     }
 
@@ -44,21 +44,17 @@ class TaskTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return taskTestList.count
+        return taskList.count
     }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskTableViewCell
-        let taskItem = taskTestList[indexPath.row] as TaskItem
+        let taskItem = taskList[indexPath.row] as TaskItem
         // Configure the cell...
         
         cell.taskName.text = "Event: \(taskItem.taskTitle)"
@@ -81,9 +77,10 @@ class TaskTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            let itemToDelete = taskTestList.removeAtIndex(indexPath.row)
+            let itemToDelete = taskList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            TaskItemList.sharedInstance.removeItem(itemToDelete)
+            
+//            TaskItemList.sharedInstance.removeItem(itemToDelete)
             
             // Remove from database.
             let db = DatabaseFunctions.sharedInstance
@@ -111,20 +108,21 @@ class TaskTableViewController: UITableViewController {
 
 
     // MARK: - Navigation
-
+    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        // Get the new view controller using [segue destinationViewController].
-//        // Pass the selected object to the new view controller.
-///**
-//        print("\nSegue Identifier: \(segue.identifier)\n")
-//        
-//        if segue.identifier == "TabBarController"{
-//            var tabBarC: UITabBarController = segue.destinationViewController as! UITabBarController
-//            var destination: HomeViewController = tabBarC.viewControllers?.first as! HomeViewController
-//            destination.taskArray = self.taskTestList
-//            print("Destination task array: \(destination.taskArray)")
-//        }
-//**/
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+
+        print("\nSegue Identifier: \(segue.identifier)\n")
+ 
+        if segue.identifier == "TabBarController"{
+            var tabBarC: UITabBarController = segue.destinationViewController as! UITabBarController
+            var destination: HomeViewController = tabBarC.viewControllers?.first as! HomeViewController
+            destination.taskArray = self.taskTestList
+            print("Destination task array: \(destination.taskArray)")
+        }
+
+    }
+    */
 }

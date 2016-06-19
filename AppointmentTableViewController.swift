@@ -12,9 +12,11 @@ import UIKit
 class AppointmentTableViewController: UITableViewController{
     
     let cellID = "AppointmentCells"
-    var appointmentTestList:[AppointmentItem] = [];
+    var appointmentList:[AppointmentItem] = [];
     var appointmentDateSections = Set<NSDate>()
     var selectedIndexPath: NSIndexPath?
+    let db = DatabaseFunctions.sharedInstance
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,13 +37,13 @@ class AppointmentTableViewController: UITableViewController{
     
     // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){
-        appointmentTestList = AppointmentItemList.sharedInstance.allItems()
-        for app in appointmentTestList{
+        appointmentList = db.getAllAppointments()
+        for app in appointmentList{
             appointmentDateSections.insert(app.startingTime)
         }
         print(appointmentDateSections)
         
-        if appointmentTestList.count > 64{
+        if appointmentList.count > 64{
             self.navigationItem.rightBarButtonItem?.enabled = false
         }
         tableView.reloadData()
@@ -49,7 +51,7 @@ class AppointmentTableViewController: UITableViewController{
 
     // Return the number of elements in the array
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appointmentTestList.count
+        return appointmentList.count
     }
     
     // Return 1 section
@@ -62,7 +64,7 @@ class AppointmentTableViewController: UITableViewController{
         // The cell is a custom appointment cell that we have created.
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell
         // The cell gets updated from the information stored in the appointment item object
-        let appItem = appointmentTestList[indexPath.row] as AppointmentItem
+        let appItem = appointmentList[indexPath.row] as AppointmentItem
         
         // If the current time is later than the starting time of the appointment then the color is set to red.
         if (appItem.isOverdue) {
@@ -77,6 +79,8 @@ class AppointmentTableViewController: UITableViewController{
         let endFormatter = NSDateFormatter()
         startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
         endFormatter.dateFormat = "'Ending Time:  ' MMM dd 'at' h:mm a"
+        print("Start Time Formatted: \(startFormatter.stringFromDate(appItem.startingTime))")
+        print("End Time Formatted:\(endFormatter.stringFromDate(appItem.endingTime))")
         
         cell.appointmentTitle.text = "Event: \(appItem.title)"
         cell.appointmentStart.text = startFormatter.stringFromDate(appItem.startingTime)
@@ -98,13 +102,11 @@ class AppointmentTableViewController: UITableViewController{
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            let itemToDelete = appointmentTestList.removeAtIndex(indexPath.row)
+            let itemToDelete = appointmentList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            AppointmentItemList.sharedInstance.removeItem(itemToDelete)
             
             //Delete from database
-            let db = DatabaseFunctions.sharedInstance
-            db.deleteFromDatabase("Appointments", uuid: itemToDelete.UUID)
+            db.deleteAppointmentAndNotification("Appointments", item: itemToDelete)
             
             self.navigationItem.rightBarButtonItem?.enabled = true
         }
@@ -112,17 +114,18 @@ class AppointmentTableViewController: UITableViewController{
 
     
     // MARK: - Navigation
+    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the Home View.
-        /**
+        
         if segue.identifier == "Home"{
             let view = segue.destinationViewController as! HomeViewController
             let indexPath = sender as! NSIndexPath
             
             
         }
-        **/
     }
+    */
 }

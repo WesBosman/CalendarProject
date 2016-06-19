@@ -27,6 +27,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var appointmentPicker: UIPickerView!
     @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     @IBOutlet weak var otherTextField: UITextField!
+    let dateFormat = NSDateFormatter()
+    let db = DatabaseFunctions.sharedInstance
     var startDate:NSDate? = nil
     var endDate: NSDate? = nil
     
@@ -109,19 +111,21 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                               location: appointmentLocationTextBox.text!,
                                               additional: additionalInfoTextBox.text!,
                                               UUID: NSUUID().UUIDString)
-        
-            AppointmentItemList.sharedInstance.addItem(appointmentItem)
-            
-            // Try to put this information into a wrapped sqlite database.
-            let db = DatabaseFunctions.sharedInstance
-            
+                    
             // IF the additional information text box has not been changed then add an empty string to that field of the database
             if additionalInfoTextBox.text == "Additional Information..."{
-                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: "", uuid: appointmentItem.UUID)
+                let newAppointmentItem = AppointmentItem(type: appointmentItem.type,
+                                                      startTime: startDate!,
+                                                      endTime: endDate!,
+                                                      title: appointmentItem.title,
+                                                      location: appointmentItem.appLocation,
+                                                      additional: "",
+                                                      UUID: appointmentItem.UUID)
+                db.addToAppointmentDatabase(newAppointmentItem)
             }
             // Otherwise add what is in the additional information text box.
             else{
-                db.addToAppointmentDatabase(typeOfAppointmentRightDetail.text!, start: startDate!, end: endDate!, title: appointmentNameTextField.text!, location: appointmentLocationTextBox.text!, additional: additionalInfoTextBox.text!, uuid: appointmentItem.UUID)
+                db.addToAppointmentDatabase(appointmentItem)
             }
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
@@ -156,71 +160,41 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Dispose of any resources that can be recreated.
     }
     
-    func testSQLDatabase(type: String, start: NSDate, end:NSDate, title: String, location:String, additional:String){
-        let current = NSDate()
-        let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-
-        let fileURL = documents.URLByAppendingPathComponent("test.sqlite")
-        let dataBase = FMDatabase(path: fileURL.path)
-        
-        if(!dataBase.open()){
-            print("Sorry but we were unable to open the database.")
-            return
-        }
-        do{
-            try dataBase.executeUpdate("create table Appointments(date text, title text, type text, start text, end text, location text, additional text)", values: nil)
-            try dataBase.executeUpdate("insert into Appointments(date, title, type, start, end, location, additional) values(?, ?, ?, ?, ?, ?, ?)", values:[current, title, type, start, end, location, additional])
-            let rs = try dataBase.executeQuery("select date, title, type, start, end, location, additional from Appointments", values: nil)
-            print("***************************")
-            
-            while rs.next(){
-                print("date \(current)")
-                print("title: \(title)")
-                print("type: \(type)")
-                print("start: \(start)")
-                print("end: \(end)")
-                print("location: \(location)")
-                print("additional: \(additional)")
-                print("****************************")
-            }
-        } catch let err as NSError{
-            print("ERROR: \(err.localizedDescription)")
-        }
-    }
-    
+    // This method works as it should.
     func calcNotificationTime(date:NSDate) -> NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "MM/dd/yyy HH:mm"
-        let dateComp = calendar.components([.Month, .Year, .Day, .Hour, .Minute], fromDate: date)
-        let month = dateComp.month
-        let day = dateComp.day
-        let year = dateComp.year
-        let hour = dateComp.hour
-        let minute = dateComp.minute
-        let newDate = String(month) + "/" + String(day) + "/" + String(year) + " " + String(hour) + ":" + String(minute)
-        let dateFromString = dateFormat.dateFromString(newDate)
-//        print("Date from String: \(dateFromString)")
-//        print("New Date: \(newDate)")
-        return dateFromString!
+        dateFormat.dateStyle = NSDateFormatterStyle.LongStyle
+        dateFormat.timeStyle = .MediumStyle
+        dateFormat.dateFormat = "MM/dd/yyyy h:mm a"
+        
+        let stringFromDate = dateFormat.stringFromDate(date)
+        let dateFromString = dateFormat.dateFromString(stringFromDate)!
+//        let stringFromDateAgain = dateFormat.stringFromDate(dateFromString)
+//        print("String From Date: \(stringFromDate)")
+//        print("Date From String: \(dateFromString)")
+//        print("String From Date Again: \(stringFromDateAgain)")
+        
+        return dateFromString
     }
     
     func startDatePickerDidChange(){
         let date = calcNotificationTime(appointmentStartDate.date)
         startDate = date
-//        print("START DATE: \(startDate!)")
-        
-        startingTimeDetailLabel.text = NSDateFormatter.localizedStringFromDate(appointmentStartDate.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        print("START DATE: \(startDate!)")
+        print("START DATE AS STRING: \(dateFormat.stringFromDate(date))")
+        startingTimeDetailLabel.text = dateFormat.stringFromDate(startDate!)
 
-//        print("Appointment Start Date: \(appointmentStartDate.date)")
+        print("Appointment Start Date: \(appointmentStartDate.date)")
         
     }
     
     func endDatePickerDidChange(){
         let date = calcNotificationTime(appointmentEndDate.date)
         endDate = date
-        endingTimeDetailLabel.text = NSDateFormatter.localizedStringFromDate(appointmentEndDate.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-//        print("Appointment End Date: \(appointmentEndDate.date)")
+        print("END DATE: \(endDate)")
+        print("END DATE AS STRING: \(dateFormat.stringFromDate(date))")
+        endingTimeDetailLabel.text = dateFormat.stringFromDate(endDate!)
+
+        print("Appointment End Date: \(appointmentEndDate.date)")
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
