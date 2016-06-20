@@ -34,6 +34,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set color and text of the text labels
+        
         //clearAllUserDefaults()
         appointmentLabel.text = "Appointments"
         appointmentLabel.textColor = UIColor.whiteColor()
@@ -79,14 +80,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
         let firstString = "You have (\(journalCount)) journal entries for today.\n"
         journalViewBox.text = firstString + journalText
-        print("Try to get journals from database")
-        
     }
     
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
-        print("Home View will appear animated")
+//        print("Home View will appear animated")
         appointmentArray = db.getAllAppointments()
         taskArray = db.getAllTasks()
         taskViewTable.reloadData()
@@ -114,8 +113,16 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
         
         if tableView == taskViewTable{
-            let task = taskArray[indexPath.row] as TaskItem
+            var task = taskArray[indexPath.row] as TaskItem
             let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
+
+            if task.completed == true{
+                print("Task is completed. Add a green checkbox.")
+            }
+            else{
+                print("Task is not completed. Add non green checkbox.")
+            }
+            
             // Create an Alert to ask the user if they have completed the task.
             let alert = UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
             
@@ -123,17 +130,22 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 // Update the cell image and labels with strikethroughs and the green checkbox
                 taskCell.taskCompleted(task)
+                task.completed = true
+                self.db.updateTask(task)
             } ))
             
             // If no is clicked make the image a sepia toned image
             alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
                 // Update the cell image to an uncompleted task
                 taskCell.taskNotCompleted(task)
+                task.completed = false
+                self.db.updateTask(task)
                 
             } ))
             // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
         }
+        // Set up Appointment Table on the Home Screen
         else if tableView == appointmentViewTable{
             
         }
@@ -145,11 +157,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         if tableView == appointmentViewTable{
             let appointment = appointmentArray[indexPath.row] as AppointmentItem
             appointmentCell = appointmentViewTable.dequeueReusableCellWithIdentifier(appointmentCellID, forIndexPath: indexPath) as! HomeAppointmentCell
-            print("Appointment Title: \(appointment.title)")
-            print("Appointment Start: \(appointment.startingTime)")
-            print("Appointment End: \(appointment.endingTime)")
-            print("Appointment Location: \(appointment.appLocation)")
-            print("Appointment Additional Info: \(appointment.additionalInfo)")
+//            print("Appointment Title: \(appointment.title)")
+//            print("Appointment Type: \(appointment.type)")
+//            print("Appointment Start: \(appointment.startingTime)")
+//            print("Appointment End: \(appointment.endingTime)")
+//            print("Appointment Location: \(appointment.appLocation)")
+//            print("Appointment Additional Info: \(appointment.additionalInfo)")
             let startFormatter = NSDateFormatter()
             let endFormatter = NSDateFormatter()
             startFormatter.dateFormat = "MMM dd ',' h:mm a"
@@ -163,8 +176,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         else{
             let task = taskArray[indexPath.row] as TaskItem
             taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
-            print("Task Title: \(task.taskTitle)")
-            print("Task Info: \(task.taskInfo)")
+//            print("Task Title: \(task.taskTitle)")
+//            print("Task Info: \(task.taskInfo)")
             
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo

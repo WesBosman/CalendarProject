@@ -13,7 +13,6 @@ class TaskTableViewController: UITableViewController {
     var taskList:[TaskItem] = []
     var selectedIndexPath = NSIndexPath?.self
     let db = DatabaseFunctions.sharedInstance
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,24 +62,12 @@ class TaskTableViewController: UITableViewController {
         return cell
     }
 
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
             let itemToDelete = taskList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            
-//            TaskItemList.sharedInstance.removeItem(itemToDelete)
             
             // Remove from database.
             let db = DatabaseFunctions.sharedInstance

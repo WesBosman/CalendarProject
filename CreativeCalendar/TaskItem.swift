@@ -10,12 +10,16 @@
 import Foundation
 
 struct TaskItem{
+    var dateCreated: String
+    var dateCompleted: String?
     var taskTitle: String
     var taskInfo: String
     var completed: Bool
     var UUID: String
     
-    init(title: String, info: String, completed:Bool, UUID: String){
+    init(dateMade:String,title: String, info: String, completed:Bool, dateFinished: String?, UUID: String){
+        self.dateCreated = dateMade
+        self.dateCompleted = dateFinished
         self.taskTitle = title
         self.taskInfo = info
         self.completed = completed
