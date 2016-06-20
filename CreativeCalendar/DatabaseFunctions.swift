@@ -47,7 +47,7 @@ class DatabaseFunctions{
         let db = makeDb()
         let current = NSDate()
         let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss"
+        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
         let currentDateString = dateFormat.stringFromDate(current)
         let startDateString = dateFormat.stringFromDate(item.startingTime)
         let endDateString = dateFormat.stringFromDate(item.endingTime)
@@ -75,7 +75,7 @@ class DatabaseFunctions{
         let db = makeDb()
         let current = NSDate()
         let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss"
+        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
         let currentDateString = dateFormat.stringFromDate(current)
         
         do{
@@ -123,7 +123,7 @@ class DatabaseFunctions{
         let db = makeDb()
         var appointmentArray:[AppointmentItem] = []
         let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss"
+        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
 
         do{
             let appointment:FMResultSet = try db.executeQuery("select title, type, start, end, location, additional, uuid from Appointments", values: nil)

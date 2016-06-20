@@ -15,16 +15,13 @@
 		DE2B1D911D107A470069761D /* CreativeCalendarUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */; };
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
 		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
-		DE3CE3201CEF8E1B003294FD /* JournalItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */; };
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
 		DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */; };
 		DE4D91641CE7CB3100CF89C4 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D91631CE7CB3100CF89C4 /* TaskTableViewCell.swift */; };
 		DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */; };
-		DE4D91681CE7DACE00CF89C4 /* TaskItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D91671CE7DACE00CF89C4 /* TaskItemList.swift */; };
 		DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */; };
-		DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */; };
 		DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE539DA61CAEDFB0000615CD /* AppDelegate.swift */; };
 		DE53EF211CEA385C00E629A2 /* HomeTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53EF201CEA385C00E629A2 /* HomeTaskCell.swift */; };
 		DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */; };
@@ -71,16 +68,13 @@
 		DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreativeCalendarUITest.swift; sourceTree = "<group>"; };
 		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
 		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalItemList.swift; sourceTree = "<group>"; };
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
 		DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		DE4D91631CE7CB3100CF89C4 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskStaticTableViewController.swift; sourceTree = "<group>"; };
-		DE4D91671CE7DACE00CF89C4 /* TaskItemList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskItemList.swift; sourceTree = "<group>"; };
 		DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItem.swift; sourceTree = "<group>"; };
-		DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItemList.swift; sourceTree = "<group>"; };
 		DE539DA61CAEDFB0000615CD /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE53EF201CEA385C00E629A2 /* HomeTaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTaskCell.swift; sourceTree = "<group>"; };
 		DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAppointmentCell.swift; sourceTree = "<group>"; };
@@ -159,16 +153,13 @@
 				DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */,
 				DE53EF201CEA385C00E629A2 /* HomeTaskCell.swift */,
 				DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */,
-				DE5389411CD3B96500DAC001 /* AppointmentItemList.swift */,
 				DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */,
 				DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */,
 				DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */,
-				DE4D91671CE7DACE00CF89C4 /* TaskItemList.swift */,
 				DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */,
 				DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */,
 				DE06631E1C6D321600DE42CA /* HomeViewController.swift */,
 				DE58D3C91CECE0B30032CB9C /* JournalItem.swift */,
-				DE3CE31F1CEF8E1B003294FD /* JournalItemList.swift */,
 				DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */,
 				DE2736251D05CF26000583A7 /* JournalTableViewController.swift */,
 				DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */,
@@ -360,20 +351,17 @@
 				DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */,
 				DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */,
 				DE53EF211CEA385C00E629A2 /* HomeTaskCell.swift in Sources */,
-				DE4D91681CE7DACE00CF89C4 /* TaskItemList.swift in Sources */,
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
 				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
 				DE4D91641CE7CB3100CF89C4 /* TaskTableViewCell.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
-				DE3CE3201CEF8E1B003294FD /* JournalItemList.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
 				DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */,
 				DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */,
 				DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */,
-				DE5389421CD3B96500DAC001 /* AppointmentItemList.swift in Sources */,
 				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
