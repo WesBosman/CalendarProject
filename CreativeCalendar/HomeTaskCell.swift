@@ -12,6 +12,7 @@ class HomeTaskCell: UITableViewCell {
     @IBOutlet weak var uncheckedTaskImage: UIImageView!
     @IBOutlet weak var homeTaskTitle: UILabel!
     @IBOutlet weak var homeTaskInfo: UILabel!
+    var taskArray = DatabaseFunctions.sharedInstance.getAllTasks()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,9 +34,9 @@ class HomeTaskCell: UITableViewCell {
         homeTaskTitle.text = t.taskTitle
         homeTaskInfo.text = t.taskInfo
         
-        //let strikeThroughLabel: NSMutableAttributedString = NSMutableAttributedString(string: t.taskTitle)
-        //strikeThroughLabel.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, strikeThroughLabel.length))
-        //homeTaskTitle.attributedText = strikeThroughLabel
+//        let strikeThroughLabel: NSMutableAttributedString = NSMutableAttributedString(string: t.taskTitle)
+//        strikeThroughLabel.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, strikeThroughLabel.length))
+//        homeTaskTitle.attributedText = strikeThroughLabel
     }
     
     func taskNotCompleted(t: TaskItem){

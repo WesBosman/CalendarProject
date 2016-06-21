@@ -64,6 +64,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
     }
     
+    func toggleTasks(item: TaskItem){
+        if item.completed == true{
+            
+        }
+    }
+    
     // This function is used for printing journals to the home screen 
     func printJournals(){
         //print("Journal code for view will appear method.")
@@ -115,19 +121,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         if tableView == taskViewTable{
             var task = taskArray[indexPath.row] as TaskItem
             let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
-
-            if task.completed == true{
-                print("Task is completed. Add a green checkbox.")
-            }
-            else{
-                print("Task is not completed. Add non green checkbox.")
-            }
             
             // Create an Alert to ask the user if they have completed the task.
             let alert = UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
             
             // If the user confirms that a task was completed then update the image to a green checkbox
             alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+                
                 // Update the cell image and labels with strikethroughs and the green checkbox
                 taskCell.taskCompleted(task)
                 task.completed = true
@@ -136,6 +136,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             
             // If no is clicked make the image a sepia toned image
             alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+                
                 // Update the cell image to an uncompleted task
                 taskCell.taskNotCompleted(task)
                 task.completed = false
@@ -157,18 +158,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         if tableView == appointmentViewTable{
             let appointment = appointmentArray[indexPath.row] as AppointmentItem
             appointmentCell = appointmentViewTable.dequeueReusableCellWithIdentifier(appointmentCellID, forIndexPath: indexPath) as! HomeAppointmentCell
-//            print("Appointment Title: \(appointment.title)")
-//            print("Appointment Type: \(appointment.type)")
-//            print("Appointment Start: \(appointment.startingTime)")
-//            print("Appointment End: \(appointment.endingTime)")
-//            print("Appointment Location: \(appointment.appLocation)")
-//            print("Appointment Additional Info: \(appointment.additionalInfo)")
             let startFormatter = NSDateFormatter()
             let endFormatter = NSDateFormatter()
             startFormatter.dateFormat = "MMM dd ',' h:mm a"
             endFormatter.dateFormat = " MMM dd ',' h:mm a"
             
             appointmentCell.homeAppointmentTitle.text = appointment.title
+            // May want to restructure this a bit with more than one label for information.
             appointmentCell.homeAppointmentSubtitle.text = "start: \(startFormatter.stringFromDate(appointment.startingTime)) end: \(endFormatter.stringFromDate(appointment.endingTime)) \nlocation: \(appointment.appLocation)"
             return appointmentCell
         }
@@ -176,9 +172,15 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         else{
             let task = taskArray[indexPath.row] as TaskItem
             taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
-//            print("Task Title: \(task.taskTitle)")
-//            print("Task Info: \(task.taskInfo)")
-            
+
+            // If the task is completed it should have a green checkbox
+            if task.completed == true{
+                taskCell.taskCompleted(task)
+            }
+            // Otherwise the checkbox should not be green
+            else{
+                taskCell.taskNotCompleted(task)
+            }
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             return taskCell

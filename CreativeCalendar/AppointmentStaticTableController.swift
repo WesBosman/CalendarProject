@@ -179,22 +179,22 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     func startDatePickerDidChange(){
         let date = calcNotificationTime(appointmentStartDate.date)
         startDate = date
-        print("START DATE: \(startDate!)")
-        print("START DATE AS STRING: \(dateFormat.stringFromDate(date))")
+//        print("START DATE: \(startDate!)")
+//        print("START DATE AS STRING: \(dateFormat.stringFromDate(date))")
         startingTimeDetailLabel.text = dateFormat.stringFromDate(startDate!)
 
-        print("Appointment Start Date: \(appointmentStartDate.date)")
+//        print("Appointment Start Date: \(appointmentStartDate.date)")
         
     }
     
     func endDatePickerDidChange(){
         let date = calcNotificationTime(appointmentEndDate.date)
         endDate = date
-        print("END DATE: \(endDate)")
-        print("END DATE AS STRING: \(dateFormat.stringFromDate(date))")
+//        print("END DATE: \(endDate)")
+//        print("END DATE AS STRING: \(dateFormat.stringFromDate(date))")
         endingTimeDetailLabel.text = dateFormat.stringFromDate(endDate!)
 
-        print("Appointment End Date: \(appointmentEndDate.date)")
+//        print("Appointment End Date: \(appointmentEndDate.date)")
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -36,8 +36,7 @@ class TaskStaticTableViewController: UITableViewController {
                                     dateFinished: nil,
                                     UUID: NSUUID().UUIDString)
             
-//            TaskItemList.sharedInstance.addItem(taskItem)
-            
+                        
             // add the task to the database.            
             if !(taskAdditionalInfoTextBox.text! == "Additional Information") {
                 db.addToTaskDatabase(taskItem)
