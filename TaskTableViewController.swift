@@ -52,12 +52,18 @@ class TaskTableViewController: UITableViewController {
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskCell
         let taskItem = taskList[indexPath.row] as TaskItem
         // Configure the cell...
         
-        cell.taskName.text = "Event: \(taskItem.taskTitle)"
-        cell.taskAdditionalInfo.text = "Additional Info: \(taskItem.taskInfo)"
+        if taskItem.completed == true{
+            cell.taskImage.image = UIImage(named: "checkbox")
+        }
+        else{
+            cell.taskImage.image = UIImage(named: "uncheckbox")
+        }
+        cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
+        cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         
         return cell
     }

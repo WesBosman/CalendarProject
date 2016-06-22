@@ -63,6 +63,7 @@ class AppointmentTableViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // The cell is a custom appointment cell that we have created.
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell
+        
         // The cell gets updated from the information stored in the appointment item object
         let appItem = appointmentList[indexPath.row] as AppointmentItem
         
@@ -79,13 +80,15 @@ class AppointmentTableViewController: UITableViewController{
         let endFormatter = NSDateFormatter()
         startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
         endFormatter.dateFormat = "'Ending Time:  ' MMM dd 'at' h:mm a"
-        print("Start Time Formatted: \(startFormatter.stringFromDate(appItem.startingTime))")
-        print("End Time Formatted:\(endFormatter.stringFromDate(appItem.endingTime))")
+        let startingTime = startFormatter.stringFromDate(appItem.startingTime)
+        let endingTime = endFormatter.stringFromDate(appItem.endingTime)
+        
         
         cell.appointmentTitle.text = "Event: \(appItem.title)"
-        cell.appointmentStart.text = startFormatter.stringFromDate(appItem.startingTime)
-        cell.appointmentEnd.text = endFormatter.stringFromDate(appItem.endingTime)
-        cell.appointmentLocation.text = "Location:        \(appItem.appLocation)"
+        cell.appointmentType.text = "Type: \(appItem.type)"
+        cell.appointmentStart.text = startingTime
+        cell.appointmentEnd.text = endingTime
+        cell.appointmentLocation.text = "Location: \(appItem.appLocation)"
         cell.appointmentAdditionalInfo.text = "Additional Info: \(appItem.additionalInfo)"
         
         return cell

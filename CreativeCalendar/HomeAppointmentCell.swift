@@ -10,15 +10,20 @@ import UIKit
 
 class HomeAppointmentCell: UITableViewCell {
     @IBOutlet weak var homeAppointmentTitle: UILabel!
-    @IBOutlet weak var homeAppointmentSubtitle: UILabel!
+    @IBOutlet weak var homeAppointmentImage: UIImageView!
+//    @IBOutlet weak var homeAppointmentType: UILabel!
+    @IBOutlet weak var homeAppointmentStart: UILabel!
+    @IBOutlet weak var homeAppointmentEnd: UILabel!
+    @IBOutlet weak var homeAppointmentLocation: UILabel!
+    @IBOutlet weak var homeAppointmentAdditional: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         homeAppointmentTitle.lineBreakMode = NSLineBreakMode.ByWordWrapping
         homeAppointmentTitle.numberOfLines = 0
-        homeAppointmentSubtitle.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        homeAppointmentSubtitle.numberOfLines = 0
+        homeAppointmentAdditional.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        homeAppointmentAdditional.numberOfLines = 0
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

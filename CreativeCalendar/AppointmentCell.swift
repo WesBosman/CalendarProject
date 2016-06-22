@@ -10,11 +10,11 @@ import UIKit
 
 class AppointmentCell: UITableViewCell {
     @IBOutlet weak var appointmentTitle: UILabel!
+    @IBOutlet weak var appointmentType: UILabel!
     @IBOutlet weak var appointmentStart: UILabel!
     @IBOutlet weak var appointmentEnd: UILabel!
     @IBOutlet weak var appointmentLocation: UILabel!
     @IBOutlet weak var appointmentAdditionalInfo: UILabel!
-    
 
 
     override func awakeFromNib() {
@@ -25,11 +25,5 @@ class AppointmentCell: UITableViewCell {
         appointmentAdditionalInfo.numberOfLines = 0
         
     }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
-    }
+}

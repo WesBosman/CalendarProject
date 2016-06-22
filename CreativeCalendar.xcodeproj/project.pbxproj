@@ -19,7 +19,6 @@
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
 		DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */; };
-		DE4D91641CE7CB3100CF89C4 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D91631CE7CB3100CF89C4 /* TaskTableViewCell.swift */; };
 		DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */; };
 		DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */; };
 		DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE539DA61CAEDFB0000615CD /* AppDelegate.swift */; };
@@ -34,6 +33,7 @@
 		DE62D0081D14861E003ED54E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62D0071D14861E003ED54E /* libsqlite3.0.tbd */; };
 		DE62D00A1D148627003ED54E /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62D0091D148627003ED54E /* libsqlite3.tbd */; };
 		DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */; };
+		DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00D1D1B0066003ED54E /* TaskCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +72,6 @@
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
 		DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
-		DE4D91631CE7CB3100CF89C4 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskStaticTableViewController.swift; sourceTree = "<group>"; };
 		DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItem.swift; sourceTree = "<group>"; };
 		DE539DA61CAEDFB0000615CD /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +92,7 @@
 		DE62D0071D14861E003ED54E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		DE62D0091D148627003ED54E /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctions.swift; sourceTree = "<group>"; };
+		DE62D00D1D1B0066003ED54E /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,10 +148,10 @@
 			isa = PBXGroup;
 			children = (
 				DE539DA61CAEDFB0000615CD /* AppDelegate.swift */,
-				DE553AB01CE781B4006288E6 /* AppointmentCell.swift */,
-				DE4D91631CE7CB3100CF89C4 /* TaskTableViewCell.swift */,
-				DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */,
+				DE62D00D1D1B0066003ED54E /* TaskCell.swift */,
 				DE53EF201CEA385C00E629A2 /* HomeTaskCell.swift */,
+				DE553AB01CE781B4006288E6 /* AppointmentCell.swift */,
+				DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */,
 				DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */,
 				DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */,
 				DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */,
@@ -354,13 +354,13 @@
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
 				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
-				DE4D91641CE7CB3100CF89C4 /* TaskTableViewCell.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
 				DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */,
 				DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */,
+				DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */,
 				DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */,
 				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,

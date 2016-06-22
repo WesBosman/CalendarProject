@@ -148,8 +148,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
         // Set up Appointment Table on the Home Screen
         else if tableView == appointmentViewTable{
-            
+            // Nothing to do here when selecting appointment cells yet.
         }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     
@@ -163,9 +164,21 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             startFormatter.dateFormat = "MMM dd ',' h:mm a"
             endFormatter.dateFormat = " MMM dd ',' h:mm a"
             
+            if appointment.isOverdue == true{
+                appointmentCell.homeAppointmentStart.textColor = UIColor.redColor()
+            }
+            else{
+                appointmentCell.homeAppointmentStart.textColor = UIColor.blackColor()
+            }
+            
             appointmentCell.homeAppointmentTitle.text = appointment.title
-            // May want to restructure this a bit with more than one label for information.
-            appointmentCell.homeAppointmentSubtitle.text = "start: \(startFormatter.stringFromDate(appointment.startingTime)) end: \(endFormatter.stringFromDate(appointment.endingTime)) \nlocation: \(appointment.appLocation)"
+            appointmentCell.homeAppointmentImage.image = UIImage(named: "Calendar")
+//            appointmentCell.homeAppointmentType.text = "type: \(appointment.type)"
+            appointmentCell.homeAppointmentStart.text = "start: \(startFormatter.stringFromDate(appointment.startingTime))"
+            appointmentCell.homeAppointmentEnd.text = "end: \(endFormatter.stringFromDate(appointment.endingTime))"
+            appointmentCell.homeAppointmentLocation.text = "location: \(appointment.appLocation)"
+            appointmentCell.homeAppointmentAdditional.text = "info: \(appointment.additionalInfo)"
+            
             return appointmentCell
         }
         // Otherwise fill the task table cell and return it
