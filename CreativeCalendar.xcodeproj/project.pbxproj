@@ -12,7 +12,6 @@
 		DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06631E1C6D321600DE42CA /* HomeViewController.swift */; };
 		DE25D7CA1D108DE0000D657D /* CreativeCalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */; };
 		DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2736251D05CF26000583A7 /* JournalTableViewController.swift */; };
-		DE2B1D911D107A470069761D /* CreativeCalendarUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */; };
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
 		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
@@ -34,6 +33,7 @@
 		DE62D00A1D148627003ED54E /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62D0091D148627003ED54E /* libsqlite3.tbd */; };
 		DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */; };
 		DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00D1D1B0066003ED54E /* TaskCell.swift */; };
+		DE62D0121D1D8FF7003ED54E /* DatabaseFunctionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +65,6 @@
 		DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreativeCalendarUITests.swift; sourceTree = "<group>"; };
 		DE25D7CB1D108DE0000D657D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE2736251D05CF26000583A7 /* JournalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalTableViewController.swift; sourceTree = "<group>"; };
-		DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreativeCalendarUITest.swift; sourceTree = "<group>"; };
 		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
 		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
@@ -93,6 +92,7 @@
 		DE62D0091D148627003ED54E /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctions.swift; sourceTree = "<group>"; };
 		DE62D00D1D1B0066003ED54E /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctionsTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,8 +192,8 @@
 		3F7115B81C5943F70071542F /* CreativeCalendarTests */ = {
 			isa = PBXGroup;
 			children = (
-				DE2B1D901D107A470069761D /* CreativeCalendarUITest.swift */,
 				3F7115B91C5943F70071542F /* Supporting Files */,
+				DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */,
 			);
 			path = CreativeCalendarTests;
 			sourceTree = "<group>";
@@ -375,7 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE2B1D911D107A470069761D /* CreativeCalendarUITest.swift in Sources */,
+				DE62D0121D1D8FF7003ED54E /* DatabaseFunctionsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -559,6 +560,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CreativeCalendar.app/CreativeCalendar";
 			};
 			name = Debug;
@@ -567,6 +569,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

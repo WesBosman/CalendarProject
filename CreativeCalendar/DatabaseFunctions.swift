@@ -304,4 +304,17 @@ class DatabaseFunctions{
         }
         db.close()
     }
+    
+    // Clear out the table for testing
+    func clearTable(tableName: String){
+        let db = makeDb()
+        do{
+            let clearTableStatement = "DELETE FROM " + tableName
+            try db.executeUpdate(clearTableStatement, values: nil)
+        }
+        catch let err as NSError{
+            print("ERROR CLEARING TABLE: \(err.localizedDescription)")
+        }
+        db.close()
+    }
 }
