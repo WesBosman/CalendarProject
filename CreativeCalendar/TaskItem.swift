@@ -25,5 +25,4 @@ struct TaskItem{
         self.completed = completed
         self.UUID = UUID
     }
-    
 }

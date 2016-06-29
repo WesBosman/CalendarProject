@@ -15,7 +15,7 @@ class AppointmentCell: UITableViewCell {
     @IBOutlet weak var appointmentEnd: UILabel!
     @IBOutlet weak var appointmentLocation: UILabel!
     @IBOutlet weak var appointmentAdditionalInfo: UILabel!
-
+    @IBOutlet weak var appointmentCompletedImage: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,5 +25,7 @@ class AppointmentCell: UITableViewCell {
         appointmentAdditionalInfo.numberOfLines = 0
         
     }
+    
+    
     
 }

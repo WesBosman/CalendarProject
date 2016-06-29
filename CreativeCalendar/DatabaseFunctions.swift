@@ -17,11 +17,13 @@ class DatabaseFunctions{
     // Only ever want one instance of this class.
     static let sharedInstance = database
     private init(){}
-    
+        
     // Make the database and store it in the documents section
     func makeDb() -> FMDatabase{
         let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        
         let fileURL = documents.URLByAppendingPathComponent("Database.sqlite")
+        
         let db = FMDatabase(path: fileURL.path)
         // If the database is not open for editing then make it editable
         if(!db.open()){
@@ -29,14 +31,15 @@ class DatabaseFunctions{
         }
         // Create the three tables for storing our information.
         do{
-            try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date date, title text, type text, start date, end date, location text, additional text, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text, completed bool, date_finished text, uuid text)", values: nil)
             
             try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text, completed bool, date_finished text, uuid text)", values: nil)
             
             try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, uuid text)", values: nil)
             
-            // Log the path to the database.
-//            NSLog("Database File Path: \(fileURL.path!)")
+            // Get DatabasePath
+            //        NSLog("Database File Path: \(fileName.path!)")
+            
         }
         catch let err as NSError{
             print("Creating Database Error: \(err.localizedDescription)")
@@ -55,13 +58,14 @@ class DatabaseFunctions{
         let endDateString = dateFormat.stringFromDate(item.endingTime)
         
         do{
-            let rs = try db.executeQuery("SELECT date, title, type, start, end, location, additional FROM Appointments", values: nil)
+            let rs = try db.executeQuery("SELECT date_created, title, type, start_date, end_date, location, additional, completed, date_finished FROM Appointments", values: nil)
             var count: Int = 1
             while rs.next(){
                 count += 1
             }
             print("Number of items in Appointments Table database: \(count)")
-            try db.executeUpdate("INSERT into Appointments( date, title, type, start, end, location, additional, uuid) values( ?, ?, ?, ?, ?, ?, ?, ?)", values:[currentDateString, item.title, item.type, startDateString, endDateString, item.appLocation, item.additionalInfo, item.UUID])
+            try db.executeUpdate("INSERT into Appointments( date_created, title, type, start_date, end_date, location, additional,completed, uuid) values( ?, ?, ?, ?, ?, ?, ?, ?, ?)", values:[currentDateString, item.title, item.type, startDateString, endDateString, item.appLocation, item.additionalInfo, false,  item.UUID])
+            
             // Add a notification for the item.
             setAppointmentNotification(item)
             
@@ -69,6 +73,44 @@ class DatabaseFunctions{
             print("ERROR: \(err.localizedDescription)")
         }
         // Always close the database after editing it.
+        db.close()
+    }
+    
+    // Update the appointment item when it gets completed.
+    func updateAppointment(item: AppointmentItem){
+        let db = makeDb()
+        let current = NSDate()
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+        let currentDateString = dateFormat.stringFromDate(current)
+        
+        do{
+            let selectStatement = "SELECT completed FROM Appointments WHERE uuid = ?"
+            let selectResult = try db.executeQuery(selectStatement, values: [item.UUID])
+            
+            while(selectResult.next()){
+                let isComplete = item.completed
+                let updateStatement = "UPDATE Appointments SET completed=?, date_finished=? WHERE uuid=?"
+                print("Appointment Name \(item.title) completed: \(item.completed)")
+
+                if isComplete == true{
+                    print("Turn Appointment on")
+                    try db.executeUpdate(updateStatement, values: [isComplete, currentDateString, item.UUID])
+                }
+                    
+                    // If the task has already been completed then we are changing it back to incomplete.
+                else if isComplete == false{
+                    print("Turn Appointment off")
+                    try db.executeUpdate(updateStatement, values: [isComplete, "" ,  item.UUID])
+                }
+
+                
+            }
+            
+        }
+        catch let err as NSError{
+            print("ERROR updating Appointment \(err.localizedDescription)")
+        }
         db.close()
     }
     
@@ -159,24 +201,31 @@ class DatabaseFunctions{
         dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
 
         do{
-            let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start, end, location, additional, uuid FROM Appointments", values: nil)
+            let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, completed, date_finished, uuid FROM Appointments", values: nil)
             while appointment.next(){
                 let appointmentTitle = appointment.objectForColumnName("title")
                 let appointmentType = appointment.objectForColumnName("type")
-                let appointmentStart = dateFormat.dateFromString(appointment.objectForColumnName("start") as! String)
-                let appointmentEnd = dateFormat.dateFromString(appointment.objectForColumnName("end") as! String)
+                let appointmentStart = dateFormat.dateFromString(appointment.objectForColumnName("start_date") as! String)
+                let appointmentEnd = dateFormat.dateFromString(appointment.objectForColumnName("end_date") as! String)
                 let appointmentLocation = appointment.objectForColumnName("location")
                 let appointmentAdditional = appointment.objectForColumnName("additional")
+                let appointmentComplete = appointment.objectForColumnName("completed") as! Bool
+                let appointmentDone = appointment.objectForColumnName("date_finished") as? String
                 let appointmentUUID = appointment.objectForColumnName("uuid")
+                
 //                print("Appointment Title: \(appointmentTitle) type: \(appointmentType) start: \(appointmentStart) end: \(appointmentEnd) location: \(appointmentLocation) additional: \(appointmentAdditional) uuid: \(appointmentUUID)")
+                
                 let appointmentItem = AppointmentItem(type: appointmentType as! String,
                                                       startTime: appointmentStart! ,
                                                       endTime: appointmentEnd!,
                                                       title: appointmentTitle as! String,
                                                       location: appointmentLocation as! String,
                                                       additional: appointmentAdditional as! String,
+                                                      isComplete: appointmentComplete,
+                                                      dateFinished: appointmentDone,
                                                       UUID: appointmentUUID as! String)
                 appointmentArray.append(appointmentItem)
+                appointmentArray = appointmentArray.sort({$0.title < $1.title})
 
             }
         }
@@ -201,8 +250,14 @@ class DatabaseFunctions{
                 let taskDone = task.objectForColumnName("date_finished")
                 let taskUUID = task.objectForColumnName("uuid")
 //                print("Task: \(taskTitle) additional: \(taskAdditional) completed: \(taskCompleted) uuid: \(taskUUID)")
-                let taskItem = TaskItem(dateMade: taskMade as! String, title: taskTitle as! String, info: taskAdditional as! String, completed: taskCompleted as! Bool, dateFinished: taskDone as? String ,UUID: taskUUID as! String)
+                let taskItem = TaskItem(dateMade: taskMade as! String,
+                                        title: taskTitle as! String,
+                                        info: taskAdditional as! String,
+                                        completed: taskCompleted as! Bool,
+                                        dateFinished: taskDone as? String ,
+                                        UUID: taskUUID as! String)
                 taskArray.append(taskItem)
+                taskArray = taskArray.sort({$0.taskTitle < $1.taskTitle})
             }
             
         }

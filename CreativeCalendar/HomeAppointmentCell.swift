@@ -11,12 +11,12 @@ import UIKit
 class HomeAppointmentCell: UITableViewCell {
     @IBOutlet weak var homeAppointmentTitle: UILabel!
     @IBOutlet weak var homeAppointmentImage: UIImageView!
-//    @IBOutlet weak var homeAppointmentType: UILabel!
     @IBOutlet weak var homeAppointmentStart: UILabel!
     @IBOutlet weak var homeAppointmentEnd: UILabel!
     @IBOutlet weak var homeAppointmentLocation: UILabel!
     @IBOutlet weak var homeAppointmentAdditional: UILabel!
-
+    @IBOutlet weak var homeAppointmentCompletedImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -30,6 +30,15 @@ class HomeAppointmentCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func appointmentCompleted(item: AppointmentItem){
+        homeAppointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
+        
+    }
+    
+    func appointmentNotCompleted(item: AppointmentItem){
+        homeAppointmentCompletedImage.image = UIImage(named:"CircleUntickedRed")
     }
 
 }

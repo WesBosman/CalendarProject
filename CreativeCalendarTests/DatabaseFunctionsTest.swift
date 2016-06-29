@@ -21,7 +21,6 @@ class DatabaseFunctionsTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
     }
     
     override func tearDown() {
@@ -63,6 +62,9 @@ class DatabaseFunctionsTest: XCTestCase {
         
         // Adding the new appointment to the database
         databaseFunctions.addToAppointmentDatabase(appointmentOne)
+        
+        // Adding the new appointment a notification
+        databaseFunctions.setAppointmentNotification(appointmentOne)
         
         // Since the new appointment is the only appointment in the database
         // It should be equal to the original appointment we passed in.
@@ -157,10 +159,10 @@ class DatabaseFunctionsTest: XCTestCase {
             XCTAssertTrue(task.UUID == updatedTask.UUID, "Updated UUID matched the one found in the database.")
         }
         
-        // Delete the task item from the database
+//         Delete the task item from the database
         databaseFunctions.deleteFromDatabase("Tasks", uuid: updatedTask.UUID)
         
-        // Get the tasks from the database there should be none
+//         Get the tasks from the database there should be none
         taskList = databaseFunctions.getAllTasks()
         
         XCTAssertTrue(taskList.count == 0, "Task Database is empty again")

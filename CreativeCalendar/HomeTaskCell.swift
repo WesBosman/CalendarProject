@@ -12,7 +12,7 @@ class HomeTaskCell: UITableViewCell {
     @IBOutlet weak var uncheckedTaskImage: UIImageView!
     @IBOutlet weak var homeTaskTitle: UILabel!
     @IBOutlet weak var homeTaskInfo: UILabel!
-    var taskArray = DatabaseFunctions.sharedInstance.getAllTasks()
+//    var taskArray = DatabaseFunctions.sharedInstance.getAllTasks()
 
     override func awakeFromNib() {
         super.awakeFromNib()

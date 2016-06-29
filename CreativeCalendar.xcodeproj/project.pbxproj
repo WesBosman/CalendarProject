@@ -17,6 +17,10 @@
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
+		DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */; };
+		DE4CAA6F1D2439FB00197FEF /* CalendarLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4CAA6E1D2439FB00197FEF /* CalendarLayout.swift */; };
+		DE4CAA711D243A9900197FEF /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4CAA701D243A9900197FEF /* CalendarHeaderView.swift */; };
+		DE4CAA731D24679400197FEF /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4CAA721D24679400197FEF /* CalendarController.swift */; };
 		DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */; };
 		DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */; };
 		DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */; };
@@ -70,6 +74,10 @@
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
+		DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		DE4CAA6E1D2439FB00197FEF /* CalendarLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarLayout.swift; sourceTree = "<group>"; };
+		DE4CAA701D243A9900197FEF /* CalendarHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		DE4CAA721D24679400197FEF /* CalendarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		DE4D91651CE7D2A900CF89C4 /* TaskStaticTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskStaticTableViewController.swift; sourceTree = "<group>"; };
 		DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentItem.swift; sourceTree = "<group>"; };
@@ -162,6 +170,10 @@
 				DE58D3C91CECE0B30032CB9C /* JournalItem.swift */,
 				DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */,
 				DE2736251D05CF26000583A7 /* JournalTableViewController.swift */,
+				DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */,
+				DE4CAA6E1D2439FB00197FEF /* CalendarLayout.swift */,
+				DE4CAA701D243A9900197FEF /* CalendarHeaderView.swift */,
+				DE4CAA721D24679400197FEF /* CalendarController.swift */,
 				DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */,
 				DE2DCB511C652907004D3220 /* Main.storyboard */,
 				3F7115AC1C5943F70071542F /* Images.xcassets */,
@@ -349,11 +361,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */,
+				DE4CAA731D24679400197FEF /* CalendarController.swift in Sources */,
 				DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */,
 				DE53EF211CEA385C00E629A2 /* HomeTaskCell.swift in Sources */,
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
 				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
+				DE4CAA6F1D2439FB00197FEF /* CalendarLayout.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
@@ -365,8 +379,10 @@
 				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
+				DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */,
 				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
+				DE4CAA711D243A9900197FEF /* CalendarHeaderView.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

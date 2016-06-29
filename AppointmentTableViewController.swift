@@ -76,13 +76,19 @@ class AppointmentTableViewController: UITableViewController{
             cell.appointmentStart.textColor = UIColor.blackColor()
         }
         
+        if appItem.completed == true{
+            cell.appointmentCompletedImage.image = UIImage(named: "CircleTickedGreen")
+        }
+        else{
+            cell.appointmentCompletedImage.image = UIImage(named: "CircleUntickedRed")
+        }
+        
         let startFormatter = NSDateFormatter()
         let endFormatter = NSDateFormatter()
         startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
         endFormatter.dateFormat = "'Ending Time:  ' MMM dd 'at' h:mm a"
         let startingTime = startFormatter.stringFromDate(appItem.startingTime)
         let endingTime = endFormatter.stringFromDate(appItem.endingTime)
-        
         
         cell.appointmentTitle.text = "Event: \(appItem.title)"
         cell.appointmentType.text = "Type: \(appItem.type)"

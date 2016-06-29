@@ -15,19 +15,23 @@ struct AppointmentItem {
     var appLocation: String
     var additionalInfo: String
     var type:String
+    var completed: Bool
+    var dateCompleted: String?
     var UUID: String
     
-    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, UUID: String) {
+    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, isComplete: Bool, dateFinished: String?, UUID: String) {
         self.title = title
         self.type = type
         self.startingTime = startTime
         self.endingTime = endTime
         self.appLocation = location
         self.additionalInfo = additional
+        self.completed = isComplete
+        self.dateCompleted = dateFinished
         self.UUID = UUID
     }
     
+    // Is the starting time earlier than the current date
     var isOverdue: Bool {
-        return (NSDate().compare(self.startingTime) == NSComparisonResult.OrderedDescending) // deadline is earlier than current date
-    }
+        return (NSDate().compare(self.startingTime) == NSComparisonResult.OrderedDescending)     }
 }

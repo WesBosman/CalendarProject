@@ -1,3 +1,4 @@
+
 //
 //  AppointmentStaticTableController.swift
 //  CreativeCalendar
@@ -17,7 +18,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var endDatePickerHidden = false
     private var appointmentTypeHidden = false
     private var otherIsHidden = false
-    let typeOfAppointments = ["Family" , "Doctor" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household", "Other"]
+    let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
@@ -73,7 +74,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeOfAppointmentRightDetail.text = typeOfAppointments[row]
         // Show the other appointment cell when user highlights other.
-        if typeOfAppointments[row] == "Other"{
+        if typeOfAppointments[row] == "Other" || "Class" == typeOfAppointments[row] || "Self Care" == typeOfAppointments[row]{
             if otherIsHidden{
                 toggleOther()
             }
@@ -110,6 +111,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                               title: appointmentNameTextField.text!,
                                               location: appointmentLocationTextBox.text!,
                                               additional: additionalInfoTextBox.text!,
+                                              isComplete:  false,
+                                              dateFinished:  nil,
                                               UUID: NSUUID().UUIDString)
                     
             // IF the additional information text box has not been changed then add an empty string to that field of the database
@@ -120,6 +123,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                       title: appointmentItem.title,
                                                       location: appointmentItem.appLocation,
                                                       additional: "",
+                                                      isComplete: false,
+                                                      dateFinished:  nil,
                                                       UUID: appointmentItem.UUID)
                 db.addToAppointmentDatabase(newAppointmentItem)
             }
