@@ -16,7 +16,6 @@ class CalendarCell: UICollectionViewCell {
     
     @IBOutlet weak var dayLabel: UILabel!
     
-    
     var eventsCount = 0 {
         didSet {
             for sview in self.dotsView.subviews {
@@ -55,7 +54,7 @@ class CalendarCell: UICollectionViewCell {
         didSet {
             
             if selected == true {
-                self.pBackgroundView.layer.borderWidth = 2.0
+                self.pBackgroundView.layer.borderWidth = 3.0
                 
             }
             else {
@@ -67,19 +66,15 @@ class CalendarCell: UICollectionViewCell {
     
     lazy var pBackgroundView : UIView = {
         
-        var vFrame = CGRectInset(self.frame, 3.0, 3.0)
+        var vFrame = CGRectInset(self.frame, 25.0, 25.0)
         
         let view = UIView(frame: vFrame)
         
-        view.layer.cornerRadius = 4.0
-        
+        view.layer.cornerRadius = view.bounds.size.width/2
         view.layer.borderColor = borderColor.CGColor
-        view.layer.borderWidth = 0.0
-        
-        view.center = CGPoint(x: self.bounds.size.width * 0.5, y: self.bounds.size.height * 0.5)
-        
-        view.backgroundColor = cellColorDefault
-        
+        view.layer.borderWidth = 6.0
+
+        view.center = CGPoint(x: self.bounds.size.width * 0.90, y: self.bounds.size.height * 0.90)
         
         return view
     }()
@@ -96,26 +91,40 @@ class CalendarCell: UICollectionViewCell {
     
     lazy var dotsView : UIView = {
         
-        let frm = CGRect(x: 8.0, y: self.frame.size.width - 10.0 - 4.0, width: self.frame.size.width - 16.0, height: 8.0)
+        let frm = CGRect(x:self.frame.size.height - 10, y: self.frame.size.width - 10, width: self.frame.size.width, height: self.frame.size.height)
         let dv = UIView(frame: frm)
         
-        
         return dv
-        
     }()
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
         self.addSubview(self.pBackgroundView)
         self.textLabel.frame = self.bounds
         self.addSubview(self.textLabel)
-        
         self.addSubview(dotsView)
     }
     
+    // This is the initial cell.
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.cornerRadius = 8
+        
+        let viewOne = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        self.backgroundView = viewOne
+        self.backgroundView!.layer.borderColor = UIColor.blackColor().CGColor
+        
+        let viewTwo = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height ))
+        self.selectedBackgroundView = viewTwo
+        self.selectedBackgroundView?.addSubview(pBackgroundView)
+        self.selectedBackgroundView!.layer.borderWidth = 3.0
+        self.selectedBackgroundView?.layer.borderColor = UIColor.redColor().CGColor
 
+        
+        
+        
+        
+    }
 }

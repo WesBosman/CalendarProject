@@ -1576,7 +1576,7 @@
         <!--Calendar-->
         <scene sceneID="e7F-fJ-qi8">
             <objects>
-                <viewController id="dHM-vo-Fq1" customClass="CalendarController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dHM-vo-Fq1" customClass="CalendarViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="P3D-nb-B7v"/>
                         <viewControllerLayoutGuide type="bottom" id="cmn-uo-km8"/>
@@ -1584,124 +1584,97 @@
                     <view key="view" contentMode="scaleToFill" id="cOT-II-une">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1iZ-4t-85H">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dCT-9v-T9d">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="Z4I-cd-kHB">
-                                    <size key="itemSize" width="90" height="90"/>
-                                    <size key="headerReferenceSize" width="55" height="79"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SAh-n0-hV2">
+                                    <size key="itemSize" width="85" height="85"/>
+                                    <size key="headerReferenceSize" width="50" height="90"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarCell" id="Jfs-pB-qHV" customClass="CalendarCell" customModule="CreativeCalendar" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarCell" id="1cg-XC-OC3" customClass="CalendarCell" customModule="CreativeCalendar" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zeg-hZ-4HN">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RSa-Xh-GqW">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="19" y="17" width="52" height="56"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <color key="backgroundColor" red="0.5014498356" green="0.69720708789999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="RSa-Xh-GqW" firstAttribute="centerY" secondItem="1cg-XC-OC3" secondAttribute="centerY" id="7hL-TS-Fpt"/>
+                                            <constraint firstItem="RSa-Xh-GqW" firstAttribute="centerX" secondItem="1cg-XC-OC3" secondAttribute="centerX" id="kD7-Pd-m5n"/>
+                                        </constraints>
                                         <variation key="default">
                                             <mask key="subviews">
-                                                <exclude reference="Zeg-hZ-4HN"/>
+                                                <exclude reference="RSa-Xh-GqW"/>
+                                            </mask>
+                                            <mask key="constraints">
+                                                <exclude reference="7hL-TS-Fpt"/>
+                                                <exclude reference="kD7-Pd-m5n"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular">
                                             <mask key="subviews">
-                                                <include reference="Zeg-hZ-4HN"/>
+                                                <include reference="RSa-Xh-GqW"/>
+                                            </mask>
+                                            <mask key="constraints">
+                                                <include reference="7hL-TS-Fpt"/>
+                                                <include reference="kD7-Pd-m5n"/>
                                             </mask>
                                         </variation>
                                         <connections>
-                                            <outlet property="dayLabel" destination="Zeg-hZ-4HN" id="M30-l5-4nO"/>
+                                            <outlet property="dayLabel" destination="RSa-Xh-GqW" id="MZT-qu-aSa"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HeaderView" id="heo-NF-Ta7" customClass="CalendarHeaderView" customModule="CreativeCalendar" customModuleProvider="target">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWC-rc-YHA">
-                                            <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                <rect key="frame" x="260" y="0.0" width="240" height="34"/>
-                                            </variation>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZOm-Xt-up2">
-                                            <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                <rect key="frame" x="8" y="42" width="744" height="36.5"/>
-                                            </variation>
-                                        </label>
-                                    </subviews>
-                                    <variation key="default">
-                                        <mask key="subviews">
-                                            <exclude reference="KWC-rc-YHA"/>
-                                            <exclude reference="ZOm-Xt-up2"/>
-                                        </mask>
-                                    </variation>
-                                    <variation key="heightClass=regular-widthClass=regular">
-                                        <mask key="subviews">
-                                            <include reference="KWC-rc-YHA"/>
-                                            <include reference="ZOm-Xt-up2"/>
-                                        </mask>
-                                    </variation>
-                                    <connections>
-                                        <outlet property="bottomLabel" destination="ZOm-Xt-up2" id="JLA-bP-oo9"/>
-                                        <outlet property="topLabel" destination="KWC-rc-YHA" id="XjF-6d-Cxc"/>
-                                    </connections>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HeaderView" id="hve-HD-wqx" customClass="CalendarHeaderView" customModule="CreativeCalendar" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1iZ-4t-85H" firstAttribute="top" secondItem="P3D-nb-B7v" secondAttribute="bottom" id="QbR-HV-PM6"/>
-                            <constraint firstItem="cmn-uo-km8" firstAttribute="top" secondItem="1iZ-4t-85H" secondAttribute="bottom" constant="8" symbolic="YES" id="Yar-Sy-LeC"/>
-                            <constraint firstItem="1iZ-4t-85H" firstAttribute="trailing" secondItem="cOT-II-une" secondAttribute="trailingMargin" id="q47-lM-cN2"/>
-                            <constraint firstItem="1iZ-4t-85H" firstAttribute="leading" secondItem="cOT-II-une" secondAttribute="leadingMargin" id="sS5-px-faL"/>
+                            <constraint firstItem="cmn-uo-km8" firstAttribute="top" secondItem="dCT-9v-T9d" secondAttribute="bottom" constant="8" symbolic="YES" id="61D-km-Uda"/>
+                            <constraint firstItem="dCT-9v-T9d" firstAttribute="leading" secondItem="cOT-II-une" secondAttribute="leadingMargin" id="C6j-Hh-tUU"/>
+                            <constraint firstItem="dCT-9v-T9d" firstAttribute="trailing" secondItem="cOT-II-une" secondAttribute="trailingMargin" id="FHr-Nw-UwT"/>
+                            <constraint firstItem="dCT-9v-T9d" firstAttribute="top" secondItem="P3D-nb-B7v" secondAttribute="bottom" constant="8" symbolic="YES" id="eUU-mQ-8XS"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="1iZ-4t-85H"/>
+                                <exclude reference="dCT-9v-T9d"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="QbR-HV-PM6"/>
-                                <exclude reference="q47-lM-cN2"/>
-                                <exclude reference="sS5-px-faL"/>
-                                <exclude reference="Yar-Sy-LeC"/>
+                                <exclude reference="C6j-Hh-tUU"/>
+                                <exclude reference="FHr-Nw-UwT"/>
+                                <exclude reference="eUU-mQ-8XS"/>
+                                <exclude reference="61D-km-Uda"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="subviews">
-                                <include reference="1iZ-4t-85H"/>
+                                <include reference="dCT-9v-T9d"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="QbR-HV-PM6"/>
-                                <include reference="q47-lM-cN2"/>
-                                <include reference="sS5-px-faL"/>
-                                <include reference="Yar-Sy-LeC"/>
+                                <include reference="C6j-Hh-tUU"/>
+                                <include reference="FHr-Nw-UwT"/>
+                                <include reference="eUU-mQ-8XS"/>
+                                <include reference="61D-km-Uda"/>
                             </mask>
                         </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Calendar" image="Calendar" id="MeB-ID-E5W"/>
                     <connections>
-                        <outlet property="calendarView" destination="1iZ-4t-85H" id="kie-2f-KI8"/>
+                        <outlet property="calendarView" destination="dCT-9v-T9d" id="dKp-kK-7by"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kij-pg-Dis" userLabel="First Responder" sceneMemberID="firstResponder"/>

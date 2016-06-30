@@ -10,28 +10,26 @@
 import UIKit
 
 class CalendarHeaderView: UICollectionReusableView{
-    
-    @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var bottomLabel: UILabel!
-    
-    
+        
+    // The month label
     lazy var monthLabel : UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = NSTextAlignment.Center
-        lbl.font = UIFont(name: "Helvetica", size: 20.0)
-        lbl.textColor = UIColor.grayColor()
+        lbl.font = UIFont(name: "Helvetica", size: 25.0)
+        lbl.textColor = UIColor.blackColor()
         
         self.addSubview(lbl)
         
         return lbl
     }()
     
+    // The days of the week label
     lazy var dayLabelContainerView : UIView = {
         
         let v = UIView()
         
         let formatter : NSDateFormatter = NSDateFormatter()
-        
+
         for index in 1...7 {
             
             let day : NSString = formatter.weekdaySymbols[index % 7] as NSString
@@ -40,7 +38,7 @@ class CalendarHeaderView: UICollectionReusableView{
             
             weekdayLabel.font = UIFont(name: "Helvetica", size: 14.0)
             
-            weekdayLabel.text = day.substringToIndex(2).uppercaseString
+            weekdayLabel.text = day.substringToIndex(3).uppercaseString
             weekdayLabel.textColor = UIColor.grayColor()
             weekdayLabel.textAlignment = NSTextAlignment.Center
             
