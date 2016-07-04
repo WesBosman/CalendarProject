@@ -12,6 +12,10 @@ import JTAppleCalendar
 
 class CalendarHeaderView: JTAppleHeaderView{
     
+    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var bottomLabel: UILabel!
+    
+    
     
     
 }

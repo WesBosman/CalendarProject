@@ -1587,25 +1587,24 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HjC-Xe-VBZ" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.072403602302074432" green="0.55472522974014282" blue="0.85381525754928589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="leading" secondItem="cOT-II-une" secondAttribute="leadingMargin" id="Aix-r3-cWQ"/>
-                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="top" secondItem="P3D-nb-B7v" secondAttribute="bottom" constant="8" symbolic="YES" id="f9f-77-GbI"/>
-                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="trailing" secondItem="cOT-II-une" secondAttribute="trailingMargin" id="far-nL-pkv"/>
-                            <constraint firstItem="cmn-uo-km8" firstAttribute="top" secondItem="HjC-Xe-VBZ" secondAttribute="bottom" constant="8" symbolic="YES" id="fcO-PG-RFL"/>
+                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="bottom" secondItem="cmn-uo-km8" secondAttribute="top" id="BKE-Oh-Nbz"/>
+                            <constraint firstAttribute="trailing" secondItem="HjC-Xe-VBZ" secondAttribute="trailing" id="OxF-zP-pqe"/>
+                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="leading" secondItem="cOT-II-une" secondAttribute="leading" id="VQz-Yn-NRJ"/>
+                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="top" secondItem="cOT-II-une" secondAttribute="top" id="czQ-f6-aLc"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="HjC-Xe-VBZ"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Aix-r3-cWQ"/>
-                                <exclude reference="f9f-77-GbI"/>
-                                <exclude reference="far-nL-pkv"/>
-                                <exclude reference="fcO-PG-RFL"/>
+                                <exclude reference="BKE-Oh-Nbz"/>
+                                <exclude reference="OxF-zP-pqe"/>
+                                <exclude reference="VQz-Yn-NRJ"/>
+                                <exclude reference="czQ-f6-aLc"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -1613,10 +1612,10 @@
                                 <include reference="HjC-Xe-VBZ"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Aix-r3-cWQ"/>
-                                <include reference="f9f-77-GbI"/>
-                                <include reference="far-nL-pkv"/>
-                                <include reference="fcO-PG-RFL"/>
+                                <include reference="BKE-Oh-Nbz"/>
+                                <include reference="OxF-zP-pqe"/>
+                                <include reference="VQz-Yn-NRJ"/>
+                                <include reference="czQ-f6-aLc"/>
                             </mask>
                         </variation>
                     </view>
@@ -1627,7 +1626,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kij-pg-Dis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="777" y="1102.5"/>
+            <point key="canvasLocation" x="891.75" y="1096.5"/>
         </scene>
     </scenes>
     <resources>

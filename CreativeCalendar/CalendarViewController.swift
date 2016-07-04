@@ -12,33 +12,106 @@ import JTAppleCalendar
 class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource{
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
+    @IBOutlet weak var monthLabel: UILabel!
+    @IBOutlet weak var shortDaysLabel: UILabel!
+    
+    let userCalendar = NSCalendar.currentCalendar()
+    let formatter = NSDateFormatter()
+    let components = NSDateComponents()
+    var startDate:NSDate = NSDate()
+    var endDate:NSDate = NSDate()
+    var weekdayLabel:String = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.calendarView.delegate = self
         self.calendarView.dataSource = self
         self.calendarView.registerCellViewXib(fileName: "CellView")
+        self.calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
+        // This eliminates seperation between cells.
+        self.calendarView.cellInset = CGPoint(x: 0, y: 0)
+        
+        // The size of the cells in the calendar view
+        self.calendarView.itemSize = 150
+        
+        components.month = 3
+        formatter.dateFormat = "yyyy MM dd"
+        startDate = formatter.dateFromString("2016 07 01")!
+        endDate = userCalendar.dateByAddingComponents(components, toDate: startDate, options: [])!
+
     }
     
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
         
-        let formatter = NSDateFormatter()
-        let components = NSDateComponents()
-        let calendar = NSCalendar.currentCalendar()
-        components.month = 3
-        formatter.dateFormat = "yyyy MM dd"
-        let firstDate = formatter.dateFromString("2016 07 01")
-        let secondDate = calendar.dateByAddingComponents(components, toDate: firstDate!, options: [])
         let numberOfRows = 6
         
-        return(startDate: firstDate!, endDate: secondDate!, numberOfRows: numberOfRows, calendar: calendar)
+        return(startDate: startDate, endDate: endDate, numberOfRows: numberOfRows, calendar: userCalendar)
     }
     
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplayCell cell: JTAppleDayCellView, date: NSDate, cellState: CellState) {
         (cell as! CalendarCell).setUpCellBeforeDisplay(cellState, date:date)
     }
     
+    // MARK - Header Methods
+    func setUpHeaderView() -> String{
+        let month = userCalendar.component([.Month], fromDate: startDate)
+        let monthName = formatter.monthSymbols[(month - 1) % 12]
+        let year = userCalendar.component([.Year], fromDate: startDate)
+        
+        let dateString = monthName + " " + String(year)
+        return dateString
+    }
+    
+    // This method gets the months between the start and end date so that we can put them in
+    // The header view in the collection view.
+    func getMonths() -> [String]{
+        let startMonth = userCalendar.components([.Month], fromDate: startDate)
+        let endMonth = userCalendar.components([.Month], fromDate: endDate)
+        var s: Int = startMonth.month
+        let e: Int = endMonth.month
+        var monthArray:[String] = []
+        
+        while s <= e{
+            let month: NSString = formatter.monthSymbols[s - 1 % 12]
+            //            print("Month: \(month)")
+            monthArray.append(month as String)
+            s = s + 1
+        }
+        //        print("Month Array: \(monthArray)")
+        return monthArray
+    }
+
+    
+    // The days of the week label
+    func dayLabelForHeaderView() -> String{
+        
+        let formatter : NSDateFormatter = NSDateFormatter()
+
+        for index in 1...7 {
+            
+            let day : NSString = formatter.weekdaySymbols[index % 7] as NSString
+            
+//            weekdayLabel.font = UIFont(name: "Helvetica", size: 14.0)
+//            weekdayLabel.textColor = UIColor.grayColor()
+//            weekdayLabel.textAlignment = NSTextAlignment.Center
+
+            weekdayLabel += day.substringToIndex(3).uppercaseString + " \t "
+            
+        }
+        return weekdayLabel
+    }
+
+    
+    func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate date: (startDate: NSDate, endDate: NSDate)) -> CGSize {
+        return CGSize(width: 600.0, height: 100.0)
+    }
+    
+    func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, date: (startDate: NSDate, endDate: NSDate), identifier: String) {
+        let header = (header as? CalendarHeaderView)
+        header?.topLabel.text = setUpHeaderView()
+//        header?.bottomLabel.text = dayLabelForHeaderView()
+    }
 }
 
 
@@ -127,7 +200,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
 ////        print("Month Array: \(monthArray)")
 //        return monthArray
 //    }
-//    
+//
 //    // This method return the number of sections in the collection.
 //    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
 //        let firstDayOfStartMonth = self.calendar.components( [.Era, .Year, .Month], fromDate: startDate)

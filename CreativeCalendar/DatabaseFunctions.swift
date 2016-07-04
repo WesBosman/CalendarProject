@@ -38,7 +38,7 @@ class DatabaseFunctions{
             try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, uuid text)", values: nil)
             
             // Get DatabasePath
-            //        NSLog("Database File Path: \(fileName.path!)")
+            NSLog("Database File Path: \(fileURL.path!)")
             
         }
         catch let err as NSError{

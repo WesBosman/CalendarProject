@@ -13,14 +13,28 @@ let cellColorDefault = UIColor(white: 0.0, alpha: 0.1)
 let cellColorToday = UIColor(red: 254.0/255.0, green: 73.0/255.0, blue: 64.0/255.0, alpha: 0.3)
 let borderColor = UIColor(red: 254.0/255.0, green: 73.0/255.0, blue: 64.0/255.0, alpha: 0.8)
 
+extension UIColor {
+    convenience init(colorWithHexValue value: Int, alpha:CGFloat = 1.0){
+        self.init(
+            red: CGFloat((value & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((value & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(value & 0x0000FF) / 255.0,
+            alpha: alpha
+        )
+    }
+}
+
 class CalendarCell: JTAppleDayCellView{
     
     @IBOutlet weak var dayLabel: UILabel!
-    var normalDayColor = UIColor.blackColor()
-    var weekendDayColor = UIColor.grayColor()
-
+    var weekendDayColor = UIColor(colorWithHexValue: 0x574865)
+    var normalDayColor = UIColor(colorWithHexValue: 0xECEAED)
     
     func setUpCellBeforeDisplay(cellState: CellState, date: NSDate){
+//        self.layer.borderWidth = 1
+//        self.layer.borderColor = UIColor.whiteColor().CGColor
+//        self.layer.cornerRadius = 50
+        
         dayLabel.text = cellState.text
         configureTextColor(cellState)
     }
@@ -28,9 +42,17 @@ class CalendarCell: JTAppleDayCellView{
     func configureTextColor(cellState:CellState){
         if cellState.dateBelongsTo == .ThisMonth{
             dayLabel.textColor = normalDayColor
+            // Allow the cell to be clicked
+            self.userInteractionEnabled = true
+            // Hide the cell
+            self.hidden = false
         }
         else{
             dayLabel.textColor = weekendDayColor
+            // Prevent the cell from being clicked
+            self.userInteractionEnabled = false
+            // Hide the cell
+            self.hidden = true
         }
     }
 }
