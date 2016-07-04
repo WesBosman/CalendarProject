@@ -81,36 +81,27 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         //        print("Month Array: \(monthArray)")
         return monthArray
     }
-
-    
-    // The days of the week label
-    func dayLabelForHeaderView() -> String{
-        
-        let formatter : NSDateFormatter = NSDateFormatter()
-
-        for index in 1...7 {
-            
-            let day : NSString = formatter.weekdaySymbols[index % 7] as NSString
-            
-//            weekdayLabel.font = UIFont(name: "Helvetica", size: 14.0)
-//            weekdayLabel.textColor = UIColor.grayColor()
-//            weekdayLabel.textAlignment = NSTextAlignment.Center
-
-            weekdayLabel += day.substringToIndex(3).uppercaseString + " \t "
-            
-        }
-        return weekdayLabel
-    }
-
     
     func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate date: (startDate: NSDate, endDate: NSDate)) -> CGSize {
         return CGSize(width: 600.0, height: 100.0)
     }
     
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, date: (startDate: NSDate, endDate: NSDate), identifier: String) {
+        
         let header = (header as? CalendarHeaderView)
         header?.topLabel.text = setUpHeaderView()
-//        header?.bottomLabel.text = dayLabelForHeaderView()
+        var weekdayString = String()
+        
+        for index in 1...7 {
+            let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
+//            print("Day: \(day)")
+
+            let spaces = String(count: 30, repeatedValue: (" " as Character))
+            weekdayString += day.substringToIndex(3).uppercaseString + spaces        }
+        
+        header?.bottomLabel.text = weekdayString
+        header?.bottomLabel.font = UIFont(name: "Helvetica", size: 14.0)
+
     }
 }
 
