@@ -17,6 +17,15 @@ class JournalTableViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
     }
+    
+    // Failable Initializer for tab bar controller
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        // Initialize Tab Bar Item
+        tabBarItem = UITabBarItem(title: "Journals", image: UIImage(named: "Journals"), tag: 4)
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

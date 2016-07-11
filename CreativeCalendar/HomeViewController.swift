@@ -100,6 +100,14 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         
     }
     
+    // Failable Initializer for tab bar controller
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        // Initialize Tab Bar Item
+        tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "Home"), tag: 1)
+    }
+    
     // Clear all NSUser Defaults
     func clearAllUserDefaults(){
         // The below two lines of code can clear out NSUser Defaults

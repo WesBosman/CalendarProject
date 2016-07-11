@@ -24,6 +24,15 @@ class TaskTableViewController: UITableViewController {
         nav?.tintColor = UIColor.blueColor()
     }
     
+    // Failable Initializer for tab bar controller
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        // Initialize Tab Bar Item
+        tabBarItem = UITabBarItem(title: "Tasks", image: UIImage(named: "Tasks"), tag: 3)
+    }
+
+    
     // View did appear needs to be called because we animated the view from the static table save button being pressed.
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)

@@ -24,7 +24,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Think this changes the color of the subtitle text to red once the time has passed.
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        
         NSNotificationCenter.defaultCenter().postNotificationName("AppointmentListShouldRefresh", object: self)
+        // If the app is running the user will not recieve a notification so we should alert them.
+        // We could also add a badge to the tab bar for appointments.
+        let state: UIApplicationState = UIApplication.sharedApplication().applicationState
+        let hostController = self.window?.rootViewController
+        let date = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+        
+        if state == UIApplicationState.Active{
+            let db = DatabaseFunctions.sharedInstance
+            print("Date in AppDelegate: \(dateFormatter.stringFromDate(date))")
+            
+            // Get the title of the appointment based on the notification fire date
+            let appointmentTitle = db.getAppointmentByDate(dateFormatter.stringFromDate(date))
+            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(appointmentTitle)", preferredStyle: .Alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alert.addAction(dismissAction)
+            
+            // Update the badge for the appointments.
+            if let tbc: UITabBarController = self.window?.rootViewController as? UITabBarController{
+                tbc.tabBar.items?[1].badgeValue = "1"
+            }
+            hostController?.presentViewController(alert, animated: true, completion: nil)
+            
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {

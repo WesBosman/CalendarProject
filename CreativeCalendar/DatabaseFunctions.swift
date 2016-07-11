@@ -193,6 +193,25 @@ class DatabaseFunctions{
 
     }
     
+    func getAppointmentByDate(date:String)-> String{
+        let db = makeDb()
+        var title = ""
+
+        do{
+            let sqlFetchStatement = "SELECT title FROM Appointments WHERE start_date=?"
+            let query = try db.executeQuery(sqlFetchStatement, values: [date])
+            
+            while query.next(){
+                let appointmentTitle = query.objectForColumnName("title")
+                title = appointmentTitle as! String
+            }
+        }
+        catch let err as NSError{
+            print("Get Appointments By Date ERROR: \(err.localizedDescription)")
+        }
+        return title
+    }
+    
     // Get all appointments from the database and return them as an array.
     func getAllAppointments() -> [AppointmentItem] {
         let db = makeDb()

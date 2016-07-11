@@ -28,7 +28,18 @@ class AppointmentTableViewController: UITableViewController{
         NSNotificationCenter
             .defaultCenter()
             .addObserver(self, selector: #selector(AppointmentTableViewController.refreshList), name: "AppointmentListShouldRefresh", object: nil)
+        tableView.allowsSelection = false
+        
     }
+    
+    // Failable Initializer for tab bar controller
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        // Initialize Tab Bar Item
+        tabBarItem = UITabBarItem(title: "Appointments", image: UIImage(named: "Appointment"), tag: 2)
+    }
+
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -46,6 +57,10 @@ class AppointmentTableViewController: UITableViewController{
         if appointmentList.count > 64{
             self.navigationItem.rightBarButtonItem?.enabled = false
         }
+        
+        // This sets the bage number back to zero when the view loads.
+        self.tabBarController!.tabBar.items?[1].badgeValue = nil
+        
         tableView.reloadData()
     }
 
@@ -106,20 +121,87 @@ class AppointmentTableViewController: UITableViewController{
         return true
     }
     
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        
+        let appointmentForAction = appointmentList[indexPath.row] as AppointmentItem
+        
+        // Make custom actions for delete, cancel and complete.
+        let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            
+            let deleteOptions = UIAlertController(title: "Delete", message: "Are you sure you want to delete the appointment: \(appointmentForAction.title)?", preferredStyle: .Alert)
+            
+            let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                
+                // Delete the row from the data source
+                let itemToDelete = self.appointmentList.removeAtIndex(indexPath.row)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                
+                //Delete from database
+                self.db.deleteAppointmentAndNotification("Appointments", item: itemToDelete)
+                
+            })
+            let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            deleteOptions.addAction(cancelDelete)
+            deleteOptions.addAction(deleteAppointment)
+            
+            self.presentViewController(deleteOptions, animated: true, completion: nil)
+        })
+        
+        let canceledAction = UITableViewRowAction(style: .Default, title: "Cancel", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            let cancelOptions = UIAlertController(title: "Cancel Appointment", message: "Would you like to cancel the appointment: \(appointmentForAction.title)", preferredStyle: .Alert)
+            
+            // Appointment was canceled.
+            let cancelAction = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                
+            })
+            let abortCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            cancelOptions.addAction(cancelAction)
+            cancelOptions.addAction(abortCancel)
+            
+            self.presentViewController(cancelOptions, animated: true, completion: nil)
+        })
+        
+        let completedAction = UITableViewRowAction(style: .Default, title: "Complete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            
+            let completeOptions = UIAlertController(title: "Complete Appointment", message: "Have you completed appointment: \(appointmentForAction.title)", preferredStyle: .Alert)
+            
+            // Appointment was completed.
+            let completeAction = UIAlertAction(title: "Complete Appointment", style: .Default, handler: {(action: UIAlertAction) -> Void in
+                
+                
+            })
+            let completeCanceled = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            completeOptions.addAction(completeAction)
+            completeOptions.addAction(completeCanceled)
+            
+            self.presentViewController(completeOptions, animated: true, completion: nil)
+        })
+        
+        completedAction.backgroundColor = UIColor.blueColor()
+        canceledAction.backgroundColor = UIColor.orangeColor()
+        
+        return [deletedAction, canceledAction, completedAction]
+    
+    }
+    
     
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            let itemToDelete = appointmentList.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            
-            //Delete from database
-            db.deleteAppointmentAndNotification("Appointments", item: itemToDelete)
-            
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }
-    }
+//    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+//        if editingStyle == .Delete {
+//            // Delete the row from the data source
+//            let itemToDelete = appointmentList.removeAtIndex(indexPath.row)
+//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+//            
+//            //Delete from database
+//            db.deleteAppointmentAndNotification("Appointments", item: itemToDelete)
+//            
+//            self.navigationItem.rightBarButtonItem?.enabled = true
+//        }
+//        
+//    }
 
     
     // MARK: - Navigation

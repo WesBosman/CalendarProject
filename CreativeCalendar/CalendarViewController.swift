@@ -41,6 +41,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
 
     }
     
+    // Failable Initializer for tab bar controller
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        // Initialize Tab Bar Item
+        tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
+    }
+
+    
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
         
