@@ -17,6 +17,8 @@ import UIKit
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
+    @IBOutlet weak var daysOfTheWeekText: UILabel!
+    @IBOutlet weak var homeDateLabel: UILabel!
     @IBOutlet weak var journalLabel: UILabel!
     @IBOutlet weak var appointmentViewTable: UITableView!
     @IBOutlet weak var taskViewTable: UITableView!
@@ -48,6 +50,43 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         let date = NSDate()
         dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
         todaysDate = dateFormat.stringFromDate(date)
+        homeDateLabel.text = todaysDate
+        homeDateLabel.textColor = UIColor.whiteColor()
+        
+        var todaysSubString = todaysDate as NSString
+        todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
+        switch todaysSubString{
+            case "Mon":
+//            let attachment = NSTextAttachment()
+//            attachment.image = UIImage(named: "Checkmark")
+//            let attachmentString = NSAttributedString(attachment: attachment)
+//            let myString = NSMutableAttributedString(string: " ")
+//            myString.appendAttributedString(attachmentString)
+//            daysOfTheWeekText.attributedText = myString
+            break
+
+//            case "Tue": break
+//            let attachment = NSTextAttachment()
+//
+//            case "Wed": break
+//            let attachment = NSTextAttachment()
+//
+//            case "Thu": break
+//            let attachment = NSTextAttachment()
+//
+//            case "Fri": break
+//            let attachment = NSTextAttachment()
+//
+//            case "Sat": break
+//            let attachment = NSTextAttachment()
+//
+//            case "Sun": break
+//            let attachment = NSTextAttachment()
+
+            default: break
+            
+        }
+        print(todaysSubString)
         
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self

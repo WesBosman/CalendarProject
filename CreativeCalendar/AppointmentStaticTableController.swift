@@ -32,6 +32,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     let db = DatabaseFunctions.sharedInstance
     var startDate:NSDate? = nil
     var endDate: NSDate? = nil
+    var otherTextString: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         appointmentNameTextField.placeholder = "Name of Appointment"
         appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
+        
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
         additionalInfoTextBox.textColor = UIColor.lightGrayColor()
@@ -74,9 +76,26 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeOfAppointmentRightDetail.text = typeOfAppointments[row]
         // Show the other appointment cell when user highlights other.
-        if typeOfAppointments[row] == "Other" || "Class" == typeOfAppointments[row] || "Self Care" == typeOfAppointments[row]{
+        if  "Other" == typeOfAppointments[row] ||
+            "Class" == typeOfAppointments[row] ||
+            "Self Care" == typeOfAppointments[row]{
+            
             if otherIsHidden{
                 toggleOther()
+            }
+            
+            // A switch statement for the type of appointment Other, Class, Self Care.
+            // The other text string goes in front of the appointment as a label for the 
+            // three categories where a user can enter their own appointment type.
+            let value = typeOfAppointments[row]
+            
+            switch value {
+            case "Other":
+                otherTextString = "Other: "
+            case "Class":
+                otherTextString = "Class: "
+            default:
+                otherTextString = "Self Care: "
             }
         }
         // Hide the other appointment cell when user picks a different category.
@@ -105,15 +124,16 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             (!endingTimeDetailLabel.text!.isEmpty) &&
             (!appointmentLocationTextBox.text!.isEmpty)){
         
-            let appointmentItem = AppointmentItem(type: typeOfAppointmentRightDetail.text!,
-                                              startTime: startDate!,
-                                              endTime: endDate!,
-                                              title: appointmentNameTextField.text!,
-                                              location: appointmentLocationTextBox.text!,
-                                              additional: additionalInfoTextBox.text!,
-                                              isComplete:  false,
-                                              dateFinished:  nil,
-                                              UUID: NSUUID().UUIDString)
+            let appointmentItem = AppointmentItem(type: otherTextString
+                                                        + typeOfAppointmentRightDetail.text!,
+                                                  startTime: startDate!,
+                                                  endTime: endDate!,
+                                                  title: appointmentNameTextField.text!,
+                                                  location: appointmentLocationTextBox.text!,
+                                                  additional: additionalInfoTextBox.text!,
+                                                  isComplete:  false,
+                                                  dateFinished:  nil,
+                                                  UUID: NSUUID().UUIDString)
                     
             // IF the additional information text box has not been changed then add an empty string to that field of the database
             if additionalInfoTextBox.text == "Additional Information..."{

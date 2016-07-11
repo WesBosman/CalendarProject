@@ -64,7 +64,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     // This method gets the months between the start and end date so that we can put them in
-    // The header view in the collection view.
+    // The header view
     func getMonths() -> [String]{
         let startMonth = userCalendar.components([.Month], fromDate: startDate)
         let endMonth = userCalendar.components([.Month], fromDate: endDate)
