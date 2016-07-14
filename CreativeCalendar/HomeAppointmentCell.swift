@@ -26,11 +26,11 @@ class HomeAppointmentCell: UITableViewCell {
         homeAppointmentAdditional.numberOfLines = 0
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
+//    override func setSelected(selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
         // Configure the view for the selected state
-    }
+//    }
     
     func appointmentCompleted(item: AppointmentItem){
         homeAppointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")

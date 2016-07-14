@@ -24,149 +24,76 @@ extension UIColor {
     }
 }
 
+@IBDesignable
+
 class CalendarCell: JTAppleDayCellView{
     
+    @IBInspectable var fillColorForCircle: UIColor = UIColor.blackColor()
     @IBOutlet weak var dayLabel: UILabel!
     var weekendDayColor = UIColor(colorWithHexValue: 0x574865)
     var normalDayColor = UIColor(colorWithHexValue: 0xECEAED)
+    var isSelected = false
+    
+    override class func layerClass() -> AnyClass{
+        return CAGradientLayer.self
+    }
+    var gradientLayer: CAGradientLayer{
+        return layer as! CAGradientLayer
+    }
     
     func setUpCellBeforeDisplay(cellState: CellState, date: NSDate){
-//        self.layer.borderWidth = 1
-//        self.layer.borderColor = UIColor.whiteColor().CGColor
-//        self.layer.cornerRadius = 50
-        
         dayLabel.text = cellState.text
         configureTextColor(cellState)
     }
     
     func configureTextColor(cellState:CellState){
         if cellState.dateBelongsTo == .ThisMonth{
+            
+            // Change text and circle color.
             dayLabel.textColor = normalDayColor
+            
             // Allow the cell to be clicked
             self.userInteractionEnabled = true
-            // Hide the cell
+            
+            // Dont hide the cell
             self.hidden = false
         }
         else{
+            // Change text and circle color.
             dayLabel.textColor = weekendDayColor
+            self.fillColorForCircle = UIColor.lightGrayColor()
+            
             // Prevent the cell from being clicked
             self.userInteractionEnabled = false
+            
             // Hide the cell
             self.hidden = true
         }
     }
+    
+    // Draw the view
+    override func drawRect(rect: CGRect) {
+        
+        let path = UIBezierPath(ovalInRect: CGRect(x: 22.5 , y: 50 , width: 100, height: 100))
+        fillColorForCircle.setFill()
+        
+//        let startColor = UIColor(red: 102/255.0, green: 204/255.0, blue: 128/255.0, alpha: 1.0).CGColor
+//        let endColor = UIColor(red: 0.0, green: 24/255.0, blue: 1.0, alpha: 1.0).CGColor
+//        self.gradientLayer.colors = [startColor, endColor]
+        
+        path.fill()
+    }
+    
+    // MARK - Initialization methods
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+//        self.alpha = 0.5
+//        self.layer.cornerRadius = self.frame.height / 2
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 }
-
-
-
-//class CalendarCell: UICollectionViewCell {
-//    
-//    @IBOutlet weak var dayLabel: UILabel!
-//    
-//    var eventsCount = 0 {
-//        didSet {
-//            for sview in self.dotsView.subviews {
-//                sview.removeFromSuperview()
-//            }
-//            
-//            let stride = self.dotsView.frame.size.width / CGFloat(eventsCount+1)
-//            let viewHeight = self.dotsView.frame.size.height
-//            let halfViewHeight = viewHeight / 2.0
-//            
-//            for _ in 0..<eventsCount {
-//                let frm = CGRect(x: (stride+1.0) - halfViewHeight, y: 0.0, width: viewHeight, height: viewHeight)
-//                let circle = UIView(frame: frm)
-//                circle.layer.cornerRadius = halfViewHeight
-//                circle.backgroundColor = UIColor.whiteColor()
-//                self.dotsView.addSubview(circle)
-//            }
-//        }
-//    }
-//    
-//    var isToday : Bool = false {
-//        
-//        didSet {
-//            
-//            if isToday == true {
-//                self.pBackgroundView.backgroundColor = cellColorToday
-//            }
-//            else {
-//                self.pBackgroundView.backgroundColor = cellColorDefault
-//            }
-//        }
-//    }
-//    
-//    override var selected : Bool {
-//        
-//        didSet {
-//            
-//            if selected == true {
-//                self.pBackgroundView.layer.borderWidth = 3.0
-//                
-//            }
-//            else {
-//                self.pBackgroundView.layer.borderWidth = 0.0
-//            }
-//            
-//        }
-//    }
-//    
-//    lazy var pBackgroundView : UIView = {
-//        
-//        var vFrame = CGRectInset(self.frame, 25.0, 25.0)
-//        
-//        let view = UIView(frame: vFrame)
-//        
-//        view.layer.cornerRadius = view.bounds.size.width/2
-//        view.layer.borderColor = borderColor.CGColor
-//        view.layer.borderWidth = 6.0
-//
-//        view.center = CGPoint(x: self.bounds.size.width * 0.90, y: self.bounds.size.height * 0.90)
-//        
-//        return view
-//    }()
-//    
-//    lazy var textLabel : UILabel = {
-//        
-//        let lbl = UILabel()
-//        lbl.textAlignment = NSTextAlignment.Center
-//        lbl.textColor = UIColor.darkGrayColor()
-//        
-//        return lbl
-//        
-//    }()
-//    
-//    lazy var dotsView : UIView = {
-//        
-//        let frm = CGRect(x:self.frame.size.height - 10, y: self.frame.size.width - 10, width: self.frame.size.width, height: self.frame.size.height)
-//        let dv = UIView(frame: frm)
-//        
-//        return dv
-//    }()
-//    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        self.addSubview(self.pBackgroundView)
-//        self.textLabel.frame = self.bounds
-//        self.addSubview(self.textLabel)
-//        self.addSubview(dotsView)
-//    }
-//    
-//    // This is the initial cell.
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        self.layer.borderWidth = 2
-//        self.layer.borderColor = UIColor.blackColor().CGColor
-//        self.layer.cornerRadius = 8
-//        
-//        let viewOne = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
-//        self.backgroundView = viewOne
-//        self.backgroundView!.layer.borderColor = UIColor.blackColor().CGColor
-//        
-//        let viewTwo = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height ))
-//        self.selectedBackgroundView = viewTwo
-//        self.selectedBackgroundView?.addSubview(pBackgroundView)
-//        self.selectedBackgroundView!.layer.borderWidth = 3.0
-//        self.selectedBackgroundView?.layer.borderColor = UIColor.redColor().CGColor
-//    }
-//}

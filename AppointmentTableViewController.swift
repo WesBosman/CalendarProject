@@ -121,9 +121,11 @@ class AppointmentTableViewController: UITableViewController{
         return true
     }
     
+    // These are custom actions for dealing with the editing of an appointment
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        let appointmentForAction = appointmentList[indexPath.row] as AppointmentItem
+        var appointmentForAction = appointmentList[indexPath.row] as AppointmentItem
+        let appointmentCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! AppointmentCell
         
         // Make custom actions for delete, cancel and complete.
         let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
@@ -133,11 +135,13 @@ class AppointmentTableViewController: UITableViewController{
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Delete the row from the data source
-                let itemToDelete = self.appointmentList.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
                 //Delete from database
-                self.db.deleteAppointmentAndNotification("Appointments", item: itemToDelete)
+                //self.db.deleteAppointmentAndNotification("Appointments", uuid: itemToDelete.UUID)
+                appointmentCellForAction.appointmentNotCompleted(appointmentForAction)
+                appointmentForAction.deleted = true
+                self.db.updateAppointment(appointmentForAction)
                 
             })
             let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -148,11 +152,17 @@ class AppointmentTableViewController: UITableViewController{
             self.presentViewController(deleteOptions, animated: true, completion: nil)
         })
         
+        
         let canceledAction = UITableViewRowAction(style: .Default, title: "Cancel", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             let cancelOptions = UIAlertController(title: "Cancel Appointment", message: "Would you like to cancel the appointment: \(appointmentForAction.title)", preferredStyle: .Alert)
             
             // Appointment was canceled.
             let cancelAction = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                
+                // Cancel Appointment 
+                appointmentCellForAction.appointmentNotCompleted(appointmentForAction)
+                appointmentForAction.canceled = true
+                self.db.updateAppointment(appointmentForAction)
                 
             })
             let abortCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -163,6 +173,7 @@ class AppointmentTableViewController: UITableViewController{
             self.presentViewController(cancelOptions, animated: true, completion: nil)
         })
         
+        
         let completedAction = UITableViewRowAction(style: .Default, title: "Complete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             
             let completeOptions = UIAlertController(title: "Complete Appointment", message: "Have you completed appointment: \(appointmentForAction.title)", preferredStyle: .Alert)
@@ -170,6 +181,10 @@ class AppointmentTableViewController: UITableViewController{
             // Appointment was completed.
             let completeAction = UIAlertAction(title: "Complete Appointment", style: .Default, handler: {(action: UIAlertAction) -> Void in
                 
+                // Complete the appointment and update its image.
+                appointmentCellForAction.appointmentCompleted(appointmentForAction)
+                appointmentForAction.completed = true
+                self.db.updateAppointment(appointmentForAction)
                 
             })
             let completeCanceled = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)

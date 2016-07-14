@@ -26,6 +26,14 @@ class AppointmentCell: UITableViewCell {
         
     }
     
+    func appointmentCompleted(item: AppointmentItem){
+        appointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
+        
+    }
+    
+    func appointmentNotCompleted(item: AppointmentItem){
+        appointmentCompletedImage.image = UIImage(named:"CircleUntickedRed")
+    }
     
     
 }

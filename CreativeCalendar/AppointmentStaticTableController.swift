@@ -132,6 +132,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                   location: appointmentLocationTextBox.text!,
                                                   additional: additionalInfoTextBox.text!,
                                                   isComplete:  false,
+                                                  isCanceled:  false,
+                                                  isDeleted:   false,
                                                   dateFinished:  nil,
                                                   UUID: NSUUID().UUIDString)
                     
@@ -144,6 +146,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                       location: appointmentItem.appLocation,
                                                       additional: "",
                                                       isComplete: false,
+                                                      isCanceled: false,
+                                                      isDeleted:  false,
                                                       dateFinished:  nil,
                                                       UUID: appointmentItem.UUID)
                 db.addToAppointmentDatabase(newAppointmentItem)

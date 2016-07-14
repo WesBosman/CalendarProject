@@ -53,40 +53,44 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         homeDateLabel.text = todaysDate
         homeDateLabel.textColor = UIColor.whiteColor()
         
+        /*
+         Could be a method to make the days of the week look pretty. Not very high priority.
+         
         var todaysSubString = todaysDate as NSString
         todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
         switch todaysSubString{
             case "Mon":
-//            let attachment = NSTextAttachment()
-//            attachment.image = UIImage(named: "Checkmark")
-//            let attachmentString = NSAttributedString(attachment: attachment)
-//            let myString = NSMutableAttributedString(string: " ")
-//            myString.appendAttributedString(attachmentString)
-//            daysOfTheWeekText.attributedText = myString
+            let attachment = NSTextAttachment()
+            attachment.image = UIImage(named: "Checkmark")
+            let attachmentString = NSAttributedString(attachment: attachment)
+            let myString = NSMutableAttributedString(string: " ")
+            myString.appendAttributedString(attachmentString)
+            daysOfTheWeekText.attributedText = myString
             break
 
-//            case "Tue": break
-//            let attachment = NSTextAttachment()
-//
-//            case "Wed": break
-//            let attachment = NSTextAttachment()
-//
-//            case "Thu": break
-//            let attachment = NSTextAttachment()
-//
-//            case "Fri": break
-//            let attachment = NSTextAttachment()
-//
-//            case "Sat": break
-//            let attachment = NSTextAttachment()
-//
-//            case "Sun": break
-//            let attachment = NSTextAttachment()
+            case "Tue": break
+            let attachment = NSTextAttachment()
+
+            case "Wed": break
+            let attachment = NSTextAttachment()
+
+            case "Thu": break
+            let attachment = NSTextAttachment()
+
+            case "Fri": break
+            let attachment = NSTextAttachment()
+
+            case "Sat": break
+            let attachment = NSTextAttachment()
+
+            case "Sun": break
+            let attachment = NSTextAttachment()
 
             default: break
             
         }
         print(todaysSubString)
+         */
         
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
@@ -109,17 +113,11 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     }
     
     // Clear all NSUser Defaults
-    func clearAllUserDefaults(){
-        // The below two lines of code can clear out NSUser Defaults
-        let appDomain = NSBundle.mainBundle().bundleIdentifier!
-        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
-    }
-    
-    func toggleTasks(item: TaskItem){
-        if item.completed == true{
-            
-        }
-    }
+//    func clearAllUserDefaults(){
+//        // The below two lines of code can clear out NSUser Defaults
+//        let appDomain = NSBundle.mainBundle().bundleIdentifier!
+//        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
+//    }
     
     // This function is used for printing journals to the home screen 
     func printJournals(){
@@ -142,7 +140,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
-//        print("Home View will appear animated")
+
         appointmentArray = db.getAllAppointments()
         taskArray = db.getAllTasks()
         taskViewTable.reloadData()
@@ -207,7 +205,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             let alert = UIAlertController(title: "Hello", message: "Have you finished the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
             
             // If the user confirms that a task was completed then update the image to a green checkbox
-            alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Completed", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image and labels with strikethroughs and the green checkbox
                 appointmentCell.appointmentCompleted(appointment)
@@ -215,12 +213,21 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 self.db.updateAppointment(appointment)
             } ))
             
-            // If no is clicked make the image a sepia toned image
-            alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+            // Cancelled Action
+            alert.addAction(UIAlertAction(title: "Canceled", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
                 appointmentCell.appointmentNotCompleted(appointment)
-                appointment.completed = false
+                appointment.canceled = true
+                self.db.updateAppointment(appointment)
+                
+            } ))
+            // Delete action
+            alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+                
+                // Update the cell image to an uncompleted task
+                appointmentCell.appointmentNotCompleted(appointment)
+                appointment.deleted = true
                 self.db.updateAppointment(appointment)
                 
             } ))

@@ -11,7 +11,7 @@ import XCTest
 
 class DatabaseFunctionsTest: XCTestCase {
     let databaseFunctions = DatabaseFunctions.sharedInstance
-    let db = DatabaseFunctions.sharedInstance.makeDb()
+    let db = DatabaseFunctions.sharedInstance.makeDb
     let currentDate = NSDate()
     let dateComponents = NSDateComponents()
     let calendar = NSCalendar.currentCalendar()
@@ -50,10 +50,13 @@ class DatabaseFunctionsTest: XCTestCase {
         let endDate = calendar.dateFromComponents(dateComponents)
         print("Appointment End Date: \(endDate)")
         
-        let appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", UUID: NSUUID().UUIDString)
+        let appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", isComplete: false, isCanceled: false, isDeleted: false, dateFinished: nil , UUID: NSUUID().UUIDString)
         
         // Clearing any item that may be in the database first.
         databaseFunctions.clearTable("Appointments")
+        
+        // Try clearing database table that doesnt exist.
+        databaseFunctions.clearTable("WrongAppointmentsTable")
         
         // Get the items from the appointment table there shouldn't be anything there.
         var appointmentList: [AppointmentItem] = databaseFunctions.getAllAppointments()
@@ -84,14 +87,175 @@ class DatabaseFunctionsTest: XCTestCase {
 
         }
         
-        // Delete the item from the database
-        databaseFunctions.deleteAppointmentAndNotification("Appointments", item: appointmentOne)
+        // Delete the appointment from the database.
+        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
         
         // Get the appointments from the database there should be none.
         appointmentList = databaseFunctions.getAllAppointments()
         
+        // Count should be set back to zero.
         XCTAssertTrue(appointmentList.count == 0, "Appointment Database is empty again.")
     }
+    
+    func testCompleteAppointment(){
+        dateComponents.day = 13
+        dateComponents.year = 2016
+        dateComponents.month = 7
+        dateComponents.hour = 12
+        dateComponents.minute = 10
+        dateComponents.second = 0
+        let startDate = calendar.dateFromComponents(dateComponents)
+        //        print("Appointment Delete Start Date: \(startDate)")
+        
+        dateComponents.day = 13
+        dateComponents.year = 2016
+        dateComponents.month = 7
+        dateComponents.hour = 12
+        dateComponents.minute = 40
+        dateComponents.second = 0
+        let endDate = calendar.dateFromComponents(dateComponents)
+        //        print("Appointment Delete End Date: \(endDate)")
+        
+        var appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", isComplete: false, isCanceled: false, isDeleted: false, dateFinished: nil , UUID: NSUUID().UUIDString)
+        
+        // Add the appointment to the database.
+        databaseFunctions.addToAppointmentDatabase(appointmentOne)
+        
+        // Cancel the appointment
+        appointmentOne.completed = true
+        let completedDate = NSDate()
+        let completedStringDate = dateFormat.stringFromDate(completedDate)
+        databaseFunctions.updateAppointment(appointmentOne)
+        
+        let appointmentList = databaseFunctions.getAllAppointments()
+        
+        for appointment in appointmentList{
+            XCTAssert(appointment.canceled == appointmentOne.canceled)
+            let db = databaseFunctions.makeDb
+            do{
+                let query = try db.executeQuery("Select completed, date_completed FROM Appointments", values: nil)
+                
+                while query.next(){
+                    let completedValue = query.objectForColumnName("completed") as! Bool
+                    let dateCompleted = query.objectForColumnName("date_completed") as! String
+                    
+                    XCTAssert(completedValue == true, "Complete Value should be set to true")
+                    XCTAssert(dateCompleted == completedStringDate, "Date Complete is correct")
+                }
+            }
+            catch let err as NSError{
+                print("Appointment Delete Error in Testing: " + err.localizedDescription)
+            }
+        }
+        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
+    }
+
+
+    func testCancelAppointment(){
+        dateComponents.day = 13
+        dateComponents.year = 2016
+        dateComponents.month = 7
+        dateComponents.hour = 12
+        dateComponents.minute = 10
+        dateComponents.second = 0
+        let startDate = calendar.dateFromComponents(dateComponents)
+//        print("Appointment Delete Start Date: \(startDate)")
+        
+        dateComponents.day = 13
+        dateComponents.year = 2016
+        dateComponents.month = 7
+        dateComponents.hour = 12
+        dateComponents.minute = 40
+        dateComponents.second = 0
+        let endDate = calendar.dateFromComponents(dateComponents)
+//        print("Appointment Delete End Date: \(endDate)")
+        
+        var appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", isComplete: false, isCanceled: false, isDeleted: false, dateFinished: nil , UUID: NSUUID().UUIDString)
+        
+        // Add the appointment to the database.
+        databaseFunctions.addToAppointmentDatabase(appointmentOne)
+        
+        // Cancel the appointment
+        appointmentOne.canceled = true
+        let canceledDate = NSDate()
+        let canceledStringDate = dateFormat.stringFromDate(canceledDate)
+        databaseFunctions.updateAppointment(appointmentOne)
+        
+        let appointmentList = databaseFunctions.getAllAppointments()
+        
+        for appointment in appointmentList{
+            XCTAssert(appointment.canceled == appointmentOne.canceled)
+            let db = databaseFunctions.makeDb
+            do{
+                let query = try db.executeQuery("Select canceled, date_canceled FROM Appointments", values: nil)
+                
+                while query.next(){
+                    let canceledValue = query.objectForColumnName("canceled") as! Bool
+                    let dateCanceled = query.objectForColumnName("date_canceled") as! String
+                    
+                    XCTAssert(canceledValue == true, "Canceled Value should be set to true")
+                    XCTAssert(dateCanceled == canceledStringDate, "Date Canceled is correct")
+                }
+            }
+            catch let err as NSError{
+                print("Appointment Delete Error in Testing: " + err.localizedDescription)
+            }
+        }
+        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
+    }
+    
+    func testDeleteAppointment(){
+        dateComponents.day = 24
+        dateComponents.year = 2016
+        dateComponents.month = 6
+        dateComponents.hour = 12
+        dateComponents.minute = 10
+        dateComponents.second = 0
+        let startDate = calendar.dateFromComponents(dateComponents)
+//        print("Appointment Delete Start Date: \(startDate)")
+        
+        dateComponents.day = 24
+        dateComponents.year = 2016
+        dateComponents.month = 6
+        dateComponents.hour = 12
+        dateComponents.minute = 40
+        dateComponents.second = 0
+        let endDate = calendar.dateFromComponents(dateComponents)
+//        print("Appointment Delete End Date: \(endDate)")
+        
+        var appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", isComplete: false, isCanceled: false, isDeleted: false, dateFinished: nil , UUID: NSUUID().UUIDString)
+        
+        // Add the appointment to the database.
+        databaseFunctions.addToAppointmentDatabase(appointmentOne)
+        
+        // Delete the item from the database
+        appointmentOne.deleted = true
+        let deletedDate = NSDate()
+        let deletedStringDate = dateFormat.stringFromDate(deletedDate)
+        databaseFunctions.updateAppointment(appointmentOne)
+        
+        let appointmentList = databaseFunctions.getAllAppointments()
+        
+        for appointment in appointmentList{
+            XCTAssert(appointment.deleted == appointmentOne.deleted)
+            let db = databaseFunctions.makeDb
+            do{
+                let query = try db.executeQuery("Select deleted, date_deleted FROM Appointments", values: nil)
+                
+                while query.next(){
+                    let deletedValue = query.objectForColumnName("deleted") as! Bool
+                    let dateDeleted = query.objectForColumnName("date_deleted") as! String
+                    
+                    XCTAssert(deletedValue == true, "Deleted Value should be set to true")
+                    XCTAssert(dateDeleted == deletedStringDate, "Date Deleted is correct")
+                    }
+                }
+                catch let err as NSError{
+                    print("Appointment Delete Error in Testing: " + err.localizedDescription)
+                }
+            }
+        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
+        }
     
     func testTasks(){
         print("Task Current Date: \(currentDate)")
@@ -112,6 +276,9 @@ class DatabaseFunctionsTest: XCTestCase {
         
         // Clear the task database if there is anything in there that could make this test fail.
         databaseFunctions.clearTable("Tasks")
+        
+        // Try clearing database table that doesnt exist.
+        databaseFunctions.clearTable("WrongTasksTable")
         
         // Get the items in the task table there should be none.
         var taskList: [TaskItem] = databaseFunctions.getAllTasks()
@@ -162,12 +329,14 @@ class DatabaseFunctionsTest: XCTestCase {
 //         Delete the task item from the database
         databaseFunctions.deleteFromDatabase("Tasks", uuid: updatedTask.UUID)
         
+        // Try to delete an item from a non existing table
+        databaseFunctions.deleteFromDatabase("WrongTasksTable", uuid: updatedTask.UUID)
+
+        
 //         Get the tasks from the database there should be none
         taskList = databaseFunctions.getAllTasks()
         
         XCTAssertTrue(taskList.count == 0, "Task Database is empty again")
-        
-        
     }
     
     func testJournals(){
@@ -188,6 +357,10 @@ class DatabaseFunctionsTest: XCTestCase {
         
         // Clear anything in the journal database first.
         databaseFunctions.clearTable("Journals")
+        
+        // Try clearing database table that doesnt exist.
+        databaseFunctions.clearTable("WrongJournalTable")
+        
         var journalList: [JournalItem] = databaseFunctions.getAllJournals()
         
         // Journal List should have a count of 0
@@ -212,6 +385,10 @@ class DatabaseFunctionsTest: XCTestCase {
         // Delete the test data from the database.
         databaseFunctions.deleteFromDatabase("Journals", uuid: journalItem.journalUUID)
         
+        // Try to delete an item from a non existing table
+        databaseFunctions.deleteFromDatabase("WrongJournalsTable", uuid: journalItem.journalUUID)
+
+        
         // Get the journal items from the database there should be none.
         journalList = databaseFunctions.getAllJournals()
         
@@ -223,7 +400,6 @@ class DatabaseFunctionsTest: XCTestCase {
         // This is an example of a performance test case.
         self.measureBlock {
             // Put the code you want to measure the time of here.
-            self.databaseFunctions.makeDb()
             
             self.databaseFunctions.getAllAppointments()
             
@@ -233,5 +409,4 @@ class DatabaseFunctionsTest: XCTestCase {
             
         }
     }
-    
 }
