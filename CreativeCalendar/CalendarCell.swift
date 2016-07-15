@@ -14,19 +14,20 @@ import JTAppleCalendar
 class CalendarCell: JTAppleDayCellView{
 
     @IBOutlet weak var dayLabel: UILabel!
-    @IBInspectable var weekendDayColor = UIColor.lightGrayColor()
-    @IBInspectable var normalDayColor = UIColor.whiteColor()
-    @IBInspectable var fillColorForCircle: UIColor = UIColor.blackColor()
-    @IBInspectable var isSelected = false
     @IBInspectable var appointmentColor:UIColor = UIColor.redColor()
     @IBInspectable var taskColor:UIColor = UIColor.greenColor()
     @IBInspectable var journalColor:UIColor = UIColor.yellowColor()
     @IBInspectable var dotHeight: CGFloat = 15.0
     @IBInspectable var dotWidth: CGFloat = 15.0
-    
-    var drawAppointment:Bool = false
-    var drawTask:Bool = false
-    var drawJournal:Bool = false
+    @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
+    @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
+    private var fillColorForCircle: UIColor = UIColor.clearColor()
+    private var drawAppointment:Bool = false
+    private var drawTask:Bool = false
+    private var drawJournal:Bool = false
+    private var isWeekend = false
+    private var isWeekday = false
+    var isSelected = false
     
     func setUpCellBeforeDisplay(cellState: CellState, date: NSDate){
         dayLabel.text = cellState.text
@@ -36,52 +37,43 @@ class CalendarCell: JTAppleDayCellView{
         let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
         let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
         let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
-        let formatter = NSDateFormatter()
         
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         let cellDate = formatter.stringFromDate(date)
-//        print("Cell Date: \(cellDate)")
         
         for app in appointmentList{
-//            print("App.startingTime: \(app.startingTime)")
             let appointmentDate = formatter.stringFromDate(app.startingTime)
-//            print("Appointment Date: \(appointmentDate)")
             
             if appointmentDate == (cellDate){
-//                print("\nCell Date == Appointment Date\n")
                 drawAppointment = true
             }
             
         }
         
-        // NEED TO CHANGE THE WAY TASK AND JOURNAL DATES ARE STORED IN DATABASE
         for task in taskList{
             let taskDate = formatter.stringFromDate(task.dateCreated)
-//            print("Task String From Date: \(taskDate)")
             
             if taskDate == (cellDate){
-//                print("\nCell Date == Task Date\n")
                 drawTask = true
             }
         }
         
         for journal in journalList{
             let journalDate = formatter.stringFromDate(journal.journalDate)
-//            print("Journal String From Date: \(journalDate)")
             
             if journalDate == (cellDate){
-//                print("\nCell Date == Journal Date\n")
                 drawJournal = true
             }
         }
         
     }
     
-    func configureTextColor(cellState:CellState){
+    func configureTextColor(cellState: CellState){
+        
         if cellState.dateBelongsTo == .ThisMonth{
-            
             // Change text and circle color.
-            dayLabel.textColor = normalDayColor
+            dayLabel.textColor = UIColor.whiteColor()
             
             // Allow the cell to be clicked
             self.userInteractionEnabled = true
@@ -91,7 +83,7 @@ class CalendarCell: JTAppleDayCellView{
         }
         else{
             // Change text and circle color.
-            dayLabel.textColor = weekendDayColor
+            dayLabel.textColor = UIColor.lightGrayColor()
             
             // Prevent the cell from being clicked
             self.userInteractionEnabled = false
@@ -99,17 +91,16 @@ class CalendarCell: JTAppleDayCellView{
             // Hide the cell
             self.hidden = true
         }
-    }
-    
-    func configureCircleColor(){
-        if self.isSelected == true{
-            // If user clicks the date cell color it orange
-            fillColorForCircle = UIColor.orangeColor()
+        
+        if cellState.column() == 0 || cellState.column() == 6{
+            isWeekend = true
         }
         else{
-            // Otherwise color it purple
-            fillColorForCircle = UIColor.purpleColor()
+            isWeekday = true
         }
+    }
+    
+    func updateCircleColor(){
         setNeedsDisplay()
     }
     
@@ -117,6 +108,27 @@ class CalendarCell: JTAppleDayCellView{
     override func drawRect(rect: CGRect) {
         // Draw a circle around the day of the calendar.
         let path = UIBezierPath(ovalInRect: CGRect(x: 22.5 , y: 50 , width: 100, height: 100))
+        
+        // If the cell has not been selected yet
+        if self.isWeekend == true{
+            fillColorForCircle = weekendDotColor
+        }
+        else{
+            fillColorForCircle = weekdayDotColor
+        }
+        
+        // If cell has been selected
+        if self.isSelected == true{
+            fillColorForCircle = UIColor.orangeColor()
+        }
+        else{
+            if self.isWeekday{
+                fillColorForCircle = weekdayDotColor
+            }
+            else{
+                fillColorForCircle = weekendDotColor
+            }
+        }
         fillColorForCircle.setFill()
         path.fill()
         

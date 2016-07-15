@@ -12,9 +12,9 @@
             <rect key="frame" x="0.0" y="0.0" width="1000" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kSi-Rp-DEx">
-                    <rect key="frame" x="0.0" y="127" width="1000" height="25.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kSi-Rp-DEx">
+                    <rect key="frame" x="0.0" y="127" width="1000" height="32.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <color key="highlightedColor" red="0.072403602302074432" green="0.55472522974014282" blue="0.85381525754928589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8GJ-dg-0Nc">
@@ -22,7 +22,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="43" id="N7W-iI-Oil"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="32"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

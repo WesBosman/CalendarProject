@@ -31,6 +31,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.calendarView.registerCellViewXib(fileName: "CellView")
         self.calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
         self.calendarView.cellSnapsToEdge = true
+        self.calendarView.scrollEnabled = true
+        self.calendarView.direction = .Horizontal
         
         // This eliminates seperation between cells.
         self.calendarView.cellInset = CGPoint(x: 3, y: 3)
@@ -77,7 +79,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         let calendarCell = (cell as! CalendarCell)
         calendarCell.isSelected = true
-        calendarCell.configureCircleColor()
+        calendarCell.updateCircleColor()
 //        calendarCell.layer.backgroundColor = UIColor.whiteColor().CGColor
     }
     
@@ -86,7 +88,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         let calendarCell = (cell as! CalendarCell)
         calendarCell.isSelected = false
-        calendarCell.configureCircleColor()
+        calendarCell.updateCircleColor()
     }
     
     // MARK - Header Methods
