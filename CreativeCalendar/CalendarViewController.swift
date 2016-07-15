@@ -47,13 +47,12 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.calendarView.layer.insertSublayer(background, atIndex: 0)
-
+        
     }
     
     // Failable Initializer for tab bar controller
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         // Initialize Tab Bar Item
         tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
     }

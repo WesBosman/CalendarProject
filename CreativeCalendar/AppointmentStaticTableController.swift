@@ -208,6 +208,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     func endDatePickerDidChange(){
         let date = calcNotificationTime(appointmentEndDate.date)
         endDate = date
+        endingTimeDetailLabel.text = dateFormat.stringFromDate(endDate!)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -107,8 +107,8 @@ class CalendarCell: JTAppleDayCellView{
             fillColorForCircle = UIColor.orangeColor()
         }
         else{
-            // Otherwise color it brown
-            fillColorForCircle = UIColor.brownColor()
+            // Otherwise color it purple
+            fillColorForCircle = UIColor.purpleColor()
         }
         setNeedsDisplay()
     }
