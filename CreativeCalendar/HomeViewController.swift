@@ -207,7 +207,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 self.db.updateTask(task)
             } ))
             
-            // If no is clicked make the image a sepia toned image
             alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
@@ -255,6 +254,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 self.db.updateAppointment(appointment)
                 
             } ))
+            alert.addAction(UIAlertAction(title: "Do Nothing", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+                // Essentially do nothing.
+            }))
             // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
 

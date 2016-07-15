@@ -21,6 +21,7 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var dotWidth: CGFloat = 15.0
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
+    @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
     private var fillColorForCircle: UIColor = UIColor.clearColor()
     private var drawAppointment:Bool = false
     private var drawTask:Bool = false
@@ -119,7 +120,7 @@ class CalendarCell: JTAppleDayCellView{
         
         // If cell has been selected
         if self.isSelected == true{
-            fillColorForCircle = UIColor.orangeColor()
+            fillColorForCircle = selectedDotColor
         }
         else{
             if self.isWeekday{
