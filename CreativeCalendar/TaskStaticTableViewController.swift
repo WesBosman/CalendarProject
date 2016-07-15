@@ -24,12 +24,12 @@ class TaskStaticTableViewController: UITableViewController {
     @IBAction func saveTaskPressed(sender: AnyObject) {
         // Make sure there is atleast a task title in order to let the user save the task
         let current = NSDate()
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
-        let dateString = dateFormat.stringFromDate(current)
+//        let dateFormat = NSDateFormatter()
+//        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+//        let dateString = dateFormat.stringFromDate(current)
         
         if (!taskNameTextField.text!.isEmpty){
-            let taskItem = TaskItem(dateMade: dateString,
+            let taskItem = TaskItem(dateMade: current,
                                     title: taskNameTextField.text!,
                                     info: taskAdditionalInfoTextBox.text!,
                                     completed: false,
@@ -42,7 +42,7 @@ class TaskStaticTableViewController: UITableViewController {
                 db.addToTaskDatabase(taskItem)
             }
             else{
-                let newTaskItem = TaskItem(dateMade: dateString,
+                let newTaskItem = TaskItem(dateMade: current,
                                            title: taskItem.taskTitle,
                                            info: "",
                                            completed: false,

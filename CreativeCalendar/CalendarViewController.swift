@@ -4,7 +4,6 @@
 //
 //  Created by Wes Bosman on 6/29/16.
 //  Copyright © 2016 Wes Bosman. All rights reserved.
-//  Followed Tutorial by Michael Michailidis
 
 import UIKit
 import JTAppleCalendar
@@ -21,6 +20,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var startDate:NSDate = NSDate()
     var endDate:NSDate = NSDate()
     var weekdayLabel:String = String()
+    var thisMonth: String = String()
+    let thisDay: String = String()
+    let thisYear:String = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +30,23 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.calendarView.dataSource = self
         self.calendarView.registerCellViewXib(fileName: "CellView")
         self.calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
-        self.calendarView.backgroundColor = UIColor(red: 0.0, green: 128/255.0, blue: 200/255.0, alpha: 1.0)
+        self.calendarView.cellSnapsToEdge = true
         
         // This eliminates seperation between cells.
-        self.calendarView.cellInset = CGPoint(x: 5, y: 5)
+        self.calendarView.cellInset = CGPoint(x: 3, y: 3)
         
         // The size of the cells in the calendar view
-//        self.calendarView.itemSize = 150
+        self.calendarView.itemSize = 150
         
         components.month = 3
         formatter.dateFormat = "yyyy MM dd"
         startDate = formatter.dateFromString("2016 07 01")!
         endDate = userCalendar.dateByAddingComponents(components, toDate: startDate, options: [])!
+        
+        // Set up background gradient
+        let background = CAGradientLayer().makeGradientBackground()
+        background.frame = self.view.bounds
+        self.calendarView.layer.insertSublayer(background, atIndex: 0)
 
     }
     
@@ -62,7 +69,25 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Is about to display cell calls set up before display from cell
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplayCell cell: JTAppleDayCellView, date: NSDate, cellState: CellState) {
+        
         (cell as! CalendarCell).setUpCellBeforeDisplay(cellState, date:date)
+    }
+    
+    // Function for when the cell has been selected
+    func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
+        
+        let calendarCell = (cell as! CalendarCell)
+        calendarCell.isSelected = true
+        calendarCell.configureCircleColor()
+//        calendarCell.layer.backgroundColor = UIColor.whiteColor().CGColor
+    }
+    
+    // Funcrion for when the cell has been deselected
+    func calendar(calendar: JTAppleCalendarView, didDeselectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
+        
+        let calendarCell = (cell as! CalendarCell)
+        calendarCell.isSelected = false
+        calendarCell.configureCircleColor()
     }
     
     // MARK - Header Methods
@@ -114,12 +139,5 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         header?.bottomLabel.font = UIFont(name: "Helvetica", size: 14.0)
 
     }
-    
-    func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
-        let calendarCell = (cell as! CalendarCell)
-        calendarCell.layer.backgroundColor = UIColor.whiteColor().CGColor
-    }
-    
-    
     
 }

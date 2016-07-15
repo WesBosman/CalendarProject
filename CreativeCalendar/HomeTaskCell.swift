@@ -12,7 +12,6 @@ class HomeTaskCell: UITableViewCell {
     @IBOutlet weak var uncheckedTaskImage: UIImageView!
     @IBOutlet weak var homeTaskTitle: UILabel!
     @IBOutlet weak var homeTaskInfo: UILabel!
-//    var taskArray = DatabaseFunctions.sharedInstance.getAllTasks()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,12 +20,6 @@ class HomeTaskCell: UITableViewCell {
         homeTaskTitle.numberOfLines = 0
         homeTaskInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
         homeTaskInfo.numberOfLines = 0
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     func taskCompleted(t: TaskItem){

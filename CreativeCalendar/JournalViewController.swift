@@ -30,6 +30,12 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         let barColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
         nav?.barTintColor = barColor
         nav?.tintColor = UIColor.blueColor()
+        
+        // Set up background gradient
+        let background = CAGradientLayer().makeGradientBackground()
+        background.frame = self.view.bounds
+        self.view.layer.insertSublayer(background, atIndex: 0)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,20 +45,19 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
         journalText = textView.text
-//        print("Text View Did End Editing")
-//        print(journalText)
     }
 
     
     // When the save button is clicked pass the information to a journal item.
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
         date = NSDate()
-        dateFormat.dateFormat = "EEEE, MMMM dd, yyyy - hh:mm:ss"
-        let currentDate = dateFormat.stringFromDate(date)
+        
+//        dateFormat.dateFormat = "EEEE, MMMM dd, yyyy - hh:mm:ss"
+//        let currentDate = dateFormat.stringFromDate(date)
+        
         journalText = journalTextBox.text
         
-        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: currentDate)
-//        JournalItemList.sharedInstance.addItem(journalItem)
+        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date)
         
         let db = DatabaseFunctions.sharedInstance
         db.addToJournalDatabase(journalItem)

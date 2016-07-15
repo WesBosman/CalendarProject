@@ -202,23 +202,6 @@ class AppointmentTableViewController: UITableViewController{
     
     }
     
-    
-    // Override to support editing the table view.
-//    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        if editingStyle == .Delete {
-//            // Delete the row from the data source
-//            let itemToDelete = appointmentList.removeAtIndex(indexPath.row)
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-//            
-//            //Delete from database
-//            db.deleteAppointmentAndNotification("Appointments", item: itemToDelete)
-//            
-//            self.navigationItem.rightBarButtonItem?.enabled = true
-//        }
-//        
-//    }
-
-    
     // MARK: - Navigation
     /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation

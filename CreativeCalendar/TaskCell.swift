@@ -15,8 +15,6 @@ class TaskCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-//        self.taskImage.image = UIImage(named:"uncheckbox")
-        
+        // Initialization code        
     }
 }

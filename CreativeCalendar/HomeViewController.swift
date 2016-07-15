@@ -14,6 +14,28 @@
 
 import UIKit
 
+// Dates are getting formatted so much I might as well make my own extension
+extension NSDateFormatter{
+    func universalFormatter() -> NSDateFormatter{
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+        return dateFormatter
+    }
+}
+
+// This extension is for making a background gradient
+extension CAGradientLayer{
+    func makeGradientBackground() -> CAGradientLayer{
+        let gradientBackground = CAGradientLayer()
+        let lightTopColor = UIColor(red: (102/255.0), green: (204/255.0), blue: (255/255.0), alpha: 1.0).CGColor
+        let darkBottomColor = UIColor(red: (0/255.0), green: (128/255.0), blue: (200/255.0), alpha: 1.0).CGColor
+        gradientBackground.colors = [lightTopColor, darkBottomColor]
+        gradientBackground.locations = [0.0, 1.0]
+//        gradientBackground.zPosition = -1
+        return gradientBackground
+    }
+}
+
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
@@ -36,7 +58,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set color and text of the text labels
-        
         //clearAllUserDefaults()
         appointmentLabel.text = "Appointments"
         appointmentLabel.textColor = UIColor.whiteColor()
@@ -53,9 +74,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         homeDateLabel.text = todaysDate
         homeDateLabel.textColor = UIColor.whiteColor()
         
+        
+        let background = CAGradientLayer().makeGradientBackground()
+        background.frame = self.view.bounds
+        self.view.layer.insertSublayer(background, atIndex: 0)
+        
         /*
          Could be a method to make the days of the week look pretty. Not very high priority.
-         
         var todaysSubString = todaysDate as NSString
         todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
         switch todaysSubString{
@@ -90,7 +115,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             
         }
         print(todaysSubString)
-         */
+        */
         
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
@@ -114,7 +139,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     
     // Clear all NSUser Defaults
 //    func clearAllUserDefaults(){
-//        // The below two lines of code can clear out NSUser Defaults
+//        //The below two lines of code can clear out NSUser Defaults
 //        let appDomain = NSBundle.mainBundle().bundleIdentifier!
 //        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
 //    }
@@ -146,7 +171,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()
-        
     }
 
     override func didReceiveMemoryWarning() {

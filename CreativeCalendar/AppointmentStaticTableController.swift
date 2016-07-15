@@ -32,7 +32,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     let db = DatabaseFunctions.sharedInstance
     var startDate:NSDate? = nil
     var endDate: NSDate? = nil
-    var otherTextString: String = ""
+    var otherTextString: String = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,36 +194,20 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         dateFormat.dateStyle = NSDateFormatterStyle.LongStyle
         dateFormat.timeStyle = .MediumStyle
         dateFormat.dateFormat = "MM/dd/yyyy h:mm a"
-        
         let stringFromDate = dateFormat.stringFromDate(date)
         let dateFromString = dateFormat.dateFromString(stringFromDate)!
-//        let stringFromDateAgain = dateFormat.stringFromDate(dateFromString)
-//        print("String From Date: \(stringFromDate)")
-//        print("Date From String: \(dateFromString)")
-//        print("String From Date Again: \(stringFromDateAgain)")
-        
         return dateFromString
     }
     
     func startDatePickerDidChange(){
         let date = calcNotificationTime(appointmentStartDate.date)
         startDate = date
-//        print("START DATE: \(startDate!)")
-//        print("START DATE AS STRING: \(dateFormat.stringFromDate(date))")
         startingTimeDetailLabel.text = dateFormat.stringFromDate(startDate!)
-
-//        print("Appointment Start Date: \(appointmentStartDate.date)")
-        
     }
     
     func endDatePickerDidChange(){
         let date = calcNotificationTime(appointmentEndDate.date)
         endDate = date
-//        print("END DATE: \(endDate)")
-//        print("END DATE AS STRING: \(dateFormat.stringFromDate(date))")
-        endingTimeDetailLabel.text = dateFormat.stringFromDate(endDate!)
-
-//        print("Appointment End Date: \(appointmentEndDate.date)")
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

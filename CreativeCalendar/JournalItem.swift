@@ -10,11 +10,11 @@
 import Foundation
 
 class JournalItem{
-    var journalEntry: String = ""
-    var journalUUID: String = ""
-    var journalDate: String = ""
+    var journalEntry: String = String()
+    var journalUUID: String = String()
+    var journalDate: NSDate = NSDate()
     
-    init(journal: String, UUID: String, date: String){
+    init(journal: String, UUID: String, date: NSDate){
         self.journalEntry = journal
         self.journalUUID = UUID
         self.journalDate = date
@@ -22,14 +22,10 @@ class JournalItem{
     
     // Get a simplified date that does not contain the hours and seconds
     func getSimplifiedDate() -> String{
-        var newMatchDate:String
-        if let range = journalDate.characters.indexOf("-"){
-            newMatchDate = self.journalDate.substringToIndex(range)
-            print("New Match Date: \(newMatchDate)")
-            return newMatchDate
-        }
-        else{
-            return ""
-        }
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "EEEE, MMMM dd, yyyy"
+        let journalStringForDate = dateFormat.stringFromDate(journalDate)
+        print("Journal String For Date: \(journalStringForDate)")
+        return journalStringForDate
     }
 }
