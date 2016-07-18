@@ -18,9 +18,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var calendarStartDate:NSDate = NSDate()
     var calendarEndDate:NSDate = NSDate()
     var weekdayLabel:String = String()
-    var thisMonth: String = String()
-    let thisDay: String = String()
-    let thisYear:String = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +28,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.calendarView.cellSnapsToEdge = true
         self.calendarView.scrollEnabled = true
         self.calendarView.direction = .Vertical
-        self.calendarView.pagingEnabled = true
+        self.calendarView.pagingEnabled = false
         
         // This eliminates seperation between cells.
         self.calendarView.cellInset = CGPoint(x: 0, y: 0)
@@ -43,6 +40,11 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.calendarView.layer.insertSublayer(background, atIndex: 0)
+        
+        // Select the current date
+        calendarView.reloadData() {
+            self.calendarView.selectDates([NSDate()])
+        }
         
     }
     
@@ -62,8 +64,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         formatter.dateFormat = "yyyy MM dd"
         calendarStartDate = formatter.dateFromString("2016 07 01")!
         calendarEndDate = userCalendar.dateByAddingComponents(components, toDate: calendarStartDate, options: [])!
-        print("Calendar Start Date \(calendarStartDate)")
-        print("Calendar End Date \(calendarEndDate)")
+//        print("Calendar Start Date \(calendarStartDate)")
+//        print("Calendar End Date \(calendarEndDate)")
         
         return(startDate: calendarStartDate, endDate: calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
     }
@@ -71,52 +73,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     // Is about to display cell calls set up before display from cell
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplayCell cell: JTAppleDayCellView, date: NSDate, cellState: CellState) {
         
-        (cell as! CalendarCell).setUpCellBeforeDisplay(cellState)
-        // Get all the scheduled appointments from the database.
-        let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
-        let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
-        let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
+        let calendarCell = cell as! CalendarCell
+        calendarCell.setUpCellBeforeDisplay(cellState)
         
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        let cellDate = formatter.stringFromDate(cellState.date)
-        
-//        print("Cell Date: \(cellDate)")
-        
-        for app in appointmentList{
-            let appointmentDate = formatter.stringFromDate(app.startingTime)
-            
-            if appointmentDate == (cellDate){
-                print("AppointmentDate: \(appointmentDate)")
-                    (cell as! CalendarCell).drawAppointment = true
-            }
-            
-        }
-        
-        for task in taskList{
-            let taskDate = formatter.stringFromDate(task.dateCreated)
-            
-            if taskDate == (cellDate){
-                print("Task Date: \(taskDate)")
-                (cell as! CalendarCell).drawTask = true
-            }
-        }
-        
-        for journal in journalList{
-            let journalDate = formatter.stringFromDate(journal.journalDate)
-            
-            if journalDate == (cellDate){
-                print("Journal Date: \(journalDate)")
-                (cell as! CalendarCell).drawJournal = true
-            }
-        }
-        
-        if cellState.column() == 0 || cellState.column() == 6{
-            (cell as! CalendarCell).isWeekend = true
-        }
-        else{
-            (cell as! CalendarCell).isWeekday = true
-        }
     }
     
     // Function for when the cell has been selected
@@ -127,7 +86,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarCell.updateCircleColor()
     }
     
-    // Funcrion for when the cell has been deselected
+    // Function for when the cell has been deselected
     func calendar(calendar: JTAppleCalendarView, didDeselectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
         
         let calendarCell = (cell as! CalendarCell)
@@ -170,8 +129,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         header?.bottomLabel.font = UIFont(name: "Helvetica", size: 14.0)
     }
     
-//    func calendar(calendar: JTAppleCalendarView, didScrollToDateSegmentStartingWithdate startDate: NSDate, endingWithDate endDate: NSDate) {
-//
-//    }
+    func calendar(calendar: JTAppleCalendarView, didScrollToDateSegmentStartingWithdate startDate: NSDate, endingWithDate endDate: NSDate) {
+        print("Calendar boundaries: \(calendarView.currentCalendarDateSegment())")
+    }
     
 }

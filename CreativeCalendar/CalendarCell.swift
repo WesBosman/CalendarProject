@@ -31,47 +31,54 @@ class CalendarCell: JTAppleDayCellView{
     var isSelected = false
     
     func setUpCellBeforeDisplay(cellState: CellState){
+        // Set the label for the date of the cell
         dayLabel.text = cellState.text
+        // Set up the colors for the date of the cell
         configureTextColor(cellState)
+        // Set up the dots for the cell
+        setUpCellDots(cellState)
         
-//        // Get all the scheduled appointments from the database.
-//        let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
-//        let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
-//        let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
-//        
-//        let formatter = NSDateFormatter()
-//        formatter.dateFormat = "MM/dd/yyyy"
-//        let cellDate = formatter.stringFromDate(cellState.date)
-//        
-//        print("Cell Date: \(cellDate)")
-//        
-//        for app in appointmentList{
-//            let appointmentDate = formatter.stringFromDate(app.startingTime)
-//            
-//            if appointmentDate == (cellDate){
-//                print("AppointmentDate: \(appointmentDate)")
-//                drawAppointment = true
-//            }
-//            
-//        }
-//        
-//        for task in taskList{
-//            let taskDate = formatter.stringFromDate(task.dateCreated)
-//            
-//            if taskDate == (cellDate){
-//                print("Task Date: \(taskDate)")
-//                drawTask = true
-//            }
-//        }
-//        
-//        for journal in journalList{
-//            let journalDate = formatter.stringFromDate(journal.journalDate)
-//            
-//            if journalDate == (cellDate){
-//                print("Journal Date: \(journalDate)")
-//                drawJournal = true
-//            }
-//        }        
+    }
+    
+    func setUpCellDots(cellState: CellState){
+        // Get all the scheduled appointments from the database.
+        let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
+        let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
+        let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        let cellDate = formatter.stringFromDate(cellState.date)
+        
+        print("Cell Date: \(cellDate)")
+        
+        for app in appointmentList{
+            let appointmentDate = formatter.stringFromDate(app.startingTime)
+            
+            if appointmentDate == (cellDate){
+                print("AppointmentDate: \(appointmentDate)")
+                drawAppointment = true
+            }
+        }
+        
+        for task in taskList{
+            let taskDate = formatter.stringFromDate(task.dateCreated)
+            
+            if taskDate == (cellDate){
+                print("Task Date: \(taskDate)")
+                drawTask = true
+            }
+        }
+        
+        for journal in journalList{
+            let journalDate = formatter.stringFromDate(journal.journalDate)
+            
+            if journalDate == (cellDate){
+                print("Journal Date: \(journalDate)")
+                drawJournal = true
+            }
+        }
+
     }
     
     func configureTextColor(cellState: CellState){
@@ -85,6 +92,7 @@ class CalendarCell: JTAppleDayCellView{
             
             // Dont hide the cell
             self.hidden = false
+            
         }
         else{
             // Change text and circle color.
@@ -97,13 +105,12 @@ class CalendarCell: JTAppleDayCellView{
             self.hidden = true
         }
         
-//        if cellState.column() == 0 || cellState.column() == 6{
-//            isWeekend = true
-//        }
-//        else{
-//            isWeekday = true
-//        }
-        
+        if cellState.column() == 0 || cellState.column() == 6{
+            isWeekend = true
+        }
+        else{
+            isWeekday = true
+        }
         
     }
     
