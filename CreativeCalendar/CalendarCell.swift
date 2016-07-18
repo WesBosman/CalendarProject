@@ -22,52 +22,56 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
     @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
-    private var fillColorForCircle: UIColor = UIColor.clearColor()
-    private var drawAppointment:Bool = false
-    private var drawTask:Bool = false
-    private var drawJournal:Bool = false
-    private var isWeekend = false
-    private var isWeekday = false
+    var fillColorForCircle: UIColor = UIColor.clearColor()
+    var drawAppointment:Bool = false
+    var drawTask:Bool = false
+    var drawJournal:Bool = false
+    var isWeekend = false
+    var isWeekday = false
     var isSelected = false
     
-    func setUpCellBeforeDisplay(cellState: CellState, date: NSDate){
+    func setUpCellBeforeDisplay(cellState: CellState){
         dayLabel.text = cellState.text
         configureTextColor(cellState)
         
-        // Get all the scheduled appointments from the database.
-        let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
-        let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
-        let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
-        
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        let cellDate = formatter.stringFromDate(date)
-        
-        for app in appointmentList{
-            let appointmentDate = formatter.stringFromDate(app.startingTime)
-            
-            if appointmentDate == (cellDate){
-                drawAppointment = true
-            }
-            
-        }
-        
-        for task in taskList{
-            let taskDate = formatter.stringFromDate(task.dateCreated)
-            
-            if taskDate == (cellDate){
-                drawTask = true
-            }
-        }
-        
-        for journal in journalList{
-            let journalDate = formatter.stringFromDate(journal.journalDate)
-            
-            if journalDate == (cellDate){
-                drawJournal = true
-            }
-        }
-        
+//        // Get all the scheduled appointments from the database.
+//        let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
+//        let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
+//        let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
+//        
+//        let formatter = NSDateFormatter()
+//        formatter.dateFormat = "MM/dd/yyyy"
+//        let cellDate = formatter.stringFromDate(cellState.date)
+//        
+//        print("Cell Date: \(cellDate)")
+//        
+//        for app in appointmentList{
+//            let appointmentDate = formatter.stringFromDate(app.startingTime)
+//            
+//            if appointmentDate == (cellDate){
+//                print("AppointmentDate: \(appointmentDate)")
+//                drawAppointment = true
+//            }
+//            
+//        }
+//        
+//        for task in taskList{
+//            let taskDate = formatter.stringFromDate(task.dateCreated)
+//            
+//            if taskDate == (cellDate){
+//                print("Task Date: \(taskDate)")
+//                drawTask = true
+//            }
+//        }
+//        
+//        for journal in journalList{
+//            let journalDate = formatter.stringFromDate(journal.journalDate)
+//            
+//            if journalDate == (cellDate){
+//                print("Journal Date: \(journalDate)")
+//                drawJournal = true
+//            }
+//        }        
     }
     
     func configureTextColor(cellState: CellState){
@@ -93,12 +97,14 @@ class CalendarCell: JTAppleDayCellView{
             self.hidden = true
         }
         
-        if cellState.column() == 0 || cellState.column() == 6{
-            isWeekend = true
-        }
-        else{
-            isWeekday = true
-        }
+//        if cellState.column() == 0 || cellState.column() == 6{
+//            isWeekend = true
+//        }
+//        else{
+//            isWeekday = true
+//        }
+        
+        
     }
     
     func updateCircleColor(){

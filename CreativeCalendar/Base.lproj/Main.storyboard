@@ -1728,7 +1728,9 @@
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="bottom" secondItem="cmn-uo-km8" secondAttribute="top" id="BKE-Oh-Nbz"/>
+                            <constraint firstItem="HjC-Xe-VBZ" firstAttribute="bottom" secondItem="cmn-uo-km8" secondAttribute="top" id="BKE-Oh-Nbz">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                            </constraint>
                             <constraint firstAttribute="trailing" secondItem="HjC-Xe-VBZ" secondAttribute="trailing" id="OxF-zP-pqe"/>
                             <constraint firstItem="HjC-Xe-VBZ" firstAttribute="leading" secondItem="cOT-II-une" secondAttribute="leading" id="VQz-Yn-NRJ"/>
                             <constraint firstItem="HjC-Xe-VBZ" firstAttribute="top" secondItem="cOT-II-une" secondAttribute="top" id="czQ-f6-aLc"/>
