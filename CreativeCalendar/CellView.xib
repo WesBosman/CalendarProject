@@ -34,7 +34,7 @@
             <connections>
                 <outlet property="dayLabel" destination="98W-Ry-PHC" id="jgU-Qs-JH2"/>
             </connections>
-            <point key="canvasLocation" x="710.5" y="111.5"/>
+            <point key="canvasLocation" x="601" y="144"/>
         </view>
     </objects>
 </document>

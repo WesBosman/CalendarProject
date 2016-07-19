@@ -27,14 +27,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.calendarView.dataSource = self
         self.calendarView.cellSnapsToEdge = true
         self.calendarView.scrollEnabled = true
-        self.calendarView.direction = .Vertical
+        self.calendarView.direction = .Horizontal
         self.calendarView.pagingEnabled = false
         
         // This eliminates seperation between cells.
         self.calendarView.cellInset = CGPoint(x: 0, y: 0)
         
         // The size of the cells in the calendar view
-//        self.calendarView.itemSize = 150
+        self.calendarView.itemSize = 150
+        // Smaller cells seem to be the right color?
         
         // Set up background gradient
         let background = CAGradientLayer().makeGradientBackground()
@@ -126,7 +127,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
         
         header?.bottomLabel.text = weekdayString
-        header?.bottomLabel.font = UIFont(name: "Helvetica", size: 14.0)
+        header?.bottomLabel.font = UIFont(name: "Helvetica", size: 15.0)
     }
     
     func calendar(calendar: JTAppleCalendarView, didScrollToDateSegmentStartingWithdate startDate: NSDate, endingWithDate endDate: NSDate) {

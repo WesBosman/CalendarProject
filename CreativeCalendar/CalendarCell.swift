@@ -29,6 +29,7 @@ class CalendarCell: JTAppleDayCellView{
     var isWeekend = false
     var isWeekday = false
     var isSelected = false
+    let formatter = NSDateFormatter()
     
     func setUpCellBeforeDisplay(cellState: CellState){
         // Set the label for the date of the cell
@@ -45,12 +46,10 @@ class CalendarCell: JTAppleDayCellView{
         let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
         let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
         let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
-        
-        let formatter = NSDateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         let cellDate = formatter.stringFromDate(cellState.date)
         
-        print("Cell Date: \(cellDate)")
+//        print("Cell Date: \(cellDate)")
         
         for app in appointmentList{
             let appointmentDate = formatter.stringFromDate(app.startingTime)
@@ -93,6 +92,8 @@ class CalendarCell: JTAppleDayCellView{
             // Dont hide the cell
             self.hidden = false
             
+            weekdayOrWeekend(cellState)
+            
         }
         else{
             // Change text and circle color.
@@ -104,6 +105,9 @@ class CalendarCell: JTAppleDayCellView{
             // Hide the cell
             self.hidden = true
         }
+    }
+    
+    func weekdayOrWeekend(cellState: CellState){
         
         if cellState.column() == 0 || cellState.column() == 6{
             isWeekend = true
@@ -111,7 +115,7 @@ class CalendarCell: JTAppleDayCellView{
         else{
             isWeekday = true
         }
-        
+
     }
     
     func updateCircleColor(){
