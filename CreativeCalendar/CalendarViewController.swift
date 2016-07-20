@@ -19,28 +19,30 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var calendarEndDate:NSDate = NSDate()
     var weekdayLabel:String = String()
     
+    @IBOutlet weak var appointmentFooterLabel: UILabel!
+    @IBOutlet weak var taskFooterLabel: UILabel!
+    @IBOutlet weak var journalFooterLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.calendarView.registerCellViewXib(fileName: "CellView")
-        self.calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
-        self.calendarView.delegate = self
-        self.calendarView.dataSource = self
-        self.calendarView.cellSnapsToEdge = true
-        self.calendarView.scrollEnabled = true
-        self.calendarView.direction = .Horizontal
-        self.calendarView.pagingEnabled = false
+        calendarView.registerCellViewXib(fileName: "CellView")
+        calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
+        calendarView.delegate = self
+        calendarView.dataSource = self
+        calendarView.cellSnapsToEdge = true
+        calendarView.direction = .Horizontal
         
         // This eliminates seperation between cells.
-        self.calendarView.cellInset = CGPoint(x: 0, y: 0)
+        calendarView.cellInset = CGPoint(x: 0, y: 0)
         
         // The size of the cells in the calendar view
-        self.calendarView.itemSize = 150
+//        calendarView.itemSize = 80
         // Smaller cells seem to be the right color?
         
         // Set up background gradient
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
-        self.calendarView.layer.insertSublayer(background, atIndex: 0)
+        calendarView.layer.insertSublayer(background, atIndex: 0)
         
         // Select the current date
         calendarView.reloadData() {
@@ -62,8 +64,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         let numberOfRows = 6
         components.month = 3
-        formatter.dateFormat = "yyyy MM dd"
-        calendarStartDate = formatter.dateFromString("2016 07 01")!
+        formatter.dateFormat = "MM/dd/yyyy"
+        calendarStartDate = formatter.dateFromString("07/01/2016")!
         calendarEndDate = userCalendar.dateByAddingComponents(components, toDate: calendarStartDate, options: [])!
 //        print("Calendar Start Date \(calendarStartDate)")
 //        print("Calendar End Date \(calendarEndDate)")
@@ -83,6 +85,18 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
         
         let calendarCell = (cell as! CalendarCell)
+        formatter.dateFormat = "MM/dd/yyyy"
+        let stringDate = formatter.stringFromDate(cellState.date)
+        print("String Date: \(stringDate)")
+        let appointmentLbl = calendarCell.appointmentDictionary[stringDate]
+        let taskLbl = calendarCell.taskDictionary[stringDate]
+        let journalLbl = calendarCell.journalDictionary[stringDate]
+
+        print("Appointment footer: \(appointmentLbl)")
+        appointmentFooterLabel.text = appointmentLbl
+        taskFooterLabel.text = taskLbl
+        journalFooterLabel.text = journalLbl
+        
         calendarCell.isSelected = true
         calendarCell.updateCircleColor()
     }
@@ -108,7 +122,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Size of the header view
     func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate date: (startDate: NSDate, endDate: NSDate)) -> CGSize {
-        return CGSize(width: 600.0, height: 150.0)
+        return CGSize(width: 600.0, height: 175.0)
     }
     
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, date: (startDate: NSDate, endDate: NSDate), identifier: String) {
@@ -127,7 +141,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
         
         header?.bottomLabel.text = weekdayString
-        header?.bottomLabel.font = UIFont(name: "Helvetica", size: 15.0)
+        header?.bottomLabel.font = UIFont(name: "Helvetica", size: 14.0)
     }
     
     func calendar(calendar: JTAppleCalendarView, didScrollToDateSegmentStartingWithdate startDate: NSDate, endingWithDate endDate: NSDate) {

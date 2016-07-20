@@ -12,8 +12,8 @@
             <rect key="frame" x="0.0" y="0.0" width="1000" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kSi-Rp-DEx">
-                    <rect key="frame" x="0.0" y="127" width="1000" height="32.5"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kSi-Rp-DEx">
+                    <rect key="frame" x="0.0" y="106" width="1000" height="54"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <color key="highlightedColor" red="0.072403602302074432" green="0.55472522974014282" blue="0.85381525754928589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </label>
@@ -29,17 +29,19 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="8GJ-dg-0Nc" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" constant="8" id="0Zd-T7-nhR"/>
-                <constraint firstItem="kSi-Rp-DEx" firstAttribute="top" secondItem="8GJ-dg-0Nc" secondAttribute="bottom" constant="34" id="0cR-hO-gFl"/>
+                <constraint firstItem="kSi-Rp-DEx" firstAttribute="trailing" secondItem="8GJ-dg-0Nc" secondAttribute="trailing" id="2Ec-Cg-evE"/>
                 <constraint firstItem="8GJ-dg-0Nc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-8" id="D9F-QR-f6R"/>
+                <constraint firstAttribute="bottom" secondItem="kSi-Rp-DEx" secondAttribute="bottom" constant="40" id="Ki0-fM-Zyl"/>
                 <constraint firstItem="8GJ-dg-0Nc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="SiP-Oj-Xje"/>
-                <constraint firstItem="8GJ-dg-0Nc" firstAttribute="trailing" secondItem="kSi-Rp-DEx" secondAttribute="trailing" id="aXz-oh-WnQ"/>
-                <constraint firstItem="8GJ-dg-0Nc" firstAttribute="leading" secondItem="kSi-Rp-DEx" secondAttribute="leading" id="okl-Tu-EoP"/>
+                <constraint firstItem="kSi-Rp-DEx" firstAttribute="top" secondItem="8GJ-dg-0Nc" secondAttribute="bottom" constant="13" id="fMU-Vv-d1e"/>
+                <constraint firstItem="kSi-Rp-DEx" firstAttribute="leading" secondItem="8GJ-dg-0Nc" secondAttribute="leading" id="gtW-oa-oFk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bottomLabel" destination="kSi-Rp-DEx" id="ZkO-8x-Gp9"/>
                 <outlet property="topLabel" destination="8GJ-dg-0Nc" id="nX3-mS-Chj"/>
             </connections>
+            <point key="canvasLocation" x="237" y="243"/>
         </view>
     </objects>
 </document>

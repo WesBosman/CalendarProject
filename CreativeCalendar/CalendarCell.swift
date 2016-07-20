@@ -31,6 +31,11 @@ class CalendarCell: JTAppleDayCellView{
     var isSelected = false
     let formatter = NSDateFormatter()
     
+    var appointmentDictionary: Dictionary<String, String> = [:]
+    var taskDictionary: Dictionary<String, String> = [:]
+    var journalDictionary: Dictionary<String, String> = [:]
+
+    
     func setUpCellBeforeDisplay(cellState: CellState){
         // Set the label for the date of the cell
         dayLabel.text = cellState.text
@@ -56,6 +61,10 @@ class CalendarCell: JTAppleDayCellView{
             
             if appointmentDate == (cellDate){
                 print("AppointmentDate: \(appointmentDate)")
+                appointmentDictionary.updateValue(app.title, forKey: appointmentDate)
+//                for (key, value) in appointmentDictionary{
+//                    print("Key: \(key) Value: \(value)")
+//                }
                 drawAppointment = true
             }
         }
@@ -65,6 +74,11 @@ class CalendarCell: JTAppleDayCellView{
             
             if taskDate == (cellDate){
                 print("Task Date: \(taskDate)")
+                taskDictionary.updateValue(task.taskTitle, forKey: taskDate)
+                //                for (key, value) in appointmentDictionary{
+                //                    print("Key: \(key) Value: \(value)")
+                //                }
+
                 drawTask = true
             }
         }
@@ -74,6 +88,11 @@ class CalendarCell: JTAppleDayCellView{
             
             if journalDate == (cellDate){
                 print("Journal Date: \(journalDate)")
+                journalDictionary.updateValue(journal.journalEntry, forKey: journalDate)
+                                for (key, value) in journalDictionary{
+                                    print("Key: \(key) Value: \(value)")
+                                }
+
                 drawJournal = true
             }
         }
@@ -125,7 +144,7 @@ class CalendarCell: JTAppleDayCellView{
     // Draw the view
     override func drawRect(rect: CGRect) {
         // Draw a circle around the day of the calendar.
-        let path = UIBezierPath(ovalInRect: CGRect(x: 22.5 , y: 50 , width: 100, height: 100))
+        let path = UIBezierPath(ovalInRect: CGRect(x: 24 , y: 30 , width: 100, height: 100))
         
         // If the cell has not been selected yet
         if self.isWeekend == true{
@@ -138,6 +157,7 @@ class CalendarCell: JTAppleDayCellView{
         // If cell has been selected
         if self.isSelected == true{
             fillColorForCircle = selectedDotColor
+            self.layer.backgroundColor = UIColor.whiteColor().CGColor
         }
         else{
             if self.isWeekday{
@@ -167,7 +187,7 @@ class CalendarCell: JTAppleDayCellView{
     // MARK - Draw Calendar Cell Dots
     
     func drawAppointmentDot(){
-        let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 35.0, y: 35.0, width: dotWidth, height: dotHeight))
+        let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 35.0, y: 39.0, width: dotWidth, height: dotHeight))
         appointmentColor.setFill()
         appointmentCircle.fill()
         setNeedsDisplay()
@@ -180,7 +200,7 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawJournalDot(){
-        let journalCircle = UIBezierPath(ovalInRect: CGRect(x: 95.0, y: 35.0, width: dotWidth, height: dotHeight))
+        let journalCircle = UIBezierPath(ovalInRect: CGRect(x: 95.0, y: 39.0, width: dotWidth, height: dotHeight))
         journalColor.setFill()
         journalCircle.fill()
     }
