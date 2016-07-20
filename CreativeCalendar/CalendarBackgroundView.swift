@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalendarFooterView: UIView {
+class CalendarBackgroundView: UIView {
 
         @IBInspectable var appointmentColor:UIColor = UIColor.redColor()
         @IBInspectable var taskColor:UIColor = UIColor.yellowColor()
@@ -16,18 +16,26 @@ class CalendarFooterView: UIView {
 
     
         override func drawRect(rect: CGRect){
-            let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 35.0, y: 35.0, width: 25, height: 25))
-            appointmentColor.setFill()
-            appointmentCircle.fill()
+            // Set up background gradient
+            let background = CAGradientLayer().makeGradientBackground()
+            background.frame = self.bounds
+            self.layer.insertSublayer(background, atIndex: 0)
+
+//            
+//            let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y:55, width: 25, height: 25))
+//            appointmentColor.setFill()
+//            appointmentCircle.fill()
+//            
+//            let taskCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y: 75, width: 25, height: 25))
+//            taskColor.setFill()
+//            taskCircle.fill()
+//            
+//            
+//            let journalCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y: 35, width: 25, height: 25))
+//            journalColor.setFill()
+//            journalCircle.fill()
             
-            let taskCircle = UIBezierPath(ovalInRect: CGRect(x: 35.0, y: 85.0, width: 25, height: 25))
-            taskColor.setFill()
-            taskCircle.fill()
             
-            
-            let journalCircle = UIBezierPath(ovalInRect: CGRect(x: 35.0, y: 135.0, width: 25, height: 25))
-            journalColor.setFill()
-            journalCircle.fill()
             
         }
         

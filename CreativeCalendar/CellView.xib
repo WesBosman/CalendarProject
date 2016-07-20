@@ -11,20 +11,28 @@
             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bvi-hC-I8d">
-                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bvi-hC-I8d">
+                    <rect key="frame" x="24" y="24" width="101" height="101"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="98W-Ry-PHC">
-                            <rect key="frame" x="47" y="61.5" width="56" height="27.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="98W-Ry-PHC">
+                            <rect key="frame" x="22" y="36" width="56" height="27.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="23"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="98W-Ry-PHC" firstAttribute="centerY" secondItem="Bvi-hC-I8d" secondAttribute="centerY" id="JA3-Sv-s6K"/>
+                        <constraint firstItem="98W-Ry-PHC" firstAttribute="centerX" secondItem="Bvi-hC-I8d" secondAttribute="centerX" id="asS-Rn-bgk"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Bvi-hC-I8d" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NkN-BS-Ipu"/>
+                <constraint firstItem="Bvi-hC-I8d" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ree-Vu-NtL"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <userDefinedRuntimeAttributes>
@@ -35,7 +43,7 @@
             <connections>
                 <outlet property="dayLabel" destination="98W-Ry-PHC" id="jgU-Qs-JH2"/>
             </connections>
-            <point key="canvasLocation" x="601" y="144"/>
+            <point key="canvasLocation" x="519" y="153"/>
         </view>
     </objects>
 </document>
