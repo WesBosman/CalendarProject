@@ -8,7 +8,8 @@
 import UIKit
 import JTAppleCalendar
 
-class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource{
+
+class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
     
@@ -19,6 +20,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var calendarEndDate:NSDate = NSDate()
     var weekdayLabel:String = String()
     var numberOfRows = 6
+    var selectedCell:CalendarCell = CalendarCell()
     
     @IBOutlet weak var appointmentFooterLabel: UILabel!
     @IBOutlet weak var taskFooterLabel: UILabel!
@@ -34,7 +36,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.delegate = self
         calendarView.dataSource = self
         calendarView.cellSnapsToEdge = true
-        calendarView.direction = .Horizontal
         
         // This eliminates seperation between cells.
 //        calendarView.cellInset = CGPoint(x: 0, y: 0)
@@ -55,7 +56,35 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         // Initialize Tab Bar Item
         tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
     }
+    
+    @IBAction func moreButtonPressed(sender: AnyObject) {
+        
+        self.performSegueWithIdentifier("calendarPopover", sender: self)
+    }
+    
+    func popoverControllerDidDismissPopover(popoverController: UIPopoverController) {
+        print("Popover did dismiss")
+    }
+    
+    func popoverControllerShouldDismissPopover(popoverController: UIPopoverController) -> Bool {
+        print("Should dismiss popover")
+        return true
+    }
+    
+    func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
+        if selectedCell.cellState.isSelected == true{
+            let popoverVC = PopoverViewController()
+            popoverVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+            let popover = popoverVC.popoverPresentationController
+            let calendarRect = CGRect(x: selectedCell.frame.size.height, y: selectedCell.frame.size.width / 2, width: 200, height: 200)
+            popover?.sourceRect = calendarRect
+            
+            popover!.backgroundColor = UIColor.greenColor()
 
+        }
+
+    }
+    
     
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
@@ -94,6 +123,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             appointmentFooterLabel.text = appointmentLbl
             taskFooterLabel.text = taskLbl
             journalFooterLabel.text = journalLbl
+            selectedCell = calendarCell
         
             calendarCell.updateCircleColor(cellState)
         }
@@ -138,4 +168,23 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
         daysOfWeekLabel.text = weekdayString
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "calendarPopover"{
+            print("Popover Segue")
+            let vc = segue.destinationViewController as UIViewController
+            let source = segue.sourceViewController as! CalendarViewController
+            
+            let controller = vc.popoverPresentationController
+            
+            if controller != nil{
+                controller?.delegate = self
+                controller?.permittedArrowDirections = .Any
+                controller?.sourceRect = CGRect(x: 0, y: 0, width: 200, height: 200)
+                controller?.sourceView = selectedCell
+//                presentViewController(vc, animated: true, completion: nil)
+            }
+        }
+    }
+
 }

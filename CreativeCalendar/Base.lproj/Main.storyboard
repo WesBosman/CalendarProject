@@ -825,6 +825,23 @@
             </objects>
             <point key="canvasLocation" x="2151" y="392.25"/>
         </scene>
+        <!--Popover View Controller-->
+        <scene sceneID="g2j-FF-FeX">
+            <objects>
+                <viewController id="DJT-83-vnD" customClass="PopoverViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S5y-qU-Acl"/>
+                        <viewControllerLayoutGuide type="bottom" id="lgp-kM-ouG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="alR-OE-iei">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="0.68674005599999999" blue="0.53950166600000005" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Jq-Jq-ZUn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1616.25" y="1096.5"/>
+        </scene>
         <!--Journals-->
         <scene sceneID="H8X-ez-rym">
             <objects>
@@ -1775,6 +1792,28 @@
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vV2-Cu-ToG">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="GBQ-RU-okj"/>
+                                        </constraints>
+                                        <state key="normal" title="More">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="GBQ-RU-okj"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="GBQ-RU-okj"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="moreButtonPressed:" destination="dHM-vo-Fq1" eventType="touchUpInside" id="2ea-3Q-iY3"/>
+                                        </connections>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="peQ-TY-oBG">
                                         <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1800,10 +1839,12 @@
                                     <constraint firstItem="UjV-PE-NFw" firstAttribute="leading" secondItem="aQc-xx-90P" secondAttribute="leading" id="cKn-X0-PE8"/>
                                     <constraint firstItem="CIv-t7-X5x" firstAttribute="leading" secondItem="peQ-TY-oBG" secondAttribute="leading" id="eA4-ex-fmu"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leading" constant="88" id="exS-W3-1ok"/>
+                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="centerX" secondItem="UjV-PE-NFw" secondAttribute="centerX" id="hFy-a9-Jg2"/>
                                     <constraint firstItem="fqx-hZ-ogJ" firstAttribute="trailing" secondItem="aQc-xx-90P" secondAttribute="trailing" id="kMK-Ue-tlk"/>
                                     <constraint firstItem="aQc-xx-90P" firstAttribute="top" secondItem="fqx-hZ-ogJ" secondAttribute="bottom" constant="48" id="lXA-5r-2ae"/>
                                     <constraint firstItem="CIv-t7-X5x" firstAttribute="trailing" secondItem="peQ-TY-oBG" secondAttribute="trailing" id="pEz-np-OPV"/>
                                     <constraint firstItem="UjV-PE-NFw" firstAttribute="top" secondItem="peQ-TY-oBG" secondAttribute="bottom" constant="28" id="rR8-Fp-bBk"/>
+                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="bottom" secondItem="krf-j0-1qK" secondAttribute="bottomMargin" id="upg-8w-zkV"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
@@ -1812,6 +1853,7 @@
                                         <exclude reference="fqx-hZ-ogJ"/>
                                         <exclude reference="aQc-xx-90P"/>
                                         <exclude reference="TYL-uE-jje"/>
+                                        <exclude reference="vV2-Cu-ToG"/>
                                         <exclude reference="peQ-TY-oBG"/>
                                     </mask>
                                     <mask key="constraints">
@@ -1835,6 +1877,8 @@
                                         <exclude reference="Vqn-7m-Ue5"/>
                                         <exclude reference="cKn-X0-PE8"/>
                                         <exclude reference="rR8-Fp-bBk"/>
+                                        <exclude reference="hFy-a9-Jg2"/>
+                                        <exclude reference="upg-8w-zkV"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
@@ -1844,6 +1888,7 @@
                                         <include reference="fqx-hZ-ogJ"/>
                                         <include reference="aQc-xx-90P"/>
                                         <include reference="TYL-uE-jje"/>
+                                        <include reference="vV2-Cu-ToG"/>
                                         <include reference="peQ-TY-oBG"/>
                                     </mask>
                                     <mask key="constraints">
@@ -1867,6 +1912,8 @@
                                         <include reference="Vqn-7m-Ue5"/>
                                         <include reference="cKn-X0-PE8"/>
                                         <include reference="rR8-Fp-bBk"/>
+                                        <include reference="hFy-a9-Jg2"/>
+                                        <include reference="upg-8w-zkV"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -1910,6 +1957,9 @@
                         <outlet property="journalFooterLabel" destination="UjV-PE-NFw" id="LCE-WB-3GO"/>
                         <outlet property="monthLabel" destination="fqx-hZ-ogJ" id="GOr-Ye-Akh"/>
                         <outlet property="taskFooterLabel" destination="peQ-TY-oBG" id="hzp-wA-qJ1"/>
+                        <segue destination="DJT-83-vnD" kind="popoverPresentation" identifier="calendarPopover" popoverAnchorView="TYL-uE-jje" id="S8y-wM-jFX">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kij-pg-Dis" userLabel="First Responder" sceneMemberID="firstResponder"/>
