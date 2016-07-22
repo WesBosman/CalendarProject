@@ -74,48 +74,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         homeDateLabel.text = todaysDate
         homeDateLabel.textColor = UIColor.whiteColor()
         
-        
+        // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, atIndex: 0)
-        
-        /*
-         Could be a method to make the days of the week look pretty. Not very high priority.
-        var todaysSubString = todaysDate as NSString
-        todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
-        switch todaysSubString{
-            case "Mon":
-            let attachment = NSTextAttachment()
-            attachment.image = UIImage(named: "Checkmark")
-            let attachmentString = NSAttributedString(attachment: attachment)
-            let myString = NSMutableAttributedString(string: " ")
-            myString.appendAttributedString(attachmentString)
-            daysOfTheWeekText.attributedText = myString
-            break
-
-            case "Tue": break
-            let attachment = NSTextAttachment()
-
-            case "Wed": break
-            let attachment = NSTextAttachment()
-
-            case "Thu": break
-            let attachment = NSTextAttachment()
-
-            case "Fri": break
-            let attachment = NSTextAttachment()
-
-            case "Sat": break
-            let attachment = NSTextAttachment()
-
-            case "Sun": break
-            let attachment = NSTextAttachment()
-
-            default: break
-            
-        }
-        print(todaysSubString)
-        */
         
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
@@ -126,6 +88,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // Make it so the journal is uneditable from the home screen.
         journalViewBox.editable = false
         
+        daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
+        
         
     }
     
@@ -135,6 +99,20 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         
         // Initialize Tab Bar Item
         tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "Home"), tag: 1)
+    }
+    
+    func setUpDaysOfTheWeekLabel() -> String{
+
+        var todaysSubString = todaysDate as NSString
+        todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
+        let checkmark = "✅"
+        let newSubstring = (todaysSubString as String) + " __"
+        let newStringPlusCheck = (todaysSubString as String) + " " + checkmark
+        let newText = daysOfTheWeekText.text?.stringByReplacingOccurrencesOfString(newSubstring, withString: newStringPlusCheck, options: .LiteralSearch, range: nil)
+//        print("NEW STRING PLUS CHECK \(newStringPlusCheck)")
+//        print("New Text : \(newText)")
+        return newText! as String
+
     }
     
     // Clear all NSUser Defaults

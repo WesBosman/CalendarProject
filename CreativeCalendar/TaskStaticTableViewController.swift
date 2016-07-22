@@ -12,23 +12,56 @@ class TaskStaticTableViewController: UITableViewController {
     
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var taskAdditionalInfoTextBox: UITextField!
+    @IBOutlet weak var taskFinishDateLabel: UILabel!
+    @IBOutlet weak var taskFinishDateRightDetail: UILabel!
+    @IBOutlet weak var taskDatePicker: UIDatePicker!
     let db = DatabaseFunctions.sharedInstance
+    var taskDatePickerIsHidden = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         taskNameTextField.placeholder = "Task Name"
         taskAdditionalInfoTextBox.placeholder = "Additional Information"
+        taskFinishDateLabel.text = "Estimated Task Completion Date"
+        taskFinishDateRightDetail.text = String()
+        taskDatePicker.datePickerMode = UIDatePickerMode.Date
+        taskDatePicker.minimumDate = NSDate()
+        toggleTaskDatePicker()
+    }
+    
+    func toggleTaskDatePicker(){
+        taskDatePickerIsHidden = !taskDatePickerIsHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 0 && indexPath.section == 2{
+            toggleTaskDatePicker()
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if taskDatePickerIsHidden && indexPath.section == 2 && indexPath.row == 1{
+            return 0
+        }
+        else{
+            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        }
+    }
+    
+    @IBAction func taskDatePickerChanged(sender: AnyObject) {
+        let taskFormatter = NSDateFormatter()
+        taskFormatter.dateFormat = "MMMM dd yyyy"
+        taskFinishDateRightDetail.text = taskFormatter.stringFromDate(taskDatePicker.date)
     }
     
     // Save the information to pass it to the previous view
     @IBAction func saveTaskPressed(sender: AnyObject) {
         // Make sure there is atleast a task title in order to let the user save the task
         let current = NSDate()
-//        let dateFormat = NSDateFormatter()
-//        dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
-//        let dateString = dateFormat.stringFromDate(current)
         
-        if (!taskNameTextField.text!.isEmpty){
+        if (!taskNameTextField.text!.isEmpty || !taskFinishDateRightDetail.text!.isEmpty){
             let taskItem = TaskItem(dateMade: current,
                                     title: taskNameTextField.text!,
                                     info: taskAdditionalInfoTextBox.text!,
@@ -55,7 +88,7 @@ class TaskStaticTableViewController: UITableViewController {
         }
         else{
             // This is similar to the code for the static appointment alert.
-            let someFieldMissing = UIAlertController(title: "Missing Task Title", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
+            let someFieldMissing = UIAlertController(title: "Missing Task Title or Date", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
             someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
                 // Essentially do nothing. Unless we want to print some sort of log message.
             }))
