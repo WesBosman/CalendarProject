@@ -11,27 +11,38 @@
             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bvi-hC-I8d">
-                    <rect key="frame" x="24" y="24" width="101" height="101"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="98W-Ry-PHC">
-                            <rect key="frame" x="22" y="36" width="56" height="27.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="98W-Ry-PHC" firstAttribute="centerY" secondItem="Bvi-hC-I8d" secondAttribute="centerY" id="JA3-Sv-s6K"/>
-                        <constraint firstItem="98W-Ry-PHC" firstAttribute="centerX" secondItem="Bvi-hC-I8d" secondAttribute="centerX" id="asS-Rn-bgk"/>
-                    </constraints>
-                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGt-2g-edl">
+                    <rect key="frame" x="71" y="0.0" width="9.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbL-M3-mfT">
+                    <rect key="frame" x="105.5" y="0.0" width="9.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="98W-Ry-PHC">
+                    <rect key="frame" x="47" y="61" width="56" height="28"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcp-YY-nEG">
+                    <rect key="frame" x="30" y="0.0" width="9.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="Bvi-hC-I8d" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NkN-BS-Ipu"/>
-                <constraint firstItem="Bvi-hC-I8d" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ree-Vu-NtL"/>
+                <constraint firstItem="98W-Ry-PHC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="6kG-Ow-LOX"/>
+                <constraint firstAttribute="trailing" secondItem="CbL-M3-mfT" secondAttribute="trailing" constant="35" id="AFk-E5-6q4"/>
+                <constraint firstItem="98W-Ry-PHC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="c0w-md-O6F"/>
+                <constraint firstItem="Pcp-YY-nEG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="d2U-4u-1oM"/>
+                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="pbU-3o-bGd"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -41,7 +52,10 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="appointmentCounterLabel" destination="Pcp-YY-nEG" id="LJM-7L-6Bj"/>
                 <outlet property="dayLabel" destination="98W-Ry-PHC" id="jgU-Qs-JH2"/>
+                <outlet property="journalCounterLabel" destination="CbL-M3-mfT" id="74f-E4-o9a"/>
+                <outlet property="taskCounterLabel" destination="fGt-2g-edl" id="Gj3-RI-V8W"/>
             </connections>
             <point key="canvasLocation" x="519" y="153"/>
         </view>

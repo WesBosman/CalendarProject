@@ -9,7 +9,9 @@
 import UIKit
 
 class PopoverViewController: UIViewController {
-
+    @IBOutlet weak var appointmentPopoverLabel: UILabel!
+    @IBOutlet weak var taskPopoverLabel: UILabel!
+    @IBOutlet weak var journalPopoverLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
