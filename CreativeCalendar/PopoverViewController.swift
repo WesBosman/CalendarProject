@@ -12,10 +12,17 @@ class PopoverViewController: UIViewController {
     @IBOutlet weak var appointmentPopoverLabel: UILabel!
     @IBOutlet weak var taskPopoverLabel: UILabel!
     @IBOutlet weak var journalPopoverLabel: UILabel!
+    var appointmentLabel:String = String()
+    var taskLabel:String = String()
+    var journalLabel:String = String()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        appointmentPopoverLabel.text = appointmentLabel
+        taskPopoverLabel.text = taskLabel
+        journalPopoverLabel.text = journalLabel
     }
 
     override func didReceiveMemoryWarning() {

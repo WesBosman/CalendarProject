@@ -21,19 +21,19 @@ class CalendarBackgroundView: UIView {
             background.frame = self.bounds
             self.layer.insertSublayer(background, atIndex: 0)
 
-//            
-//            let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y:55, width: 25, height: 25))
-//            appointmentColor.setFill()
-//            appointmentCircle.fill()
-//            
-//            let taskCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y: 75, width: 25, height: 25))
-//            taskColor.setFill()
-//            taskCircle.fill()
-//            
-//            
-//            let journalCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y: 35, width: 25, height: 25))
-//            journalColor.setFill()
-//            journalCircle.fill()
+            
+            let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y:55, width: 25, height: 25))
+            appointmentColor.setFill()
+            appointmentCircle.fill()
+            
+            let taskCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y: 75, width: 25, height: 25))
+            taskColor.setFill()
+            taskCircle.fill()
+            
+            
+            let journalCircle = UIBezierPath(ovalInRect: CGRect(x: 0.0, y: 35, width: 25, height: 25))
+            journalColor.setFill()
+            journalCircle.fill()
             
             
             
@@ -48,7 +48,7 @@ class CalendarBackgroundView: UIView {
             super.init(frame: frame)
             
             // Xib
-//            xibSetup()
+            xibSetup()
         }
         
         required init?(coder aDecoder: NSCoder) {
@@ -58,30 +58,30 @@ class CalendarBackgroundView: UIView {
             super.init(coder: aDecoder)
             
             // Xib
-//            xibSetup()
+            xibSetup()
         }
         
         // Our custom view from the XIB file
-//        var view: UIView!
-//        
-//        func xibSetup() {
-//            view = loadViewFromNib()
-//            
-//            // use bounds not frame or it'll be offset
-//            view.frame = bounds
-//            
-//            // Make the view stretch with containing view
-//            view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
-//            // Adding custom subview on top of our view (over any custom drawing > see note below)
-//            addSubview(view)
-//        }
-//        
-//        func loadViewFromNib() -> UIView {
-//            
-//            let bundle = NSBundle(forClass: self.dynamicType)
-//            let nib = UINib(nibName: "FooterView", bundle: bundle)
-//            let view = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
-//            
-//            return view
-//        }
+        var view: UIView!
+        
+        func xibSetup() {
+            view = loadViewFromNib()
+            
+            // use bounds not frame or it'll be offset
+            view.frame = bounds
+            
+            // Make the view stretch with containing view
+            view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+            // Adding custom subview on top of our view (over any custom drawing > see note below)
+            addSubview(view)
+        }
+        
+        func loadViewFromNib() -> UIView {
+            
+            let bundle = NSBundle(forClass: self.dynamicType)
+            let nib = UINib(nibName: "FooterView", bundle: bundle)
+            let view = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
+            
+            return view
+        }
 }

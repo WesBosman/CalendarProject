@@ -43,12 +43,12 @@ class CalendarCell: JTAppleDayCellView{
     func setUpCellBeforeDisplay(cellState: CellState){
         // Assign the cell state as a property of this class
         self.cellState = cellState
-        self.drawAppointment = false
-        self.drawTask = false
-        self.drawJournal = false
         self.appointmentCounter = 0
         self.taskCounter = 0
         self.journalCounter = 0
+        self.drawAppointment = false
+        self.drawTask = false
+        self.drawJournal = false
         
         // Set the label for the date of the cell
         dayLabel.text = cellState.text
@@ -61,6 +61,11 @@ class CalendarCell: JTAppleDayCellView{
         
         // Call the draw method
         self.setNeedsDisplay()
+    }
+    
+    func updateCell(cellState:CellState){
+        self.cellState = cellState
+        setNeedsDisplay()
     }
     
     func setUpCellDots(cellState: CellState){
@@ -77,11 +82,7 @@ class CalendarCell: JTAppleDayCellView{
             let appointmentDate = formatter.stringFromDate(app.startingTime)
             
             if appointmentDate == (cellDate){
-//                print("AppointmentDate: \(appointmentDate)")
                 appointmentDictionary.updateValue(app.title, forKey: appointmentDate)
-//                for (key, value) in appointmentDictionary{
-//                    print("Key: \(key) Value: \(value)")
-//                }
                 self.appointmentCounter += 1
                 self.drawAppointment = true
             }
@@ -91,11 +92,7 @@ class CalendarCell: JTAppleDayCellView{
             let taskDate = formatter.stringFromDate(task.dateCreated)
             
             if taskDate == (cellDate){
-//                print("Task Date: \(taskDate)")
                 taskDictionary.updateValue(task.taskTitle, forKey: taskDate)
-//                for (key, value) in appointmentDictionary{
-//                    print("Key: \(key) Value: \(value)")
-//                }
                 self.taskCounter += 1
                 self.drawTask = true
             }
@@ -105,11 +102,7 @@ class CalendarCell: JTAppleDayCellView{
             let journalDate = formatter.stringFromDate(journal.journalDate)
             
             if journalDate == (cellDate){
-//                print("Journal Date: \(journalDate)")
                 journalDictionary.updateValue(journal.journalEntry, forKey: journalDate)
-//                for (key, value) in journalDictionary{
-//                    print("Key: \(key) Value: \(value)")
-//                }
                 self.journalCounter += 1
                 self.drawJournal = true
             }
@@ -144,30 +137,20 @@ class CalendarCell: JTAppleDayCellView{
     func isWeekdayOrWeekend() -> UIColor{
         if self.cellState.column() == 0 || self.cellState.column() == 6{
             return weekendDotColor
-
         }
         else{
             return weekdayDotColor
-
         }
-    }
-    
-    func updateCircleColor(cellState: CellState){
-        self.cellState = cellState
-        setNeedsDisplay()
     }
     
     // Draw the view
     override func drawRect(rect: CGRect) {
         // Draw a circle around the day of the calendar.
         let path = UIBezierPath(ovalInRect: CGRect(x: 7, y: 35 , width: 100, height: 100))
-
-        fillColorForCircle = isWeekdayOrWeekend()
         
         // If cell has been selected
         if cellState.isSelected == true{
             fillColorForCircle = selectedDotColor
-            self.layer.backgroundColor = UIColor.whiteColor().CGColor
         }
         else{
             fillColorForCircle = isWeekdayOrWeekend()
@@ -181,26 +164,17 @@ class CalendarCell: JTAppleDayCellView{
     // MARK - Draw Calendar Cell Dots
     
     func drawDotLogic(){
-        // Draw the dots for the cells and if the counter on the cell is zero hide the label
+        // Draw the dots for the cells
         if self.appointmentCounter > 0 && self.drawAppointment == true{
             drawAppointmentDot()
-        }
-        else{
-            appointmentCounterLabel.hidden = true
         }
         
         if self.taskCounter > 0 && self.drawTask == true{
             drawTaskDot()
         }
-        else{
-            taskCounterLabel.hidden = true
-        }
         
         if self.journalCounter > 0 && self.drawJournal == true{
             drawJournalDot()
-        }
-        else{
-            journalCounterLabel.hidden = true
         }
     }
     
@@ -208,7 +182,6 @@ class CalendarCell: JTAppleDayCellView{
         let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: 30.0, y: 20.0, width: dotWidth, height: dotHeight))
         appointmentColor.setFill()
         appointmentCircle.fill()
-        setNeedsDisplay()
     }
     
     func drawTaskDot(){

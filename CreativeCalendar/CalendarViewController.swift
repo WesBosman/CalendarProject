@@ -39,14 +39,11 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.delegate = self
         calendarView.dataSource = self
         calendarView.cellSnapsToEdge = true
-        
-        // This eliminates seperation between cells.
-//        calendarView.cellInset = CGPoint(x: 0, y: 0)
+        calendarView.bufferBottom = 30
         
         // The size of the cells in the calendar view
-//        calendarView.itemSize = 100.0
-        // Smaller cells seem to be the right color?
         calendarView.backgroundColor = UIColor.clearColor()
+        
         // Select the current date
         calendarView.reloadData() {
             self.calendarView.selectDates([NSDate()])
@@ -95,10 +92,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         components.month = 3
         formatter.dateFormat = "MM/dd/yyyy"
         calendarStartDate = formatter.dateFromString("07/01/2016")!
-        calendarEndDate = userCalendar.dateByAddingComponents(components, toDate: calendarStartDate, options: [])!
-//        print("Calendar Start Date \(calendarStartDate)")
-//        print("Calendar End Date \(calendarEndDate)")
-        
+        calendarEndDate = userCalendar.dateByAddingComponents(components, toDate: calendarStartDate, options: [])!        
         return(startDate: calendarStartDate, endDate: calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
     }
     
@@ -107,9 +101,30 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         if let calendarCell = cell as? CalendarCell{
             calendarCell.setUpCellBeforeDisplay(cellState)
-            calendarCell.appointmentCounterLabel.text = String(calendarCell.appointmentCounter)
-            calendarCell.taskCounterLabel.text = String(calendarCell.taskCounter)
-            calendarCell.journalCounterLabel.text = String(calendarCell.journalCounter)
+            if calendarCell.appointmentCounter > 0{
+                calendarCell.appointmentCounterLabel.hidden = false
+                calendarCell.appointmentCounterLabel.text = String(calendarCell.appointmentCounter)
+            }
+            else{
+                calendarCell.appointmentCounterLabel.hidden = true
+            }
+            
+            if calendarCell.taskCounter > 0{
+                calendarCell.taskCounterLabel.hidden = false
+                calendarCell.taskCounterLabel.text = String(calendarCell.taskCounter)
+            }
+            else{
+                calendarCell.taskCounterLabel.hidden = true
+            }
+            
+            if calendarCell.journalCounter > 0{
+                calendarCell.journalCounterLabel.hidden = false
+                calendarCell.journalCounterLabel.text = String(calendarCell.journalCounter)
+            }
+            else{
+                calendarCell.journalCounterLabel.hidden = true
+            }
+            calendarCell.setNeedsDisplay()
         }
         
     }
@@ -159,7 +174,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             journalFooterLabel.text = journalLbl
             selectedCell = calendarCell
         
-            calendarCell.updateCircleColor(cellState)
+            calendarCell.updateCell(cellState)
         }
     }
     
@@ -167,7 +182,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func calendar(calendar: JTAppleCalendarView, didDeselectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
         
         if let calendarCell = cell as? CalendarCell{
-            calendarCell.updateCircleColor(cellState)
+            calendarCell.updateCell(cellState)
         }
     }
     
@@ -202,23 +217,19 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
         daysOfWeekLabel.text = weekdayString
     }
-        
-    func calendar(calendar: JTAppleCalendarView, didScrollToDateSegmentStartingWithdate startDate: NSDate, endingWithDate endDate: NSDate) {
-        
-    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "calendarPopover"{
             print("Popover Segue")
             let vc = segue.destinationViewController as UIViewController
-//            let popOverView = segue.destinationViewController as! PopoverViewController
+            let popOverView = segue.destinationViewController as! PopoverViewController
 //            let source = segue.sourceViewController as! CalendarViewController
             
             let controller = vc.popoverPresentationController
             
-//            popOverView.appointmentPopoverLabel.text = appointment
-//            popOverView.taskPopoverLabel.text = task
-//            popOverView.journalPopoverLabel.text = journal
+            popOverView.appointmentLabel = appointment
+            popOverView.taskLabel = task
+            popOverView.journalLabel = journal
             
             
             if controller != nil{

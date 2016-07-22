@@ -11,14 +11,14 @@
             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGt-2g-edl">
-                    <rect key="frame" x="71" y="0.0" width="9.5" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGt-2g-edl">
+                    <rect key="frame" x="71" y="0.0" width="10" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbL-M3-mfT">
-                    <rect key="frame" x="105.5" y="0.0" width="9.5" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbL-M3-mfT">
+                    <rect key="frame" x="106" y="0.0" width="10" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -28,8 +28,8 @@
                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcp-YY-nEG">
-                    <rect key="frame" x="30" y="0.0" width="9.5" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcp-YY-nEG">
+                    <rect key="frame" x="30" y="0.0" width="10" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -39,10 +39,13 @@
             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="6kG-Ow-LOX"/>
-                <constraint firstAttribute="trailing" secondItem="CbL-M3-mfT" secondAttribute="trailing" constant="35" id="AFk-E5-6q4"/>
+                <constraint firstAttribute="trailing" secondItem="CbL-M3-mfT" secondAttribute="trailing" constant="34" id="AFk-E5-6q4"/>
+                <constraint firstItem="CbL-M3-mfT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Xif-Dc-fgl"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="c0w-md-O6F"/>
                 <constraint firstItem="Pcp-YY-nEG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="d2U-4u-1oM"/>
-                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="pbU-3o-bGd"/>
+                <constraint firstItem="CbL-M3-mfT" firstAttribute="baseline" secondItem="Pcp-YY-nEG" secondAttribute="baseline" id="lj2-JJ-xAh"/>
+                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="1" id="pbU-3o-bGd"/>
+                <constraint firstItem="CbL-M3-mfT" firstAttribute="baseline" secondItem="fGt-2g-edl" secondAttribute="baseline" id="wwg-dI-4mA"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
