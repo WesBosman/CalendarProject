@@ -17,7 +17,9 @@ class DatabaseFunctions{
     // Only ever want one instance of this class.
     static let sharedInstance = database
     private init(){}
-        
+    
+    let dateFormat = NSDateFormatter().universalFormatter()
+
     /** Make the database and store it in the documents section
       * Made this a lazy variable so it will get initiated when the class gets called
       * Eliminates calling the function over and over. Less overhead.
@@ -36,12 +38,12 @@ class DatabaseFunctions{
         do{
             try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text, completed bool, date_completed text, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, uuid text)", values: nil)
             
             // Get DatabasePath
-            //NSLog("Database File Path: \(fileURL.path!)")
+            NSLog("Database File Path: \(fileURL.path!)")
             
         }
         catch let err as NSError{
@@ -65,8 +67,6 @@ class DatabaseFunctions{
         }
 
         let current = NSDate()
-        let dateFormat = NSDateFormatter().universalFormatter()
-        
         let currentDateString = dateFormat.stringFromDate(current)
         let startDateString = dateFormat.stringFromDate(item.startingTime)
         let endDateString = dateFormat.stringFromDate(item.endingTime)
@@ -84,7 +84,7 @@ class DatabaseFunctions{
             setAppointmentNotification(item)
             
         } catch let err as NSError{
-            print("ERROR: \(err.localizedDescription)")
+            print("Add Appointment to Database ERROR: \(err.localizedDescription)")
         }
     }
     
@@ -100,20 +100,19 @@ class DatabaseFunctions{
             db.close()
         }
         
-        let dateFormat = NSDateFormatter().universalFormatter()
         let dateCreatedAsString = dateFormat.stringFromDate(item.dateCreated)
         
         do{
-            let rs = try db.executeQuery("SELECT date_created, task, additional, completed uuid FROM Tasks", values: nil)
+            let rs = try db.executeQuery("SELECT date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid FROM Tasks", values: nil)
             var count:Int = 1
             while rs.next(){
                 count += 1
             }
             print("Number of items in Task Table database: \(count)")
-            try db.executeUpdate("INSERT into Tasks(date_created, task, additional, completed, uuid) values(?, ?, ?, ?, ?)", values:[ dateCreatedAsString, item.taskTitle, item.taskInfo, item.completed, item.UUID])
+            try db.executeUpdate("INSERT into Tasks(date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid) values(?, ?, ?, ?, ?, ?, ?, ?)", values:[ dateCreatedAsString, item.taskTitle, item.taskInfo, item.completed, item.canceled, item.deleted, item.estimateCompletionDate, item.UUID])
             
         } catch let err as NSError{
-            print("ERROR: \(err.localizedDescription)")
+            print("Add Task to Database ERROR: \(err.localizedDescription)")
         }
     }
     
@@ -129,8 +128,8 @@ class DatabaseFunctions{
             db.close()
         }
         
-        let dateFormat = NSDateFormatter().universalFormatter()
         let journalDateAsString = dateFormat.stringFromDate(journal.journalDate)
+        
         
         do{
             let rs = try db.executeQuery("SELECT date, journal FROM Journals", values: nil)
@@ -139,10 +138,10 @@ class DatabaseFunctions{
                 count += 1
             }
             print("Number of items in Journal Table database: \(count)")
-            try db.executeUpdate("INSERT into Journals(date, journal, uuid) values(?, ?, ?)", values:[ journalDateAsString, journal.journalEntry, journal.journalUUID])
+            try db.executeUpdate("INSERT into Journals(date, journal, deleted, uuid) values(?, ?,?, ?)", values:[ journalDateAsString, journal.journalEntry, journal.journalDeleted, journal.journalUUID])
             
         } catch let err as NSError{
-            print("ERROR: \(err.localizedDescription)")
+            print("Add journal to Database ERROR: \(err.localizedDescription)")
         }
     }
 
@@ -161,7 +160,7 @@ class DatabaseFunctions{
         }
 
         let current = NSDate()
-        let dateFormat = NSDateFormatter().universalFormatter()
+//        let dateFormat = NSDateFormatter().universalFormatter()
         let currentDateString = dateFormat.stringFromDate(current)
         
         do{
@@ -216,7 +215,7 @@ class DatabaseFunctions{
             
         }
         catch let err as NSError{
-            print("ERROR updating Appointment \(err.localizedDescription)")
+            print("Appointment updating ERROR \(err.localizedDescription)")
         }
     }
     
@@ -233,7 +232,7 @@ class DatabaseFunctions{
         }
 
         let current = NSDate()
-        let dateFormat = NSDateFormatter().universalFormatter()
+//        let dateFormat = NSDateFormatter().universalFormatter()
         let currentDateString = dateFormat.stringFromDate(current)
         
         // If date completed equals false then do this...
@@ -244,25 +243,86 @@ class DatabaseFunctions{
             
             while selectResult.next(){
                 let isComplete = item.completed
-                let updateStatement = "UPDATE Tasks SET completed=?, date_completed=? WHERE uuid=?"
+                let isCanceled = item.canceled
+                let isDeleted = item.deleted
+                
+                let completedStatement = "UPDATE Tasks SET completed=?, date_completed=? WHERE uuid=?"
+                let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=? WHERE uuid=?"
+                let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=? WHERE uuid=?"
                 print("Task Name: \(item.taskTitle) Completed: \(item.completed)")
 
-                // If the task has not been completed then update completed to true and add completed date
+                // Complete the Task
                 if isComplete == true{
-                    print("Turn task on")
-                    try db.executeUpdate(updateStatement, values: [isComplete, currentDateString, item.UUID])
+                    print("Turn Completed")
+                    try db.executeUpdate(completedStatement, values: [isComplete, currentDateString, item.UUID])
                 }
-                    
-                // If the task has already been completed then we are changing it back to incomplete.
-                else if isComplete == false{
-                    print("Turn task off")
-                    try db.executeUpdate(updateStatement, values: [isComplete, "" ,  item.UUID])
+                else{
+                    print("Turn Not Completed")
+                    try db.executeUpdate(completedStatement, values: [isComplete, "" ,  item.UUID])
+                }
+                
+                // Cancel the Task
+                if isCanceled == true{
+                    print("Task Canceled")
+                    try db.executeUpdate(canceledStatement, values: [isCanceled, currentDateString , item.UUID])
+                }
+                else{
+                    print("Task Not Canceled")
+                    try db.executeUpdate(canceledStatement, values: [isCanceled, "", item.UUID])
+                }
+                
+                // Delete the Task
+                if isDeleted == true{
+                    print("Task Deleted")
+                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.UUID])
+                }
+                else{
+                    print("Task Not Deleted")
+                    try db.executeUpdate(deletedStatement, values: [isDeleted, "", item.UUID])
                 }
             }
         }
         catch let err as NSError{
             print("Task Update Error: \(err.localizedDescription)")
         }
+    }
+    
+    func updateJournal(item: JournalItem){
+        let db = makeDb
+        
+        if (!db.open()){
+            db.open()
+        }
+        
+        defer{
+            db.close()
+        }
+        
+        let current = NSDate()
+        //        let dateFormat = NSDateFormatter().universalFormatter()
+        let currentDateString = dateFormat.stringFromDate(current)
+        
+        // If date completed equals false then do this...
+        do{
+            // Get the value of the completed column for the task with the given uuid
+            let selectStatement = "SELECT deleted FROM Journals WHERE uuid=?"
+            let selectResult = try db.executeQuery(selectStatement, values: [item.journalUUID])
+            
+            while selectResult.next(){
+                let isDeleted = item.journalDeleted
+                let deletedStatement = "UPDATE Journals SET deleted=?, date_deleted=? WHERE uuid=?"
+                
+                // Delete the Journal
+                if isDeleted == true{
+                    print("Journal Deleted")
+                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.journalUUID])
+                }
+            }
+        }
+        catch let err as NSError{
+            print("Journal Update Error: \(err.localizedDescription)")
+        }
+
     }
     
     // MARK - Getter Methods
@@ -310,7 +370,7 @@ class DatabaseFunctions{
         }
 
         var appointmentArray:[AppointmentItem] = []
-        let dateFormat = NSDateFormatter().universalFormatter()
+//        let dateFormat = NSDateFormatter().universalFormatter()
         
         do{
             let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE deleted=?", values: [false])
@@ -366,13 +426,16 @@ class DatabaseFunctions{
         
         var taskArray: [TaskItem] = []
         do{
-            let task:FMResultSet = try db.executeQuery("SELECT date_created, task, additional, completed, date_completed, uuid FROM Tasks", values: nil)
+            let task:FMResultSet = try db.executeQuery("SELECT date_created, task, additional, estimated_completed_date, completed, canceled, deleted, date_completed, uuid FROM Tasks WHERE deleted=?", values: [false])
             while task.next(){
 //                print("Task Item from database.")
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task")
                 let taskAdditional = task.objectForColumnName("additional")
-                let taskCompleted = task.objectForColumnName("completed")
+                let estimatedDateCompleted = task.objectForColumnName("estimated_completed_date")
+                let taskCompleted = task.boolForColumn("completed")
+                let taskCanceled = task.boolForColumn("canceled")
+                let taskDeleted = task.boolForColumn("deleted")
                 let taskDone = task.objectForColumnName("date_completed")
                 let taskUUID = task.objectForColumnName("uuid")
 //                print("Task: \(taskTitle) date created: \(taskMade)")
@@ -380,7 +443,10 @@ class DatabaseFunctions{
                 let taskItem = TaskItem(dateMade: taskMade!,
                                         title: taskTitle as! String,
                                         info: taskAdditional as! String,
-                                        completed: taskCompleted as! Bool,
+                                        estimatedCompletion: estimatedDateCompleted as! String,
+                                        completed: taskCompleted,
+                                        canceled: taskCanceled,
+                                        deleted:  taskDeleted,
                                         dateFinished: taskDone as? String ,
                                         UUID: taskUUID as! String)
                 taskArray.append(taskItem)
@@ -410,14 +476,15 @@ class DatabaseFunctions{
         let dateFormat = NSDateFormatter().universalFormatter()
         
         do{
-            let journal:FMResultSet = try db.executeQuery("SELECT date, journal, uuid FROM Journals", values: nil)
+            let journal:FMResultSet = try db.executeQuery("SELECT date, journal, uuid FROM Journals WHERE deleted=?", values: [false])
             while journal.next(){
-//                print("Journal From Database: ")
                 let date = dateFormat.dateFromString(journal.objectForColumnName("date") as! String)
                 let entry = journal.objectForColumnName("journal")
                 let uuid = journal.objectForColumnName("uuid")
-                let journalItem = JournalItem(journal: entry as! String, UUID: uuid as! String, date: date!)
-//                print(journalItem.journalDate + " " + journalItem.journalEntry + " " + journalItem.journalUUID)
+                let deleted = journal.boolForColumn("deleted")
+                
+                let journalItem = JournalItem(journal: entry as! String, UUID: uuid as! String, date: date!, deleted: deleted)
+
                 journalArray.append(journalItem)
             }
         }
@@ -455,64 +522,7 @@ class DatabaseFunctions{
             }
 
     }
-    
-    // MARK - Delete Methods
-    
-    // Does not delete the appointment from the database instead it hides it from the user.
-    /**
-    
-    func deleteAppointmentAndNotification(tableName: String, uuid: String){
-        let db = makeDb
-            
-        if(!db.open()){
-            db.open()
-        }
         
-        defer{
-            db.close()
-        }
-        
-        do{
-//            let deleteStatement = "DELETE FROM " + tableName + " WHERE uuid = ?"
-            let deleteStatement = "UPDATE " + tableName + " SET deleted=? WHERE uuid = ?"
-            try db.executeUpdate(deleteStatement, values: [true, uuid])
-            
-            // If the item is an appointment then delete its notification as well.
-            if tableName == "Appointments"{
-                removeAppointmentNotification(uuid)
-            }
-            
-        }
-        catch let err as NSError{
-            print("ERROR: \(err.localizedDescription)")
-        }
-    }
-     
-    */
-    
-    // May want to combine these two methods to DRY up the code.
-    func deleteFromDatabase(tableName:String, uuid:String){
-        let db = makeDb
-        
-        if(!db.open()){
-            db.open()
-        }
-        
-        defer{
-            db.close()
-        }
-        
-        do{
-            let deleteStatement = "DELETE FROM " + tableName + " WHERE uuid = ?"
-            try db.executeUpdate(deleteStatement, values: [uuid])
-//            print("Delete was successful. \(db.commit())")
-//            print("Delete Statement: \(deleteStatement) + \(uuid)"
-        }
-        catch let err as NSError{
-            print("ERROR: \(err.localizedDescription)")
-        }
-    }
-    
     // MARK - Clear Function
     
     // Only used in testing for clearing out everything in the database.

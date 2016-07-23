@@ -17,6 +17,7 @@ class TaskStaticTableViewController: UITableViewController {
     @IBOutlet weak var taskDatePicker: UIDatePicker!
     let db = DatabaseFunctions.sharedInstance
     var taskDatePickerIsHidden = false
+    let taskFormatter = NSDateFormatter().dateWithoutTime()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +52,7 @@ class TaskStaticTableViewController: UITableViewController {
     }
     
     @IBAction func taskDatePickerChanged(sender: AnyObject) {
-        let taskFormatter = NSDateFormatter()
-        taskFormatter.dateFormat = "MMMM dd yyyy"
+//        taskFormatter.dateFormat = "MMMM dd yyyy"
         taskFinishDateRightDetail.text = taskFormatter.stringFromDate(taskDatePicker.date)
     }
     
@@ -61,11 +61,14 @@ class TaskStaticTableViewController: UITableViewController {
         // Make sure there is atleast a task title in order to let the user save the task
         let current = NSDate()
         
-        if (!taskNameTextField.text!.isEmpty || !taskFinishDateRightDetail.text!.isEmpty){
+        if (!taskNameTextField.text!.isEmpty && !taskFinishDateRightDetail.text!.isEmpty){
             let taskItem = TaskItem(dateMade: current,
                                     title: taskNameTextField.text!,
                                     info: taskAdditionalInfoTextBox.text!,
+                                    estimatedCompletion: taskFinishDateRightDetail.text!,
                                     completed: false,
+                                    canceled: false,
+                                    deleted: false,
                                     dateFinished: nil,
                                     UUID: NSUUID().UUIDString)
             
@@ -78,7 +81,10 @@ class TaskStaticTableViewController: UITableViewController {
                 let newTaskItem = TaskItem(dateMade: current,
                                            title: taskItem.taskTitle,
                                            info: "",
+                                           estimatedCompletion: taskFinishDateRightDetail.text!,
                                            completed: false,
+                                           canceled: false,
+                                           deleted: false,
                                            dateFinished: nil,
                                            UUID: taskItem.UUID)
                 db.addToTaskDatabase(newTaskItem)

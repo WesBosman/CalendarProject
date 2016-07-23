@@ -64,32 +64,97 @@ class TaskTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskCell
         let taskItem = taskList[indexPath.row] as TaskItem
         // Configure the cell...
+        cell.taskCompleted(taskItem)
         
-        if taskItem.completed == true{
-            cell.taskImage.image = UIImage(named: "checkbox")
-        }
-        else{
-            cell.taskImage.image = UIImage(named: "uncheckbox")
-        }
+//        if taskItem.completed == true{
+//            cell.taskImage.image = UIImage(named: "checkbox")
+//        }
+//        else{
+//            cell.taskImage.image = UIImage(named: "uncheckbox")
+//        }
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         
         return cell
     }
-
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            let itemToDelete = taskList.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        
+        var taskForAction = taskList[indexPath.row] as TaskItem
+//        let taskCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
+        
+        // Make custom actions for delete, cancel and complete.
+        let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             
-            // Remove from database.
-            let db = DatabaseFunctions.sharedInstance
-            db.deleteFromDatabase("Tasks", uuid: itemToDelete.UUID)
+            let deleteOptions = UIAlertController(title: "Delete", message: "Are you sure you want to delete the task: \(taskForAction.taskTitle)?", preferredStyle: .Alert)
             
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }
+            let deleteAppointment = UIAlertAction(title: "Delete Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                
+                // Delete the row from the data source
+                self.taskList.removeAtIndex(indexPath.row)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                
+                //Delete from database
+                taskForAction.deleted = true
+                self.db.updateTask(taskForAction)
+                
+            })
+            let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            deleteOptions.addAction(cancelDelete)
+            deleteOptions.addAction(deleteAppointment)
+            
+            self.presentViewController(deleteOptions, animated: true, completion: nil)
+        })
+        
+        
+        let canceledAction = UITableViewRowAction(style: .Default, title: "Cancel", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            let cancelOptions = UIAlertController(title: "Cancel Task", message: "Would you like to cancel the task: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+            
+            // Appointment was canceled.
+            let cancelAction = UIAlertAction(title: "Cancel Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                
+                // Cancel Appointment
+//                taskCellForAction.appointmentNotCompleted(taskForAction)
+                taskForAction.canceled = true
+                self.db.updateTask(taskForAction)
+                
+            })
+            let abortCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            cancelOptions.addAction(cancelAction)
+            cancelOptions.addAction(abortCancel)
+            
+            self.presentViewController(cancelOptions, animated: true, completion: nil)
+        })
+        
+        
+        let completedAction = UITableViewRowAction(style: .Default, title: "Complete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            
+            let completeOptions = UIAlertController(title: "Complete Task", message: "Have you completed task: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+            
+            // Appointment was completed.
+            let completeAction = UIAlertAction(title: "Complete Task", style: .Default, handler: {(action: UIAlertAction) -> Void in
+                
+                // Complete the appointment and update its image.
+//                taskCellForAction.appointmentCompleted(taskForAction)
+                taskForAction.completed = true
+                self.db.updateTask(taskForAction)
+                
+            })
+            let completeCanceled = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            completeOptions.addAction(completeAction)
+            completeOptions.addAction(completeCanceled)
+            
+            self.presentViewController(completeOptions, animated: true, completion: nil)
+        })
+        
+        completedAction.backgroundColor = UIColor.blueColor()
+        canceledAction.backgroundColor = UIColor.orangeColor()
+        
+        return [deletedAction, canceledAction, completedAction]
+        
     }
 
     // MARK: - Navigation

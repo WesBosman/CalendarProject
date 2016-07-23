@@ -23,19 +23,11 @@ class HomeTaskCell: UITableViewCell {
     }
     
     func taskCompleted(t: TaskItem){
-        uncheckedTaskImage.image = UIImage(named: "checkbox")
-        homeTaskTitle.text = t.taskTitle
-        homeTaskInfo.text = t.taskInfo
-        
-//        let strikeThroughLabel: NSMutableAttributedString = NSMutableAttributedString(string: t.taskTitle)
-//        strikeThroughLabel.addAttribute(NSStrikethroughStyleAttributeName, value: 1, range: NSMakeRange(0, strikeThroughLabel.length))
-//        homeTaskTitle.attributedText = strikeThroughLabel
+        if t.completed == true{
+            uncheckedTaskImage.image = UIImage(named: "checkbox")
+        }
+        else{
+            uncheckedTaskImage.image = UIImage(named: "uncheckbox")
+        }
     }
-    
-    func taskNotCompleted(t: TaskItem){
-        uncheckedTaskImage.image = UIImage(named: "uncheckbox")
-        homeTaskTitle.text = t.taskTitle
-        homeTaskInfo.text = t.taskInfo
-    }
-
 }

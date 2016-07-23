@@ -21,6 +21,12 @@ extension NSDateFormatter{
         dateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
         return dateFormatter
     }
+    
+    func dateWithoutTime() -> NSDateFormatter{
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE MM/dd/yyyy"
+        return dateFormatter
+    }
 }
 
 // This extension is for making a background gradient
@@ -53,7 +59,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     var appointmentArray: [AppointmentItem] = []
     var taskArray: [TaskItem] = []
     var journalArray: [JournalItem] = []
-    var todaysDate: String = ""
+    var todaysDate: String = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +94,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // Make it so the journal is uneditable from the home screen.
         journalViewBox.editable = false
         
+        // Make the day label with the checkmark.
         daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
         
         
@@ -177,19 +184,24 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             let alert = UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
             
             // If the user confirms that a task was completed then update the image to a green checkbox
-            alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
-                
-                // Update the cell image and labels with strikethroughs and the green checkbox
+            alert.addAction(UIAlertAction(title: "Complete Task", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 taskCell.taskCompleted(task)
                 task.completed = true
                 self.db.updateTask(task)
             } ))
             
-            alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Cancel Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+                taskCell.taskCompleted(task)
+                task.canceled = true
+                self.db.updateTask(task)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Delete Task", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
-                taskCell.taskNotCompleted(task)
+                taskCell.taskCompleted(task)
                 task.completed = false
+                task.deleted = true
                 self.db.updateTask(task)
                 
             } ))
@@ -206,7 +218,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             let alert = UIAlertController(title: "Hello", message: "Have you finished the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
             
             // If the user confirms that a task was completed then update the image to a green checkbox
-            alert.addAction(UIAlertAction(title: "Completed", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Complete Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image and labels with strikethroughs and the green checkbox
                 appointmentCell.appointmentCompleted(appointment)
@@ -215,24 +227,24 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             } ))
             
             // Cancelled Action
-            alert.addAction(UIAlertAction(title: "Canceled", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Cancel Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
-                appointmentCell.appointmentNotCompleted(appointment)
+                appointmentCell.appointmentCompleted(appointment)
                 appointment.canceled = true
                 self.db.updateAppointment(appointment)
                 
             } ))
             // Delete action
-            alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Delete Appointment", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
-                appointmentCell.appointmentNotCompleted(appointment)
+                appointmentCell.appointmentCompleted(appointment)
                 appointment.deleted = true
                 self.db.updateAppointment(appointment)
                 
             } ))
-            alert.addAction(UIAlertAction(title: "Do Nothing", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Exit Menu", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
                 // Essentially do nothing.
             }))
             // Show the alert to the user
@@ -262,12 +274,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             }
             
             // If the appointment has been completed then we need to mark it with a check
-            if appointment.completed == true{
-                appointmentCell.appointmentCompleted(appointment)
-            }
-            else{
-                appointmentCell.appointmentNotCompleted(appointment)
-            }
+            appointmentCell.appointmentCompleted(appointment)
             
             // Set the other images and labels.
             appointmentCell.homeAppointmentImage.image = UIImage(named: "Calendar")
@@ -286,13 +293,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
 
             // If the task is completed it should have a green checkbox
-            if task.completed == true{
-                taskCell.taskCompleted(task)
-            }
-            // Otherwise the checkbox should not be green
-            else{
-                taskCell.taskNotCompleted(task)
-            }
+            taskCell.taskCompleted(task)
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             return taskCell

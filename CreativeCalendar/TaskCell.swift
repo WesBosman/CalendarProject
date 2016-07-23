@@ -17,4 +17,13 @@ class TaskCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code        
     }
+    
+    func taskCompleted(item: TaskItem){
+        if item.completed == true{
+            taskImage.image = UIImage(named: "checkbox")
+        }
+        else{
+            taskImage.image = UIImage(named: "uncheckbox")
+        }
+    }
 }

@@ -57,7 +57,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         
         journalText = journalTextBox.text
         
-        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date)
+        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date, deleted: false)
         
         let db = DatabaseFunctions.sharedInstance
         db.addToJournalDatabase(journalItem)

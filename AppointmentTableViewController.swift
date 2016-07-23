@@ -135,11 +135,12 @@ class AppointmentTableViewController: UITableViewController{
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Delete the row from the data source
+                self.appointmentList.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
+                
                 //Delete from database
-                //self.db.deleteAppointmentAndNotification("Appointments", uuid: itemToDelete.UUID)
-                appointmentCellForAction.appointmentNotCompleted(appointmentForAction)
+                appointmentCellForAction.appointmentCompleted(appointmentForAction)
                 appointmentForAction.deleted = true
                 self.db.updateAppointment(appointmentForAction)
                 
@@ -160,7 +161,7 @@ class AppointmentTableViewController: UITableViewController{
             let cancelAction = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment 
-                appointmentCellForAction.appointmentNotCompleted(appointmentForAction)
+                appointmentCellForAction.appointmentCompleted(appointmentForAction)
                 appointmentForAction.canceled = true
                 self.db.updateAppointment(appointmentForAction)
                 
