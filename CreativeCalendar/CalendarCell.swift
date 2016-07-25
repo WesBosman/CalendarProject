@@ -80,8 +80,10 @@ class CalendarCell: JTAppleDayCellView{
         
         for app in appointmentList{
             let appointmentDate = formatter.stringFromDate(app.startingTime)
-            
             if appointmentDate == (cellDate){
+                if let keyExists = appointmentDictionary[appointmentDate]{
+                    print("Key Already exists: \(keyExists) for value: ")
+                }
                 appointmentDictionary.updateValue(app.title, forKey: appointmentDate)
                 self.appointmentCounter += 1
                 self.drawAppointment = true

@@ -8,21 +8,106 @@
 
 import UIKit
 
-class PopoverViewController: UIViewController {
-    @IBOutlet weak var appointmentPopoverLabel: UILabel!
-    @IBOutlet weak var taskPopoverLabel: UILabel!
-    @IBOutlet weak var journalPopoverLabel: UILabel!
-    var appointmentLabel:String = String()
-    var taskLabel:String = String()
-    var journalLabel:String = String()
+class PopoverViewController: UIViewController , UIScrollViewDelegate {
+
+//    @IBOutlet weak var appointmentLabel: UILabel!
+//    @IBOutlet weak var taskLabel: UILabel!
+//    @IBOutlet weak var journalLabel: UILabel!
+    
+    let pageTitles = ["Appointments", "Tasks", "Journals"]
+    let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(150, 260, 200, 25))
+    let scrollView: UIScrollView = UIScrollView(frame: CGRectMake(20, 20, 260, 225))
+    var colors: [UIColor] = [UIColor.redColor(), UIColor.greenColor(), UIColor.yellowColor()]
+    var frame = CGRectMake(0, 0, 0, 0)
+    
+    var appointment:String = String()
+    var task:String = String()
+    var journal:String = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        appointmentPopoverLabel.text = appointmentLabel
-        taskPopoverLabel.text = taskLabel
-        journalPopoverLabel.text = journalLabel
+        print("Appointment Label: \(appointment)")
+        print("Task Label: \(task)")
+        print("Journal Label: \(journal)")
+
+        
+        configurePageController()
+        scrollView.layer.cornerRadius = 10
+        self.scrollView.delegate = self
+        self.view.addSubview(scrollView)
+        
+        for index in 0..<3 {
+            
+            frame.origin.x = self.scrollView.frame.size.width * CGFloat(index)
+            frame.size = self.scrollView.frame.size
+            self.scrollView.pagingEnabled = true
+            
+            switch(index){
+            case 0:
+                // Appointment subview
+                let subView = UIView(frame: frame)
+                subView.backgroundColor = colors[index]
+                let appointmentHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width, height: 20))
+                appointmentHeader.text = "Appointments"
+                let appointmentLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width, height: subView.frame.height))
+                appointmentLabel.text = appointment
+                subView.addSubview(appointmentHeader)
+                subView.addSubview(appointmentLabel)
+                self.scrollView .addSubview(subView)
+                
+            case 1:
+                // Task subview
+                let subView = UIView(frame: frame)
+                subView.backgroundColor = colors[index]
+                let taskHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width, height: 20))
+                taskHeader.text = "Tasks"
+                let taskLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width, height: subView.frame.height))
+                taskLabel.text = task
+                subView.addSubview(taskHeader)
+                subView.addSubview(taskLabel)
+                self.scrollView .addSubview(subView)
+                
+            case 2:
+                // Journal subview
+                let subView = UIView(frame: frame)
+                subView.backgroundColor = colors[index]
+                let journalHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width, height: 20))
+                journalHeader.text = "Journals"
+                let journalLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width, height: subView.frame.height))
+                journalLabel.text = journal
+                subView.addSubview(journalHeader)
+                subView.addSubview(journalLabel)
+                self.scrollView .addSubview(subView)
+                
+            default:
+                break
+                
+            }
+        }
+        
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 4, self.scrollView.frame.size.height)
+        pageControl.addTarget(self, action: #selector(PopoverViewController.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    }
+    
+    func configurePageController(){
+        pageControl.numberOfPages = colors.count
+        pageControl.currentPage = 0
+        pageControl.pageIndicatorTintColor = UIColor.whiteColor()
+        pageControl.backgroundColor = UIColor.blueColor()
+        pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
+        self.view.addSubview(pageControl)
+    }
+    
+    func changePage(sender: AnyObject) -> () {
+        let x = CGFloat(pageControl.currentPage) * scrollView.frame.size.width
+        scrollView.setContentOffset(CGPointMake(x, 0), animated: true)
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+        pageControl.currentPage = Int(pageNumber)
     }
 
     override func didReceiveMemoryWarning() {

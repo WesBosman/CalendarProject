@@ -26,12 +26,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var task:String = String()
     var journal:String = String()
     
-    @IBOutlet weak var appointmentFooterLabel: UILabel!
-    @IBOutlet weak var taskFooterLabel: UILabel!
-    @IBOutlet weak var journalFooterLabel: UILabel!
-    @IBOutlet weak var monthLabel: UILabel!
-    @IBOutlet weak var daysOfWeekLabel: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         calendarView.registerCellViewXib(fileName: "CellView")
@@ -39,9 +33,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.delegate = self
         calendarView.dataSource = self
         calendarView.cellSnapsToEdge = true
-        calendarView.bufferBottom = 30
-        
-        // The size of the cells in the calendar view
         calendarView.backgroundColor = UIColor.clearColor()
         
         // Select the current date
@@ -58,7 +49,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     @IBAction func moreButtonPressed(sender: AnyObject) {
-        
         self.performSegueWithIdentifier("calendarPopover", sender: self)
     }
     
@@ -74,12 +64,12 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
         if selectedCell.cellState.isSelected == true{
             let popoverVC = PopoverViewController()
-            popoverVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-            let popover = popoverVC.popoverPresentationController
-            let calendarRect = CGRect(x: selectedCell.frame.size.height, y: selectedCell.frame.size.width / 2, width: 200, height: 200)
-            popover?.sourceRect = calendarRect
-            
-            popover!.backgroundColor = UIColor.greenColor()
+//            popoverVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+            popoverPresentationController.permittedArrowDirections = [.Up, .Down]
+            popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
+            popoverPresentationController.sourceView = selectedCell
+            popoverPresentationController.backgroundColor = UIColor.orangeColor()
+            presentViewController(popoverVC, animated: true, completion: nil)
 
         }
 
@@ -135,16 +125,14 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         if let calendarCell = cell as? CalendarCell{
             formatter.dateFormat = "MM/dd/yyyy"
             let stringDate = formatter.stringFromDate(cellState.date)
-            print()
-            print("Cell Date: \(stringDate)")
-            print("Cell Column: \(cellState.column())")
-            print("Cell Row: \(cellState.row())")
-            print("Calendar Cell Appointment Counter: \(calendarCell.appointmentCounter)")
-            print("Calendar Cell Task Counter: \(calendarCell.taskCounter)")
-            print("Calendar Cell Journal Counter: \(calendarCell.journalCounter)")
+//            print()
+//            print("Cell Date: \(stringDate)")
+//            print("Cell Column: \(cellState.column())")
+//            print("Cell Row: \(cellState.row())")
+//            print("Calendar Cell Appointment Counter: \(calendarCell.appointmentCounter)")
+//            print("Calendar Cell Task Counter: \(calendarCell.taskCounter)")
+//            print("Calendar Cell Journal Counter: \(calendarCell.journalCounter)")
 
-            
-            
             let appointmentLbl = calendarCell.appointmentDictionary[stringDate]
             let taskLbl = calendarCell.taskDictionary[stringDate]
             let journalLbl = calendarCell.journalDictionary[stringDate]
@@ -167,11 +155,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             else{
                 journal = ""
             }
-            
-//            print("Appointment footer: \(appointmentLbl)")
-            appointmentFooterLabel.text = appointmentLbl
-            taskFooterLabel.text = taskLbl
-            journalFooterLabel.text = journalLbl
             selectedCell = calendarCell
         
             calendarCell.updateCell(cellState)
@@ -199,44 +182,40 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Size of the header view
     func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate date: (startDate: NSDate, endDate: NSDate)) -> CGSize {
-        return CGSize(width: 0, height: 0)
+        return CGSize(width: 600, height: 150)
     }
     
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, date: (startDate: NSDate, endDate: NSDate), identifier: String) {
         
-        monthLabel.text = setUpHeaderView(date.startDate)
+        if let headerView = header as? CalendarHeaderView{
+            headerView.topLabel.text = setUpHeaderView(date.startDate)
         
-        var weekdayString = String()
+            var weekdayString = String()
         
-        for index in 1...7 {
-            let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
-//            print("Day: \(day)")
-
-            let spaces = String(count: 19, repeatedValue: (" " as Character))
-            weekdayString += day.substringToIndex(3).uppercaseString + spaces
+            for index in 1...7 {
+                let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
+//              print("Day: \(day)")
+                let spaces = String(count: 19, repeatedValue: (" " as Character))
+                weekdayString += day.substringToIndex(3).uppercaseString + spaces
+            }
+            headerView.bottomLabel.text = weekdayString
         }
-        daysOfWeekLabel.text = weekdayString
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "calendarPopover"{
-            print("Popover Segue")
-            let vc = segue.destinationViewController as UIViewController
-            let popOverView = segue.destinationViewController as! PopoverViewController
-//            let source = segue.sourceViewController as! CalendarViewController
+//            print("Popover Segue")
+            if let vc = segue.destinationViewController as? PopoverViewController{
             
-            let controller = vc.popoverPresentationController
-            
-            popOverView.appointmentLabel = appointment
-            popOverView.taskLabel = task
-            popOverView.journalLabel = journal
+                let controller = vc.popoverPresentationController
+                vc.appointment = appointment
+                vc.task = task
+                vc.journal = journal
             
             
-            if controller != nil{
-                controller?.delegate = self
-                controller?.permittedArrowDirections = [.Up, .Down]
-                controller?.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
-                controller?.sourceView = selectedCell
+                if controller != nil{
+                    controller?.delegate = self
+                }
             }
         }
     }
