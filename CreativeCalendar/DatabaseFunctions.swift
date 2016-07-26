@@ -426,7 +426,7 @@ class DatabaseFunctions{
         
         var taskArray: [TaskItem] = []
         do{
-            let task:FMResultSet = try db.executeQuery("SELECT date_created, task, additional, estimated_completed_date, completed, canceled, deleted, date_completed, uuid FROM Tasks WHERE deleted=?", values: [false])
+            let task:FMResultSet = try db.executeQuery("SELECT date_created,task, additional, estimated_completed_date, completed, canceled, deleted, date_completed, uuid FROM Tasks WHERE deleted=?", values: [false])
             while task.next(){
 //                print("Task Item from database.")
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
@@ -476,12 +476,12 @@ class DatabaseFunctions{
         let dateFormat = NSDateFormatter().universalFormatter()
         
         do{
-            let journal:FMResultSet = try db.executeQuery("SELECT date, journal, uuid FROM Journals WHERE deleted=?", values: [false])
+            let journal:FMResultSet = try db.executeQuery("SELECT date, journal, deleted, uuid FROM Journals WHERE deleted=?", values: [false])
             while journal.next(){
                 let date = dateFormat.dateFromString(journal.objectForColumnName("date") as! String)
                 let entry = journal.objectForColumnName("journal")
-                let uuid = journal.objectForColumnName("uuid")
                 let deleted = journal.boolForColumn("deleted")
+                let uuid = journal.objectForColumnName("uuid")
                 
                 let journalItem = JournalItem(journal: entry as! String, UUID: uuid as! String, date: date!, deleted: deleted)
 

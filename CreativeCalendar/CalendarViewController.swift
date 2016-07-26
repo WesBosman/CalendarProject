@@ -52,15 +52,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.performSegueWithIdentifier("calendarPopover", sender: self)
     }
     
-    func popoverControllerDidDismissPopover(popoverController: UIPopoverController) {
-        print("Popover did dismiss")
-    }
-    
-    func popoverControllerShouldDismissPopover(popoverController: UIPopoverController) -> Bool {
-        print("Should dismiss popover")
-        return true
-    }
-    
     func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
         if selectedCell.cellState.isSelected == true{
             let popoverVC = PopoverViewController()
@@ -182,7 +173,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Size of the header view
     func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate date: (startDate: NSDate, endDate: NSDate)) -> CGSize {
-        return CGSize(width: 600, height: 150)
+        return CGSize(width: calendarView.frame.size.width, height: 100)
     }
     
     func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, date: (startDate: NSDate, endDate: NSDate), identifier: String) {
@@ -195,7 +186,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             for index in 1...7 {
                 let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
 //              print("Day: \(day)")
-                let spaces = String(count: 19, repeatedValue: (" " as Character))
+                let spaces = String(count: 14, repeatedValue: (" " as Character))
                 weekdayString += day.substringToIndex(3).uppercaseString + spaces
             }
             headerView.bottomLabel.text = weekdayString
