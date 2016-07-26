@@ -22,12 +22,13 @@ class HomeTaskCell: UITableViewCell {
         homeTaskInfo.numberOfLines = 0
     }
     
-    func taskCompleted(t: TaskItem){
-        if t.completed == true{
-            uncheckedTaskImage.image = UIImage(named: "checkbox")
-        }
-        else{
-            uncheckedTaskImage.image = UIImage(named: "uncheckbox")
-        }
+    func taskCompleted(){
+        uncheckedTaskImage.image = UIImage(named: "checkbox")
     }
+    
+    func taskNotCompleted(){
+        uncheckedTaskImage.image = UIImage(named: "uncheckbox")
+    }
+    
+    
 }

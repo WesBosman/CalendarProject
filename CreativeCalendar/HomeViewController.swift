@@ -129,7 +129,17 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 //        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
 //    }
     
-    // This function is used for printing journals to the home screen 
+    // When the home screen appears we set the appointment and task arrays based on the data stored there
+    // We then reload the tables so that the changes from the other tabs are reflected here.
+    override func viewWillAppear(animated: Bool) {
+        appointmentArray = db.getAllAppointments()
+        taskArray = db.getAllTasks()
+        taskViewTable.reloadData()
+        appointmentViewTable.reloadData()
+        printJournals()
+    }
+    
+    // This function is used for printing journals to the home screen
     func printJournals(){
         //print("Journal code for view will appear method.")
         var journalText: String = ""
@@ -146,17 +156,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         let firstString = "You have (\(journalCount)) journal entries for today.\n"
         journalViewBox.text = firstString + journalText
     }
-    
-    // When the home screen appears we set the appointment and task arrays based on the data stored there
-    // We then reload the tables so that the changes from the other tabs are reflected here.
-    override func viewWillAppear(animated: Bool) {
 
-        appointmentArray = db.getAllAppointments()
-        taskArray = db.getAllTasks()
-        taskViewTable.reloadData()
-        appointmentViewTable.reloadData()
-        printJournals()
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -185,26 +185,34 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             
             // If the user confirms that a task was completed then update the image to a green checkbox
             alert.addAction(UIAlertAction(title: "Complete Task", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
-                taskCell.taskCompleted(task)
+                taskCell.taskCompleted()
                 task.completed = true
+                task.canceled = false
+                task.deleted = false
                 self.db.updateTask(task)
             } ))
             
             alert.addAction(UIAlertAction(title: "Cancel Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
-                taskCell.taskCompleted(task)
+                taskCell.taskNotCompleted()
+                task.completed = false
                 task.canceled = true
+                task.deleted = false
                 self.db.updateTask(task)
             }))
             
             alert.addAction(UIAlertAction(title: "Delete Task", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
-                taskCell.taskCompleted(task)
+                taskCell.taskNotCompleted()
                 task.completed = false
+                task.canceled = false
                 task.deleted = true
                 self.db.updateTask(task)
-                
             } ))
+            
+            alert.addAction(UIAlertAction(title: "Exit Menu", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+                // Do nothing. 
+            }))
             // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
         }
@@ -221,8 +229,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addAction(UIAlertAction(title: "Complete Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image and labels with strikethroughs and the green checkbox
-                appointmentCell.appointmentCompleted(appointment)
+                appointmentCell.appointmentCompleted()
                 appointment.completed = true
+                appointment.canceled = false
+                appointment.deleted = false
                 self.db.updateAppointment(appointment)
             } ))
             
@@ -230,8 +240,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addAction(UIAlertAction(title: "Cancel Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
-                appointmentCell.appointmentCompleted(appointment)
+                appointmentCell.appointmentNotCompleted()
+                appointment.completed = false
                 appointment.canceled = true
+                appointment.deleted = false
                 self.db.updateAppointment(appointment)
                 
             } ))
@@ -239,7 +251,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addAction(UIAlertAction(title: "Delete Appointment", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
                 
                 // Update the cell image to an uncompleted task
-                appointmentCell.appointmentCompleted(appointment)
+                appointmentCell.appointmentNotCompleted()
+                appointment.completed = false
+                appointment.canceled = false
                 appointment.deleted = true
                 self.db.updateAppointment(appointment)
                 
@@ -252,6 +266,19 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func confirmationMenu(tableName:String, typeOfAction: String){
+        switch(typeOfAction){
+        case "Complete":
+            break
+        case "Cancel":
+            break
+        case "Delete":
+            break
+        default:
+            break
+        }
     }
     
     
@@ -274,7 +301,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             }
             
             // If the appointment has been completed then we need to mark it with a check
-            appointmentCell.appointmentCompleted(appointment)
+            if appointment.completed == true{
+                appointmentCell.appointmentCompleted()
+            }
+            else{
+                appointmentCell.appointmentNotCompleted()
+            }
             
             // Set the other images and labels.
             appointmentCell.homeAppointmentImage.image = UIImage(named: "Calendar")
@@ -293,7 +325,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
 
             // If the task is completed it should have a green checkbox
-            taskCell.taskCompleted(task)
+            if task.completed == true{
+                taskCell.taskCompleted()
+            }
+            else{
+                taskCell.taskNotCompleted()
+            }
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             return taskCell

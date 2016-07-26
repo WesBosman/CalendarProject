@@ -23,17 +23,12 @@ class AppointmentCell: UITableViewCell {
         // Wrap the text from the additional information section as it could easily fit on more than one line.
         appointmentAdditionalInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
         appointmentAdditionalInfo.numberOfLines = 0
-        
+    }
+    func appointmentCompleted(){
+        appointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
     }
     
-    func appointmentCompleted(item: AppointmentItem){
-        if item.completed == true{
-            appointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
-        }
-        else{
-            appointmentCompletedImage.image = UIImage(named:"CircleUntickedRed")
-
-        }
-        
+    func appointmentNotCompleted(){
+        appointmentCompletedImage.image = UIImage(named: "CircleUntickedRed")
     }
 }

@@ -253,11 +253,11 @@ class DatabaseFunctions{
 
                 // Complete the Task
                 if isComplete == true{
-                    print("Turn Completed")
+                    print("Task Completed")
                     try db.executeUpdate(completedStatement, values: [isComplete, currentDateString, item.UUID])
                 }
                 else{
-                    print("Turn Not Completed")
+                    print("Task Not Completed")
                     try db.executeUpdate(completedStatement, values: [isComplete, "" ,  item.UUID])
                 }
                 

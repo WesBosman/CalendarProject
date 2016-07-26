@@ -18,12 +18,12 @@ class TaskCell: UITableViewCell {
         // Initialization code        
     }
     
-    func taskCompleted(item: TaskItem){
-        if item.completed == true{
-            taskImage.image = UIImage(named: "checkbox")
-        }
-        else{
-            taskImage.image = UIImage(named: "uncheckbox")
-        }
+    func taskCompleted(){
+        taskImage.image = UIImage(named: "checkbox")
+    }
+    
+    func taskNotCompleted(){
+        taskImage.image = UIImage(named: "uncheckbox")
+
     }
 }

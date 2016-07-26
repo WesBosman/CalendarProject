@@ -64,14 +64,12 @@ class TaskTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskCell
         let taskItem = taskList[indexPath.row] as TaskItem
         // Configure the cell...
-        cell.taskCompleted(taskItem)
-        
-//        if taskItem.completed == true{
-//            cell.taskImage.image = UIImage(named: "checkbox")
-//        }
-//        else{
-//            cell.taskImage.image = UIImage(named: "uncheckbox")
-//        }
+        if taskItem.completed == true{
+            cell.taskCompleted()
+        }
+        else{
+            cell.taskNotCompleted()
+        }
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         
@@ -112,6 +110,8 @@ class TaskTableViewController: UITableViewController {
             let cancelOptions = UIAlertController(title: "Cancel Task", message: "Would you like to cancel the task: \(taskForAction.taskTitle)", preferredStyle: .Alert)
             
             // Appointment was canceled.
+            let abortCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+
             let cancelAction = UIAlertAction(title: "Cancel Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment
@@ -120,10 +120,9 @@ class TaskTableViewController: UITableViewController {
                 self.db.updateTask(taskForAction)
                 
             })
-            let abortCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
             
-            cancelOptions.addAction(cancelAction)
             cancelOptions.addAction(abortCancel)
+            cancelOptions.addAction(cancelAction)
             
             self.presentViewController(cancelOptions, animated: true, completion: nil)
         })

@@ -27,7 +27,7 @@ class JournalItem{
         let dateFormat = NSDateFormatter()
         dateFormat.dateFormat = "EEEE, MMMM dd, yyyy"
         let journalStringForDate = dateFormat.stringFromDate(journalDate)
-        print("Journal String For Date: \(journalStringForDate)")
+//        print("Journal String For Date: \(journalStringForDate)")
         return journalStringForDate
     }
 }

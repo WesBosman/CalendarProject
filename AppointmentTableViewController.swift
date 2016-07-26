@@ -92,10 +92,10 @@ class AppointmentTableViewController: UITableViewController{
         }
         
         if appItem.completed == true{
-            cell.appointmentCompletedImage.image = UIImage(named: "CircleTickedGreen")
+            cell.appointmentCompleted()
         }
         else{
-            cell.appointmentCompletedImage.image = UIImage(named: "CircleUntickedRed")
+            cell.appointmentNotCompleted()
         }
         
         let startFormatter = NSDateFormatter()
@@ -140,7 +140,7 @@ class AppointmentTableViewController: UITableViewController{
                 
                 
                 //Delete from database
-                appointmentCellForAction.appointmentCompleted(appointmentForAction)
+                appointmentCellForAction.appointmentNotCompleted()
                 appointmentForAction.deleted = true
                 self.db.updateAppointment(appointmentForAction)
                 
@@ -161,7 +161,7 @@ class AppointmentTableViewController: UITableViewController{
             let cancelAction = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment 
-                appointmentCellForAction.appointmentCompleted(appointmentForAction)
+                appointmentCellForAction.appointmentNotCompleted()
                 appointmentForAction.canceled = true
                 self.db.updateAppointment(appointmentForAction)
                 
@@ -183,7 +183,7 @@ class AppointmentTableViewController: UITableViewController{
             let completeAction = UIAlertAction(title: "Complete Appointment", style: .Default, handler: {(action: UIAlertAction) -> Void in
                 
                 // Complete the appointment and update its image.
-                appointmentCellForAction.appointmentCompleted(appointmentForAction)
+                appointmentCellForAction.appointmentCompleted()
                 appointmentForAction.completed = true
                 self.db.updateAppointment(appointmentForAction)
                 

@@ -26,12 +26,10 @@ class HomeAppointmentCell: UITableViewCell {
         homeAppointmentAdditional.numberOfLines = 0
     }
     
-    func appointmentCompleted(item: AppointmentItem){
-        if item.completed == true{
-            homeAppointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
-        }
-        else{
-            homeAppointmentCompletedImage.image = UIImage(named:"CircleUntickedRed")
-        }
+    func appointmentCompleted(){
+        homeAppointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
+    }
+    func appointmentNotCompleted(){
+        homeAppointmentCompletedImage.image = UIImage(named:"CircleUntickedRed")
     }
 }
