@@ -35,6 +35,11 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.cellSnapsToEdge = true
         calendarView.backgroundColor = UIColor.clearColor()
         
+        // Make the gradient background
+        let background = CAGradientLayer().makeGradientBackground()
+        background.frame = self.view.bounds
+        self.view.layer.insertSublayer(background, atIndex: 0)        
+        
         // Select the current date
         calendarView.reloadData() {
             self.calendarView.selectDates([NSDate()])
@@ -202,8 +207,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
                 vc.appointment = appointment
                 vc.task = task
                 vc.journal = journal
-            
-            
+                
                 if controller != nil{
                     controller?.delegate = self
                 }

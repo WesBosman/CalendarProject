@@ -24,11 +24,13 @@ class AppointmentCell: UITableViewCell {
         appointmentAdditionalInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
         appointmentAdditionalInfo.numberOfLines = 0
     }
-    func appointmentCompleted(){
-        appointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
-    }
     
-    func appointmentNotCompleted(){
-        appointmentCompletedImage.image = UIImage(named: "CircleUntickedRed")
+    func appointmentCompleted(appointment: AppointmentItem){
+        if appointment.completed == true{
+            appointmentCompletedImage.image = UIImage(named: "CircleTickedGreen")
+        }
+        else{
+            appointmentCompletedImage.image = UIImage(named: "CircleUntickedRed")
+        }
     }
 }

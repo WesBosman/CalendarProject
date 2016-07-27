@@ -91,12 +91,7 @@ class AppointmentTableViewController: UITableViewController{
             cell.appointmentStart.textColor = UIColor.blackColor()
         }
         
-        if appItem.completed == true{
-            cell.appointmentCompleted()
-        }
-        else{
-            cell.appointmentNotCompleted()
-        }
+        
         
         let startFormatter = NSDateFormatter()
         let endFormatter = NSDateFormatter()
@@ -105,6 +100,7 @@ class AppointmentTableViewController: UITableViewController{
         let startingTime = startFormatter.stringFromDate(appItem.startingTime)
         let endingTime = endFormatter.stringFromDate(appItem.endingTime)
         
+        cell.appointmentCompleted(appItem)
         cell.appointmentTitle.text = "Event: \(appItem.title)"
         cell.appointmentType.text = "Type: \(appItem.type)"
         cell.appointmentStart.text = startingTime
@@ -140,7 +136,8 @@ class AppointmentTableViewController: UITableViewController{
                 
                 
                 //Delete from database
-                appointmentCellForAction.appointmentNotCompleted()
+                appointmentForAction.completed = false
+                appointmentForAction.canceled = false
                 appointmentForAction.deleted = true
                 self.db.updateAppointment(appointmentForAction)
                 
@@ -161,8 +158,10 @@ class AppointmentTableViewController: UITableViewController{
             let cancelAction = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment 
-                appointmentCellForAction.appointmentNotCompleted()
+                appointmentForAction.completed = false
                 appointmentForAction.canceled = true
+                appointmentForAction.deleted = false
+                appointmentCellForAction.appointmentCompleted(appointmentForAction)
                 self.db.updateAppointment(appointmentForAction)
                 
             })
@@ -183,8 +182,10 @@ class AppointmentTableViewController: UITableViewController{
             let completeAction = UIAlertAction(title: "Complete Appointment", style: .Default, handler: {(action: UIAlertAction) -> Void in
                 
                 // Complete the appointment and update its image.
-                appointmentCellForAction.appointmentCompleted()
                 appointmentForAction.completed = true
+                appointmentForAction.canceled = false
+                appointmentForAction.deleted = false
+                appointmentCellForAction.appointmentCompleted(appointmentForAction)
                 self.db.updateAppointment(appointmentForAction)
                 
             })

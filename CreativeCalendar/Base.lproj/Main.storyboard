@@ -1818,32 +1818,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krf-j0-1qK" customClass="CalendarBackgroundView" customModule="CreativeCalendar" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krf-j0-1qK">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vV2-Cu-ToG">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="A0q-ui-VCb"/>
-                                            <constraint firstAttribute="width" constant="46" id="GBQ-RU-okj">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="624"/>
-                                            </constraint>
-                                        </constraints>
                                         <state key="normal" title="More">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="A0q-ui-VCb"/>
-                                                <exclude reference="GBQ-RU-okj"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="A0q-ui-VCb"/>
-                                                <include reference="GBQ-RU-okj"/>
-                                            </mask>
-                                        </variation>
                                         <connections>
                                             <action selector="moreButtonPressed:" destination="dHM-vo-Fq1" eventType="touchUpInside" id="2ea-3Q-iY3"/>
                                         </connections>
@@ -1856,17 +1838,13 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.22140272659999999" green="0.65783414760000003" blue="0.93480983149999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="leading" secondItem="TYL-uE-jje" secondAttribute="leading" id="Dhc-Tl-AJL"/>
-                                    <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="JAb-uj-2ML"/>
-                                    <constraint firstAttribute="bottom" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="170" id="VGG-NH-ceN">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="71"/>
-                                    </constraint>
-                                    <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leading" constant="88" id="gmW-9A-xVy"/>
-                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="l48-SF-PlI"/>
-                                    <constraint firstItem="TYL-uE-jje" firstAttribute="top" secondItem="krf-j0-1qK" secondAttribute="top" constant="16" id="lH3-C5-h5a">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="8"/>
-                                    </constraint>
-                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="bottom" secondItem="krf-j0-1qK" secondAttribute="bottomMargin" id="upg-8w-zkV"/>
+                                    <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="0yP-0d-04u"/>
+                                    <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="vV2-Cu-ToG" secondAttribute="leading" id="9or-6a-XCp"/>
+                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="top" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="8" symbolic="YES" id="MOm-Zn-ZBx"/>
+                                    <constraint firstItem="TYL-uE-jje" firstAttribute="top" secondItem="krf-j0-1qK" secondAttribute="topMargin" id="R8u-7p-RHN"/>
+                                    <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leading" constant="88" id="RZL-Og-IJA"/>
+                                    <constraint firstAttribute="bottom" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="71" id="TwQ-9y-q1c"/>
+                                    <constraint firstItem="TYL-uE-jje" firstAttribute="trailing" secondItem="vV2-Cu-ToG" secondAttribute="trailing" id="heK-5H-aVX"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
@@ -1874,13 +1852,13 @@
                                         <exclude reference="TYL-uE-jje"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="Dhc-Tl-AJL"/>
-                                        <exclude reference="l48-SF-PlI"/>
-                                        <exclude reference="upg-8w-zkV"/>
-                                        <exclude reference="JAb-uj-2ML"/>
-                                        <exclude reference="VGG-NH-ceN"/>
-                                        <exclude reference="gmW-9A-xVy"/>
-                                        <exclude reference="lH3-C5-h5a"/>
+                                        <exclude reference="0yP-0d-04u"/>
+                                        <exclude reference="9or-6a-XCp"/>
+                                        <exclude reference="R8u-7p-RHN"/>
+                                        <exclude reference="RZL-Og-IJA"/>
+                                        <exclude reference="TwQ-9y-q1c"/>
+                                        <exclude reference="heK-5H-aVX"/>
+                                        <exclude reference="MOm-Zn-ZBx"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
@@ -1889,13 +1867,13 @@
                                         <include reference="TYL-uE-jje"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="Dhc-Tl-AJL"/>
-                                        <include reference="l48-SF-PlI"/>
-                                        <include reference="upg-8w-zkV"/>
-                                        <include reference="JAb-uj-2ML"/>
-                                        <include reference="VGG-NH-ceN"/>
-                                        <include reference="gmW-9A-xVy"/>
-                                        <include reference="lH3-C5-h5a"/>
+                                        <include reference="0yP-0d-04u"/>
+                                        <include reference="9or-6a-XCp"/>
+                                        <include reference="R8u-7p-RHN"/>
+                                        <include reference="RZL-Og-IJA"/>
+                                        <include reference="TwQ-9y-q1c"/>
+                                        <include reference="heK-5H-aVX"/>
+                                        <include reference="MOm-Zn-ZBx"/>
                                     </mask>
                                 </variation>
                             </view>

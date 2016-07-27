@@ -21,14 +21,12 @@ class HomeTaskCell: UITableViewCell {
         homeTaskInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
         homeTaskInfo.numberOfLines = 0
     }
-    
-    func taskCompleted(){
-        uncheckedTaskImage.image = UIImage(named: "checkbox")
+    func homeTaskCompleted(task: TaskItem){
+        if task.completed == true{
+            uncheckedTaskImage.image = UIImage(named: "checkbox")
+        }
+        else{
+            uncheckedTaskImage.image = UIImage(named: "uncheckbox")
+        }
     }
-    
-    func taskNotCompleted(){
-        uncheckedTaskImage.image = UIImage(named: "uncheckbox")
-    }
-    
-    
 }

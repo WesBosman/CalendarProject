@@ -64,22 +64,16 @@ class TaskTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskCell
         let taskItem = taskList[indexPath.row] as TaskItem
         // Configure the cell...
-        if taskItem.completed == true{
-            cell.taskCompleted()
-        }
-        else{
-            cell.taskNotCompleted()
-        }
+        cell.taskCompleted(taskItem)
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
-        
         return cell
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
         var taskForAction = taskList[indexPath.row] as TaskItem
-//        let taskCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
+        let taskCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
         
         // Make custom actions for delete, cancel and complete.
         let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
@@ -93,6 +87,8 @@ class TaskTableViewController: UITableViewController {
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
                 //Delete from database
+                taskForAction.completed = false
+                taskForAction.canceled = false
                 taskForAction.deleted = true
                 self.db.updateTask(taskForAction)
                 
@@ -115,8 +111,11 @@ class TaskTableViewController: UITableViewController {
             let cancelAction = UIAlertAction(title: "Cancel Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment
-//                taskCellForAction.appointmentNotCompleted(taskForAction)
+                
+                taskForAction.completed = false
                 taskForAction.canceled = true
+                taskForAction.deleted = false
+                taskCellForAction.taskCompleted(taskForAction)
                 self.db.updateTask(taskForAction)
                 
             })
@@ -136,8 +135,10 @@ class TaskTableViewController: UITableViewController {
             let completeAction = UIAlertAction(title: "Complete Task", style: .Default, handler: {(action: UIAlertAction) -> Void in
                 
                 // Complete the appointment and update its image.
-//                taskCellForAction.appointmentCompleted(taskForAction)
                 taskForAction.completed = true
+                taskForAction.canceled = false
+                taskForAction.deleted = false
+                taskCellForAction.taskCompleted(taskForAction)
                 self.db.updateTask(taskForAction)
                 
             })
