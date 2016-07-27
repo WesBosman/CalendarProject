@@ -16,6 +16,7 @@ class HomeAppointmentCell: UITableViewCell {
     @IBOutlet weak var homeAppointmentLocation: UILabel!
     @IBOutlet weak var homeAppointmentAdditional: UILabel!
     @IBOutlet weak var homeAppointmentCompletedImage: UIImageView!
+    @IBOutlet weak var homeAppointmentType: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

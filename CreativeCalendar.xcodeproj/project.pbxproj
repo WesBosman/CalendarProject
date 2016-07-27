@@ -35,6 +35,9 @@
 		DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE58D3C91CECE0B30032CB9C /* JournalItem.swift */; };
 		DE5FD15B1D48E137004DA1F7 /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */; };
 		DE5FD15C1D48E137004DA1F7 /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DE5FD1601D48EE98004DA1F7 /* EligibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5FD15F1D48EE98004DA1F7 /* EligibilityViewController.swift */; };
+		DE5FD1621D48F2D4004DA1F7 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5FD1611D48F2D4004DA1F7 /* ConsentViewController.swift */; };
+		DE5FD1641D48F863004DA1F7 /* ConsentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5FD1631D48F863004DA1F7 /* ConsentTask.swift */; };
 		DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFF81D14787E003ED54E /* FMDatabase.m */; };
 		DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFFC1D1479F3003ED54E /* FMResultSet.m */; };
 		DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0001D147AAD003ED54E /* FMDatabaseAdditions.m */; };
@@ -137,6 +140,9 @@
 		DE553AB01CE781B4006288E6 /* AppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentCell.swift; sourceTree = "<group>"; };
 		DE58D3C91CECE0B30032CB9C /* JournalItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
 		DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = "../../Downloads/ResearchKit-master/ResearchKit.xcodeproj"; sourceTree = "<group>"; };
+		DE5FD15F1D48EE98004DA1F7 /* EligibilityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EligibilityViewController.swift; sourceTree = "<group>"; };
+		DE5FD1611D48F2D4004DA1F7 /* ConsentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentViewController.swift; sourceTree = "<group>"; };
+		DE5FD1631D48F863004DA1F7 /* ConsentTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentTask.swift; sourceTree = "<group>"; };
 		DE62CFF81D14787E003ED54E /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		DE62CFFA1D1478E0003ED54E /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		DE62CFFB1D14797B003ED54E /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
@@ -229,6 +235,9 @@
 			isa = PBXGroup;
 			children = (
 				DE539DA61CAEDFB0000615CD /* AppDelegate.swift */,
+				DE5FD15F1D48EE98004DA1F7 /* EligibilityViewController.swift */,
+				DE5FD1631D48F863004DA1F7 /* ConsentTask.swift */,
+				DE5FD1611D48F2D4004DA1F7 /* ConsentViewController.swift */,
 				DE62D00D1D1B0066003ED54E /* TaskCell.swift */,
 				DE53EF201CEA385C00E629A2 /* HomeTaskCell.swift */,
 				DE553AB01CE781B4006288E6 /* AppointmentCell.swift */,
@@ -633,10 +642,13 @@
 				DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */,
 				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
+				DE5FD1601D48EE98004DA1F7 /* EligibilityViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
 				DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */,
+				DE5FD1641D48F863004DA1F7 /* ConsentTask.swift in Sources */,
 				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
+				DE5FD1621D48F2D4004DA1F7 /* ConsentViewController.swift in Sources */,
 				DE4CAA711D243A9900197FEF /* CalendarHeaderView.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
 			);

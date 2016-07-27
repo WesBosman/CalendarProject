@@ -1,11 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="52V-8z-kuT">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Consent Controller-->
+        <scene sceneID="thn-1s-jxO">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kMT-WY-I9K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="ConsentController" title="Consent Controller" id="52V-8z-kuT" customClass="ConsentViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CPd-yo-keB"/>
+                        <viewControllerLayoutGuide type="bottom" id="r0y-J4-JoW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3yW-0m-AUD">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dCb-fZ-p3b">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Start"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="300" y="680" width="200" height="100"/>
+                                </variation>
+                                <connections>
+                                    <action selector="startButtonPressed:" destination="52V-8z-kuT" eventType="touchUpInside" id="Fae-wO-hai"/>
+                                    <segue destination="49e-Tb-3d3" kind="show" identifier="tabBarSegue" id="utF-lB-tcG"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for completing the consent form for this study. please press the start button to enter the application." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VrR-xs-q84">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="212" width="760" height="375"/>
+                                </variation>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="dCb-fZ-p3b"/>
+                                <exclude reference="VrR-xs-q84"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="subviews">
+                                <include reference="dCb-fZ-p3b"/>
+                                <include reference="VrR-xs-q84"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="greetingLabel" destination="VrR-xs-q84" id="UyE-3S-hA4"/>
+                        <outlet property="startButton" destination="dCb-fZ-p3b" id="W19-c4-6mO"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-672" y="0.0"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
@@ -1450,11 +1505,22 @@
                                                         </mask>
                                                     </variation>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Pq-lC-eMB">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="GEi-uh-SzT" firstAttribute="leading" secondItem="KUa-YT-UI6" secondAttribute="leading" id="4pX-s1-T9q"/>
-                                                <constraint firstItem="GEi-uh-SzT" firstAttribute="bottom" secondItem="J0q-bL-r12" secondAttribute="bottom" id="7J4-pU-OCL"/>
+                                                <constraint firstItem="GEi-uh-SzT" firstAttribute="bottom" secondItem="J0q-bL-r12" secondAttribute="bottom" id="7J4-pU-OCL">
+                                                    <variation key="heightClass=regular-widthClass=regular" constant="14"/>
+                                                </constraint>
+                                                <constraint firstItem="JKA-dc-eVh" firstAttribute="top" secondItem="0Pq-lC-eMB" secondAttribute="bottom" constant="8" symbolic="YES" id="B3l-nk-CTb"/>
+                                                <constraint firstItem="0Pq-lC-eMB" firstAttribute="leading" secondItem="J0q-bL-r12" secondAttribute="leading" id="Bqk-9M-P7k"/>
                                                 <constraint firstItem="GEi-uh-SzT" firstAttribute="top" secondItem="J0q-bL-r12" secondAttribute="top" id="EnG-gl-heb"/>
+                                                <constraint firstItem="0Pq-lC-eMB" firstAttribute="top" secondItem="ntM-y4-9vD" secondAttribute="topMargin" constant="33" id="FyX-nT-mI3"/>
                                                 <constraint firstItem="XbH-aS-bJr" firstAttribute="trailing" secondItem="ntM-y4-9vD" secondAttribute="trailingMargin" id="KEx-JI-pvg"/>
                                                 <constraint firstItem="XbH-aS-bJr" firstAttribute="leading" secondItem="J0q-bL-r12" secondAttribute="trailing" constant="8" symbolic="YES" id="LPk-Ga-3sK"/>
                                                 <constraint firstItem="XbH-aS-bJr" firstAttribute="trailing" secondItem="MQ2-dH-YbF" secondAttribute="trailing" id="MQa-kz-1f0"/>
@@ -1481,6 +1547,7 @@
                                                 <constraint firstItem="KUa-YT-UI6" firstAttribute="baseline" secondItem="MQ2-dH-YbF" secondAttribute="baseline" id="xOU-ro-jLj">
                                                     <variation key="heightClass=regular-widthClass=regular" constant="-3"/>
                                                 </constraint>
+                                                <constraint firstItem="XbH-aS-bJr" firstAttribute="leading" secondItem="0Pq-lC-eMB" secondAttribute="trailing" constant="8" symbolic="YES" id="xhv-3P-Cov"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -1491,6 +1558,7 @@
                                                     <exclude reference="XbH-aS-bJr"/>
                                                     <exclude reference="SnF-JH-2gR"/>
                                                     <exclude reference="KUa-YT-UI6"/>
+                                                    <exclude reference="0Pq-lC-eMB"/>
                                                 </mask>
                                                 <mask key="constraints">
                                                     <exclude reference="4pX-s1-T9q"/>
@@ -1500,8 +1568,11 @@
                                                     <exclude reference="qCx-Pa-JJM"/>
                                                     <exclude reference="sfo-pu-Dhw"/>
                                                     <exclude reference="wbe-Xn-fZ2"/>
+                                                    <exclude reference="B3l-nk-CTb"/>
                                                     <exclude reference="gqk-7s-E73"/>
                                                     <exclude reference="hQj-dc-hyX"/>
+                                                    <exclude reference="Bqk-9M-P7k"/>
+                                                    <exclude reference="FyX-nT-mI3"/>
                                                     <exclude reference="QtC-fn-Gi9"/>
                                                     <exclude reference="mUJ-ad-xXC"/>
                                                     <exclude reference="tLA-gN-m4c"/>
@@ -1514,6 +1585,7 @@
                                                     <exclude reference="MQa-kz-1f0"/>
                                                     <exclude reference="Rxy-tf-Kyp"/>
                                                     <exclude reference="hd5-t3-t3A"/>
+                                                    <exclude reference="xhv-3P-Cov"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -1525,6 +1597,7 @@
                                                     <include reference="XbH-aS-bJr"/>
                                                     <include reference="SnF-JH-2gR"/>
                                                     <include reference="KUa-YT-UI6"/>
+                                                    <include reference="0Pq-lC-eMB"/>
                                                 </mask>
                                                 <mask key="constraints">
                                                     <include reference="4pX-s1-T9q"/>
@@ -1534,8 +1607,11 @@
                                                     <include reference="qCx-Pa-JJM"/>
                                                     <include reference="sfo-pu-Dhw"/>
                                                     <include reference="wbe-Xn-fZ2"/>
+                                                    <include reference="B3l-nk-CTb"/>
                                                     <include reference="gqk-7s-E73"/>
                                                     <include reference="hQj-dc-hyX"/>
+                                                    <include reference="Bqk-9M-P7k"/>
+                                                    <include reference="FyX-nT-mI3"/>
                                                     <include reference="QtC-fn-Gi9"/>
                                                     <include reference="mUJ-ad-xXC"/>
                                                     <include reference="tLA-gN-m4c"/>
@@ -1548,6 +1624,7 @@
                                                     <include reference="MQa-kz-1f0"/>
                                                     <include reference="Rxy-tf-Kyp"/>
                                                     <include reference="hd5-t3-t3A"/>
+                                                    <include reference="xhv-3P-Cov"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1559,6 +1636,7 @@
                                             <outlet property="homeAppointmentLocation" destination="SnF-JH-2gR" id="gOT-CP-ntQ"/>
                                             <outlet property="homeAppointmentStart" destination="JKA-dc-eVh" id="xxx-GT-yJw"/>
                                             <outlet property="homeAppointmentTitle" destination="J0q-bL-r12" id="YAo-Rs-K0C"/>
+                                            <outlet property="homeAppointmentType" destination="0Pq-lC-eMB" id="UD3-mV-Fc3"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

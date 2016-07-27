@@ -13,6 +13,8 @@
 //
 
 import UIKit
+import ResearchKit
+
 
 // Dates are getting formatted so much I might as well make my own extension
 extension NSDateFormatter{
@@ -43,6 +45,7 @@ extension CAGradientLayer{
 }
 
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
+    
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var daysOfTheWeekText: UILabel!
@@ -60,6 +63,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     var taskArray: [TaskItem] = []
     var journalArray: [JournalItem] = []
     var todaysDate: String = String()
+    var consentGiven = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,12 +136,28 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
+//        if consentGiven == false{
+//            giveConsent()
+//        }
         appointmentArray = db.getAllAppointments()
         taskArray = db.getAllTasks()
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()
     }
+    
+//    func giveConsent(){
+//        let taskViewController = ORKTaskViewController(task: ConsentTask, taskRunUUID: nil)
+//        taskViewController.delegate = self
+//        self.presentViewController(taskViewController, animated: true, completion: nil)
+//    }
+//    
+//    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+//        //Handle results with taskViewController.result
+//        consentGiven = true
+//        taskViewController.dismissViewControllerAnimated(true, completion: nil)
+//    }
+
     
     // This function is used for printing journals to the home screen
     func printJournals(){
@@ -302,7 +322,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             // Set the other images and labels.
             appointmentCell.homeAppointmentImage.image = UIImage(named: "Calendar")
             appointmentCell.homeAppointmentTitle.text = appointment.title
-//            appointmentCell.homeAppointmentType.text = "type: \(appointment.type)"
+            appointmentCell.homeAppointmentType.text = "type: \(appointment.type)"
             appointmentCell.homeAppointmentStart.text = "start: \(startFormatter.stringFromDate(appointment.startingTime))"
             appointmentCell.homeAppointmentEnd.text = "end: \(endFormatter.stringFromDate(appointment.endingTime))"
             appointmentCell.homeAppointmentLocation.text = "location: \(appointment.appLocation)"
