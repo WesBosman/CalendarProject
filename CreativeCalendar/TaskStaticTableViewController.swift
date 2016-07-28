@@ -17,7 +17,9 @@ class TaskStaticTableViewController: UITableViewController {
     @IBOutlet weak var taskDatePicker: UIDatePicker!
     let db = DatabaseFunctions.sharedInstance
     var taskDatePickerIsHidden = false
-    let taskFormatter = NSDateFormatter().dateWithoutTime()
+    let taskFormatter = NSDateFormatter().dateWithoutTime
+    @IBOutlet weak var repeatingTaskRightDetail: UILabel!
+    @IBOutlet weak var repeatingTaskTitle: UILabel!
     @IBOutlet weak var saveTask: UIButton!
 
     override func viewDidLoad() {
@@ -26,8 +28,11 @@ class TaskStaticTableViewController: UITableViewController {
         taskAdditionalInfoTextBox.placeholder = "Additional Information"
         taskFinishDateLabel.text = "Estimated Task Completion Date"
         taskFinishDateRightDetail.text = String()
+        repeatingTaskTitle.text = "Schedule a repeating Task"
+        repeatingTaskRightDetail.text = String()
         taskDatePicker.datePickerMode = UIDatePickerMode.Date
         taskDatePicker.minimumDate = NSDate()
+        
         // Set the color and shape of the save button
         saveTask.layer.cornerRadius = 10
         saveTask.layer.borderWidth = 2

@@ -52,6 +52,8 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
                 let appointmentHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width, height: 20))
                 appointmentHeader.text = "Appointments"
                 let appointmentLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width, height: subView.frame.height))
+                appointmentLabel.lineBreakMode = .ByWordWrapping
+                appointmentLabel.numberOfLines = 0
                 appointmentLabel.text = appointment
                 subView.addSubview(appointmentHeader)
                 subView.addSubview(appointmentLabel)
@@ -64,6 +66,8 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
                 let taskHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width, height: 20))
                 taskHeader.text = "Tasks"
                 let taskLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width, height: subView.frame.height))
+                taskLabel.lineBreakMode = .ByWordWrapping
+                taskLabel.numberOfLines = 0
                 taskLabel.text = task
                 subView.addSubview(taskHeader)
                 subView.addSubview(taskLabel)
@@ -76,6 +80,8 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
                 let journalHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width, height: 20))
                 journalHeader.text = "Journals"
                 let journalLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width, height: subView.frame.height))
+                journalLabel.lineBreakMode = .ByWordWrapping
+                journalLabel.numberOfLines = 0
                 journalLabel.text = journal
                 subView.addSubview(journalHeader)
                 subView.addSubview(journalLabel)

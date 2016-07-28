@@ -11,7 +11,8 @@ import UIKit
 class RepeatAppointmentTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
 
     let repeatIdentifier = "RepeatAppointmentCell"
-    let repeatDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    let defaults = NSUserDefaults.standardUserDefaults()
+    let repeatDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     var repeatTableView:UITableView?
     var arrayOfDays:[String] = []
     
@@ -28,6 +29,7 @@ class RepeatAppointmentTableViewCell: UITableViewCell, UITableViewDelegate, UITa
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        defaults.removeObjectForKey(repeatIdentifier)
         setUpTableView()
     }
     
@@ -45,9 +47,9 @@ class RepeatAppointmentTableViewCell: UITableViewCell, UITableViewDelegate, UITa
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("cellID")
+        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(repeatIdentifier)
         if(cell == nil){
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cellID")
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: repeatIdentifier)
         }
         cell?.textLabel?.text = repeatDays[indexPath.row]
         return cell!
@@ -64,14 +66,22 @@ class RepeatAppointmentTableViewCell: UITableViewCell, UITableViewDelegate, UITa
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.accessoryType = UITableViewCellAccessoryType.None
-        arrayOfDays.removeAtIndex(indexPath.row)
+        let index = arrayOfDays.indexOf((cell?.textLabel?.text)!)
+        print("Remove: \((cell?.textLabel?.text)!) from Array Of Days at index: \(index!)")
+        arrayOfDays.removeAtIndex(index!)
+        defaults.setValue(arrayOfDays, forKey: repeatIdentifier)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
-        arrayOfDays.insert((cell?.textLabel?.text)!, atIndex: indexPath.row)
-        print("Array Of Days: \((cell?.textLabel!.text)!) at index: \(indexPath.row)")
+        print("Section: \(indexPath.section) + Row:   \(indexPath.row)")
+        
+        if indexPath.row <= repeatDays.count && indexPath.section == 0{
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
+            arrayOfDays.append((cell?.textLabel?.text)!)
+            print("Array Of Days: \((cell?.textLabel!.text)!) at index: \(indexPath.row)")
+            defaults.setValue(arrayOfDays, forKey: repeatIdentifier)
+        }
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

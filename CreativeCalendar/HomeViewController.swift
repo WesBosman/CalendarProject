@@ -18,16 +18,29 @@ import ResearchKit
 
 // Dates are getting formatted so much I might as well an extension
 extension NSDateFormatter{
-    func universalFormatter() -> NSDateFormatter{
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
-        return dateFormatter
+    private struct Formatters{
+        static let fullFormat:NSDateFormatter = {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+            return dateFormatter
+        }()
+    
+        private static let dateFormat:NSDateFormatter = {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "EEEE MM/dd/yyyy"
+            return dateFormatter
+        }()
     }
     
-    func dateWithoutTime() -> NSDateFormatter{
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "EEEE MM/dd/yyyy"
-        return dateFormatter
+    var universalFormatter: NSDateFormatter {
+        get{
+            return Formatters.fullFormat
+        }
+    }
+    var dateWithoutTime:NSDateFormatter {
+        get{
+            return Formatters.dateFormat
+        }
     }
 }
 

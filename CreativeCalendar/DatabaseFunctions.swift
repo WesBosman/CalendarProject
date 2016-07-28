@@ -18,7 +18,7 @@ class DatabaseFunctions{
     static let sharedInstance = database
     private init(){}
     
-    let dateFormat = NSDateFormatter().universalFormatter()
+    let dateFormat = NSDateFormatter().universalFormatter
 
     /** Make the database and store it in the documents section
       * Made this a lazy variable so it will get initiated when the class gets called
@@ -422,7 +422,7 @@ class DatabaseFunctions{
         defer{
             db.close()
         }
-        let dateFormat = NSDateFormatter().universalFormatter()
+        let dateFormat = NSDateFormatter().universalFormatter
         
         var taskArray: [TaskItem] = []
         do{
@@ -473,7 +473,7 @@ class DatabaseFunctions{
         }
 
         var journalArray: [JournalItem] = []
-        let dateFormat = NSDateFormatter().universalFormatter()
+        let dateFormat = NSDateFormatter().universalFormatter
         
         do{
             let journal:FMResultSet = try db.executeQuery("SELECT date, journal, deleted, uuid FROM Journals WHERE deleted=?", values: [false])

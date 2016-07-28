@@ -18,6 +18,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var endDatePickerHidden = false
     private var appointmentTypeHidden = false
     private var otherIsHidden = false
+    private var repeatAppointmentTableHidden = false
     let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
@@ -29,6 +30,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var otherTextField: UITextField!
     @IBOutlet weak var repeatAppointmentTitle: UILabel!
     @IBOutlet weak var repeatAppointmentRightDetail: UILabel!
+    @IBOutlet weak var repeatDaysTableView: UITableView!
     @IBOutlet weak var repeatDaysDone: UIButton!
     @IBOutlet weak var saveAppointment: UIButton!
     @IBOutlet weak var otherEnterButton: UIButton!
@@ -48,17 +50,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         toggleStartDatePicker()
         toggleEndDatePicker()
         toggleOther()
+        toggleRepeatAppointment()
+        
         // Set the data source and delegate for the appointment picker
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
         additionalInfoTextBox.delegate = self
         
         // Set the buttons borders shapes, widths and colors
-        repeatDaysDone.layer.cornerRadius = 10
-        repeatDaysDone.layer.borderWidth = 2
-        repeatDaysDone.layer.borderColor = UIColor().defaultButtonColor.CGColor
-        repeatDaysDone.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        repeatDaysDone.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
         saveAppointment.layer.cornerRadius = 10
         saveAppointment.layer.borderWidth = 2
         saveAppointment.layer.borderColor = UIColor().defaultButtonColor.CGColor
@@ -74,8 +73,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
         
-        repeatAppointmentTitle.text = "Schedule Repeating Appointments"
-        repeatAppointmentRightDetail.text = ""
+        repeatAppointmentTitle.text = "Schedule a repeating Appointment"
+        repeatAppointmentRightDetail.text = String()
         
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
@@ -191,12 +190,11 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 }))
             self.presentViewController(someFieldMissing, animated: true, completion: nil)
         }
-        
     }
 
     @IBAction func otherButtonPressed(sender: AnyObject) {
         if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){
-            otherTextField.placeholder = "Enter the type of Appointment Here"
+            otherTextField.placeholder = "Please Enter the type of Appointment Here"
         }
         else{
             typeOfAppointmentRightDetail.text = otherTextField.text
@@ -254,6 +252,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         else if indexPath.section == 2 && indexPath.row == 2{
             toggleEndDatePicker()
         }
+        else if indexPath.section == 5 && indexPath.row == 0{
+            toggleRepeatAppointment()
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -274,6 +275,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
         // Not sure how to get the correct picker view item.
         else if otherIsHidden && indexPath.section == 1 && indexPath.row == 2{
+            return 0
+        }
+        else if repeatAppointmentTableHidden && indexPath.section == 5 && indexPath.row == 1{
             return 0
         }
         // Return the normal height otherwise
@@ -304,6 +308,22 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     // Toggle the ending date picker
     func toggleEndDatePicker(){
         endDatePickerHidden = !endDatePickerHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    // Toggle repeat appointment
+    func toggleRepeatAppointment(){
+        repeatAppointmentTableHidden = !repeatAppointmentTableHidden
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let r = defaults.arrayForKey("RepeatAppointmentCell"){
+            var str: String = String()
+            for rep in r{
+                str += (rep as! String) + " "
+                print("Rep: \(rep), Str: \(str)")
+                repeatAppointmentRightDetail.text = str
+            }
+        }
         tableView.beginUpdates()
         tableView.endUpdates()
     }

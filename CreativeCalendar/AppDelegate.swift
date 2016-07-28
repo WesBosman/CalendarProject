@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let state: UIApplicationState = UIApplication.sharedApplication().applicationState
         let hostController = self.window?.rootViewController
         let date = NSDate()
-        let dateFormatter = NSDateFormatter().universalFormatter()
+        let dateFormatter = NSDateFormatter().universalFormatter
         
         if state == UIApplicationState.Active{
             let db = DatabaseFunctions.sharedInstance
