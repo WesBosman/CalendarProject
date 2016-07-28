@@ -17,6 +17,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     let dateFormat = NSDateFormatter()
     var currentDate: String = ""
     var journalText:String = ""
+    @IBOutlet weak var saveJournal: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,12 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, atIndex: 0)
-
+        // Set up the Save Journal Button colors and border
+        saveJournal.layer.cornerRadius = 10
+        saveJournal.layer.borderWidth = 2
+        saveJournal.layer.borderColor = UIColor.whiteColor().CGColor
+        saveJournal.setTitleColor(UIColor().defaultButtonColor, forState: .Normal)
+        saveJournal.backgroundColor = UIColor.whiteColor()
     }
 
     override func didReceiveMemoryWarning() {

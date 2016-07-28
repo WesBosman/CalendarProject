@@ -64,29 +64,42 @@ public var Consent: ORKOrderedTask {
 
 
 class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate {
-    var consentHasBeenGiven = false
+
+    @IBOutlet weak var headingLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var greetingLabel: UILabel!
+    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaultsConsentKey = "UserConsent"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         startButton.hidden = true
+        headingLabel.numberOfLines = 0
+        headingLabel.lineBreakMode = .ByWordWrapping
         greetingLabel.hidden = true
-        greetingLabel.text = "Thank you for completing the consent form for this study.\nPlease press the start button to enter the application."
         greetingLabel.lineBreakMode = .ByWordWrapping
         greetingLabel.numberOfLines = 0
+        greetingLabel.text = "Thank you for completing the consent form for this study.\nPlease press the start button to enter the application."
+        startButton.layer.cornerRadius = 30
         startButton.layer.borderWidth = 2
-        startButton.layer.borderColor = UIColor.blackColor().CGColor
-        startButton.layer.cornerRadius = 10
+        startButton.layer.borderColor = UIColor().defaultButtonColor.CGColor
+        startButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        startButton.backgroundColor = UIColor().defaultButtonColor
     }
     
     override func viewDidAppear(animated: Bool) {
-        if consentHasBeenGiven == false{
+        print("defaults bool for key: UserConsent -> \(defaults.boolForKey(defaultsConsentKey))")
+        
+        if defaults.boolForKey(defaultsConsentKey) == false{
             let taskViewController = ORKTaskViewController(task: Consent, taskRunUUID: nil)
             taskViewController.delegate = self
             self.presentViewController(taskViewController, animated: true, completion: nil)
+        }
+        else{
+            startButton.hidden = false
+            greetingLabel.hidden = false
         }
     }
 
@@ -94,18 +107,10 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func startButtonPressed(sender: AnyObject) {
-        let taskViewController = ORKTaskViewController(task: ConsentTask, taskRunUUID: nil)
-        taskViewController.delegate = self
-        presentViewController(taskViewController, animated: true, completion: nil)
-    }
-    
+        
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         //Handle results with taskViewController.result
-        consentHasBeenGiven = true
-        startButton.hidden = false
-        greetingLabel.hidden = false
+        defaults.setBool(true, forKey: defaultsConsentKey)
         taskViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     

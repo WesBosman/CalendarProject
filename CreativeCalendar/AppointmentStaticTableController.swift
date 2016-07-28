@@ -22,12 +22,17 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
-    @IBOutlet weak var nameOfAppointmentTextBox: UITextField!
     @IBOutlet weak var appointmentLocationTextBox: UITextField!
     @IBOutlet weak var additionalInfoTextBox: UITextView!
     @IBOutlet weak var appointmentPicker: UIPickerView!
     @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     @IBOutlet weak var otherTextField: UITextField!
+    @IBOutlet weak var repeatAppointmentTitle: UILabel!
+    @IBOutlet weak var repeatAppointmentRightDetail: UILabel!
+    @IBOutlet weak var repeatDaysDone: UIButton!
+    @IBOutlet weak var saveAppointment: UIButton!
+    @IBOutlet weak var otherEnterButton: UIButton!
+    
     let dateFormat = NSDateFormatter()
     let db = DatabaseFunctions.sharedInstance
     var startDate:NSDate? = nil
@@ -48,9 +53,29 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         appointmentPicker.delegate = self
         additionalInfoTextBox.delegate = self
         
+        // Set the buttons borders shapes, widths and colors
+        repeatDaysDone.layer.cornerRadius = 10
+        repeatDaysDone.layer.borderWidth = 2
+        repeatDaysDone.layer.borderColor = UIColor().defaultButtonColor.CGColor
+        repeatDaysDone.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        repeatDaysDone.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
+        saveAppointment.layer.cornerRadius = 10
+        saveAppointment.layer.borderWidth = 2
+        saveAppointment.layer.borderColor = UIColor().defaultButtonColor.CGColor
+        saveAppointment.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        saveAppointment.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
+        otherEnterButton.layer.cornerRadius = 10
+        otherEnterButton.layer.borderWidth = 2
+        otherEnterButton.layer.borderColor = UIColor().defaultButtonColor.CGColor
+        otherEnterButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        otherEnterButton.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
+        
         appointmentNameTextField.placeholder = "Name of Appointment"
         appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
+        
+        repeatAppointmentTitle.text = "Schedule Repeating Appointments"
+        repeatAppointmentRightDetail.text = ""
         
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
@@ -170,9 +195,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
 
     @IBAction func otherButtonPressed(sender: AnyObject) {
-        typeOfAppointmentRightDetail.text = otherTextField.text
-        toggleOther()
-        toggleAppointmentDropDown()
+        if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){
+            otherTextField.placeholder = "Enter the type of Appointment Here"
+        }
+        else{
+            typeOfAppointmentRightDetail.text = otherTextField.text
+            toggleOther()
+            toggleAppointmentDropDown()
+        }
     }
     
     // Update the right detail start date when the user moves date or time.

@@ -36,6 +36,10 @@ class CalendarCell: JTAppleDayCellView{
     var drawTask:Bool = false
     var drawJournal:Bool = false
     
+    var appointmentC:UILabel = UILabel()
+    var taskC:UILabel = UILabel()
+    var journalC:UILabel = UILabel()
+    
     @IBOutlet weak var appointmentCounterLabel: UILabel!
     @IBOutlet weak var taskCounterLabel: UILabel!
     @IBOutlet weak var journalCounterLabel: UILabel!
@@ -148,7 +152,7 @@ class CalendarCell: JTAppleDayCellView{
     // Draw the view
     override func drawRect(rect: CGRect) {
         // Draw a circle around the day of the calendar.
-        let path = UIBezierPath(ovalInRect: CGRect(x: 0, y: self.frame.size.width / 2 , width: self.frame.size.width, height: self.frame.size.height / 2))
+        let path = UIBezierPath(ovalInRect: CGRect(x: 0, y: self.center.y / 2 , width: self.frame.size.width, height: self.frame.size.height / 2))
         
         // If cell has been selected
         if cellState.isSelected == true{

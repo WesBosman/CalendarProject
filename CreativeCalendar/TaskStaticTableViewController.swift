@@ -18,6 +18,7 @@ class TaskStaticTableViewController: UITableViewController {
     let db = DatabaseFunctions.sharedInstance
     var taskDatePickerIsHidden = false
     let taskFormatter = NSDateFormatter().dateWithoutTime()
+    @IBOutlet weak var saveTask: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,12 @@ class TaskStaticTableViewController: UITableViewController {
         taskFinishDateRightDetail.text = String()
         taskDatePicker.datePickerMode = UIDatePickerMode.Date
         taskDatePicker.minimumDate = NSDate()
+        // Set the color and shape of the save button
+        saveTask.layer.cornerRadius = 10
+        saveTask.layer.borderWidth = 2
+        saveTask.layer.borderColor = UIColor().defaultButtonColor.CGColor
+        saveTask.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        saveTask.backgroundColor = UIColor().defaultButtonColor
         toggleTaskDatePicker()
     }
     

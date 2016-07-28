@@ -16,7 +16,7 @@ import UIKit
 import ResearchKit
 
 
-// Dates are getting formatted so much I might as well make my own extension
+// Dates are getting formatted so much I might as well an extension
 extension NSDateFormatter{
     func universalFormatter() -> NSDateFormatter{
         let dateFormatter = NSDateFormatter()
@@ -29,6 +29,11 @@ extension NSDateFormatter{
         dateFormatter.dateFormat = "EEEE MM/dd/yyyy"
         return dateFormatter
     }
+}
+
+// The color of the buttons set to the default text color of ios buttons
+extension UIColor{
+    var defaultButtonColor: UIColor { return UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)}
 }
 
 // This extension is for making a background gradient

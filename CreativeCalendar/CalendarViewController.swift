@@ -25,6 +25,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var appointment:String = String()
     var task:String = String()
     var journal:String = String()
+    @IBOutlet weak var calendarInfo: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +39,14 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
-        self.view.layer.insertSublayer(background, atIndex: 0)        
+        self.view.layer.insertSublayer(background, atIndex: 0)
+        
+        // Set up the info button on the calendar
+        calendarInfo.layer.cornerRadius = 10
+        calendarInfo.layer.borderWidth = 2
+        calendarInfo.layer.borderColor = UIColor.whiteColor().CGColor
+        calendarInfo.setTitleColor(UIColor().defaultButtonColor, forState: .Normal)
+        calendarInfo.backgroundColor = UIColor.whiteColor()
         
         // Select the current date
         calendarView.reloadData() {
@@ -66,9 +74,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             popoverPresentationController.sourceView = selectedCell
             popoverPresentationController.backgroundColor = UIColor.orangeColor()
             presentViewController(popoverVC, animated: true, completion: nil)
-
         }
-
     }
     
     
@@ -128,7 +134,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
 //            print("Calendar Cell Appointment Counter: \(calendarCell.appointmentCounter)")
 //            print("Calendar Cell Task Counter: \(calendarCell.taskCounter)")
 //            print("Calendar Cell Journal Counter: \(calendarCell.journalCounter)")
-
+//            calendarCell.backgroundColor = UIColor.whiteColor()
             let appointmentLbl = calendarCell.appointmentDictionary[stringDate]
             let taskLbl = calendarCell.taskDictionary[stringDate]
             let journalLbl = calendarCell.journalDictionary[stringDate]
