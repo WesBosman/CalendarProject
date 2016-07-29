@@ -682,13 +682,14 @@
                             <tableViewSection headerTitle="Repeat Appointment (Optional)" id="C72-iX-Lzo">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppSave" textLabel="Tcu-cY-HJ7" detailTextLabel="HdK-uw-aHn" style="IBUITableViewCellStyleValue1" id="gia-2k-yec">
-                                        <rect key="frame" x="0.0" y="1179.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="1164.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gia-2k-yec" id="vW1-HF-Hph">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tcu-cY-HJ7">
+                                                    <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -698,6 +699,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HdK-uw-aHn">
+                                                    <rect key="frame" x="541" y="12" width="44" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -710,9 +712,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RepeatAppointmentCell" rowHeight="309" id="8Qf-2T-MRH" customClass="RepeatAppointmentTableViewCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="1208.5" width="600" height="309"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Qf-2T-MRH" id="RXC-09-dB1">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="308.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -721,7 +724,7 @@
                             <tableViewSection headerTitle="Save Changes" id="nYV-r0-Mtl">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppSave" id="Mqk-UY-R7F">
-                                        <rect key="frame" x="0.0" y="1179.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="1559.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mqk-UY-R7F" id="1a1-Uz-zP1">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -892,15 +895,15 @@
                                 <exclude reference="Whv-xF-flI"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="JCW-qJ-EDh"/>
                                 <exclude reference="Cv4-S2-EOh"/>
                                 <exclude reference="DS7-yS-ma8"/>
                                 <exclude reference="Xtd-Vb-R4k"/>
                                 <exclude reference="eTL-AC-8UY"/>
                                 <exclude reference="jbl-56-LG0"/>
-                                <exclude reference="x4l-4k-XG3"/>
                                 <exclude reference="WzR-3r-1n4"/>
                                 <exclude reference="nlt-gv-pyv"/>
-                                <exclude reference="JCW-qJ-EDh"/>
+                                <exclude reference="x4l-4k-XG3"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -910,15 +913,15 @@
                                 <include reference="Whv-xF-flI"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="JCW-qJ-EDh"/>
                                 <include reference="Cv4-S2-EOh"/>
                                 <include reference="DS7-yS-ma8"/>
                                 <include reference="Xtd-Vb-R4k"/>
                                 <include reference="eTL-AC-8UY"/>
                                 <include reference="jbl-56-LG0"/>
-                                <include reference="x4l-4k-XG3"/>
                                 <include reference="WzR-3r-1n4"/>
                                 <include reference="nlt-gv-pyv"/>
-                                <include reference="JCW-qJ-EDh"/>
+                                <include reference="x4l-4k-XG3"/>
                             </mask>
                         </variation>
                     </view>
@@ -1093,14 +1096,14 @@
             <objects>
                 <tableViewController id="dwg-LO-igh" customClass="TaskStaticTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="kCu-kW-IyX">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Name Of Task *" id="z5x-Yr-uNl">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" id="k0Y-3E-yqj">
-                                        <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="k0Y-3E-yqj" id="D98-QT-lCz">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1144,7 +1147,7 @@
                             <tableViewSection headerTitle="Additional Information (optional)" id="uGS-NH-2Ep" userLabel="Additional Info">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" id="GEW-WR-RXW">
-                                        <rect key="frame" x="0.0" y="199.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="135.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GEW-WR-RXW" id="3Un-Cb-uil">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1188,7 +1191,7 @@
                             <tableViewSection headerTitle="Anticipated Finish Date *" footerTitle="Please enter the day you think you will have this task completed by. " id="n1M-om-5yJ" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1k7-HC-A3n" detailTextLabel="6tL-RC-Z15" style="IBUITableViewCellStyleValue1" id="Ljo-s6-2JZ">
-                                        <rect key="frame" x="0.0" y="285.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="221.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ljo-s6-2JZ" id="bgT-nR-Ypo">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1218,7 +1221,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" rowHeight="175" id="ALm-L6-elp">
-                                        <rect key="frame" x="0.0" y="329.5" width="600" height="175"/>
+                                        <rect key="frame" x="0.0" y="265.5" width="600" height="175"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ALm-L6-elp" id="6HP-HJ-N6e">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="174.5"/>
@@ -1269,13 +1272,14 @@
                             <tableViewSection headerTitle="Repeating Task (Optional)" id="XG1-bq-010" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" textLabel="JYU-U2-Oe4" detailTextLabel="yIG-Ga-e6y" style="IBUITableViewCellStyleValue1" id="3c3-fk-kBo">
-                                        <rect key="frame" x="0.0" y="541.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="507" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3c3-fk-kBo" id="Az8-Sg-AaU">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JYU-U2-Oe4">
+                                                    <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1285,6 +1289,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yIG-Ga-e6y">
+                                                    <rect key="frame" x="541" y="12" width="44" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -1297,9 +1302,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="310" id="fbN-DK-n8Z">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="551" width="600" height="310"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fbN-DK-n8Z" id="ebN-uO-TZn">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="309.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1308,7 +1314,7 @@
                             <tableViewSection id="NfM-yl-2Eb" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" id="aPV-W7-N4l">
-                                        <rect key="frame" x="0.0" y="541.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="881" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aPV-W7-N4l" id="gkF-CH-aPx">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1347,9 +1353,9 @@
                                                     <exclude reference="ana-QA-x1R"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <exclude reference="Wo6-Bv-dBK"/>
                                                     <exclude reference="dm2-3v-ynH"/>
                                                     <exclude reference="epf-e4-M1a"/>
-                                                    <exclude reference="Wo6-Bv-dBK"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -1357,9 +1363,9 @@
                                                     <include reference="ana-QA-x1R"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <include reference="Wo6-Bv-dBK"/>
                                                     <include reference="dm2-3v-ynH"/>
                                                     <include reference="epf-e4-M1a"/>
-                                                    <include reference="Wo6-Bv-dBK"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1423,6 +1429,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="0.0" width="255" height="53"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLL-8Y-4u2">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -1437,7 +1446,8 @@
                                                             <exclude reference="gCl-ZO-GE9"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=regular">
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="61" width="255" height="16"/>
                                                         <mask key="constraints">
                                                             <include reference="gCl-ZO-GE9"/>
                                                         </mask>
@@ -2051,42 +2061,104 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E4N-TK-cZ5">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="73" id="JOE-RZ-wRN"/>
+                                        </constraints>
+                                        <state key="normal" image="RightArrow"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="JOE-RZ-wRN"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="JOE-RZ-wRN"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="rightCalendarArrowPressed:" destination="dHM-vo-Fq1" eventType="touchUpInside" id="yye-Fn-vfc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBX-uQ-xBh">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="75" id="gBi-9Z-Ziz"/>
+                                        </constraints>
+                                        <state key="normal" image="LeftArrow"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="gBi-9Z-Ziz"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="gBi-9Z-Ziz"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="leftCalendarArrowPressed:" destination="dHM-vo-Fq1" eventType="touchUpInside" id="xm7-KM-exr"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.22140272659999999" green="0.65783414760000003" blue="0.93480983149999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="top" secondItem="krf-j0-1qK" secondAttribute="topMargin" id="7hU-ol-34j"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leading" constant="90" id="Aqb-P1-ydp"/>
+                                    <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="OBX-uQ-xBh" secondAttribute="trailing" constant="8" symbolic="YES" id="EJk-JV-LFK"/>
                                     <constraint firstAttribute="bottom" secondItem="vV2-Cu-ToG" secondAttribute="bottom" constant="44" id="TMk-Jb-3rd"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="YKZ-MH-vsk"/>
+                                    <constraint firstItem="OBX-uQ-xBh" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leadingMargin" id="f5i-JJ-2tq"/>
+                                    <constraint firstItem="OBX-uQ-xBh" firstAttribute="baseline" secondItem="E4N-TK-cZ5" secondAttribute="baseline" id="gaP-vf-Jix"/>
+                                    <constraint firstItem="E4N-TK-cZ5" firstAttribute="leading" secondItem="TYL-uE-jje" secondAttribute="trailing" constant="8" symbolic="YES" id="gsg-HD-m6b"/>
                                     <constraint firstItem="vV2-Cu-ToG" firstAttribute="top" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="49" id="iXa-0U-hGE"/>
+                                    <constraint firstItem="OBX-uQ-xBh" firstAttribute="centerY" secondItem="TYL-uE-jje" secondAttribute="centerY" id="jrN-wM-YRQ"/>
+                                    <constraint firstItem="E4N-TK-cZ5" firstAttribute="trailing" secondItem="krf-j0-1qK" secondAttribute="trailingMargin" id="pl1-Oc-sb3"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="vV2-Cu-ToG" secondAttribute="centerX" id="vcd-et-9qr"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
                                         <exclude reference="vV2-Cu-ToG"/>
                                         <exclude reference="TYL-uE-jje"/>
+                                        <exclude reference="E4N-TK-cZ5"/>
+                                        <exclude reference="OBX-uQ-xBh"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="7hU-ol-34j"/>
-                                        <exclude reference="Aqb-P1-ydp"/>
-                                        <exclude reference="YKZ-MH-vsk"/>
-                                        <exclude reference="vcd-et-9qr"/>
+                                        <exclude reference="gsg-HD-m6b"/>
+                                        <exclude reference="pl1-Oc-sb3"/>
+                                        <exclude reference="f5i-JJ-2tq"/>
+                                        <exclude reference="gaP-vf-Jix"/>
+                                        <exclude reference="jrN-wM-YRQ"/>
                                         <exclude reference="TMk-Jb-3rd"/>
                                         <exclude reference="iXa-0U-hGE"/>
+                                        <exclude reference="7hU-ol-34j"/>
+                                        <exclude reference="Aqb-P1-ydp"/>
+                                        <exclude reference="EJk-JV-LFK"/>
+                                        <exclude reference="YKZ-MH-vsk"/>
+                                        <exclude reference="vcd-et-9qr"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="subviews">
                                         <include reference="vV2-Cu-ToG"/>
                                         <include reference="TYL-uE-jje"/>
+                                        <include reference="E4N-TK-cZ5"/>
+                                        <include reference="OBX-uQ-xBh"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="7hU-ol-34j"/>
-                                        <include reference="Aqb-P1-ydp"/>
-                                        <include reference="YKZ-MH-vsk"/>
-                                        <include reference="vcd-et-9qr"/>
+                                        <include reference="gsg-HD-m6b"/>
+                                        <include reference="pl1-Oc-sb3"/>
+                                        <include reference="f5i-JJ-2tq"/>
+                                        <include reference="gaP-vf-Jix"/>
+                                        <include reference="jrN-wM-YRQ"/>
                                         <include reference="TMk-Jb-3rd"/>
                                         <include reference="iXa-0U-hGE"/>
+                                        <include reference="7hU-ol-34j"/>
+                                        <include reference="Aqb-P1-ydp"/>
+                                        <include reference="EJk-JV-LFK"/>
+                                        <include reference="YKZ-MH-vsk"/>
+                                        <include reference="vcd-et-9qr"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -2126,6 +2198,8 @@
                     <connections>
                         <outlet property="calendarInfo" destination="vV2-Cu-ToG" id="NR6-Sv-tce"/>
                         <outlet property="calendarView" destination="TYL-uE-jje" id="p3K-CN-937"/>
+                        <outlet property="leftCalendarArrow" destination="OBX-uQ-xBh" id="nLa-KU-jLz"/>
+                        <outlet property="rightCalendarArrow" destination="E4N-TK-cZ5" id="LZ0-Q6-trn"/>
                         <segue destination="DJT-83-vnD" kind="popoverPresentation" identifier="calendarPopover" popoverAnchorView="TYL-uE-jje" id="S8y-wM-jFX">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
@@ -2142,6 +2216,8 @@
         <image name="CircleUntickedRed" width="30" height="30"/>
         <image name="Home" width="30" height="30"/>
         <image name="Journals" width="30" height="30"/>
+        <image name="LeftArrow" width="29" height="30"/>
+        <image name="RightArrow" width="29" height="30"/>
         <image name="Tasks" width="30" height="30"/>
     </resources>
 </document>

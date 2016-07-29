@@ -22,12 +22,17 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
     var fillColorForCircle: UIColor = UIColor.clearColor()
     
-    let formatter = NSDateFormatter()
+    var formatter = NSDateFormatter()
     var cellState:CellState!
     
-    var appointmentDictionary: Dictionary<String, String> = [:]
-    var taskDictionary: Dictionary<String, String> = [:]
-    var journalDictionary: Dictionary<String, String> = [:]
+    var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
+    var taskDictionary: Dictionary<String, [TaskItem]> = [:]
+    var journalDictionary: Dictionary<String, [JournalItem]> = [:]
+    
+//    let appointmentId = "Appointments"
+//    let taskId = "Tasks"
+//    let journalId = "Journals"
+//    let defaults = NSUserDefaults.standardUserDefaults()
     
     var appointmentCounter = 0
     var taskCounter = 0
@@ -74,44 +79,43 @@ class CalendarCell: JTAppleDayCellView{
     
     func setUpCellDots(cellState: CellState){
         // Get all the scheduled appointments from the database.
+        formatter.dateFormat = "MM/dd/yyyy"
+        let cellDate = formatter.stringFromDate(cellState.date)
         let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
         let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
         let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
-        formatter.dateFormat = "MM/dd/yyyy"
-        let cellDate = formatter.stringFromDate(cellState.date)
         
-//        print("Cell Date: \(cellDate)")
-        
-        for app in appointmentList{
-            let appointmentDate = formatter.stringFromDate(app.startingTime)
-            if appointmentDate == (cellDate){
-                if let keyExists = appointmentDictionary[appointmentDate]{
-                    print("Key Already exists: \(keyExists) for value: ")
-                }
-                appointmentDictionary.updateValue(app.title, forKey: appointmentDate)
+        for a in appointmentList{
+            let appointmentDate = formatter.stringFromDate(a.startingTime)
+            var appointmentArray:[AppointmentItem] = []
+            if cellDate == appointmentDate{
+                appointmentArray.append(a)
                 self.appointmentCounter += 1
                 self.drawAppointment = true
             }
+            appointmentDictionary.updateValue(appointmentArray, forKey: appointmentDate)
         }
         
-        for task in taskList{
-            let taskDate = formatter.stringFromDate(task.dateCreated)
-            
-            if taskDate == (cellDate){
-                taskDictionary.updateValue(task.taskTitle, forKey: taskDate)
+        for t in taskList{
+            let taskDate = formatter.stringFromDate(t.dateCreated)
+            var taskArray:[TaskItem] = []
+            if cellDate == taskDate{
+                taskArray.append(t)
                 self.taskCounter += 1
                 self.drawTask = true
             }
+            taskDictionary.updateValue(taskArray, forKey: taskDate)
         }
         
-        for journal in journalList{
-            let journalDate = formatter.stringFromDate(journal.journalDate)
-            
-            if journalDate == (cellDate){
-                journalDictionary.updateValue(journal.journalEntry, forKey: journalDate)
+        for j in journalList{
+            let journalDate = formatter.stringFromDate(j.journalDate)
+            var journalArray:[JournalItem] = []
+            if cellDate == formatter.stringFromDate(j.journalDate){
+                journalArray.append(j)
                 self.journalCounter += 1
                 self.drawJournal = true
             }
+            journalDictionary.updateValue(journalArray, forKey: journalDate)
         }
     }
     

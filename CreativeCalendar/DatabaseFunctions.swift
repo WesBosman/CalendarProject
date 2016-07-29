@@ -329,7 +329,7 @@ class DatabaseFunctions{
     
     // Used for giving the user the title of the appointment when alert dialog box is delivered
     // and the user is inside of the application
-    func getAppointmentByDate(date:String)-> String{
+    func getAppointmentByDate(date:String)-> [AppointmentItem]{
         let db = makeDb
         
         if (!db.open()){
@@ -340,22 +340,141 @@ class DatabaseFunctions{
             db.close()
         }
         
-        var title = ""
+//        var title = ""
+        var appointmentArray:[AppointmentItem] = []
 
         do{
-            let sqlFetchStatement = "SELECT title FROM Appointments WHERE start_date=?"
-            let query = try db.executeQuery(sqlFetchStatement, values: [date])
+            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE start_date=?"
+            let query = try db.executeQuery(fetchAppointmentByDateStatement, values: [date])
             
             while query.next(){
-                let appointmentTitle = query.objectForColumnName("title")
-                title = appointmentTitle as! String
+                let appointmentTitle = query.objectForColumnName("title") as! String
+                let appointmentType = query.objectForColumnName("type") as! String
+                let appointmentStart = dateFormat.dateFromString(query.objectForColumnName("start_date") as! String)
+                let appointmentEnd = dateFormat.dateFromString(query.objectForColumnName("end_date") as! String)
+                let appointmentLocation = query.objectForColumnName("location") as! String
+                let appointmentAdditional = query.objectForColumnName("additional") as! String
+                let appointmentComplete = query.objectForColumnName("completed") as! Bool
+                let appointmentCanceled = query.objectForColumnName("canceled") as! Bool
+                let appointmentDeleted = query.objectForColumnName("deleted") as! Bool
+                let appointmentDone = query.objectForColumnName("date_completed") as? String
+                let appointmentUUID = query.objectForColumnName("uuid") as! String
+                
+                let appointmentItem = AppointmentItem(type: appointmentType,
+                                                      startTime: appointmentStart! ,
+                                                      endTime: appointmentEnd!,
+                                                      title: appointmentTitle,
+                                                      location: appointmentLocation,
+                                                      additional: appointmentAdditional,
+                                                      isComplete: appointmentComplete,
+                                                      isCanceled: appointmentCanceled,
+                                                      isDeleted: appointmentDeleted,
+                                                      dateFinished: appointmentDone,
+                                                      UUID: appointmentUUID)
+
+                
+                appointmentArray.append(appointmentItem)
+                
+                print("Appointment Item from Db: \(appointmentItem)")
             }
         }
         catch let err as NSError{
             print("Get Appointments By Date ERROR: \(err.localizedDescription)")
         }
-        return title
+        return appointmentArray
     }
+    
+    // Get Task By Date
+    func getTaskByDate(date:String)-> [TaskItem]{
+        let db = makeDb
+        
+        if (!db.open()){
+            db.open()
+        }
+        
+        defer{
+            db.close()
+        }
+        
+        var taskArray:[TaskItem] = []
+        
+        do{
+            let fetchTaskByDateStatement = "SELECT * FROM Tasks WHERE estimated_completed_date=?"
+            let task = try db.executeQuery(fetchTaskByDateStatement, values: [date])
+            
+            while task.next(){
+                let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
+                let taskTitle = task.objectForColumnName("task") as! String
+                let taskAdditional = task.objectForColumnName("additional") as! String
+                let estimatedDateCompleted = task.objectForColumnName("estimated_completed_date") as! String
+                let taskCompleted = task.boolForColumn("completed")
+                let taskCanceled = task.boolForColumn("canceled")
+                let taskDeleted = task.boolForColumn("deleted")
+                let taskDone = task.objectForColumnName("date_completed") as! String
+                let taskUUID = task.objectForColumnName("uuid") as! String
+                
+                let taskItem = TaskItem(dateMade: taskMade!,
+                                        title: taskTitle,
+                                        info: taskAdditional,
+                                        estimatedCompletion: estimatedDateCompleted,
+                                        completed: taskCompleted,
+                                        canceled: taskCanceled,
+                                        deleted:  taskDeleted,
+                                        dateFinished: taskDone,
+                                        UUID: taskUUID)
+                
+                taskArray.append(taskItem)
+                
+                print("Task Item from Db: \(taskItem)")
+            }
+        }
+        catch let err as NSError{
+            print("Get Task By Date ERROR: \(err.localizedDescription)")
+        }
+        return taskArray
+    }
+    
+    // Get Journal By Date
+    func getJournalByDate(date:String)-> [JournalItem]{
+        let db = makeDb
+        
+        if (!db.open()){
+            db.open()
+        }
+        
+        defer{
+            db.close()
+        }
+        
+        var journalArray:[JournalItem] = []
+        
+        do{
+            let fetchJournalByDateStatement = "SELECT date, journal, deleted, uuid FROM Journals WHERE date=?"
+            let journal = try db.executeQuery(fetchJournalByDateStatement, values: [date])
+            
+            while journal.next(){
+                let date = dateFormat.dateFromString(journal.objectForColumnName("date") as! String)
+                let entry = journal.objectForColumnName("journal") as! String
+                let deleted = journal.boolForColumn("deleted")
+                let uuid = journal.objectForColumnName("uuid") as! String
+                
+                let journalItem = JournalItem(journal: entry,
+                                              UUID: uuid,
+                                              date: date!,
+                                              deleted: deleted)
+                
+                journalArray.append(journalItem)
+                
+                print("JournalItem from Db: \(journalItem)")
+            }
+        }
+        catch let err as NSError{
+            print("Get Journal By Date ERROR: \(err.localizedDescription)")
+        }
+        return journalArray
+    }
+
+
     
     // Get all appointments from the database and return them as an array.
     func getAllAppointments() -> [AppointmentItem] {
@@ -374,32 +493,33 @@ class DatabaseFunctions{
         
         do{
             let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE deleted=?", values: [false])
+            
             while appointment.next(){
-                let appointmentTitle = appointment.objectForColumnName("title")
-                let appointmentType = appointment.objectForColumnName("type")
+                let appointmentTitle = appointment.objectForColumnName("title") as! String
+                let appointmentType = appointment.objectForColumnName("type") as! String
                 let appointmentStart = dateFormat.dateFromString(appointment.objectForColumnName("start_date") as! String)
                 let appointmentEnd = dateFormat.dateFromString(appointment.objectForColumnName("end_date") as! String)
-                let appointmentLocation = appointment.objectForColumnName("location")
-                let appointmentAdditional = appointment.objectForColumnName("additional")
+                let appointmentLocation = appointment.objectForColumnName("location") as! String
+                let appointmentAdditional = appointment.objectForColumnName("additional") as! String
                 let appointmentComplete = appointment.objectForColumnName("completed") as! Bool
                 let appointmentCanceled = appointment.objectForColumnName("canceled") as! Bool
                 let appointmentDeleted = appointment.objectForColumnName("deleted") as! Bool
                 let appointmentDone = appointment.objectForColumnName("date_completed") as? String
-                let appointmentUUID = appointment.objectForColumnName("uuid")
+                let appointmentUUID = appointment.objectForColumnName("uuid") as! String
                 
 //                print("Appointment Title: \(appointmentTitle) type: \(appointmentType) start: \(appointmentStart) end: \(appointmentEnd) location: \(appointmentLocation) additional: \(appointmentAdditional) uuid: \(appointmentUUID)")
                 
-                let appointmentItem = AppointmentItem(type: appointmentType as! String,
+                let appointmentItem = AppointmentItem(type: appointmentType,
                                                       startTime: appointmentStart! ,
                                                       endTime: appointmentEnd!,
-                                                      title: appointmentTitle as! String,
-                                                      location: appointmentLocation as! String,
-                                                      additional: appointmentAdditional as! String,
+                                                      title: appointmentTitle,
+                                                      location: appointmentLocation,
+                                                      additional: appointmentAdditional,
                                                       isComplete: appointmentComplete,
                                                       isCanceled: appointmentCanceled,
                                                       isDeleted: appointmentDeleted,
                                                       dateFinished: appointmentDone,
-                                                      UUID: appointmentUUID as! String)
+                                                      UUID: appointmentUUID)
                 appointmentArray.append(appointmentItem)
                 appointmentArray = appointmentArray.sort({$0.title < $1.title})
 
@@ -430,25 +550,26 @@ class DatabaseFunctions{
             while task.next(){
 //                print("Task Item from database.")
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
-                let taskTitle = task.objectForColumnName("task")
-                let taskAdditional = task.objectForColumnName("additional")
-                let estimatedDateCompleted = task.objectForColumnName("estimated_completed_date")
+                let taskTitle = task.objectForColumnName("task") as! String
+                let taskAdditional = task.objectForColumnName("additional") as! String
+                let estimatedDateCompleted = task.objectForColumnName("estimated_completed_date") as! String
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
-                let taskDone = task.objectForColumnName("date_completed")
-                let taskUUID = task.objectForColumnName("uuid")
+                let taskDone = task.objectForColumnName("date_completed") as! String
+                let taskUUID = task.objectForColumnName("uuid") as! String
 //                print("Task: \(taskTitle) date created: \(taskMade)")
                 
                 let taskItem = TaskItem(dateMade: taskMade!,
-                                        title: taskTitle as! String,
-                                        info: taskAdditional as! String,
-                                        estimatedCompletion: estimatedDateCompleted as! String,
+                                        title: taskTitle,
+                                        info: taskAdditional,
+                                        estimatedCompletion: estimatedDateCompleted,
                                         completed: taskCompleted,
                                         canceled: taskCanceled,
                                         deleted:  taskDeleted,
-                                        dateFinished: taskDone as? String ,
-                                        UUID: taskUUID as! String)
+                                        dateFinished: taskDone,
+                                        UUID: taskUUID)
+                
                 taskArray.append(taskItem)
                 taskArray = taskArray.sort({$0.taskTitle < $1.taskTitle})
             }
@@ -479,11 +600,14 @@ class DatabaseFunctions{
             let journal:FMResultSet = try db.executeQuery("SELECT date, journal, deleted, uuid FROM Journals WHERE deleted=?", values: [false])
             while journal.next(){
                 let date = dateFormat.dateFromString(journal.objectForColumnName("date") as! String)
-                let entry = journal.objectForColumnName("journal")
+                let entry = journal.objectForColumnName("journal") as! String
                 let deleted = journal.boolForColumn("deleted")
-                let uuid = journal.objectForColumnName("uuid")
+                let uuid = journal.objectForColumnName("uuid") as! String
                 
-                let journalItem = JournalItem(journal: entry as! String, UUID: uuid as! String, date: date!, deleted: deleted)
+                let journalItem = JournalItem(journal: entry,
+                                              UUID: uuid,
+                                              date: date!,
+                                              deleted: deleted)
 
                 journalArray.append(journalItem)
             }

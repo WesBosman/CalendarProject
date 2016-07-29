@@ -19,7 +19,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var appointmentTypeHidden = false
     private var otherIsHidden = false
     private var repeatAppointmentTableHidden = false
-    let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medications times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
+    let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
     private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
@@ -194,7 +194,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
 
     @IBAction func otherButtonPressed(sender: AnyObject) {
         if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){
-            otherTextField.placeholder = "Please Enter the type of Appointment Here"
+            otherTextField.placeholder = "Please enter the type of appointment here"
         }
         else{
             typeOfAppointmentRightDetail.text = otherTextField.text

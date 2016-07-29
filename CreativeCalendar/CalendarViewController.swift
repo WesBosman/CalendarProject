@@ -26,6 +26,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var task:String = String()
     var journal:String = String()
     @IBOutlet weak var calendarInfo: UIButton!
+    @IBOutlet weak var leftCalendarArrow: UIButton!
+    @IBOutlet weak var rightCalendarArrow: UIButton!
+    var count:Int = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,10 +68,17 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.performSegueWithIdentifier("calendarPopover", sender: self)
     }
     
+    @IBAction func rightCalendarArrowPressed(sender: AnyObject) {
+        calendarView.scrollToNextSegment()
+    }
+    
+    @IBAction func leftCalendarArrowPressed(sender: AnyObject) {
+        calendarView.scrollToPreviousSegment()
+    }
+    
     func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
         if selectedCell.cellState.isSelected == true{
             let popoverVC = PopoverViewController()
-//            popoverVC.modalPresentationStyle = UIModalPresentationStyle.Popover
             popoverPresentationController.permittedArrowDirections = [.Up, .Down]
             popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
             popoverPresentationController.sourceView = selectedCell
@@ -127,38 +137,38 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         if let calendarCell = cell as? CalendarCell{
             formatter.dateFormat = "MM/dd/yyyy"
             let stringDate = formatter.stringFromDate(cellState.date)
-//            print()
-//            print("Cell Date: \(stringDate)")
-//            print("Cell Column: \(cellState.column())")
-//            print("Cell Row: \(cellState.row())")
-//            print("Calendar Cell Appointment Counter: \(calendarCell.appointmentCounter)")
-//            print("Calendar Cell Task Counter: \(calendarCell.taskCounter)")
-//            print("Calendar Cell Journal Counter: \(calendarCell.journalCounter)")
-//            calendarCell.backgroundColor = UIColor.whiteColor()
-            let appointmentLbl = calendarCell.appointmentDictionary[stringDate]
-            let taskLbl = calendarCell.taskDictionary[stringDate]
-            let journalLbl = calendarCell.journalDictionary[stringDate]
-                        
-            if appointmentLbl != nil{
-                appointment = appointmentLbl!
+            
+            if let appointmentDictionary = calendarCell.appointmentDictionary[stringDate]{
+                var appointmentString = String()
+                for a in appointmentDictionary{
+//                    print("A: \(a)")
+                    appointmentString += a.title + "\n"
+                }
+                appointment = appointmentString
+                print("Appointment: \(appointment)")
             }
-            else{
-                appointment = ""
+            
+            if let taskDictionary = calendarCell.taskDictionary[stringDate]{
+                var taskString = String()
+                for t in taskDictionary{
+//                    print("T: \(t)")
+                    taskString += t.taskTitle + "\n"
+                }
+                task = taskString
+                print("Task: \(task)")
             }
-            if taskLbl != nil{
-                task = taskLbl!
+            
+            if let journalDictionary = calendarCell.journalDictionary[stringDate]{
+                var journalString = String()
+                for j in journalDictionary{
+//                    print("J: \(j)")
+                    journalString += j.journalEntry + "\n"
+                }
+                journal = journalString
+                print("Journal: \(journal)")
             }
-            else{
-                task = ""
-            }
-            if journalLbl != nil{
-                journal = journalLbl!
-            }
-            else{
-                journal = ""
-            }
+            
             selectedCell = calendarCell
-        
             calendarCell.updateCell(cellState)
         }
     }

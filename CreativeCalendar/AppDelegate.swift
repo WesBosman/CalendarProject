@@ -35,11 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if state == UIApplicationState.Active{
             let db = DatabaseFunctions.sharedInstance
-            print("Date in AppDelegate: \(dateFormatter.stringFromDate(date))")
+            print("Date in App Delegate: \(dateFormatter.stringFromDate(date))")
             
             // Get the title of the appointment based on the notification fire date
-            let appointmentTitle = db.getAppointmentByDate(dateFormatter.stringFromDate(date))
-            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(appointmentTitle)", preferredStyle: .Alert)
+            let appointment = db.getAppointmentByDate(dateFormatter.stringFromDate(date))
+            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(appointment[0].title)", preferredStyle: .Alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
             alert.addAction(dismissAction)
             
