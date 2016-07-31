@@ -21,13 +21,19 @@ extension NSDateFormatter{
     private struct Formatters{
         static let fullFormat:NSDateFormatter = {
             let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+            dateFormatter.dateFormat = "EEEE M/dd/yyyy hh:mm:ss a"
             return dateFormatter
         }()
     
-        private static let dateFormat:NSDateFormatter = {
+        private static let monthDayYearFormat:NSDateFormatter = {
             let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "EEEE MM/dd/yyyy"
+            dateFormatter.dateFormat = "EEEE M/dd/yyyy"
+            return dateFormatter
+        }()
+        
+        private static let monthDayYearHourMinuteFormat: NSDateFormatter = {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "EEEE M/dd/yyyy h:mm a"
             return dateFormatter
         }()
     }
@@ -39,7 +45,13 @@ extension NSDateFormatter{
     }
     var dateWithoutTime:NSDateFormatter {
         get{
-            return Formatters.dateFormat
+            return Formatters.monthDayYearFormat
+        }
+    }
+    
+    var dateWithTime: NSDateFormatter {
+        get{
+            return Formatters.monthDayYearHourMinuteFormat
         }
     }
 }

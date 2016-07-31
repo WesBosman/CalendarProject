@@ -72,13 +72,26 @@ class JournalTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            let journal = journalItems.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            journal.journalDeleted = true
-            db.updateJournal(journal)
+            let journalItemToDelete = journalItems[indexPath.row]
             
+            let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .Alert)
+                
+            let deleteAppointment = UIAlertAction(title: "Delete Journal", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    
+                    let journal = self.journalItems.removeAtIndex(indexPath.row)
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    journal.journalDeleted = true
+                    self.db.updateJournal(journal)
+                })
+                let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                
+                deleteOptions.addAction(cancelDelete)
+                deleteOptions.addAction(deleteAppointment)
+                
+                self.presentViewController(deleteOptions, animated: true, completion: nil)
         }
     }
+    
 
     /*
     // MARK: - Navigation

@@ -14,13 +14,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var appointmentNameTextField: UITextField!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentStartDate: UIDatePicker!
-    private var startDatePickerHidden = false
-    private var endDatePickerHidden = false
-    private var appointmentTypeHidden = false
-    private var otherIsHidden = false
-    private var repeatAppointmentTableHidden = false
-    let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
-    private let cellID: String = "AppointmentCells"
     @IBOutlet weak var endingTimeDetailLabel: UILabel!
     @IBOutlet weak var appointmentEndDate: UIDatePicker!
     @IBOutlet weak var appointmentLocationTextBox: UITextField!
@@ -35,11 +28,20 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var saveAppointment: UIButton!
     @IBOutlet weak var otherEnterButton: UIButton!
     
-    let dateFormat = NSDateFormatter()
-    let db = DatabaseFunctions.sharedInstance
-    var startDate:NSDate? = nil
-    var endDate: NSDate? = nil
-    var otherTextString: String = String()
+    private var startDatePickerHidden = false
+    private var endDatePickerHidden = false
+    private var appointmentTypeHidden = false
+    private var otherIsHidden = false
+    private var repeatAppointmentTableHidden = false
+    private let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
+    private let cellID: String = "AppointmentCells"
+    
+    private let dateFormat:NSDateFormatter = NSDateFormatter().dateWithTime
+    private let db = DatabaseFunctions.sharedInstance
+    private var startDate:NSDate? = nil
+    private var endDate: NSDate? = nil
+    private var otherTextString: String = String()
+    private let currentDate = NSDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,10 +71,12 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         otherEnterButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         otherEnterButton.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
         
+        appointmentStartDate.minimumDate = currentDate
+        appointmentEndDate.minimumDate = currentDate
+        
         appointmentNameTextField.placeholder = "Name of Appointment"
         appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
-        
         repeatAppointmentTitle.text = "Schedule a repeating Appointment"
         repeatAppointmentRightDetail.text = String()
         
@@ -80,7 +84,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         additionalInfoTextBox.text = "Additional Information..."
         additionalInfoTextBox.textColor = UIColor.lightGrayColor()
         otherTextField.placeholder = "Please enter the type of appointment"
-        
     }
     
     // MARK - Picker View Methods
@@ -219,23 +222,20 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     // This method works as it should.
     func calcNotificationTime(date:NSDate) -> NSDate{
-        dateFormat.dateStyle = NSDateFormatterStyle.LongStyle
-        dateFormat.timeStyle = .MediumStyle
-        dateFormat.dateFormat = "MM/dd/yyyy h:mm a"
         let stringFromDate = dateFormat.stringFromDate(date)
+//        print("String From Date: \(stringFromDate)")
         let dateFromString = dateFormat.dateFromString(stringFromDate)!
+//        print("Date From String: \(dateFromString)")
         return dateFromString
     }
     
     func startDatePickerDidChange(){
-        let date = calcNotificationTime(appointmentStartDate.date)
-        startDate = date
+        startDate = calcNotificationTime(appointmentStartDate.date)
         startingTimeDetailLabel.text = dateFormat.stringFromDate(startDate!)
     }
     
     func endDatePickerDidChange(){
-        let date = calcNotificationTime(appointmentEndDate.date)
-        endDate = date
+        endDate = calcNotificationTime(appointmentEndDate.date)
         endingTimeDetailLabel.text = dateFormat.stringFromDate(endDate!)
     }
     

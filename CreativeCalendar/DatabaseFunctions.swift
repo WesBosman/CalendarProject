@@ -556,7 +556,7 @@ class DatabaseFunctions{
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
-                let taskDone = task.objectForColumnName("date_completed") as! String
+                let taskDone = task.objectForColumnName("date_completed") as? String
                 let taskUUID = task.objectForColumnName("uuid") as! String
 //                print("Task: \(taskTitle) date created: \(taskMade)")
                 

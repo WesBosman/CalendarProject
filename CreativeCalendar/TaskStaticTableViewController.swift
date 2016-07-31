@@ -15,19 +15,21 @@ class TaskStaticTableViewController: UITableViewController {
     @IBOutlet weak var taskFinishDateLabel: UILabel!
     @IBOutlet weak var taskFinishDateRightDetail: UILabel!
     @IBOutlet weak var taskDatePicker: UIDatePicker!
-    let db = DatabaseFunctions.sharedInstance
-    var taskDatePickerIsHidden = false
-    let taskFormatter = NSDateFormatter().dateWithoutTime
     @IBOutlet weak var repeatingTaskRightDetail: UILabel!
     @IBOutlet weak var repeatingTaskTitle: UILabel!
     @IBOutlet weak var saveTask: UIButton!
+    
+    private let db = DatabaseFunctions.sharedInstance
+    private var taskDatePickerIsHidden = false
+    private let taskFormatter = NSDateFormatter().dateWithoutTime
+    private let currentDate = NSDate()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         taskNameTextField.placeholder = "Task Name"
         taskAdditionalInfoTextBox.placeholder = "Additional Information"
         taskFinishDateLabel.text = "Estimated Task Completion Date"
-        taskFinishDateRightDetail.text = String()
+        taskFinishDateRightDetail.text = taskFormatter.stringFromDate(currentDate)
         repeatingTaskTitle.text = "Schedule a repeating Task"
         repeatingTaskRightDetail.text = String()
         taskDatePicker.datePickerMode = UIDatePickerMode.Date
@@ -64,8 +66,9 @@ class TaskStaticTableViewController: UITableViewController {
     }
     
     @IBAction func taskDatePickerChanged(sender: AnyObject) {
-//        taskFormatter.dateFormat = "MMMM dd yyyy"
-        taskFinishDateRightDetail.text = taskFormatter.stringFromDate(taskDatePicker.date)
+        let dateAsString = taskFormatter.stringFromDate(taskDatePicker.date)
+//        print("Task Date: \(dateAsString)")
+        taskFinishDateRightDetail.text = dateAsString
     }
     
     // Save the information to pass it to the previous view

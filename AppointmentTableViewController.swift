@@ -11,12 +11,11 @@ import UIKit
 
 class AppointmentTableViewController: UITableViewController{
     
-    let cellID = "AppointmentCells"
-    var appointmentList:[AppointmentItem] = [];
-    var appointmentDateSections = Set<NSDate>()
-    var selectedIndexPath: NSIndexPath?
-    let db = DatabaseFunctions.sharedInstance
-
+    private let cellID = "AppointmentCells"
+    private var appointmentList:[AppointmentItem] = [];
+    private var appointmentDateSections = Set<NSDate>()
+    private var selectedIndexPath: NSIndexPath?
+    private let db = DatabaseFunctions.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -50,7 +50,7 @@ class DatabaseFunctionsTest: XCTestCase {
         let endDate = calendar.dateFromComponents(dateComponents)
         print("Appointment End Date: \(endDate)")
         
-        let appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", isComplete: false, isCanceled: false, isDeleted: false, dateFinished: nil , UUID: NSUUID().UUIDString)
+        var appointmentOne = AppointmentItem(type: "Family", startTime: startDate!, endTime: endDate!, title: "Unit Test Appointment 1", location: "8 1/2 Canal Street", additional: "This is only a test", isComplete: false, isCanceled: false, isDeleted: false, dateFinished: nil , UUID: NSUUID().UUIDString)
         
         // Clearing any item that may be in the database first.
         databaseFunctions.clearTable("Appointments")
@@ -87,8 +87,9 @@ class DatabaseFunctionsTest: XCTestCase {
 
         }
         
-        // Delete the appointment from the database.
-        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
+        // Set deleted to true and update the database
+        appointmentOne.deleted = true
+        databaseFunctions.updateAppointment(appointmentOne)
         
         // Get the appointments from the database there should be none.
         appointmentList = databaseFunctions.getAllAppointments()
@@ -147,7 +148,8 @@ class DatabaseFunctionsTest: XCTestCase {
                 print("Appointment Delete Error in Testing: " + err.localizedDescription)
             }
         }
-        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
+        appointmentOne.deleted = true
+        databaseFunctions.updateAppointment(appointmentOne)
     }
 
 
@@ -201,7 +203,8 @@ class DatabaseFunctionsTest: XCTestCase {
                 print("Appointment Delete Error in Testing: " + err.localizedDescription)
             }
         }
-        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
+        appointmentOne.deleted = true
+        databaseFunctions.updateAppointment(appointmentOne)
     }
     
     func testDeleteAppointment(){
@@ -254,8 +257,9 @@ class DatabaseFunctionsTest: XCTestCase {
                     print("Appointment Delete Error in Testing: " + err.localizedDescription)
                 }
             }
-        databaseFunctions.deleteFromDatabase("Appointments", uuid: appointmentOne.UUID)
-        }
+        appointmentOne.deleted = true
+        databaseFunctions.updateAppointment(appointmentOne)
+    }
     
     func testTasks(){
         print("Task Current Date: \(currentDate)")
@@ -271,9 +275,10 @@ class DatabaseFunctionsTest: XCTestCase {
         // Convert the date to a string in order to put it into the task table.
         let taskUpdatedDateAsString = dateFormat.stringFromDate(taskUpdatedDate!)
         print("Changed Task Date: \(taskUpdatedDate)")
+        let estimatedCompletionDate = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
         
-        let taskOne :TaskItem = TaskItem(dateMade: taskUpdatedDateAsString, title: "Unit Test Task 1", info: "This is only a test.", completed: false, dateFinished: nil, UUID: NSUUID().UUIDString)
-        
+        var taskOne :TaskItem = TaskItem(dateMade: taskUpdatedDate!, title: "Unit Test Task 1", info: "This is only a test.", estimatedCompletion: estimatedCompletionDate, completed: false, canceled: false, deleted: false, dateFinished: nil, UUID: NSUUID().UUIDString)
+
         // Clear the task database if there is anything in there that could make this test fail.
         databaseFunctions.clearTable("Tasks")
         
@@ -308,31 +313,28 @@ class DatabaseFunctionsTest: XCTestCase {
         print("Task Completed String \(taskCompletedDateAsString)")
         
         // Create a new task changing the completed and date finished parameters.
-        let updatedTask: TaskItem = TaskItem(dateMade: taskOne.dateCreated, title: taskOne.taskTitle, info: taskOne.taskInfo, completed: true, dateFinished: taskCompletedDateAsString, UUID: taskOne.UUID)
+        taskOne.completed = true
         
         // Update the entry for that task in the database.
-        databaseFunctions.updateTask(updatedTask)
+        databaseFunctions.updateTask(taskOne)
         
         // Get all entries in the task table again
         taskList = databaseFunctions.getAllTasks()
         XCTAssertTrue(taskList.count == 1 , "The Task Update should not have affected the count it should still be one.")
         
         for task in taskList{
-            XCTAssertTrue(task.taskTitle == updatedTask.taskTitle, "Updated task title matched the one in the database.")
-            XCTAssertTrue(task.taskInfo == updatedTask.taskInfo, "Updated task info matched the one found in the database.")
+            XCTAssertTrue(task.taskTitle == taskOne.taskTitle, "Updated task title matched the one in the database.")
+            XCTAssertTrue(task.taskInfo == taskOne.taskInfo, "Updated task info matched the one found in the database.")
             XCTAssertTrue(task.completed == true, "Updated task has been completed.")
             XCTAssertTrue(task.dateCompleted == taskCompletedDateAsString, "Updated task date completed matches.")
             XCTAssertTrue(task.dateCreated == taskOne.dateCreated, "Updated task date created matched what was found in the database.")
-            XCTAssertTrue(task.UUID == updatedTask.UUID, "Updated UUID matched the one found in the database.")
+            XCTAssertTrue(task.UUID == task.UUID, "Updated UUID matched the one found in the database.")
         }
         
 //         Delete the task item from the database
-        databaseFunctions.deleteFromDatabase("Tasks", uuid: updatedTask.UUID)
-        
-        // Try to delete an item from a non existing table
-        databaseFunctions.deleteFromDatabase("WrongTasksTable", uuid: updatedTask.UUID)
-
-        
+        taskOne.deleted = true
+        databaseFunctions.updateTask(taskOne)
+                
 //         Get the tasks from the database there should be none
         taskList = databaseFunctions.getAllTasks()
         
@@ -353,7 +355,7 @@ class DatabaseFunctionsTest: XCTestCase {
         let journalDateAsString = dateFormat.stringFromDate(journalDate!)
         print("Journal Date As String: \(journalDateAsString)")
         
-        let journalItem: JournalItem = JournalItem(journal: "This is a unit test journal item", UUID: NSUUID().UUIDString, date: journalDateAsString)
+        let journalItem: JournalItem = JournalItem(journal: "This is a unit test journal item", UUID: NSUUID().UUIDString, date: journalDate!, deleted: false)
         
         // Clear anything in the journal database first.
         databaseFunctions.clearTable("Journals")
@@ -383,11 +385,8 @@ class DatabaseFunctionsTest: XCTestCase {
         }
         
         // Delete the test data from the database.
-        databaseFunctions.deleteFromDatabase("Journals", uuid: journalItem.journalUUID)
-        
-        // Try to delete an item from a non existing table
-        databaseFunctions.deleteFromDatabase("WrongJournalsTable", uuid: journalItem.journalUUID)
-
+        journalItem.journalDeleted = true
+        databaseFunctions.updateJournal(journalItem)
         
         // Get the journal items from the database there should be none.
         journalList = databaseFunctions.getAllJournals()
