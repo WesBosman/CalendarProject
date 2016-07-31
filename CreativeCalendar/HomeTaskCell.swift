@@ -25,6 +25,9 @@ class HomeTaskCell: UITableViewCell {
         if task.completed == true{
             uncheckedTaskImage.image = UIImage(named: "checkbox")
         }
+        else if task.completed == false && task.canceled == false && task.deleted == false{
+            uncheckedTaskImage.image = UIImage(named: "EmptyBox")
+        }
         else{
             uncheckedTaskImage.image = UIImage(named: "uncheckbox")
         }

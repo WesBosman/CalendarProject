@@ -64,6 +64,13 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        print("Calendar View did appear animated")
+        calendarView.reloadData(){
+            self.calendarView.selectDates([NSDate()])
+        }
+    }
+    
     @IBAction func moreButtonPressed(sender: AnyObject) {
         self.performSegueWithIdentifier("calendarPopover", sender: self)
     }
@@ -90,7 +97,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
-        
         components.month = 3
         formatter.dateFormat = "MM/dd/yyyy"
         calendarStartDate = formatter.dateFromString("07/01/2016")!

@@ -33,7 +33,7 @@ class DatabaseFunctionsTest: XCTestCase {
         print("Appointment Current Date: \(currentDate)")
         dateComponents.day = 24
         dateComponents.year = 2016
-        dateComponents.month = 6
+        dateComponents.month = 8
 
         dateComponents.hour = 12
         dateComponents.minute = 10
@@ -42,7 +42,7 @@ class DatabaseFunctionsTest: XCTestCase {
         print("Appointment Start Date: \(startDate)")
         dateComponents.day = 24
         dateComponents.year = 2016
-        dateComponents.month = 6
+        dateComponents.month = 8
 
         dateComponents.hour = 12
         dateComponents.minute = 40
@@ -77,7 +77,7 @@ class DatabaseFunctionsTest: XCTestCase {
         
         for appointment in appointmentList{
             XCTAssertTrue(appointment.UUID == appointmentOne.UUID, "The UUID of the appointment passed in matches the one recieved.")
-            XCTAssertTrue(appointment.isOverdue == true, "The starting time of the appointment has passed.")
+            XCTAssertTrue(appointment.isOverdue == false, "The starting time of the appointment has passed.")
             XCTAssertTrue(appointment.title == appointmentOne.title, "Appointment Titles Match.")
             XCTAssertTrue(appointment.type == appointmentOne.type, "Appointment Types Match.")
             XCTAssertTrue(appointment.additionalInfo == appointmentOne.additionalInfo, "Appointment Additional Infos Match.")
@@ -99,18 +99,18 @@ class DatabaseFunctionsTest: XCTestCase {
     }
     
     func testCompleteAppointment(){
-        dateComponents.day = 13
+        dateComponents.day = 25
         dateComponents.year = 2016
-        dateComponents.month = 7
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 10
         dateComponents.second = 0
         let startDate = calendar.dateFromComponents(dateComponents)
         //        print("Appointment Delete Start Date: \(startDate)")
         
-        dateComponents.day = 13
+        dateComponents.day = 25
         dateComponents.year = 2016
-        dateComponents.month = 7
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 40
         dateComponents.second = 0
@@ -122,7 +122,7 @@ class DatabaseFunctionsTest: XCTestCase {
         // Add the appointment to the database.
         databaseFunctions.addToAppointmentDatabase(appointmentOne)
         
-        // Cancel the appointment
+        // Complete the appointment
         appointmentOne.completed = true
         let completedDate = NSDate()
         let completedStringDate = dateFormat.stringFromDate(completedDate)
@@ -148,24 +148,25 @@ class DatabaseFunctionsTest: XCTestCase {
                 print("Appointment Delete Error in Testing: " + err.localizedDescription)
             }
         }
+        appointmentOne.completed = false
         appointmentOne.deleted = true
         databaseFunctions.updateAppointment(appointmentOne)
     }
 
 
     func testCancelAppointment(){
-        dateComponents.day = 13
+        dateComponents.day = 26
         dateComponents.year = 2016
-        dateComponents.month = 7
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 10
         dateComponents.second = 0
         let startDate = calendar.dateFromComponents(dateComponents)
 //        print("Appointment Delete Start Date: \(startDate)")
         
-        dateComponents.day = 13
+        dateComponents.day = 26
         dateComponents.year = 2016
-        dateComponents.month = 7
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 40
         dateComponents.second = 0
@@ -203,23 +204,24 @@ class DatabaseFunctionsTest: XCTestCase {
                 print("Appointment Delete Error in Testing: " + err.localizedDescription)
             }
         }
+        appointmentOne.canceled = false
         appointmentOne.deleted = true
         databaseFunctions.updateAppointment(appointmentOne)
     }
     
     func testDeleteAppointment(){
-        dateComponents.day = 24
+        dateComponents.day = 27
         dateComponents.year = 2016
-        dateComponents.month = 6
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 10
         dateComponents.second = 0
         let startDate = calendar.dateFromComponents(dateComponents)
 //        print("Appointment Delete Start Date: \(startDate)")
         
-        dateComponents.day = 24
+        dateComponents.day = 27
         dateComponents.year = 2016
-        dateComponents.month = 6
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 40
         dateComponents.second = 0
@@ -263,7 +265,7 @@ class DatabaseFunctionsTest: XCTestCase {
     
     func testTasks(){
         print("Task Current Date: \(currentDate)")
-        dateComponents.day = 24
+        dateComponents.day = 28
         dateComponents.year = 2016
         dateComponents.month = 8
         dateComponents.hour = 12
@@ -273,7 +275,7 @@ class DatabaseFunctionsTest: XCTestCase {
         dateFormat.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
         
         // Convert the date to a string in order to put it into the task table.
-        let taskUpdatedDateAsString = dateFormat.stringFromDate(taskUpdatedDate!)
+//        let taskUpdatedDateAsString = dateFormat.stringFromDate(taskUpdatedDate!)
         print("Changed Task Date: \(taskUpdatedDate)")
         let estimatedCompletionDate = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
         
@@ -332,6 +334,7 @@ class DatabaseFunctionsTest: XCTestCase {
         }
         
 //         Delete the task item from the database
+        taskOne.completed = false
         taskOne.deleted = true
         databaseFunctions.updateTask(taskOne)
                 
@@ -343,9 +346,9 @@ class DatabaseFunctionsTest: XCTestCase {
     
     func testJournals(){
         print("Journal Current Date: \(currentDate)")
-        dateComponents.day = 24
+        dateComponents.day = 28
         dateComponents.year = 2016
-        dateComponents.month = 6
+        dateComponents.month = 8
 
         dateComponents.hour = 12
         dateComponents.minute = 40

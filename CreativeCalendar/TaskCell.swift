@@ -22,6 +22,9 @@ class TaskCell: UITableViewCell {
         if task.completed == true{
             taskImage.image = UIImage(named: "checkbox")
         }
+        else if task.completed == false && task.canceled == false && task.deleted == false{
+            taskImage.image = UIImage(named: "EmptyBox")
+        }
         else{
             taskImage.image = UIImage(named: "uncheckbox")
         }

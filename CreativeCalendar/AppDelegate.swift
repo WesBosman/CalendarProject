@@ -29,26 +29,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If the app is running the user will not recieve a notification so we should alert them.
         // We could also add a badge to the tab bar for appointments.
         let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-        let hostController = self.window?.rootViewController
         let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = NSDateComponents()
         let dateFormatter = NSDateFormatter().universalFormatter
+        components.second = 0
+        let newDate = calendar.dateByAddingComponents(components, toDate: date, options: .MatchStrictly)
         
+        if let hostController = self.window?.rootViewController{
+
         if state == UIApplicationState.Active{
             let db = DatabaseFunctions.sharedInstance
-            print("Date in App Delegate: \(dateFormatter.stringFromDate(date))")
+            print("Date in App Delegate: \(dateFormatter.stringFromDate(newDate!))")
+            print("Date for Db fetch: \(dateFormatter.stringFromDate(date))")
             
+            var currentController = hostController
+            while(currentController.presentedViewController != nil){
+                currentController = currentController.presentedViewController!
+            }
             // Get the title of the appointment based on the notification fire date
-            let appointment = db.getAppointmentByDate(dateFormatter.stringFromDate(date))
-            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(appointment[0].title)", preferredStyle: .Alert)
+            let appointment = db.getAppointmentByDate(dateFormatter.stringFromDate(newDate!))
+            
+            for app in appointment{
+            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(app.title)", preferredStyle: .Alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
-            alert.addAction(dismissAction)
+                            alert.addAction(dismissAction)
+            
             
             // Update the badge for the appointments.
             if let tbc: UITabBarController = self.window?.rootViewController as? UITabBarController{
                 tbc.tabBar.items?[1].badgeValue = "1"
             }
-            hostController?.presentViewController(alert, animated: true, completion: nil)
-            
+            currentController.presentViewController(alert, animated: true, completion: nil)
+            }
+            }
         }
     }
 

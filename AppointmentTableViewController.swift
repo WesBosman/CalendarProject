@@ -13,9 +13,12 @@ class AppointmentTableViewController: UITableViewController{
     
     private let cellID = "AppointmentCells"
     private var appointmentList:[AppointmentItem] = [];
-    private var appointmentDateSections = Set<NSDate>()
+//    private var appointmentDateSections = Set<NSDate>()
     private var selectedIndexPath: NSIndexPath?
     private let db = DatabaseFunctions.sharedInstance
+    private var appointmentDaySections: Dictionary<String, [AppointmentItem]> = [:]
+    private let appointmentDateFormatter = NSDateFormatter().dateWithoutTime
+    private var appointmentSections: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +51,35 @@ class AppointmentTableViewController: UITableViewController{
     // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){
         appointmentList = db.getAllAppointments()
+        var newArrayOfAppointments: [AppointmentItem] = []
+        
+        // TODO: Fix this method.
+        
         for app in appointmentList{
-            appointmentDateSections.insert(app.startingTime)
+            let appointmentDateForSectionAsString = appointmentDateFormatter.stringFromDate(app.startingTime)
+//            print("Appointment Starting Time key: \(appointmentDateForSectionAsString)")
+            
+            if !appointmentSections.contains(appointmentDateForSectionAsString){
+                appointmentSections.append(appointmentDateForSectionAsString)
+            }
+//            newArrayOfAppointments.append(app)
+            if (appointmentDaySections.indexForKey(appointmentDateForSectionAsString) != nil){
+                newArrayOfAppointments.append(app)
+                appointmentDaySections.updateValue(newArrayOfAppointments, forKey: appointmentDateForSectionAsString)
+            }
+            else{
+                appointmentDaySections[appointmentDateForSectionAsString] = []
+            }
+            
+            
+            if (!newArrayOfAppointments.contains{ $0.UUID == app.UUID }){
+                newArrayOfAppointments.append(app)
+                print("New Array of appointments: \(newArrayOfAppointments)")
+            }
+            self.appointmentSections = self.appointmentSections.sort(<)
+            
+            appointmentDaySections.updateValue(newArrayOfAppointments, forKey: appointmentDateForSectionAsString)
         }
-        print(appointmentDateSections)
         
         if appointmentList.count > 64{
             self.navigationItem.rightBarButtonItem?.enabled = false
@@ -65,23 +93,29 @@ class AppointmentTableViewController: UITableViewController{
 
     // Return the number of elements in the array
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appointmentList.count
+        return appointmentDaySections[appointmentSections[section]]!.count
+    }
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return appointmentDaySections.keys.count
     }
     
-    // Return 1 section
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1 //appointmentDateSections.count
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        // Return the section title as a date
+        if !appointmentSections[section].isEmpty{
+            return appointmentSections[section]
+        }
+        return nil
     }
     
     // Make a cell where the title and the start date are retrieved from the save button being pressed
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // The cell is a custom appointment cell that we have created.
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! AppointmentCell
+        let tableSection = appointmentDaySections[appointmentSections[indexPath.section]]
+        let appItem = tableSection![indexPath.row]
         
-        // The cell gets updated from the information stored in the appointment item object
-        let appItem = appointmentList[indexPath.row] as AppointmentItem
-        
-        // If the current time is later than the starting time of the appointment then the color is set to red.
+            // If the current time is later than the starting time of the appointment then the color is set to red.
         if (appItem.isOverdue) {
             cell.appointmentStart.textColor = UIColor.redColor()
         }
@@ -89,8 +123,6 @@ class AppointmentTableViewController: UITableViewController{
         else {
             cell.appointmentStart.textColor = UIColor.blackColor()
         }
-        
-        
         
         let startFormatter = NSDateFormatter()
         let endFormatter = NSDateFormatter()

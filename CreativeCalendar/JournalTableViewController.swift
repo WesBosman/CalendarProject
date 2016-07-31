@@ -56,6 +56,8 @@ class JournalTableViewController: UITableViewController {
         let journalCell = journalItems[indexPath.row] 
         cell.textLabel!.text = journalCell.getSimplifiedDate()
 //        print("Get simplified journal date \(journalCell.getSimplifiedDate())")
+        cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+        cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel!.text = journalCell.journalEntry
         return cell
     }

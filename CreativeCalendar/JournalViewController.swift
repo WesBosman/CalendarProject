@@ -13,10 +13,10 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     // Text box for user to enter journal enteries
     @IBOutlet weak var journalTextBox: UITextView!
     @IBOutlet weak var journalLabel: UILabel!
-    var date = NSDate()
-    let dateFormat = NSDateFormatter()
-    var currentDate: String = ""
-    var journalText:String = ""
+    private var date = NSDate()
+    private let dateFormat = NSDateFormatter()
+    private var currentDate: String = String()
+    private var journalText:String = String()
     @IBOutlet weak var saveJournal: UIButton!
     
     override func viewDidLoad() {

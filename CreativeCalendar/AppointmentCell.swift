@@ -29,6 +29,9 @@ class AppointmentCell: UITableViewCell {
         if appointment.completed == true{
             appointmentCompletedImage.image = UIImage(named: "CircleTickedGreen")
         }
+        else if appointment.completed == false && appointment.canceled == false && appointment.deleted == false{
+            appointmentCompletedImage.image = UIImage(named: "EmptyCircle")
+        }
         else{
             appointmentCompletedImage.image = UIImage(named: "CircleUntickedRed")
         }
