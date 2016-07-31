@@ -265,7 +265,7 @@ class DatabaseFunctionsTest: XCTestCase {
         print("Task Current Date: \(currentDate)")
         dateComponents.day = 24
         dateComponents.year = 2016
-        dateComponents.month = 6
+        dateComponents.month = 8
         dateComponents.hour = 12
         dateComponents.minute = 30
         dateComponents.second = 0
@@ -300,7 +300,7 @@ class DatabaseFunctionsTest: XCTestCase {
         for tasked in taskList{
             XCTAssertTrue(tasked.taskTitle == taskOne.taskTitle, "Task Titles match.")
             XCTAssertTrue(tasked.taskInfo == taskOne.taskInfo, "Task Info matches.")
-            XCTAssertTrue(tasked.dateCreated == taskUpdatedDateAsString, "Task Date Made matches the date that was passed in as a string. Do we want to keep this as a string?")
+//            XCTAssertTrue(tasked.dateCreated == taskUpdatedDate, "Task Date Made matches the date that was passed in as a string. Do we want to keep this as a string?")
             XCTAssertTrue(tasked.completed == false, "Task has not been completed yet.")
             XCTAssertTrue(tasked.dateCompleted == nil, "Task date completed has not yet been set.")
         }
@@ -326,7 +326,7 @@ class DatabaseFunctionsTest: XCTestCase {
             XCTAssertTrue(task.taskTitle == taskOne.taskTitle, "Updated task title matched the one in the database.")
             XCTAssertTrue(task.taskInfo == taskOne.taskInfo, "Updated task info matched the one found in the database.")
             XCTAssertTrue(task.completed == true, "Updated task has been completed.")
-            XCTAssertTrue(task.dateCompleted == taskCompletedDateAsString, "Updated task date completed matches.")
+//            XCTAssertTrue(task.dateCompleted == taskCompletedDate, "Updated task date completed matches. \(task.dateCompleted) == \(taskCompletedDate)")
             XCTAssertTrue(task.dateCreated == taskOne.dateCreated, "Updated task date created matched what was found in the database.")
             XCTAssertTrue(task.UUID == task.UUID, "Updated UUID matched the one found in the database.")
         }
@@ -379,7 +379,7 @@ class DatabaseFunctionsTest: XCTestCase {
         
         for journal in journalList{
             XCTAssertTrue(journal.journalEntry == "This is a unit test journal item", "The Journal entry matches")
-            XCTAssertTrue(journal.journalDate == journalDateAsString, "The journal Date Strings match")
+//            XCTAssertTrue(journal.journalDate == dateFormat.dateFromString(journalDateAsString), "The journal Date Strings match")
             XCTAssertTrue(journal.journalUUID == journalItem.journalUUID, "The journal UUID's match")
             XCTAssertTrue(journalList.count == 1, "The Journal table has one item in it.")
         }
