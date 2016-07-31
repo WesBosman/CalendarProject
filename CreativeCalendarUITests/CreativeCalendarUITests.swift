@@ -137,6 +137,7 @@ class CreativeCalendarUITests: XCTestCase {
     }
     
     func testAddAndCompleteTask(){
+        
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
@@ -192,6 +193,7 @@ class CreativeCalendarUITests: XCTestCase {
 
     
     func testAddAndCancelTask(){
+        
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
@@ -245,6 +247,7 @@ class CreativeCalendarUITests: XCTestCase {
     }
     
     func testAddAndDeleteTask() {
+        
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
@@ -305,7 +308,6 @@ class CreativeCalendarUITests: XCTestCase {
     func testAddAndDeleteJournal(){
         
         let app = XCUIApplication()
-        
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
         app.buttons["Start"].tap()
@@ -333,6 +335,40 @@ class CreativeCalendarUITests: XCTestCase {
         let deleteJournalButton = app.alerts["Delete Journal"].collectionViews.buttons["Delete Journal"]
         deleteJournalButton.tap()
         app.navigationBars["Journals"].buttons["Done"].tap()
+    }
+    
+    func testCalendar(){
+        
+        let app = XCUIApplication()
+        app.buttons["Start"].tap()
+        app.tabBars.buttons["Calendar"].tap()
+        app.collectionViews.staticTexts["20"].tap()
+        
+        let window = app.childrenMatchingType(.Window).elementBoundByIndex(0)
+        window.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
+        app.buttons["More"].tap()
+        
+        let element = window.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.Other).element
+        element.tap()
+        element.tap()
+        element.tap()
+        element.tap()
+        element.tap()
+        element.tap()
+        app.otherElements["PopoverDismissRegion"].tap()
+        
+        let rightarrowButton = app.buttons["RightArrow"]
+        rightarrowButton.tap()
+        rightarrowButton.tap()
+        rightarrowButton.tap()
+        rightarrowButton.tap()
+        
+        let leftarrowButton = app.buttons["LeftArrow"]
+        leftarrowButton.tap()
+        leftarrowButton.tap()
+        leftarrowButton.tap()
+        leftarrowButton.tap()
+        
     }
     
 }
