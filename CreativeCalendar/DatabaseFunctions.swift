@@ -377,8 +377,8 @@ class DatabaseFunctions{
                 let newAppointmentStartTime = newDateFormatter.stringFromDate(appointmentStart!)
                 
                 if (newAppointmentStartTime == date && !appointmentArray.contains{ $0.UUID == appointmentItem.UUID}){
-                    print("Array Date: \(date)")
-                    print("Array Contains appointment item with name: \(appointmentItem.title)")
+//                    print("Array Date: \(date)")
+//                    print("Array Contains appointment item with name: \(appointmentItem.title)")
                     appointmentArray.append(appointmentItem)
                 }
             }
@@ -415,7 +415,7 @@ class DatabaseFunctions{
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
-                let taskDone = task.objectForColumnName("date_completed") as! String
+                let taskDone = task.objectForColumnName("date_completed") as? String
                 let taskUUID = task.objectForColumnName("uuid") as! String
                 
                 let taskItem = TaskItem(dateMade: taskMade!,
@@ -446,7 +446,7 @@ class DatabaseFunctions{
     }
     
     // Get Journal By Date
-    func getJournalByDate(journalDate:String)-> [JournalItem]{
+    func getJournalByDate(journalDate:String, formatter: NSDateFormatter)-> [JournalItem]{
         let db = makeDb
         
         if (!db.open()){
@@ -474,7 +474,7 @@ class DatabaseFunctions{
                                               date: date!,
                                               deleted: deleted)
                 
-                let newDateFormatter = NSDateFormatter().dateWithoutTime
+                let newDateFormatter = formatter
                 let newJournalStartTime = newDateFormatter.stringFromDate(date!)
                 print("Journal Date: \(date)")
                 print("New Journal Start Time: \(newJournalStartTime)")

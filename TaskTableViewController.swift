@@ -52,7 +52,7 @@ class TaskTableViewController: UITableViewController {
                 taskSections.append(dateForSectionAsString)
                 print("Task Section Date: \(dateForSectionAsString)")
             }
-            self.taskSections = self.taskSections.sort(>)
+            self.taskSections = self.taskSections.sort(<)
         }
         
         for section in taskSections{
@@ -93,16 +93,15 @@ class TaskTableViewController: UITableViewController {
         
         // Configure the cell...
         cell.taskCompleted(taskItem)
+        cell.taskCompletionDate.text = "Complete by: \(taskItem.estimateCompletionDate)"
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         return cell
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        
-        var taskForAction = taskList[indexPath.row] as TaskItem
-//        let key = taskSections[indexPath.section]
-//        var taskForAction = taskDayForSections[key]
+        let tableSection = taskDayForSections[taskSections[indexPath.section]]
+        var taskForAction = tableSection![indexPath.row] as TaskItem
         let taskCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
         
         // Make custom actions for delete, cancel and complete.

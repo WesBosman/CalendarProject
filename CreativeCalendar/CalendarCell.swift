@@ -22,18 +22,12 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
     var fillColorForCircle: UIColor = UIColor.clearColor()
     
-    var formatter = NSDateFormatter()
+    var formatter = NSDateFormatter().dateWithoutTime
     var cellState:CellState!
     
     var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
     var taskDictionary: Dictionary<String, [TaskItem]> = [:]
     var journalDictionary: Dictionary<String, [JournalItem]> = [:]
-    
-//    let appointmentId = "Appointments"
-//    let taskId = "Tasks"
-//    let journalId = "Journals"
-//    let defaults = NSUserDefaults.standardUserDefaults()
-    
     var appointmentCounter = 0
     var taskCounter = 0
     var journalCounter = 0
@@ -79,10 +73,9 @@ class CalendarCell: JTAppleDayCellView{
     
     func setUpCellDots(cellState: CellState){
         // Get all the scheduled appointments from the database.
-        formatter.dateFormat = "MM/dd/yyyy"
         let cellDate = formatter.stringFromDate(cellState.date)
-        let appointmentList = DatabaseFunctions.sharedInstance.getAllAppointments()
-        let taskList = DatabaseFunctions.sharedInstance.getAllTasks()
+        let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(cellDate)
+        let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(cellDate)
         let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
         
         for a in appointmentList{
@@ -109,6 +102,7 @@ class CalendarCell: JTAppleDayCellView{
         
         for j in journalList{
             let journalDate = formatter.stringFromDate(j.journalDate)
+            print("Journal Date for cell \(journalDate)")
             var journalArray:[JournalItem] = []
             if cellDate == formatter.stringFromDate(j.journalDate){
                 journalArray.append(j)

@@ -18,6 +18,7 @@ class AppointmentTableViewController: UITableViewController{
     private var appointmentDaySections: Dictionary<String, [AppointmentItem]> = [:]
     private let appointmentDateFormatter = NSDateFormatter().dateWithoutTime
     private var appointmentSections: [String] = []
+    private let defaults = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()

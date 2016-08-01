@@ -14,7 +14,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     @IBOutlet weak var calendarView: JTAppleCalendarView!
     
     let userCalendar = NSCalendar.currentCalendar()
-    let formatter = NSDateFormatter()
+    let formatter = NSDateFormatter().calendarFormat
     let components = NSDateComponents()
     var calendarStartDate:NSDate = NSDate()
     var calendarEndDate:NSDate = NSDate()
@@ -53,6 +53,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         // Select the current date
         calendarView.reloadData() {
+            self.calendarView.scrollToDate(NSDate())
             self.calendarView.selectDates([NSDate()])
         }
     }
@@ -67,6 +68,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     override func viewDidAppear(animated: Bool) {
         print("Calendar View did appear animated")
         calendarView.reloadData(){
+            self.calendarView.scrollToDate(NSDate())
             self.calendarView.selectDates([NSDate()])
         }
     }
@@ -98,8 +100,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
         components.month = 3
-        formatter.dateFormat = "MM/dd/yyyy"
-        calendarStartDate = formatter.dateFromString("07/01/2016")!
+        calendarStartDate = formatter.dateFromString("7/01/2016")!
         calendarEndDate = userCalendar.dateByAddingComponents(components, toDate: calendarStartDate, options: [])!        
         return(startDate: calendarStartDate, endDate: calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
     }
@@ -141,8 +142,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
         
         if let calendarCell = cell as? CalendarCell{
-            formatter.dateFormat = "MM/dd/yyyy"
             let stringDate = formatter.stringFromDate(cellState.date)
+            print("Calendar Cell String Date: \(stringDate)")
             
             if let appointmentDictionary = calendarCell.appointmentDictionary[stringDate]{
                 var appointmentString = String()

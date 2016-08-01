@@ -9,17 +9,12 @@
 import UIKit
 
 class PopoverViewController: UIViewController , UIScrollViewDelegate {
-
-//    @IBOutlet weak var appointmentLabel: UILabel!
-//    @IBOutlet weak var taskLabel: UILabel!
-//    @IBOutlet weak var journalLabel: UILabel!
     
     let pageTitles = ["Appointments", "Tasks", "Journals"]
     let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(150, 260, 200, 25))
     let scrollView: UIScrollView = UIScrollView(frame: CGRectMake(20, 20, 260, 225))
     var colors: [UIColor] = [UIColor.redColor(), UIColor.greenColor(), UIColor.yellowColor()]
     var frame = CGRectMake(0, 0, 0, 0)
-    
     var appointment:String = String()
     var task:String = String()
     var journal:String = String()

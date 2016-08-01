@@ -20,7 +20,7 @@ struct TaskItem{
     var deleted: Bool
     var UUID: String
     
-    init(dateMade:NSDate, title: String, info: String, estimatedCompletion:String, completed:Bool, canceled: Bool, deleted: Bool, dateFinished: String?, UUID: String){
+    init(dateMade:NSDate, title: String, info: String, estimatedCompletion:String, completed:Bool, canceled: Bool, deleted: Bool, dateFinished:String?, UUID: String){
         self.dateCreated = dateMade
         self.dateCompleted = dateFinished
         self.taskTitle = title

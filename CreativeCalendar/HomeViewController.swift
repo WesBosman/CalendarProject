@@ -36,6 +36,12 @@ extension NSDateFormatter{
             dateFormatter.dateFormat = "EEEE M/dd/yyyy h:mm a"
             return dateFormatter
         }()
+        
+        private static let monthDayYearWithoutTime: NSDateFormatter = {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "M/dd/yyyy"
+            return dateFormatter
+        }()
     }
     
     var universalFormatter: NSDateFormatter {
@@ -52,6 +58,12 @@ extension NSDateFormatter{
     var dateWithTime: NSDateFormatter {
         get{
             return Formatters.monthDayYearHourMinuteFormat
+        }
+    }
+    
+    var calendarFormat: NSDateFormatter{
+        get{
+            return Formatters.monthDayYearWithoutTime
         }
     }
 }
@@ -166,8 +178,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
-        appointmentArray = db.getAllAppointments()
-        taskArray = db.getAllTasks()
+        let currentDateAsString = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
+        appointmentArray = db.getAppointmentByDate(currentDateAsString)
+        taskArray = db.getTaskByDate(currentDateAsString)
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()
@@ -179,9 +192,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         //print("Journal code for view will appear method.")
         var journalText: String = ""
         var journalCount: Int = 0
-        let todayFormat = NSDateFormatter().dateWithoutTime
-        let today = todayFormat.stringFromDate(currentDate)
-        journalArray = DatabaseFunctions.sharedInstance.getJournalByDate(today)
+        let today = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
+        journalArray = DatabaseFunctions.sharedInstance.getJournalByDate(today, formatter: NSDateFormatter().dateWithoutTime)
         for journal in journalArray{
             if !journalArray.isEmpty{
                 print("Journal Entry: \(journal.journalEntry)")
@@ -354,6 +366,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 
             // If the task is completed it should have a green checkbox
             taskCell.homeTaskCompleted(task)
+            taskCell.homeTaskCompletionDate.text = task.estimateCompletionDate
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             return taskCell

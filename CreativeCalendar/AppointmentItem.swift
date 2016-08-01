@@ -21,7 +21,7 @@ struct AppointmentItem {
     var dateCompleted: String?
     var UUID: String
     
-    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool, dateFinished: String?, UUID: String) {
+    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool,dateFinished:String?, UUID: String) {
         self.title = title
         self.type = type
         self.startingTime = startTime

@@ -44,11 +44,11 @@ class JournalTableViewController: UITableViewController {
                 journalSections.append(journalDate)
                 print("Journal Date: \(journalDate)")
             }
-            self.journalSections = self.journalSections.sort(>)
+            self.journalSections = self.journalSections.sort(<)
         }
         
         for section in journalSections{
-            journalItems = db.getJournalByDate(section)
+            journalItems = db.getJournalByDate(section, formatter: journalDateFormatter)
             journalDayForSection.updateValue(journalItems, forKey: section)
         }
         tableView.reloadData()
@@ -75,14 +75,14 @@ class JournalTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(journalIdentifier, forIndexPath: indexPath)
-
-        // Configure the cell...
-        let journalCell = journalItems[indexPath.row] 
-        cell.textLabel!.text = journalCell.getSimplifiedDate()
-//        print("Get simplified journal date \(journalCell.getSimplifiedDate())")
+        let tableSection = journalDayForSection[journalSections[indexPath.section]]
+        let journalItem = tableSection![indexPath.row] as JournalItem
+        
+        cell.textLabel!.text = journalItem.getSimplifiedDate()
         cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
         cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel!.text = journalCell.journalEntry
+        cell.detailTextLabel!.text = journalItem.journalEntry
+        
         return cell
     }
 
@@ -98,7 +98,8 @@ class JournalTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            let journalItemToDelete = journalItems[indexPath.row]
+            let tableSection = journalDayForSection[journalSections[indexPath.section]]
+            let journalItemToDelete = tableSection![indexPath.row] as JournalItem
             
             let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .Alert)
                 
