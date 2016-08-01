@@ -9,10 +9,13 @@
 import UIKit
 
 class TaskTableViewController: UITableViewController {
-    let taskId = "TaskCells"
-    var taskList:[TaskItem] = []
-    var selectedIndexPath = NSIndexPath?.self
-    let db = DatabaseFunctions.sharedInstance
+    private let taskId = "TaskCells"
+    private var taskList:[TaskItem] = []
+    private var selectedIndexPath = NSIndexPath?.self
+    private let db = DatabaseFunctions.sharedInstance
+    private var taskSections: [String] = []
+    private let taskDateFormatter = NSDateFormatter().dateWithoutTime
+    private var taskDayForSections: Dictionary<String, [TaskItem]> = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +45,21 @@ class TaskTableViewController: UITableViewController {
     // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
     func refreshList(){
         taskList = db.getAllTasks()
+        for task in taskList{
+            let dateForSectionAsString = task.estimateCompletionDate
+            
+            if !(taskSections.contains(dateForSectionAsString)){
+                taskSections.append(dateForSectionAsString)
+                print("Task Section Date: \(dateForSectionAsString)")
+            }
+            self.taskSections = self.taskSections.sort(>)
+        }
+        
+        for section in taskSections{
+            taskList = db.getTaskByDate(section)
+            taskDayForSections.updateValue(taskList, forKey: section)
+        }
+        
         tableView.reloadData()
     }
 
@@ -50,19 +68,29 @@ class TaskTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
+    // MARK: - Section Methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return taskDayForSections.keys.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return taskList.count
+        return taskDayForSections[taskSections[section]]!.count
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if !taskSections[section].isEmpty{
+            return taskSections[section]
+        }
+        return nil
     }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskCell
-        let taskItem = taskList[indexPath.row] as TaskItem
+//        let taskItem = taskList[indexPath.row] as TaskItem
+        let tableSection = taskDayForSections[taskSections[indexPath.section]]
+        let taskItem = tableSection![indexPath.row]
+        
         // Configure the cell...
         cell.taskCompleted(taskItem)
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
@@ -73,6 +101,8 @@ class TaskTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
         var taskForAction = taskList[indexPath.row] as TaskItem
+//        let key = taskSections[indexPath.section]
+//        var taskForAction = taskDayForSections[key]
         let taskCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
         
         // Make custom actions for delete, cancel and complete.
@@ -83,7 +113,11 @@ class TaskTableViewController: UITableViewController {
             let deleteAppointment = UIAlertAction(title: "Delete Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Delete the row from the data source
-                self.taskList.removeAtIndex(indexPath.row)
+//                self.taskList.removeAtIndex(indexPath.row)
+                let key = self.taskSections[indexPath.section]
+                print("Key for removal: \(key)")
+                //                print("The value associated with the key: \(self.taskDayForSections[key])")
+                self.taskDayForSections[key]?.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
                 //Delete from database

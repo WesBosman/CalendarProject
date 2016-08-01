@@ -341,11 +341,11 @@ class DatabaseFunctions{
         }
         
 //        var title = ""
-        var appointmentArray:[AppointmentItem] = []
+        var appointmentArray: [AppointmentItem] = []
 
         do{
-            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE start_date=?"
-            let query = try db.executeQuery(fetchAppointmentByDateStatement, values: [date])
+            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE deleted=?"
+            let query = try db.executeQuery(fetchAppointmentByDateStatement, values: [false])
             
             while query.next(){
                 let appointmentTitle = query.objectForColumnName("title") as! String
@@ -360,6 +360,7 @@ class DatabaseFunctions{
                 let appointmentDone = query.objectForColumnName("date_completed") as? String
                 let appointmentUUID = query.objectForColumnName("uuid") as! String
                 
+                
                 let appointmentItem = AppointmentItem(type: appointmentType,
                                                       startTime: appointmentStart! ,
                                                       endTime: appointmentEnd!,
@@ -371,11 +372,15 @@ class DatabaseFunctions{
                                                       isDeleted: appointmentDeleted,
                                                       dateFinished: appointmentDone,
                                                       UUID: appointmentUUID)
-
                 
-                appointmentArray.append(appointmentItem)
+                let newDateFormatter = NSDateFormatter().dateWithoutTime
+                let newAppointmentStartTime = newDateFormatter.stringFromDate(appointmentStart!)
                 
-                print("Appointment Item from Db: \(appointmentItem)")
+                if (newAppointmentStartTime == date && !appointmentArray.contains{ $0.UUID == appointmentItem.UUID}){
+                    print("Array Date: \(date)")
+                    print("Array Contains appointment item with name: \(appointmentItem.title)")
+                    appointmentArray.append(appointmentItem)
+                }
             }
         }
         catch let err as NSError{
@@ -399,8 +404,8 @@ class DatabaseFunctions{
         var taskArray:[TaskItem] = []
         
         do{
-            let fetchTaskByDateStatement = "SELECT * FROM Tasks WHERE estimated_completed_date=?"
-            let task = try db.executeQuery(fetchTaskByDateStatement, values: [date])
+            let fetchTaskByDateStatement = "SELECT * FROM Tasks WHERE estimated_completed_date=? AND deleted=?"
+            let task = try db.executeQuery(fetchTaskByDateStatement, values: [date, false])
             
             while task.next(){
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
@@ -423,9 +428,15 @@ class DatabaseFunctions{
                                         dateFinished: taskDone,
                                         UUID: taskUUID)
                 
-                taskArray.append(taskItem)
+                let newTaskStartTime = estimatedDateCompleted
                 
-                print("Task Item from Db: \(taskItem)")
+                if (newTaskStartTime == date && !taskArray.contains{ $0.UUID == taskItem.UUID}){
+                    print("Array Date: \(date)")
+                    print("Array Contains Task item with name: \(taskItem.taskTitle)")
+                    taskArray.append(taskItem)
+                }
+                
+//                print("Task Item from Db: \(taskItem)")
             }
         }
         catch let err as NSError{
@@ -435,7 +446,7 @@ class DatabaseFunctions{
     }
     
     // Get Journal By Date
-    func getJournalByDate(date:String)-> [JournalItem]{
+    func getJournalByDate(journalDate:String)-> [JournalItem]{
         let db = makeDb
         
         if (!db.open()){
@@ -449,8 +460,8 @@ class DatabaseFunctions{
         var journalArray:[JournalItem] = []
         
         do{
-            let fetchJournalByDateStatement = "SELECT date, journal, deleted, uuid FROM Journals WHERE date=?"
-            let journal = try db.executeQuery(fetchJournalByDateStatement, values: [date])
+            let fetchJournalByDateStatement = "SELECT date, journal, deleted, uuid FROM Journals WHERE deleted=?"
+            let journal = try db.executeQuery(fetchJournalByDateStatement, values: [false])
             
             while journal.next(){
                 let date = dateFormat.dateFromString(journal.objectForColumnName("date") as! String)
@@ -463,9 +474,19 @@ class DatabaseFunctions{
                                               date: date!,
                                               deleted: deleted)
                 
-                journalArray.append(journalItem)
+                let newDateFormatter = NSDateFormatter().dateWithoutTime
+                let newJournalStartTime = newDateFormatter.stringFromDate(date!)
+                print("Journal Date: \(date)")
+                print("New Journal Start Time: \(newJournalStartTime)")
                 
-                print("JournalItem from Db: \(journalItem)")
+                if (newJournalStartTime == journalDate && !journalArray.contains{ $0.journalUUID == journalItem.journalUUID}){
+                    print("Array Date: \(date)")
+                    print("Array Contains Journal item with name: \(journalItem.journalEntry)")
+                    journalArray.append(journalItem)
+                }
+
+//                journalArray.append(journalItem)
+//                print("JournalItem from Db: \(journalItem)")
             }
         }
         catch let err as NSError{

@@ -94,6 +94,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     var journalArray: [JournalItem] = []
     var todaysDate: String = String()
     var consentGiven = false
+    let dateFormat = NSDateFormatter()
+    let currentDate = NSDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,10 +109,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         journalLabel.textColor = UIColor.whiteColor()
         
         // Current Date
-        let dateFormat = NSDateFormatter()
-        let date = NSDate()
         dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
-        todaysDate = dateFormat.stringFromDate(date)
+        todaysDate = dateFormat.stringFromDate(currentDate)
         homeDateLabel.text = todaysDate
         homeDateLabel.textColor = UIColor.whiteColor()
         
@@ -166,27 +166,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
-//        if consentGiven == false{
-//            giveConsent()
-//        }
         appointmentArray = db.getAllAppointments()
         taskArray = db.getAllTasks()
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()
     }
-    
-//    func giveConsent(){
-//        let taskViewController = ORKTaskViewController(task: ConsentTask, taskRunUUID: nil)
-//        taskViewController.delegate = self
-//        self.presentViewController(taskViewController, animated: true, completion: nil)
-//    }
-//    
-//    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
-//        //Handle results with taskViewController.result
-//        consentGiven = true
-//        taskViewController.dismissViewControllerAnimated(true, completion: nil)
-//    }
 
     
     // This function is used for printing journals to the home screen
@@ -194,9 +179,11 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         //print("Journal code for view will appear method.")
         var journalText: String = ""
         var journalCount: Int = 0
-        journalArray = DatabaseFunctions.sharedInstance.getAllJournals()
+        let todayFormat = NSDateFormatter().dateWithoutTime
+        let today = todayFormat.stringFromDate(currentDate)
+        journalArray = DatabaseFunctions.sharedInstance.getJournalByDate(today)
         for journal in journalArray{
-            if !journalArray.isEmpty && (journal.getSimplifiedDate().hasPrefix(todaysDate)){
+            if !journalArray.isEmpty{
                 print("Journal Entry: \(journal.journalEntry)")
                 journalCount += 1
                 print("Number of journals \(journalCount)")

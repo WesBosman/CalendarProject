@@ -12,6 +12,9 @@ class JournalTableViewController: UITableViewController {
     private var journalItems:[JournalItem] = []
     private let journalIdentifier = "Journal Cells"
     private let db = DatabaseFunctions.sharedInstance
+    private var journalDayForSection: Dictionary<String, [JournalItem]> = [:]
+    private var journalSections: [String] = []
+    private let journalDateFormatter = NSDateFormatter().dateWithoutTime
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,19 +37,40 @@ class JournalTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         journalItems = db.getAllJournals()
+        for journal in journalItems{
+            let journalDate = journalDateFormatter.stringFromDate(journal.journalDate)
+            
+            if(!journalSections.contains(journalDate)){
+                journalSections.append(journalDate)
+                print("Journal Date: \(journalDate)")
+            }
+            self.journalSections = self.journalSections.sort(>)
+        }
+        
+        for section in journalSections{
+            journalItems = db.getJournalByDate(section)
+            journalDayForSection.updateValue(journalItems, forKey: section)
+        }
         tableView.reloadData()
     }
 
-    // MARK: - Table view data source
+    // MARK: - Section Methods
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return journalSections.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return journalItems.count
+        return journalDayForSection[journalSections[section]]!.count
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if !journalSections[section].isEmpty{
+            return journalSections[section]
+        }
+        return nil
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -80,10 +104,12 @@ class JournalTableViewController: UITableViewController {
                 
             let deleteAppointment = UIAlertAction(title: "Delete Journal", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
-                    let journal = self.journalItems.removeAtIndex(indexPath.row)
+//                    let journal = self.journalItems.removeAtIndex(indexPath.row)
+                    let key = self.journalSections[indexPath.section]
+                    let journal = self.journalDayForSection[key]?.removeAtIndex(indexPath.row)
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                    journal.journalDeleted = true
-                    self.db.updateJournal(journal)
+                    journal!.journalDeleted = true
+                    self.db.updateJournal(journal!)
                 })
                 let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
                 

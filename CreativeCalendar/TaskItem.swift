@@ -12,6 +12,7 @@ struct TaskItem{
     var dateCreated: NSDate
     var dateCompleted: String?
     var estimateCompletionDate: String
+//    var estimateCompletionDate: NSDate
     var taskTitle: String
     var taskInfo: String
     var completed: Bool

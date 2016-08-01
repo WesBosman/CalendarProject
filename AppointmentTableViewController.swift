@@ -13,7 +13,6 @@ class AppointmentTableViewController: UITableViewController{
     
     private let cellID = "AppointmentCells"
     private var appointmentList:[AppointmentItem] = [];
-//    private var appointmentDateSections = Set<NSDate>()
     private var selectedIndexPath: NSIndexPath?
     private let db = DatabaseFunctions.sharedInstance
     private var appointmentDaySections: Dictionary<String, [AppointmentItem]> = [:]
@@ -50,35 +49,27 @@ class AppointmentTableViewController: UITableViewController{
     
     // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){
+        // Get all appointments that are not marked as deleted.
         appointmentList = db.getAllAppointments()
-        var newArrayOfAppointments: [AppointmentItem] = []
-        
-        // TODO: Fix this method.
         
         for app in appointmentList{
+            // Get the date from the appointment
             let appointmentDateForSectionAsString = appointmentDateFormatter.stringFromDate(app.startingTime)
-//            print("Appointment Starting Time key: \(appointmentDateForSectionAsString)")
             
+            // If the appointment Date is not already in the appointment sections array add it
             if !appointmentSections.contains(appointmentDateForSectionAsString){
                 appointmentSections.append(appointmentDateForSectionAsString)
             }
-//            newArrayOfAppointments.append(app)
-            if (appointmentDaySections.indexForKey(appointmentDateForSectionAsString) != nil){
-                newArrayOfAppointments.append(app)
-                appointmentDaySections.updateValue(newArrayOfAppointments, forKey: appointmentDateForSectionAsString)
-            }
-            else{
-                appointmentDaySections[appointmentDateForSectionAsString] = []
-            }
-            
-            
-            if (!newArrayOfAppointments.contains{ $0.UUID == app.UUID }){
-                newArrayOfAppointments.append(app)
-                print("New Array of appointments: \(newArrayOfAppointments)")
-            }
+            // Sort the appointment sections array
             self.appointmentSections = self.appointmentSections.sort(<)
+        }
+        
+        // Use the appointment sections array to get items from the database
+        for str in appointmentSections{
+            appointmentList = db.getAppointmentByDate(str)
             
-            appointmentDaySections.updateValue(newArrayOfAppointments, forKey: appointmentDateForSectionAsString)
+            // Add those items to the dictionary that the table view relies on
+            appointmentDaySections.updateValue(appointmentList, forKey: str)
         }
         
         if appointmentList.count > 64{
@@ -91,7 +82,7 @@ class AppointmentTableViewController: UITableViewController{
         tableView.reloadData()
     }
 
-    // Return the number of elements in the array
+    // MARK Section Header Methods
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appointmentDaySections[appointmentSections[section]]!.count
     }
@@ -162,9 +153,11 @@ class AppointmentTableViewController: UITableViewController{
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Delete the row from the data source
-                self.appointmentList.removeAtIndex(indexPath.row)
+                let key = self.appointmentSections[indexPath.section]
+                print("Key for removal: \(key)")
+//                print("The value associated with the key: \(self.appointmentDaySections[key])")
+                self.appointmentDaySections[key]?.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                
                 
                 //Delete from database
                 appointmentForAction.completed = false
