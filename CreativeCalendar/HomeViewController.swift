@@ -19,13 +19,13 @@ import ResearchKit
 // Dates are getting formatted so much I might as well an extension
 extension NSDateFormatter{
     private struct Formatters{
-        static let fullFormat:NSDateFormatter = {
+        private static let fullFormat:NSDateFormatter = {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "EEEE M/dd/yyyy hh:mm:ss a"
             return dateFormatter
         }()
         
-        static let fullDateFormat:NSDateFormatter = {
+        private static let fullDateFormat:NSDateFormatter = {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
             return dateFormatter
@@ -84,6 +84,7 @@ extension NSDateFormatter{
 // The color of the buttons set to the default text color of ios buttons
 extension UIColor{
     var defaultButtonColor: UIColor { return UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)}
+    var navigationBarColor: UIColor { return UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)}
 }
 
 // This extension is for making a background gradient

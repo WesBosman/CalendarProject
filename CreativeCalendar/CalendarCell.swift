@@ -20,9 +20,9 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
     @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
-    var fillColorForCircle: UIColor = UIColor.clearColor()
+    private var fillColorForCircle: UIColor = UIColor.clearColor()
     
-    var formatter = NSDateFormatter().dateWithoutTime
+    private var formatter = NSDateFormatter().dateWithoutTime
     var cellState:CellState!
     
     var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
@@ -31,13 +31,13 @@ class CalendarCell: JTAppleDayCellView{
     var appointmentCounter = 0
     var taskCounter = 0
     var journalCounter = 0
-    var drawAppointment:Bool = false
-    var drawTask:Bool = false
-    var drawJournal:Bool = false
+    private var drawAppointment:Bool = false
+    private var drawTask:Bool = false
+    private var drawJournal:Bool = false
     
-    var appointmentC:UILabel = UILabel()
-    var taskC:UILabel = UILabel()
-    var journalC:UILabel = UILabel()
+//    private var appointmentC:UILabel = UILabel()
+//    private var taskC:UILabel = UILabel()
+//    private var journalC:UILabel = UILabel()
     
     @IBOutlet weak var appointmentCounterLabel: UILabel!
     @IBOutlet weak var taskCounterLabel: UILabel!

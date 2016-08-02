@@ -19,6 +19,12 @@ class JournalTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        // Navigation bar
+        let nav = self.navigationController?.navigationBar
+        let barColor = UIColor().navigationBarColor
+        nav?.barTintColor = barColor
+        nav?.tintColor = UIColor.blueColor()
+
     }
     
     // Failable Initializer for tab bar controller

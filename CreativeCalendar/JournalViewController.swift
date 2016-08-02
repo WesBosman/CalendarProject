@@ -28,7 +28,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         
         // Navigation bar
         let nav = self.navigationController?.navigationBar
-        let barColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
+        let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
         nav?.tintColor = UIColor.blueColor()
         
@@ -36,6 +36,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, atIndex: 0)
+        
         // Set up the Save Journal Button colors and border
         saveJournal.layer.cornerRadius = 10
         saveJournal.layer.borderWidth = 2

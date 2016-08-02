@@ -24,7 +24,7 @@ class AppointmentTableViewController: UITableViewController{
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem()
         let nav = self.navigationController?.navigationBar
-        let barColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
+        let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
         nav?.tintColor = UIColor.blueColor()
         NSNotificationCenter

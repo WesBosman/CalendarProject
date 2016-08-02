@@ -21,6 +21,7 @@ class TaskStaticTableViewController: UITableViewController {
     
     private let db = DatabaseFunctions.sharedInstance
     private var taskDatePickerIsHidden = false
+    private var taskRepeatDayIsHidden = false
     private let taskFormatter = NSDateFormatter().dateWithoutTime
     private let currentDate = NSDate()
 
@@ -41,7 +42,10 @@ class TaskStaticTableViewController: UITableViewController {
         saveTask.layer.borderColor = UIColor().defaultButtonColor.CGColor
         saveTask.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         saveTask.backgroundColor = UIColor().defaultButtonColor
+        
+        // Hide the pickers from the user
         toggleTaskDatePicker()
+        toggleRepeatDayPicker()
     }
     
     func toggleTaskDatePicker(){
@@ -50,14 +54,26 @@ class TaskStaticTableViewController: UITableViewController {
         tableView.endUpdates()
     }
     
+    func toggleRepeatDayPicker(){
+        taskRepeatDayIsHidden = !taskRepeatDayIsHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 && indexPath.section == 2{
             toggleTaskDatePicker()
+        }
+        else if indexPath.row == 0 && indexPath.section == 3{
+            toggleRepeatDayPicker()
         }
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if taskDatePickerIsHidden && indexPath.section == 2 && indexPath.row == 1{
+            return 0
+        }
+        else if taskRepeatDayIsHidden && indexPath.section == 3 && indexPath.row == 1{
             return 0
         }
         else{
