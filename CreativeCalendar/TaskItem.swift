@@ -11,8 +11,7 @@ import Foundation
 struct TaskItem{
     var dateCreated: NSDate
     var dateCompleted: String?
-    var estimateCompletionDate: String
-//    var estimateCompletionDate: NSDate
+    var estimateCompletionDate: NSDate
     var taskTitle: String
     var taskInfo: String
     var completed: Bool
@@ -20,7 +19,7 @@ struct TaskItem{
     var deleted: Bool
     var UUID: String
     
-    init(dateMade:NSDate, title: String, info: String, estimatedCompletion:String, completed:Bool, canceled: Bool, deleted: Bool, dateFinished:String?, UUID: String){
+    init(dateMade:NSDate, title: String, info: String, estimatedCompletion:NSDate, completed:Bool, canceled: Bool, deleted: Bool, dateFinished:String?, UUID: String){
         self.dateCreated = dateMade
         self.dateCompleted = dateFinished
         self.taskTitle = title

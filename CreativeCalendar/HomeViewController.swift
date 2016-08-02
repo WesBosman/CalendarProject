@@ -24,10 +24,17 @@ extension NSDateFormatter{
             dateFormatter.dateFormat = "EEEE M/dd/yyyy hh:mm:ss a"
             return dateFormatter
         }()
+        
+        static let fullDateFormat:NSDateFormatter = {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
+            return dateFormatter
+        }()
+
     
         private static let monthDayYearFormat:NSDateFormatter = {
             let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "EEEE M/dd/yyyy"
+            dateFormatter.dateFormat = "MMMM dd yyyy"
             return dateFormatter
         }()
         
@@ -64,6 +71,12 @@ extension NSDateFormatter{
     var calendarFormat: NSDateFormatter{
         get{
             return Formatters.monthDayYearWithoutTime
+        }
+    }
+    
+    var journalFormat: NSDateFormatter{
+        get{
+            return Formatters.fullDateFormat
         }
     }
 }
@@ -180,7 +193,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     override func viewWillAppear(animated: Bool) {
         let currentDateAsString = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
         appointmentArray = db.getAppointmentByDate(currentDateAsString)
-        taskArray = db.getTaskByDate(currentDateAsString)
+        taskArray = db.getTaskByDate(currentDateAsString, formatter: NSDateFormatter().dateWithoutTime)
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()
@@ -366,14 +379,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 
             // If the task is completed it should have a green checkbox
             taskCell.homeTaskCompleted(task)
-            taskCell.homeTaskCompletionDate.text = task.estimateCompletionDate
+            taskCell.homeTaskCompletionDate.text = NSDateFormatter().dateWithoutTime.stringFromDate(task.estimateCompletionDate)
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             return taskCell
         }
     }
     
-
     /*
     // MARK: - Navigation
 

@@ -14,19 +14,19 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var journalTextBox: UITextView!
     @IBOutlet weak var journalLabel: UILabel!
     private var date = NSDate()
-    private let dateFormat = NSDateFormatter()
-    private var currentDate: String = String()
+    private let dateFormat = NSDateFormatter().journalFormat
     private var journalText:String = String()
     @IBOutlet weak var saveJournal: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        journalTextBox.delegate = self
         journalLabel.text = "Make a Journal Entry"
         journalLabel.textColor = UIColor.whiteColor()
-        dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
-        currentDate = dateFormat.stringFromDate(date)
-        journalTextBox.text = "\(currentDate) : "
-        journalTextBox.delegate = self
+        let currentDateAsString = dateFormat.stringFromDate(date)
+        journalTextBox.text = "\(currentDateAsString) : "
+        
+        // Navigation bar
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)
         nav?.barTintColor = barColor
@@ -57,17 +57,10 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     // When the save button is clicked pass the information to a journal item.
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
         date = NSDate()
-        
-//        dateFormat.dateFormat = "EEEE, MMMM dd, yyyy - hh:mm:ss"
-//        let currentDate = dateFormat.stringFromDate(date)
-        
         journalText = journalTextBox.text
-        
         let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date, deleted: false)
-        
         let db = DatabaseFunctions.sharedInstance
         db.addToJournalDatabase(journalItem)
-        
         self.navigationController?.popViewControllerAnimated(true)
     }
 

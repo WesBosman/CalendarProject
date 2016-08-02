@@ -46,17 +46,17 @@ class TaskTableViewController: UITableViewController {
     func refreshList(){
         taskList = db.getAllTasks()
         for task in taskList{
-            let dateForSectionAsString = task.estimateCompletionDate
+            let dateForSectionAsString = taskDateFormatter.stringFromDate(task.estimateCompletionDate)
             
             if !(taskSections.contains(dateForSectionAsString)){
                 taskSections.append(dateForSectionAsString)
                 print("Task Section Date: \(dateForSectionAsString)")
             }
-            self.taskSections = self.taskSections.sort(<)
+            self.taskSections = self.taskSections.sort(>)
         }
         
         for section in taskSections{
-            taskList = db.getTaskByDate(section)
+            taskList = db.getTaskByDate(section, formatter: taskDateFormatter)
             taskDayForSections.updateValue(taskList, forKey: section)
         }
         
@@ -83,6 +83,24 @@ class TaskTableViewController: UITableViewController {
         }
         return nil
     }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return 0.0
+        }
+        else{
+            return 30.0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return nil
+        }
+        else{
+            return tableView.headerViewForSection(section)
+        }
+    }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -93,7 +111,7 @@ class TaskTableViewController: UITableViewController {
         
         // Configure the cell...
         cell.taskCompleted(taskItem)
-        cell.taskCompletionDate.text = "Complete by: \(taskItem.estimateCompletionDate)"
+        cell.taskCompletionDate.text = "Complete by: \(taskDateFormatter.stringFromDate(taskItem.estimateCompletionDate))"
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         return cell
@@ -185,6 +203,8 @@ class TaskTableViewController: UITableViewController {
         
         completedAction.backgroundColor = UIColor.blueColor()
         canceledAction.backgroundColor = UIColor.orangeColor()
+        
+        tableView.reloadData()
         
         return [deletedAction, canceledAction, completedAction]
         

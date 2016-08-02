@@ -14,6 +14,7 @@ class JournalItem{
     var journalUUID: String = String()
     var journalDate: NSDate = NSDate()
     var journalDeleted: Bool
+    let dateFormat = NSDateFormatter().journalFormat
     
     init(journal: String, UUID: String, date: NSDate, deleted: Bool){
         self.journalEntry = journal
@@ -24,10 +25,7 @@ class JournalItem{
     
     // Get a simplified date that does not contain the hours and seconds
     func getSimplifiedDate() -> String{
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "EEEE, MMMM dd, yyyy"
         let journalStringForDate = dateFormat.stringFromDate(journalDate)
-//        print("Journal String For Date: \(journalStringForDate)")
         return journalStringForDate
     }
 }

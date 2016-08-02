@@ -75,7 +75,7 @@ class CalendarCell: JTAppleDayCellView{
         // Get all the scheduled appointments from the database.
         let cellDate = formatter.stringFromDate(cellState.date)
         let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(cellDate)
-        let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(cellDate)
+        let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(cellDate, formatter: formatter)
         let journalList = DatabaseFunctions.sharedInstance.getAllJournals()
         
         for a in appointmentList{
@@ -102,7 +102,7 @@ class CalendarCell: JTAppleDayCellView{
         
         for j in journalList{
             let journalDate = formatter.stringFromDate(j.journalDate)
-            print("Journal Date for cell \(journalDate)")
+//            print("Journal Date for cell \(journalDate)")
             var journalArray:[JournalItem] = []
             if cellDate == formatter.stringFromDate(j.journalDate){
                 journalArray.append(j)

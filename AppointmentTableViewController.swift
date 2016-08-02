@@ -62,7 +62,7 @@ class AppointmentTableViewController: UITableViewController{
                 appointmentSections.append(appointmentDateForSectionAsString)
             }
             // Sort the appointment sections array
-            self.appointmentSections = self.appointmentSections.sort(<)
+            self.appointmentSections = self.appointmentSections.sort(>)
         }
         
         // Use the appointment sections array to get items from the database
@@ -98,6 +98,24 @@ class AppointmentTableViewController: UITableViewController{
             return appointmentSections[section]
         }
         return nil
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return 0.0
+        }
+        else{
+            return 30.0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return nil
+        }
+        else{
+            return tableView.headerViewForSection(section)
+        }
     }
     
     // Make a cell where the title and the start date are retrieved from the save button being pressed
@@ -143,8 +161,10 @@ class AppointmentTableViewController: UITableViewController{
     // These are custom actions for dealing with the editing of an appointment
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        var appointmentForAction = appointmentList[indexPath.row] as AppointmentItem
         let appointmentCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! AppointmentCell
+        let tableSection = appointmentDaySections[appointmentSections[indexPath.section]]
+        var appointmentForAction = tableSection![indexPath.row] as AppointmentItem
+
         
         // Make custom actions for delete, cancel and complete.
         let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
@@ -218,6 +238,8 @@ class AppointmentTableViewController: UITableViewController{
             
             completeOptions.addAction(completeAction)
             completeOptions.addAction(completeCanceled)
+            
+            tableView.reloadData()
             
             self.presentViewController(completeOptions, animated: true, completion: nil)
         })

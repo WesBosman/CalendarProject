@@ -44,7 +44,7 @@ class JournalTableViewController: UITableViewController {
                 journalSections.append(journalDate)
                 print("Journal Date: \(journalDate)")
             }
-            self.journalSections = self.journalSections.sort(<)
+            self.journalSections = self.journalSections.sort(>)
         }
         
         for section in journalSections{
@@ -71,6 +71,24 @@ class JournalTableViewController: UITableViewController {
             return journalSections[section]
         }
         return nil
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return 0.0
+        }
+        else{
+            return 30.0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return nil
+        }
+        else{
+            return tableView.headerViewForSection(section)
+        }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

@@ -101,6 +101,7 @@ class DatabaseFunctions{
         }
         
         let dateCreatedAsString = dateFormat.stringFromDate(item.dateCreated)
+        let estimatedCompletionDate = NSDateFormatter().dateWithoutTime.stringFromDate(item.estimateCompletionDate)
         
         do{
             let rs = try db.executeQuery("SELECT date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid FROM Tasks", values: nil)
@@ -109,7 +110,7 @@ class DatabaseFunctions{
                 count += 1
             }
             print("Number of items in Task Table database: \(count)")
-            try db.executeUpdate("INSERT into Tasks(date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid) values(?, ?, ?, ?, ?, ?, ?, ?)", values:[ dateCreatedAsString, item.taskTitle, item.taskInfo, item.completed, item.canceled, item.deleted, item.estimateCompletionDate, item.UUID])
+            try db.executeUpdate("INSERT into Tasks(date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid) values(?, ?, ?, ?, ?, ?, ?, ?)", values:[ dateCreatedAsString, item.taskTitle, item.taskInfo, item.completed, item.canceled, item.deleted, estimatedCompletionDate, item.UUID])
             
         } catch let err as NSError{
             print("Add Task to Database ERROR: \(err.localizedDescription)")
@@ -390,7 +391,7 @@ class DatabaseFunctions{
     }
     
     // Get Task By Date
-    func getTaskByDate(date:String)-> [TaskItem]{
+    func getTaskByDate(date:String, formatter:NSDateFormatter)-> [TaskItem]{
         let db = makeDb
         
         if (!db.open()){
@@ -411,7 +412,7 @@ class DatabaseFunctions{
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task") as! String
                 let taskAdditional = task.objectForColumnName("additional") as! String
-                let estimatedDateCompleted = task.objectForColumnName("estimated_completed_date") as! String
+                let estimatedDateCompleted = formatter.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
@@ -421,14 +422,15 @@ class DatabaseFunctions{
                 let taskItem = TaskItem(dateMade: taskMade!,
                                         title: taskTitle,
                                         info: taskAdditional,
-                                        estimatedCompletion: estimatedDateCompleted,
+                                        estimatedCompletion: estimatedDateCompleted!,
                                         completed: taskCompleted,
                                         canceled: taskCanceled,
                                         deleted:  taskDeleted,
                                         dateFinished: taskDone,
                                         UUID: taskUUID)
                 
-                let newTaskStartTime = estimatedDateCompleted
+                let newTaskStartTime = formatter.stringFromDate(estimatedDateCompleted!)
+                print("New Task Start Time: \(newTaskStartTime)")
                 
                 if (newTaskStartTime == date && !taskArray.contains{ $0.UUID == taskItem.UUID}){
                     print("Array Date: \(date)")
@@ -573,7 +575,8 @@ class DatabaseFunctions{
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task") as! String
                 let taskAdditional = task.objectForColumnName("additional") as! String
-                let estimatedDateCompleted = task.objectForColumnName("estimated_completed_date") as! String
+                let estimatedDateCompleted = NSDateFormatter().dateWithoutTime.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
+                //.objectForColumnName("estimated_completed_date") as! String
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
@@ -584,7 +587,7 @@ class DatabaseFunctions{
                 let taskItem = TaskItem(dateMade: taskMade!,
                                         title: taskTitle,
                                         info: taskAdditional,
-                                        estimatedCompletion: estimatedDateCompleted,
+                                        estimatedCompletion: estimatedDateCompleted!,
                                         completed: taskCompleted,
                                         canceled: taskCanceled,
                                         deleted:  taskDeleted,
