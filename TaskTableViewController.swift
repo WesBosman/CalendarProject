@@ -45,6 +45,9 @@ class TaskTableViewController: UITableViewController {
     // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
     func refreshList(){
         taskList = db.getAllTasks()
+        // Sort the task list based on the estimated completion date
+        taskList = taskList.sort({$0.estimateCompletionDate.compare($1.estimateCompletionDate) == NSComparisonResult.OrderedAscending})
+        
         for task in taskList{
             let dateForSectionAsString = taskDateFormatter.stringFromDate(task.estimateCompletionDate)
             
@@ -52,7 +55,6 @@ class TaskTableViewController: UITableViewController {
                 taskSections.append(dateForSectionAsString)
                 print("Task Section Date: \(dateForSectionAsString)")
             }
-            self.taskSections = self.taskSections.sort(>)
         }
         
         for section in taskSections{
@@ -100,6 +102,12 @@ class TaskTableViewController: UITableViewController {
         else{
             return tableView.headerViewForSection(section)
         }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.contentView.backgroundColor = UIColor().defaultButtonColor
+        header.textLabel?.textColor = UIColor.whiteColor()
     }
 
 

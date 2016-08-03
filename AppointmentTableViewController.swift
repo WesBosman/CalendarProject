@@ -52,6 +52,8 @@ class AppointmentTableViewController: UITableViewController{
     func refreshList(){
         // Get all appointments that are not marked as deleted.
         appointmentList = db.getAllAppointments()
+        // Order the appointments based on their starting times.
+        appointmentList = appointmentList.sort({$0.startingTime.compare($1.startingTime) == NSComparisonResult.OrderedAscending})
         
         for app in appointmentList{
             // Get the date from the appointment
@@ -61,8 +63,6 @@ class AppointmentTableViewController: UITableViewController{
             if !appointmentSections.contains(appointmentDateForSectionAsString){
                 appointmentSections.append(appointmentDateForSectionAsString)
             }
-            // Sort the appointment sections array
-            self.appointmentSections = self.appointmentSections.sort(>)
         }
         
         // Use the appointment sections array to get items from the database
@@ -116,6 +116,12 @@ class AppointmentTableViewController: UITableViewController{
         else{
             return tableView.headerViewForSection(section)
         }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.contentView.backgroundColor = UIColor().defaultButtonColor
+        header.textLabel?.textColor = UIColor.whiteColor()
     }
     
     // Make a cell where the title and the start date are retrieved from the save button being pressed

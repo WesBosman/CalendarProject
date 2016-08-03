@@ -43,6 +43,9 @@ class JournalTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         journalItems = db.getAllJournals()
+        // Sort the journals based on their dates
+        journalItems = journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
+        
         for journal in journalItems{
             let journalDate = journalDateFormatter.stringFromDate(journal.journalDate)
             
@@ -50,7 +53,6 @@ class JournalTableViewController: UITableViewController {
                 journalSections.append(journalDate)
                 print("Journal Date: \(journalDate)")
             }
-            self.journalSections = self.journalSections.sort(>)
         }
         
         for section in journalSections{
@@ -95,6 +97,12 @@ class JournalTableViewController: UITableViewController {
         else{
             return tableView.headerViewForSection(section)
         }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.contentView.backgroundColor = UIColor().defaultButtonColor
+        header.textLabel?.textColor = UIColor.whiteColor()
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
