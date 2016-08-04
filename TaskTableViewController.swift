@@ -211,9 +211,7 @@ class TaskTableViewController: UITableViewController {
         
         completedAction.backgroundColor = UIColor.blueColor()
         canceledAction.backgroundColor = UIColor.orangeColor()
-        
-        tableView.reloadData()
-        
+                
         return [deletedAction, canceledAction, completedAction]
         
     }

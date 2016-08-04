@@ -103,34 +103,19 @@ class CreativeCalendarUITests: XCTestCase {
         XCTAssertTrue(app.tables.cells.textFields["Please enter the type of appointment"].exists)
         XCTAssertTrue(app.tables.cells.buttons["Enter"].exists)
         
-//        appPicker.adjustToPickerWheelValue("Class")
-//        appPicker.adjustToPickerWheelValue("Speech Therapy")
-//        XCTAssertTrue(app.tables.cells.textFields["Please enter the type of appointment"].accessibilityElementsHidden, "Enter Type of appointment should be hidden when speech therapy is selected")
-//        XCTAssertTrue(app.tables.cells.buttons["Enter"].accessibilityElementsHidden, "Enter button should be hidden when speech therapy is selected")
-        
         let otherTypeOfAppointment = app.textFields["Please enter the type of appointment"]
         otherTypeOfAppointment.tap()
+        otherTypeOfAppointment.typeText("UI Type Of Appointment")
 
         let enterButton = app.tables.cells.buttons["Enter"]
         enterButton.tap()
-        XCTAssertTrue(app.tables.cells.textFields["Please enter the type of appointment here"].exists)
-        
-//        let newOtherTypeOfAppointment = app.tables.cells.textFields["Please enter the type of appointment here"]
-//        XCTAssertTrue(newOtherTypeOfAppointment.exists)
-//        newOtherTypeOfAppointment.tap()
-//        newOtherTypeOfAppointment.typeText("UI Testing")
-//        enterButton.tap()
+        XCTAssertTrue(app.tables.cells.textFields["UI Type Of Appointment"].exists)
         
         let startTime = app.tables.cells.staticTexts["Start Time"]
         startTime.tap()
         let startDay = app.tables.containingType(.Other, identifier:"APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["Today"]
         startDay.tap()
         startDay.adjustToPickerWheelValue("Jul 30")
-        
-//        let satJul30ElementsQuery = app.tables.cells.otherElements.containingType(.PickerWheel, identifier:"Sat, Jul 30")
-//        satJul30ElementsQuery.pickerWheels["9 o'clock"].tap()
-//        satJul30ElementsQuery.pickerWheels["58 minutes"].tap()
-//        satJul30ElementsQuery.pickerWheels["AM "].tap()
         
         let endTime = app.tables.cells.staticTexts["End Time"]
         endTime.tap()
@@ -162,7 +147,7 @@ class CreativeCalendarUITests: XCTestCase {
         let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
         let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
-        dateFormatter.dateFormat = "EEEE M/dd/yyyy"
+        dateFormatter.dateFormat = "MMMM dd yyyy"
         let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
         
         
@@ -175,7 +160,6 @@ class CreativeCalendarUITests: XCTestCase {
 //        XCTAssert(stringMonth == "August", "Todays Month is correct")
 //        XCTAssert(stringYear == "2016", "Todays Year is correct")
         
-        
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Tasks"].tap()
         
@@ -187,16 +171,17 @@ class CreativeCalendarUITests: XCTestCase {
         taskName.tap()
         taskName.typeText("UI Automated Test To Complete")
         
-        let cell = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0)
-        cell.childrenMatchingType(.TextField).element
-        app.buttons["Return"].tap()
-        cell.childrenMatchingType(.TextField).element
-        let hideKeyboardButton = app.buttons["Hide keyboard"]
-        hideKeyboardButton.tap()
+//        let cell = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0)
+//        cell.childrenMatchingType(.TextField).element
+//        app.buttons["Return"].tap()
+//        cell.childrenMatchingType(.TextField).element
+//        let hideKeyboardButton = app.buttons["Hide keyboard"]
+//        hideKeyboardButton.tap()
         
         
         let additionalInformation = app.textFields["Additional Information"]
         additionalInformation.tap()
+        additionalInformation.typeText("UI Additional Information")
         
         let month = app.tables.pickerWheels.elementBoundByIndex(0)
         let day = app.tables.pickerWheels.elementBoundByIndex(1)
@@ -213,8 +198,11 @@ class CreativeCalendarUITests: XCTestCase {
         
         let editButton = tasksNavigationBar.buttons["Edit"]
         editButton.tap()
-
-        tablesQuery.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(stringFullDate), Additional Info:"].tap()
+        
+app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(stringFullDate), Additional Info: UI Additional Information"].tap()
+        
+        
+//        tablesQuery.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(stringFullDate), Additional Info: UI Additional Information"].tap()
         tablesQuery.buttons["Complete"].tap()
         app.alerts["Complete Task"].collectionViews.buttons["Complete Task"].tap()
         tasksNavigationBar.buttons["Done"].tap()
@@ -331,7 +319,7 @@ class CreativeCalendarUITests: XCTestCase {
         let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
         let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
-        dateFormatter.dateFormat = "EEEE M/dd/yyyy"
+        dateFormatter.dateFormat = "MMMM dd yyyy"
         let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
         
         print("String Day: \(stringDay)")
@@ -359,9 +347,7 @@ class CreativeCalendarUITests: XCTestCase {
         
         let additionalInformation = tablesQuery.textFields["Additional Information"]
         additionalInformation.tap()
-//        tablesQuery.textFields["Additional Information"].tap()
-//        tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(1).childrenMatchingType(.TextField).element
-//        additionalInfo.typeText("Additional Info")
+        additionalInformation.typeText("UI Additional Information")
         
         let month = app.tables.pickerWheels.elementBoundByIndex(0)
         let day = app.tables.pickerWheels.elementBoundByIndex(1)

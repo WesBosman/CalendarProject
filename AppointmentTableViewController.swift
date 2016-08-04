@@ -164,6 +164,10 @@ class AppointmentTableViewController: UITableViewController{
         return true
     }
     
+    override func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.reloadData()
+    }
+    
     // These are custom actions for dealing with the editing of an appointment
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
@@ -244,9 +248,7 @@ class AppointmentTableViewController: UITableViewController{
             
             completeOptions.addAction(completeAction)
             completeOptions.addAction(completeCanceled)
-            
-            tableView.reloadData()
-            
+                        
             self.presentViewController(completeOptions, animated: true, completion: nil)
         })
         
