@@ -194,7 +194,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // We then reload the tables so that the changes from the other tabs are reflected here.
     override func viewWillAppear(animated: Bool) {
         let currentDateAsString = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
-        appointmentArray = db.getAppointmentByDate(currentDateAsString)
+        appointmentArray = db.getAppointmentByDate(currentDateAsString, formatter: NSDateFormatter().dateWithoutTime)
         taskArray = db.getTaskByDate(currentDateAsString, formatter: NSDateFormatter().dateWithoutTime)
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()

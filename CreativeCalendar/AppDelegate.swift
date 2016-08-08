@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 currentController = currentController.presentedViewController!
             }
             // Get the title of the appointment based on the notification fire date
-            let appointment = db.getAppointmentByDate(dateFormatter.stringFromDate(newDate!))
+            let appointment = db.getAppointmentByDate(dateFormatter.stringFromDate(newDate!), formatter: dateFormatter)
             
             for app in appointment{
             let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(app.title)", preferredStyle: .Alert)

@@ -50,11 +50,6 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="color" keyPath="fillColorForCircle">
-                    <color key="value" red="0.072403602302074432" green="0.55472522974014282" blue="0.85381525754928589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="appointmentCounterLabel" destination="Pcp-YY-nEG" id="LJM-7L-6Bj"/>
                 <outlet property="dayLabel" destination="98W-Ry-PHC" id="jgU-Qs-JH2"/>

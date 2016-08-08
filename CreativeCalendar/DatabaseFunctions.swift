@@ -322,7 +322,7 @@ class DatabaseFunctions{
     
     // Used for giving the user the title of the appointment when alert dialog box is delivered
     // and the user is inside of the application
-    func getAppointmentByDate(date:String)-> [AppointmentItem]{
+    func getAppointmentByDate(date:String, formatter: NSDateFormatter)-> [AppointmentItem]{
         let db = makeDb
         
         if (!db.open()){
@@ -369,12 +369,9 @@ class DatabaseFunctions{
                                                       deleteReason: appointmentDeleteReason,
                                                       UUID: appointmentUUID)
                 
-                let newDateFormatter = NSDateFormatter().dateWithoutTime
-                let newAppointmentStartTime = newDateFormatter.stringFromDate(appointmentStart!)
+                let newAppointmentStartTime = formatter.stringFromDate(appointmentStart!)
                 
                 if (newAppointmentStartTime == date && !appointmentArray.contains{ $0.UUID == appointmentItem.UUID}){
-//                    print("Array Date: \(date)")
-//                    print("Array Contains appointment item with name: \(appointmentItem.title)")
                     appointmentArray.append(appointmentItem)
                 }
             }
@@ -474,14 +471,13 @@ class DatabaseFunctions{
                                               deleted: deleted,
                                               deleteReason: nil)
                 
-                let newDateFormatter = formatter
-                let newJournalStartTime = newDateFormatter.stringFromDate(date!)
-                print("Journal Date: \(date)")
-                print("New Journal Start Time: \(newJournalStartTime)")
+                let newJournalStartTime = formatter.stringFromDate(date!)
+//                print("Journal Date: \(date)")
+//                print("New Journal Start Time: \(newJournalStartTime)")
                 
                 if (newJournalStartTime == journalDate && !journalArray.contains{ $0.journalUUID == journalItem.journalUUID}){
-                    print("Array Date: \(date)")
-                    print("Array Contains Journal item with name: \(journalItem.journalEntry)")
+//                    print("Array Date: \(date)")
+//                    print("Array Contains Journal item with name: \(journalItem.journalEntry)")
                     journalArray.append(journalItem)
                 }
             }
@@ -526,8 +522,7 @@ class DatabaseFunctions{
                 let appointmentCancelReason = appointment.objectForColumnName("cancel_reason") as? String
                 let appointmentDeleteReason = appointment.objectForColumnName("delete_reason") as? String
                 let appointmentUUID = appointment.objectForColumnName("uuid") as! String
-                
-//                print("Appointment Title: \(appointmentTitle) type: \(appointmentType) start: \(appointmentStart) end: \(appointmentEnd) location: \(appointmentLocation) additional: \(appointmentAdditional) uuid: \(appointmentUUID)")
+
                 
                 let appointmentItem = AppointmentItem(type: appointmentType,
                                                       startTime: appointmentStart! ,

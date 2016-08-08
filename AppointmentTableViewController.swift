@@ -21,6 +21,7 @@ class AppointmentTableViewController: UITableViewController{
     private let defaults = NSUserDefaults.standardUserDefaults()
     weak var actionToEnable:UIAlertAction?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem()
@@ -53,6 +54,7 @@ class AppointmentTableViewController: UITableViewController{
     func refreshList(){
         // Get all appointments that are not marked as deleted.
         appointmentList = db.getAllAppointments()
+        
         // Order the appointments based on their starting times.
         appointmentList = appointmentList.sort({$0.startingTime.compare($1.startingTime) == NSComparisonResult.OrderedAscending})
         
@@ -68,10 +70,12 @@ class AppointmentTableViewController: UITableViewController{
         
         // Use the appointment sections array to get items from the database
         for str in appointmentSections{
-            appointmentList = db.getAppointmentByDate(str)
+            appointmentList = db.getAppointmentByDate(str, formatter: appointmentDateFormatter)
             
             // Add those items to the dictionary that the table view relies on
             appointmentDaySections.updateValue(appointmentList, forKey: str)
+            
+            defaults.setObject(appointmentList as? AnyObject, forKey: str)
         }
         
         if appointmentList.count > 64{

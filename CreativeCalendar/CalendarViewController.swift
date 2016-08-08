@@ -12,7 +12,6 @@ import JTAppleCalendar
 class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
-    
     let userCalendar = NSCalendar.currentCalendar()
     let formatter = NSDateFormatter().calendarFormat
     let components = NSDateComponents()
@@ -21,7 +20,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var weekdayLabel:String = String()
     var numberOfRows = 6
     var selectedCell:CalendarCell = CalendarCell()
-    
     var appointment:String = String()
     var task:String = String()
     var journal:String = String()
@@ -142,38 +140,33 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
         
         if let calendarCell = cell as? CalendarCell{
+            
             let stringDate = formatter.stringFromDate(cellState.date)
             print("Calendar Cell String Date: \(stringDate)")
+            let appointmentDictionary = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: formatter)
+            let taskDictionary = DatabaseFunctions.sharedInstance.getTaskByDate(stringDate, formatter: formatter)
+            let journalDictionary = DatabaseFunctions.sharedInstance.getJournalByDate(stringDate, formatter: formatter)
+            var appointmentString = String()
+            var taskString = String()
+            var journalString = String()
+
             
-            if let appointmentDictionary = calendarCell.appointmentDictionary[stringDate]{
-                var appointmentString = String()
-                for a in appointmentDictionary{
-//                    print("A: \(a)")
-                    appointmentString += a.title + "\n"
-                }
-                appointment = appointmentString
-                print("Appointment: \(appointment)")
+            for a in appointmentDictionary{
+                appointmentString += a.title + "\n"
             }
+            appointment = appointmentString
+        
+            for t in taskDictionary{
+                print("Task in dictionary in calendar view controller \(t.taskTitle)")
+                taskString += t.taskTitle + "\n"
+            }
+            task = taskString
+        
+            for j in journalDictionary{
+                journalString += j.journalEntry + "\n"
+            }
+            journal = journalString
             
-            if let taskDictionary = calendarCell.taskDictionary[stringDate]{
-                var taskString = String()
-                for t in taskDictionary{
-//                    print("T: \(t)")
-                    taskString += t.taskTitle + "\n"
-                }
-                task = taskString
-                print("Task: \(task)")
-            }
-            
-            if let journalDictionary = calendarCell.journalDictionary[stringDate]{
-                var journalString = String()
-                for j in journalDictionary{
-//                    print("J: \(j)")
-                    journalString += j.journalEntry + "\n"
-                }
-                journal = journalString
-                print("Journal: \(journal)")
-            }
             
             selectedCell = calendarCell
             calendarCell.updateCell(cellState)
@@ -223,13 +216,18 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "calendarPopover"{
-//            print("Popover Segue")
+            print("Popover Segue")
             if let vc = segue.destinationViewController as? PopoverViewController{
             
                 let controller = vc.popoverPresentationController
                 vc.appointment = appointment
+                print("Appointment: \(appointment)")
+                
                 vc.task = task
+                print("Task: \(task)")
+                
                 vc.journal = journal
+                print("Journal: \(journal)")
                 
                 if controller != nil{
                     controller?.delegate = self
