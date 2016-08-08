@@ -2180,7 +2180,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="73" id="JOE-RZ-wRN"/>
                                         </constraints>
-                                        <state key="normal" image="RightArrow"/>
+                                        <state key="normal" image="RightArrowDark"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="JOE-RZ-wRN"/>
@@ -2200,7 +2200,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="75" id="gBi-9Z-Ziz"/>
                                         </constraints>
-                                        <state key="normal" image="LeftArrow"/>
+                                        <state key="normal" image="LeftArrowDark"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="gBi-9Z-Ziz"/>
@@ -2330,8 +2330,8 @@
         <image name="CircleUntickedRed" width="30" height="30"/>
         <image name="Home" width="30" height="30"/>
         <image name="Journals" width="30" height="30"/>
-        <image name="LeftArrow" width="29" height="30"/>
-        <image name="RightArrow" width="29" height="30"/>
+        <image name="LeftArrowDark" width="29" height="30"/>
+        <image name="RightArrowDark" width="29" height="30"/>
         <image name="Tasks" width="30" height="30"/>
     </resources>
 </document>
