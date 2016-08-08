@@ -254,31 +254,25 @@ class DatabaseFunctions{
 
                 // Complete the Task
                 if isComplete == true{
-//                    print("Task Completed")
                     try db.executeUpdate(completedStatement, values: [isComplete, currentDateString, item.UUID])
                 }
                 else{
-//                    print("Task Not Completed")
                     try db.executeUpdate(completedStatement, values: [isComplete, "" , item.UUID])
                 }
                 
                 // Cancel the Task
                 if isCanceled == true{
-//                    print("Task Canceled")
                     try db.executeUpdate(canceledStatement, values: [isCanceled, currentDateString , item.canceledReason!, item.UUID])
                 }
                 else{
-//                    print("Task Not Canceled")
                     try db.executeUpdate(canceledStatement, values: [isCanceled, "", "", item.UUID])
                 }
                 
                 // Delete the Task
                 if isDeleted == true{
-//                    print("Task Deleted")
                     try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.deletedReason!, item.UUID])
                 }
                 else{
-//                    print("Task Not Deleted")
                     try db.executeUpdate(deletedStatement, values: [isDeleted, "", "", item.UUID])
                 }
             }
@@ -300,7 +294,6 @@ class DatabaseFunctions{
         }
         
         let current = NSDate()
-        //        let dateFormat = NSDateFormatter().universalFormatter()
         let currentDateString = dateFormat.stringFromDate(current)
         
         // If date completed equals false then do this...
@@ -311,12 +304,11 @@ class DatabaseFunctions{
             
             while selectResult.next(){
                 let isDeleted = item.journalDeleted
-                let deletedStatement = "UPDATE Journals SET deleted=?, date_deleted=? WHERE uuid=?"
+                let deletedStatement = "UPDATE Journals SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
                 
                 // Delete the Journal
                 if isDeleted == true{
-                    print("Journal Deleted")
-                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.journalUUID])
+                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.journalDeletedReason! , item.journalUUID])
                 }
             }
         }
@@ -479,7 +471,8 @@ class DatabaseFunctions{
                 let journalItem = JournalItem(journal: entry,
                                               UUID: uuid,
                                               date: date!,
-                                              deleted: deleted)
+                                              deleted: deleted,
+                                              deleteReason: nil)
                 
                 let newDateFormatter = formatter
                 let newJournalStartTime = newDateFormatter.stringFromDate(date!)
@@ -641,7 +634,8 @@ class DatabaseFunctions{
                 let journalItem = JournalItem(journal: entry,
                                               UUID: uuid,
                                               date: date!,
-                                              deleted: deleted)
+                                              deleted: deleted,
+                                              deleteReason: nil)
 
                 journalArray.append(journalItem)
             }

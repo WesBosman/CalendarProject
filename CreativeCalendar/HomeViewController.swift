@@ -100,11 +100,6 @@ extension CAGradientLayer{
     }
 }
 
-enum Item {
-    case Appointment
-    case Task
-}
-
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     
     @IBOutlet weak var appointmentLabel: UILabel!
@@ -244,7 +239,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
-        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Default, handler: nil)
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
         
         if tableView == taskViewTable{
             // Get the task item and task cell
@@ -380,7 +375,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // The confirmation menu checks that a user is preforming their desired action for the item
     func confirmationMenu(tableName:String, typeOfAction: String, indexPath: NSIndexPath) -> UIAlertController{
         // Create exit menu action to reuse
-        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Default, handler: nil)
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
 
         if tableName == "Appointments"{
             var appointment = appointmentArray[indexPath.row] as AppointmentItem

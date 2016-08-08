@@ -15,6 +15,7 @@ class JournalTableViewController: UITableViewController {
     private var journalDayForSection: Dictionary<String, [JournalItem]> = [:]
     private var journalSections: [String] = []
     private let journalDateFormatter = NSDateFormatter().dateWithoutTime
+    weak var actionToEnable: UIAlertAction?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,24 +135,36 @@ class JournalTableViewController: UITableViewController {
             let journalItemToDelete = tableSection![indexPath.row] as JournalItem
             
             let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .Alert)
-                
-            let deleteAppointment = UIAlertAction(title: "Delete Journal", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+            deleteOptions.addTextFieldWithConfigurationHandler({(textField) in
+                textField.placeholder = "Reason for Delete"
+                textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+            })
+            
+            
+            let deleteJournal = UIAlertAction(title: "Delete Journal", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
 //                    let journal = self.journalItems.removeAtIndex(indexPath.row)
                     let key = self.journalSections[indexPath.section]
                     let journal = self.journalDayForSection[key]?.removeAtIndex(indexPath.row)
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                     journal!.journalDeleted = true
+                    journal!.journalDeletedReason = deleteOptions.textFields![0].text!
                     self.db.updateJournal(journal!)
                 })
-                let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-                
+                let cancelDelete = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+                self.actionToEnable = deleteJournal
+                deleteJournal.enabled = false
                 deleteOptions.addAction(cancelDelete)
-                deleteOptions.addAction(deleteAppointment)
+                deleteOptions.addAction(deleteJournal)
                 
                 self.presentViewController(deleteOptions, animated: true, completion: nil)
         }
     }
+    
+    func textChanged(sender:UITextField) {
+        self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
+    }
+
     
 
     /*

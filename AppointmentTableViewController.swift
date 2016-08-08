@@ -19,6 +19,7 @@ class AppointmentTableViewController: UITableViewController{
     private let appointmentDateFormatter = NSDateFormatter().dateWithoutTime
     private var appointmentSections: [String] = []
     private let defaults = NSUserDefaults.standardUserDefaults()
+    weak var actionToEnable:UIAlertAction?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -174,12 +175,17 @@ class AppointmentTableViewController: UITableViewController{
         let appointmentCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! AppointmentCell
         let tableSection = appointmentDaySections[appointmentSections[indexPath.section]]
         var appointmentForAction = tableSection![indexPath.row] as AppointmentItem
-
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
         
         // Make custom actions for delete, cancel and complete.
         let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             
             let deleteOptions = UIAlertController(title: "Delete", message: "Are you sure you want to delete the appointment: \(appointmentForAction.title)?", preferredStyle: .Alert)
+            deleteOptions.addTextFieldWithConfigurationHandler({(textField) in
+                textField.placeholder = "Reason for Delete"
+                textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+            })
+
             
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
@@ -194,13 +200,14 @@ class AppointmentTableViewController: UITableViewController{
                 appointmentForAction.completed = false
                 appointmentForAction.canceled = false
                 appointmentForAction.deleted = true
+                appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
                 self.db.updateAppointment(appointmentForAction)
                 
             })
-            let cancelDelete = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-            
-            deleteOptions.addAction(cancelDelete)
+            self.actionToEnable = deleteAppointment
+            deleteAppointment.enabled = false
             deleteOptions.addAction(deleteAppointment)
+            deleteOptions.addAction(exitMenu)
             
             self.presentViewController(deleteOptions, animated: true, completion: nil)
         })
@@ -209,21 +216,27 @@ class AppointmentTableViewController: UITableViewController{
         let canceledAction = UITableViewRowAction(style: .Default, title: "Cancel", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             let cancelOptions = UIAlertController(title: "Cancel Appointment", message: "Would you like to cancel the appointment: \(appointmentForAction.title)", preferredStyle: .Alert)
             
+            cancelOptions.addTextFieldWithConfigurationHandler({(textField) in
+                textField.placeholder = "Reason for Cancel"
+                textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+            })
+            
             // Appointment was canceled.
-            let cancelAction = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+            let cancelAppointment = UIAlertAction(title: "Cancel Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment 
                 appointmentForAction.completed = false
                 appointmentForAction.canceled = true
                 appointmentForAction.deleted = false
+                appointmentForAction.canceledReason = cancelOptions.textFields![0].text ?? ""
                 appointmentCellForAction.appointmentCompleted(appointmentForAction)
                 self.db.updateAppointment(appointmentForAction)
                 
             })
-            let abortCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-            
-            cancelOptions.addAction(cancelAction)
-            cancelOptions.addAction(abortCancel)
+            self.actionToEnable = cancelAppointment
+            cancelAppointment.enabled = false
+            cancelOptions.addAction(cancelAppointment)
+            cancelOptions.addAction(exitMenu)
             
             self.presentViewController(cancelOptions, animated: true, completion: nil)
         })
@@ -234,7 +247,7 @@ class AppointmentTableViewController: UITableViewController{
             let completeOptions = UIAlertController(title: "Complete Appointment", message: "Have you completed appointment: \(appointmentForAction.title)", preferredStyle: .Alert)
             
             // Appointment was completed.
-            let completeAction = UIAlertAction(title: "Complete Appointment", style: .Default, handler: {(action: UIAlertAction) -> Void in
+            let completeAction = UIAlertAction(title: "Complete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Complete the appointment and update its image.
                 appointmentForAction.completed = true
@@ -258,6 +271,11 @@ class AppointmentTableViewController: UITableViewController{
         return [deletedAction, canceledAction, completedAction]
     
     }
+    
+    func textChanged(sender:UITextField) {
+        self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
+    }
+
     
     // MARK: - Navigation
     /*

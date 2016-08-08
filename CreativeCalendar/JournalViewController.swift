@@ -59,7 +59,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
         date = NSDate()
         journalText = journalTextBox.text
-        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date, deleted: false)
+        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date, deleted: false, deleteReason: nil)
         let db = DatabaseFunctions.sharedInstance
         db.addToJournalDatabase(journalItem)
         self.navigationController?.popViewControllerAnimated(true)
