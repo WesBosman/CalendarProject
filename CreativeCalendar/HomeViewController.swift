@@ -100,6 +100,11 @@ extension CAGradientLayer{
     }
 }
 
+enum Item {
+    case Appointment
+    case Task
+}
+
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     
     @IBOutlet weak var appointmentLabel: UILabel!
@@ -110,6 +115,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     @IBOutlet weak var appointmentViewTable: UITableView!
     @IBOutlet weak var taskViewTable: UITableView!
     @IBOutlet weak var journalViewBox: UITextView!
+    weak var actionToEnable : UIAlertAction?
     let db = DatabaseFunctions.sharedInstance
     let appointmentCellID = "AppointmentHomeCell"
     let taskCellID = "TaskHomeCell"
@@ -238,88 +244,132 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Default, handler: nil)
         
         if tableView == taskViewTable{
+            // Get the task item and task cell
             var task = taskArray[indexPath.row] as TaskItem
             let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
             
             // Create an Alert to ask the user if they have completed the task.
-            let alert = UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = (UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert))
             
-            // If the user confirms that a task was completed then update the image to a green checkbox
-            alert.addAction(UIAlertAction(title: "Complete Task", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
-                task.completed = true
-                task.canceled = false
-                task.deleted = false
-                taskCell.homeTaskCompleted(task)
-                self.db.updateTask(task)
+            // Add the option to complete a task or exit the menu
+            let completeTaskAction = (UIAlertAction(title: "Complete Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+                
+                let completeTask = UIAlertController(title: "Confirmation", message: "Are you sure you want to Complete the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                // Add complete action to the complete task controller
+                let complete = UIAlertAction(title: "Complete", style: .Destructive, handler: {(action: UIAlertAction) in
+                    task.completed = true
+                    task.canceled = false
+                    task.deleted = false
+                    taskCell.homeTaskCompleted(task)
+                    self.db.updateTask(task)
+                })
+//                let exitMenu = UIAlertAction(title: "Exit Menu", style: .Default, handler: nil)
+                
+                completeTask.addAction(complete)
+                completeTask.addAction(exitMenu)
+                self.presentViewController(completeTask, animated: true, completion: nil)
+
+            }))
+            // Add the option to cancel a task and a confirmation menu
+            let cancelTaskAction = (UIAlertAction(title: "Cancel Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+                let confirmationMenu = self.confirmationMenu("Tasks", typeOfAction: "Cancel", indexPath: indexPath)
+                // Why is the user canceling the task
+                confirmationMenu.addTextFieldWithConfigurationHandler({(textField) in
+                    textField.placeholder = "Reason for cancel"
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                })
+                self.presentViewController(confirmationMenu, animated: true, completion: nil)
+
+            }))
+            // Add the option to delete a task and a confirmation menu
+            let deleteTaskAction = (UIAlertAction(title: "Delete Task", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+                
+                let confirmationMenu = self.confirmationMenu("Tasks", typeOfAction: "Delete", indexPath: indexPath)
+                // Why is the user deleting the task
+                confirmationMenu.addTextFieldWithConfigurationHandler({(textField) in
+                    textField.placeholder = "Reason for delete"
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                })
+
+                self.presentViewController(confirmationMenu, animated: true, completion: nil)
             } ))
             
-            alert.addAction(UIAlertAction(title: "Cancel Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
-                task.completed = false
-                task.canceled = true
-                task.deleted = false
-                taskCell.homeTaskCompleted(task)
-                self.db.updateTask(task)
-            }))
+            alert.addAction(completeTaskAction)
+            alert.addAction(cancelTaskAction)
+            alert.addAction(deleteTaskAction)
+            alert.addAction(exitMenu)
             
-            alert.addAction(UIAlertAction(title: "Delete Task", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
-                task.completed = false
-                task.canceled = false
-                task.deleted = true
-                self.db.updateTask(task)
-            } ))
-            
-            alert.addAction(UIAlertAction(title: "Exit Menu", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
-                // Do nothing. 
-            }))
             // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
         }
             
         // Set up Appointment Table on the Home Screen
         else if tableView == appointmentViewTable{
+            // Get the appointment item
             var appointment = appointmentArray[indexPath.row] as AppointmentItem
             let appointmentCell = appointmentViewTable.cellForRowAtIndexPath(indexPath) as! HomeAppointmentCell
             
             // Create an Alert to ask the user if they have completed the task.
             let alert = UIAlertController(title: "Hello", message: "Have you finished the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
             
-            // If the user confirms that a task was completed then update the image to a green checkbox
-            alert.addAction(UIAlertAction(title: "Complete Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            // Add the option to complete an appointment and a confirmation menu
+            let completeAppointmentAction = (UIAlertAction(title: "Complete Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+
+                let completeAppointment = UIAlertController(title: "Confirmation", message: "Are you sure you want to Complete the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
+                let complete = (UIAlertAction(title: "Complete", style: .Destructive, handler: {(action: UIAlertAction) in
+                    
+                    appointment.completed = true
+                    appointment.canceled = false
+                    appointment.deleted = false
+                    appointmentCell.homeAppointmentCompleted(appointment)
+                    self.db.updateAppointment(appointment)
+                    
+                }))
+//                let exitMenu = (UIAlertAction(title: "Exit Menu", style: .Default, handler: nil))
                 
-                // Update the cell image and labels with strikethroughs and the green checkbox
-                appointment.completed = true
-                appointment.canceled = false
-                appointment.deleted = false
-                appointmentCell.homeAppointmentCompleted(appointment)
-                self.db.updateAppointment(appointment)
+                completeAppointment.addAction(complete)
+                completeAppointment.addAction(exitMenu)
+                self.presentViewController(completeAppointment, animated: true, completion: nil)
             } ))
             
-            // Cancelled Action
-            alert.addAction(UIAlertAction(title: "Cancel Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            // Add the option to cancel an appointment and a confirmation menu
+            let cancelAppointmentAction = (UIAlertAction(title: "Cancel Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
                 
-                // Update the cell image to an uncompleted task
-                appointment.completed = false
-                appointment.canceled = true
-                appointment.deleted = false
-                appointmentCell.homeAppointmentCompleted(appointment)
-                self.db.updateAppointment(appointment)
+                // Present the confirmation menu
+                let confirmationAlert = self.confirmationMenu("Appointments", typeOfAction: "Cancel", indexPath: indexPath)
                 
-            } ))
-            // Delete action
-            alert.addAction(UIAlertAction(title: "Delete Appointment", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
-                
-                // Update the cell image to an uncompleted task
-                appointment.completed = false
-                appointment.canceled = false
-                appointment.deleted = true
-                self.db.updateAppointment(appointment)
+                // Why is the user canceling the appointment
+                confirmationAlert.addTextFieldWithConfigurationHandler({(textField) in
+                    textField.placeholder = "Reason for cancel"
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                })
+                self.presentViewController(confirmationAlert, animated: true, completion: nil)
                 
             } ))
-            alert.addAction(UIAlertAction(title: "Exit Menu", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
-                // Essentially do nothing.
-            }))
+            // Add the option to delete an appointment and a confirmation menu
+            let deleteAppointmentAction = (UIAlertAction(title: "Delete Appointment", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+                
+                // Present the confirmation menu
+                let confirmationAlert = self.confirmationMenu("Appointments", typeOfAction: "Delete", indexPath: indexPath)
+                
+                // Why is the user deleting the appointment
+                confirmationAlert.addTextFieldWithConfigurationHandler({(textField) in
+                    textField.placeholder = "Reason for delete"
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                })
+                self.presentViewController(confirmationAlert, animated: true, completion: nil)
+                
+            } ))
+            
+            alert.addAction(completeAppointmentAction)
+            alert.addAction(cancelAppointmentAction)
+            alert.addAction(deleteAppointmentAction)
+            alert.addAction(exitMenu)
+            
             // Show the alert to the user
             self.presentViewController(alert, animated: true, completion: nil)
 
@@ -327,17 +377,105 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    func confirmationMenu(tableName:String, typeOfAction: String){
-        switch(typeOfAction){
-        case "Complete":
-            break
-        case "Cancel":
-            break
-        case "Delete":
-            break
-        default:
-            break
+    // The confirmation menu checks that a user is preforming their desired action for the item
+    func confirmationMenu(tableName:String, typeOfAction: String, indexPath: NSIndexPath) -> UIAlertController{
+        // Create exit menu action to reuse
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Default, handler: nil)
+
+        if tableName == "Appointments"{
+            var appointment = appointmentArray[indexPath.row] as AppointmentItem
+            let appointmentCell = appointmentViewTable.cellForRowAtIndexPath(indexPath) as! HomeAppointmentCell
+            
+        
+            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
+            
+                let action = (UIAlertAction(title: "\(typeOfAction)", style: .Destructive, handler: {(action: UIAlertAction) in
+                    
+                switch(typeOfAction){
+                    case "Cancel":
+                        // Give the appointment Cell a red x and mark it as canceled in Database
+                        appointment.completed = false
+                        appointment.canceled = true
+                        appointment.deleted = false
+                        
+                        // Get the reason the user is deleting the appointment
+                        appointment.canceledReason = alert.textFields![0].text ?? ""
+                        appointmentCell.homeAppointmentCompleted(appointment)
+                        self.db.updateAppointment(appointment)
+                        
+                    case "Delete":
+                        // Delete the appointment Cell from the homeViewController and set deleted to 
+                        // true in the database
+                        appointment.completed = false
+                        appointment.canceled = false
+                        appointment.deleted = true
+                        
+                        // Get the reason the user is deleting the appointment
+                        appointment.deletedReason = alert.textFields![0].text ?? ""
+                        self.db.updateAppointment(appointment)
+                        self.appointmentArray.removeAtIndex(indexPath.row)
+                        self.appointmentViewTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                    
+                    default:
+                        break
+                        
+                    }
+                
+                }))
+                self.actionToEnable = action
+                action.enabled = false
+                alert.addAction(action)
+                alert.addAction(exitMenu)
+                return alert
         }
+        else{
+            var task = taskArray[indexPath.row] as TaskItem
+            let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
+            
+            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
+            let action = (UIAlertAction(title: "\(typeOfAction)", style: .Destructive, handler: {(action: UIAlertAction) in
+                
+                switch(typeOfAction){
+                    // Give the task a red x mark and mark it as canceled in database
+                    case "Cancel":
+                        task.completed = false
+                        task.canceled = true
+                        task.deleted = false
+                        
+                        // Get the reason the user is canceling the task
+                        task.canceledReason = alert.textFields![0].text ?? ""
+                        taskCell.homeTaskCompleted(task)
+                        self.db.updateTask(task)
+                    
+                    // Mark task as deleted in database and remove it from the tableView
+                    case "Delete":
+                        task.completed = false
+                        task.canceled = false
+                        task.deleted = true
+                        
+                        // Get the reason the user is deleting the task
+                        task.deletedReason = alert.textFields![0].text ?? ""
+                        self.db.updateTask(task)
+                        self.taskArray.removeAtIndex(indexPath.row)
+                        self.taskViewTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                    
+                    default:
+                        break
+                }
+                
+            }))
+            self.actionToEnable = action
+            action.enabled = false
+            alert.addAction(action)
+            alert.addAction(exitMenu)
+            return alert
+        }
+    }
+    
+    // If the text field is empty when the user cancels or deletes an appointment or task do not let
+    // them cancel or delete the item
+    func textChanged(sender:UITextField) {
+        self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
     }
     
     

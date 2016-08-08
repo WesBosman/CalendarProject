@@ -20,11 +20,10 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
     @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
-    private var fillColorForCircle: UIColor = UIColor.clearColor()
     
+    private var fillColorForCircle: UIColor = UIColor.clearColor()
     private var formatter = NSDateFormatter().dateWithoutTime
     var cellState:CellState!
-    
     var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
     var taskDictionary: Dictionary<String, [TaskItem]> = [:]
     var journalDictionary: Dictionary<String, [JournalItem]> = [:]
@@ -34,11 +33,7 @@ class CalendarCell: JTAppleDayCellView{
     private var drawAppointment:Bool = false
     private var drawTask:Bool = false
     private var drawJournal:Bool = false
-    
-//    private var appointmentC:UILabel = UILabel()
-//    private var taskC:UILabel = UILabel()
-//    private var journalC:UILabel = UILabel()
-    
+
     @IBOutlet weak var appointmentCounterLabel: UILabel!
     @IBOutlet weak var taskCounterLabel: UILabel!
     @IBOutlet weak var journalCounterLabel: UILabel!
@@ -149,7 +144,7 @@ class CalendarCell: JTAppleDayCellView{
     
     // Draw the view
     override func drawRect(rect: CGRect) {
-        // Draw a circle around the day of the calendar.
+        // Draw a circle around the day of the calendar.        
         let path = UIBezierPath(ovalInRect: CGRect(x: 0, y: self.center.y / 2 , width: self.frame.size.width, height: self.frame.size.height / 2))
         
         // If cell has been selected

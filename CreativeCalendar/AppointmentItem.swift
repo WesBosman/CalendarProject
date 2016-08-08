@@ -19,9 +19,11 @@ struct AppointmentItem {
     var canceled: Bool
     var deleted: Bool
     var dateCompleted: String?
+    var canceledReason: String?
+    var deletedReason: String?
     var UUID: String
     
-    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool,dateFinished:String?, UUID: String) {
+    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool,dateFinished:String?, cancelReason: String?, deleteReason:String?, UUID: String) {
         self.title = title
         self.type = type
         self.startingTime = startTime
@@ -32,6 +34,8 @@ struct AppointmentItem {
         self.canceled = isCanceled
         self.deleted = isDeleted
         self.dateCompleted = dateFinished
+        self.canceledReason = cancelReason
+        self.deletedReason = deleteReason
         self.UUID = UUID
     }
     

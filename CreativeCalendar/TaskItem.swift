@@ -17,9 +17,11 @@ struct TaskItem{
     var completed: Bool
     var canceled: Bool
     var deleted: Bool
+    var canceledReason: String?
+    var deletedReason: String?
     var UUID: String
     
-    init(dateMade:NSDate, title: String, info: String, estimatedCompletion:NSDate, completed:Bool, canceled: Bool, deleted: Bool, dateFinished:String?, UUID: String){
+    init(dateMade:NSDate, title: String, info: String, estimatedCompletion:NSDate, completed:Bool, canceled: Bool, deleted: Bool, dateFinished:String?, cancelReason: String?, deleteReason: String?, UUID: String){
         self.dateCreated = dateMade
         self.dateCompleted = dateFinished
         self.taskTitle = title
@@ -28,6 +30,8 @@ struct TaskItem{
         self.canceled = canceled
         self.deleted = deleted
         self.estimateCompletionDate = estimatedCompletion
+        self.canceledReason = cancelReason
+        self.deletedReason = deleteReason
         self.UUID = UUID
     }
 }

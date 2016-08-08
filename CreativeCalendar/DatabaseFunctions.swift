@@ -36,11 +36,11 @@ class DatabaseFunctions{
         }
         // Create the three tables for storing our information.
         do{
-            try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, delete_reason, uuid text)", values: nil)
             
             // Get DatabasePath
             NSLog("Database File Path: \(fileURL.path!)")
@@ -148,7 +148,7 @@ class DatabaseFunctions{
 
     // MARK - Update Methods
     
-    // Update the appointment item when it gets completed.
+    // Update the appointment item when it gets completed, canceled or deleted
     func updateAppointment(item: AppointmentItem){
         let db = makeDb
         
@@ -174,40 +174,40 @@ class DatabaseFunctions{
                 let isDeleted = item.deleted
                 
                 let updateCompleteStatement = "UPDATE Appointments SET completed=?, date_completed=? WHERE uuid=?"
-                let updateCancelStatement = "UPDATE Appointments SET canceled=?, date_canceled=? WHERE uuid=?"
-                let updateDeleteStatement = "UPDATE Appointments SET deleted=?, date_deleted=? WHERE uuid=?"
+                let updateCancelStatement = "UPDATE Appointments SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
+                let updateDeleteStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
 //                print("Appointment Name \(item.title) completed: \(item.completed)")
                 
                 // Appointment Completed
                 if isComplete == true{
-                    print("Appointment Completed")
+//                    print("Appointment Completed")
                     try db.executeUpdate(updateCompleteStatement, values: [isComplete, currentDateString, item.UUID])
                 }
                 // If the appointment was already completed turn it off
                 else{
-                    print("Appointment Incomplete")
+//                    print("Appointment Incomplete")
                     try db.executeUpdate(updateCompleteStatement, values: [isComplete, "" ,  item.UUID])
                 }
                 
                 // Appointment Canceled
                 if isCanceled == true{
-                    print("Appointment Canceled")
-                    try db.executeUpdate(updateCancelStatement, values: [true, currentDateString, item.UUID])
+//                    print("Appointment Canceled")
+                    try db.executeUpdate(updateCancelStatement, values: [true, currentDateString, item.canceledReason!, item.UUID])
                 }
                 else{
-                    print("Appointment no longer Canceled")
-                    try db.executeUpdate(updateCancelStatement, values: [false, "", item.UUID])
+//                    print("Appointment no longer Canceled")
+                    try db.executeUpdate(updateCancelStatement, values: [false, "","", item.UUID])
                 }
                 
                 // Appointment Deleted
                 if isDeleted == true{
-                    print("Appointment Deleted")
-                    try db.executeUpdate(updateDeleteStatement, values: [true, currentDateString, item.UUID])
+//                    print("Appointment Deleted")
+                    try db.executeUpdate(updateDeleteStatement, values: [true, currentDateString, item.deletedReason!, item.UUID])
                     removeAppointmentNotification(item.UUID)
                 }
                 else{
-                    print("Appointment no longer Deleted")
-                    try db.executeUpdate(updateDeleteStatement, values: [false, "", item.UUID])
+//                    print("Appointment no longer Deleted")
+                    try db.executeUpdate(updateDeleteStatement, values: [false, "", "", item.UUID])
                 }
                 
                 
@@ -248,38 +248,38 @@ class DatabaseFunctions{
                 let isDeleted = item.deleted
                 
                 let completedStatement = "UPDATE Tasks SET completed=?, date_completed=? WHERE uuid=?"
-                let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=? WHERE uuid=?"
-                let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=? WHERE uuid=?"
+                let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
+                let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
                 print("Task Name: \(item.taskTitle) Completed: \(item.completed)")
 
                 // Complete the Task
                 if isComplete == true{
-                    print("Task Completed")
+//                    print("Task Completed")
                     try db.executeUpdate(completedStatement, values: [isComplete, currentDateString, item.UUID])
                 }
                 else{
-                    print("Task Not Completed")
-                    try db.executeUpdate(completedStatement, values: [isComplete, "" ,  item.UUID])
+//                    print("Task Not Completed")
+                    try db.executeUpdate(completedStatement, values: [isComplete, "" , item.UUID])
                 }
                 
                 // Cancel the Task
                 if isCanceled == true{
-                    print("Task Canceled")
-                    try db.executeUpdate(canceledStatement, values: [isCanceled, currentDateString , item.UUID])
+//                    print("Task Canceled")
+                    try db.executeUpdate(canceledStatement, values: [isCanceled, currentDateString , item.canceledReason!, item.UUID])
                 }
                 else{
-                    print("Task Not Canceled")
-                    try db.executeUpdate(canceledStatement, values: [isCanceled, "", item.UUID])
+//                    print("Task Not Canceled")
+                    try db.executeUpdate(canceledStatement, values: [isCanceled, "", "", item.UUID])
                 }
                 
                 // Delete the Task
                 if isDeleted == true{
-                    print("Task Deleted")
-                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.UUID])
+//                    print("Task Deleted")
+                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.deletedReason!, item.UUID])
                 }
                 else{
-                    print("Task Not Deleted")
-                    try db.executeUpdate(deletedStatement, values: [isDeleted, "", item.UUID])
+//                    print("Task Not Deleted")
+                    try db.executeUpdate(deletedStatement, values: [isDeleted, "", "", item.UUID])
                 }
             }
         }
@@ -341,11 +341,10 @@ class DatabaseFunctions{
             db.close()
         }
         
-//        var title = ""
         var appointmentArray: [AppointmentItem] = []
 
         do{
-            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE deleted=?"
+            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?"
             let query = try db.executeQuery(fetchAppointmentByDateStatement, values: [false])
             
             while query.next(){
@@ -359,6 +358,8 @@ class DatabaseFunctions{
                 let appointmentCanceled = query.objectForColumnName("canceled") as! Bool
                 let appointmentDeleted = query.objectForColumnName("deleted") as! Bool
                 let appointmentDone = query.objectForColumnName("date_completed") as? String
+                let appointmentCancelReason = query.objectForColumnName("cancel_reason") as? String
+                let appointmentDeleteReason = query.objectForColumnName("delete_reason") as? String
                 let appointmentUUID = query.objectForColumnName("uuid") as! String
                 
                 
@@ -372,6 +373,8 @@ class DatabaseFunctions{
                                                       isCanceled: appointmentCanceled,
                                                       isDeleted: appointmentDeleted,
                                                       dateFinished: appointmentDone,
+                                                      cancelReason: appointmentCancelReason,
+                                                      deleteReason: appointmentDeleteReason,
                                                       UUID: appointmentUUID)
                 
                 let newDateFormatter = NSDateFormatter().dateWithoutTime
@@ -417,6 +420,8 @@ class DatabaseFunctions{
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
                 let taskDone = task.objectForColumnName("date_completed") as? String
+                let taskCancelReason = task.objectForColumnName("cancel_reason") as? String
+                let taskDeleteReason = task.objectForColumnName("delete_reason") as? String
                 let taskUUID = task.objectForColumnName("uuid") as! String
                 
                 let taskItem = TaskItem(dateMade: taskMade!,
@@ -427,6 +432,8 @@ class DatabaseFunctions{
                                         canceled: taskCanceled,
                                         deleted:  taskDeleted,
                                         dateFinished: taskDone,
+                                        cancelReason: taskCancelReason,
+                                        deleteReason: taskDeleteReason,
                                         UUID: taskUUID)
                 
                 let newTaskStartTime = formatter.stringFromDate(estimatedDateCompleted!)
@@ -437,8 +444,6 @@ class DatabaseFunctions{
                     print("Array Contains Task item with name: \(taskItem.taskTitle)")
                     taskArray.append(taskItem)
                 }
-                
-//                print("Task Item from Db: \(taskItem)")
             }
         }
         catch let err as NSError{
@@ -486,9 +491,6 @@ class DatabaseFunctions{
                     print("Array Contains Journal item with name: \(journalItem.journalEntry)")
                     journalArray.append(journalItem)
                 }
-
-//                journalArray.append(journalItem)
-//                print("JournalItem from Db: \(journalItem)")
             }
         }
         catch let err as NSError{
@@ -515,7 +517,7 @@ class DatabaseFunctions{
 //        let dateFormat = NSDateFormatter().universalFormatter()
         
         do{
-            let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, uuid FROM Appointments WHERE deleted=?", values: [false])
+            let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?", values: [false])
             
             while appointment.next(){
                 let appointmentTitle = appointment.objectForColumnName("title") as! String
@@ -528,6 +530,8 @@ class DatabaseFunctions{
                 let appointmentCanceled = appointment.objectForColumnName("canceled") as! Bool
                 let appointmentDeleted = appointment.objectForColumnName("deleted") as! Bool
                 let appointmentDone = appointment.objectForColumnName("date_completed") as? String
+                let appointmentCancelReason = appointment.objectForColumnName("cancel_reason") as? String
+                let appointmentDeleteReason = appointment.objectForColumnName("delete_reason") as? String
                 let appointmentUUID = appointment.objectForColumnName("uuid") as! String
                 
 //                print("Appointment Title: \(appointmentTitle) type: \(appointmentType) start: \(appointmentStart) end: \(appointmentEnd) location: \(appointmentLocation) additional: \(appointmentAdditional) uuid: \(appointmentUUID)")
@@ -542,6 +546,8 @@ class DatabaseFunctions{
                                                       isCanceled: appointmentCanceled,
                                                       isDeleted: appointmentDeleted,
                                                       dateFinished: appointmentDone,
+                                                      cancelReason:  appointmentCancelReason,
+                                                      deleteReason:  appointmentDeleteReason,
                                                       UUID: appointmentUUID)
                 appointmentArray.append(appointmentItem)
                 appointmentArray = appointmentArray.sort({$0.title < $1.title})
@@ -569,7 +575,7 @@ class DatabaseFunctions{
         
         var taskArray: [TaskItem] = []
         do{
-            let task:FMResultSet = try db.executeQuery("SELECT date_created,task, additional, estimated_completed_date, completed, canceled, deleted, date_completed, uuid FROM Tasks WHERE deleted=?", values: [false])
+            let task:FMResultSet = try db.executeQuery("SELECT date_created,task, additional, estimated_completed_date, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Tasks WHERE deleted=?", values: [false])
             while task.next(){
 //                print("Task Item from database.")
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
@@ -581,6 +587,8 @@ class DatabaseFunctions{
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
                 let taskDone = task.objectForColumnName("date_completed") as? String
+                let taskCancelReason = task.objectForColumnName("cancel_reason") as? String
+                let taskDeleteReason = task.objectForColumnName("delete_reason") as? String
                 let taskUUID = task.objectForColumnName("uuid") as! String
 //                print("Task: \(taskTitle) date created: \(taskMade)")
                 
@@ -592,6 +600,8 @@ class DatabaseFunctions{
                                         canceled: taskCanceled,
                                         deleted:  taskDeleted,
                                         dateFinished: taskDone,
+                                        cancelReason: taskCancelReason,
+                                        deleteReason: taskDeleteReason,
                                         UUID: taskUUID)
                 
                 taskArray.append(taskItem)

@@ -101,6 +101,8 @@ class TaskStaticTableViewController: UITableViewController {
                                     canceled: false,
                                     deleted: false,
                                     dateFinished: nil,
+                                    cancelReason: nil,
+                                    deleteReason: nil,
                                     UUID: NSUUID().UUIDString)
             
                         
@@ -117,6 +119,8 @@ class TaskStaticTableViewController: UITableViewController {
                                            canceled: false,
                                            deleted: false,
                                            dateFinished: nil,
+                                           cancelReason: nil,
+                                           deleteReason: nil,
                                            UUID: taskItem.UUID)
                 db.addToTaskDatabase(newTaskItem)
             }

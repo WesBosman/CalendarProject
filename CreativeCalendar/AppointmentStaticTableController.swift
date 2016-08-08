@@ -162,6 +162,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                   isCanceled:  false,
                                                   isDeleted:   false,
                                                   dateFinished:  nil,
+                                                  cancelReason:  nil,
+                                                  deleteReason:  nil,
                                                   UUID: NSUUID().UUIDString)
                     
             // IF the additional information text box has not been changed then add an empty string to that field of the database
@@ -176,6 +178,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                       isCanceled: false,
                                                       isDeleted:  false,
                                                       dateFinished:  nil,
+                                                      cancelReason:  nil,
+                                                      deleteReason:  nil,
                                                       UUID: appointmentItem.UUID)
                 db.addToAppointmentDatabase(newAppointmentItem)
             }

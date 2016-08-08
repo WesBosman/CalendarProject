@@ -162,23 +162,17 @@ class CreativeCalendarUITests: XCTestCase {
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Tasks"].tap()
-        
+        // Add task
         let tasksNavigationBar = app.navigationBars["Tasks"]
         tasksNavigationBar.buttons["Add"].tap()
         
+        // Add task name
         let tablesQuery = app.tables
         let taskName = tablesQuery.textFields["Task Name"]
         taskName.tap()
         taskName.typeText("UI Automated Test To Complete")
-        
-//        let cell = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0)
-//        cell.childrenMatchingType(.TextField).element
-//        app.buttons["Return"].tap()
-//        cell.childrenMatchingType(.TextField).element
-//        let hideKeyboardButton = app.buttons["Hide keyboard"]
-//        hideKeyboardButton.tap()
-        
-        
+
+        // Add Additional Information
         let additionalInformation = app.textFields["Additional Information"]
         additionalInformation.tap()
         additionalInformation.typeText("UI Additional Information")
@@ -199,13 +193,13 @@ class CreativeCalendarUITests: XCTestCase {
         let editButton = tasksNavigationBar.buttons["Edit"]
         editButton.tap()
         
+        // Complete the event
 app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(stringFullDate), Additional Info: UI Additional Information"].tap()
-        
-        
-//        tablesQuery.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(stringFullDate), Additional Info: UI Additional Information"].tap()
         tablesQuery.buttons["Complete"].tap()
         app.alerts["Complete Task"].collectionViews.buttons["Complete Task"].tap()
         tasksNavigationBar.buttons["Done"].tap()
+        
+        // Go to the home screen
         app.tabBars.buttons["Home"].tap()
         app.tables.staticTexts["\(stringFullDate)"].tap()
         app.alerts["Hello"].collectionViews.buttons["Exit Menu"].tap()
@@ -238,35 +232,28 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
         let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
-        dateFormatter.dateFormat = "EEEE M/dd/yyyy"
+        dateFormatter.dateFormat = "MMMM dd yyyy"
         let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
         
         print("String Day: \(stringDay)")
         print("String Month: \(stringMonth)")
         print("String Year: \(stringYear)")
-
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Tasks"].tap()
-        
         let tasksNavigationBar = app.navigationBars["Tasks"]
         tasksNavigationBar.buttons["Add"].tap()
         
+        // Add task name
         let tablesQuery = app.tables
         let taskName = tablesQuery.textFields["Task Name"]
         taskName.tap()
         taskName.typeText("UI Automated Test To Cancel")
         
-        let cell = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0)
-        cell.childrenMatchingType(.TextField).element
-        app.buttons["Return"].tap()
-        cell.childrenMatchingType(.TextField).element
-        let hideKeyboardButton = app.buttons["Hide keyboard"]
-        hideKeyboardButton.tap()
-        
-        
+        // Add additional information
         let additionalInformation = app.textFields["Additional Information"]
         additionalInformation.tap()
+        additionalInformation.typeText("Additional Information for Task to Cancel")
         
         let month = app.tables.pickerWheels.elementBoundByIndex(0)
         let day = app.tables.pickerWheels.elementBoundByIndex(1)
@@ -284,12 +271,15 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let editButton = tasksNavigationBar.buttons["Edit"]
         editButton.tap()
         
-        tablesQuery.buttons["Delete Event: UI Automated Test To Cancel, Complete by: \(stringFullDate), Additional Info:"].tap()
+        tablesQuery.buttons["Delete Event: UI Automated Test To Cancel, Complete by: \(stringFullDate), Additional Info: Additional Information for Task to Cancel"].tap()
+
         tablesQuery.buttons["Cancel"].tap()
         app.alerts["Cancel Task"].collectionViews.buttons["Cancel Task"].tap()
         tasksNavigationBar.buttons["Done"].tap()
+        
+        
         app.tabBars.buttons["Home"].tap()
-        app.tables.staticTexts["\(stringFullDate)"].tap()
+        app.tables.staticTexts["UI Automated Test to Cancel"].tap()
         app.alerts["Hello"].collectionViews.buttons["Exit Menu"].tap()
     }
     
