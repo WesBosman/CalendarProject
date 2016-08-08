@@ -426,7 +426,7 @@ class DatabaseFunctions{
                                         UUID: taskUUID)
                 
                 let newTaskStartTime = formatter.stringFromDate(estimatedDateCompleted!)
-                print("New Task Start Time: \(newTaskStartTime)")
+                print("New Task Start Time: \(newTaskStartTime) == \(date)")
                 
                 if (newTaskStartTime == date && !taskArray.contains{ $0.UUID == taskItem.UUID}){
                     print("Array Date: \(date)")

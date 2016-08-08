@@ -64,7 +64,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     override func viewDidAppear(animated: Bool) {
-        print("Calendar View did appear animated")
+//        print("Calendar View did appear animated")
         calendarView.reloadData(){
             self.calendarView.scrollToDate(NSDate())
             self.calendarView.selectDates([NSDate()])
@@ -143,27 +143,31 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             
             let stringDate = formatter.stringFromDate(cellState.date)
             print("Calendar Cell String Date: \(stringDate)")
-            let appointmentDictionary = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: formatter)
-            let taskDictionary = DatabaseFunctions.sharedInstance.getTaskByDate(stringDate, formatter: formatter)
-            let journalDictionary = DatabaseFunctions.sharedInstance.getJournalByDate(stringDate, formatter: formatter)
+            
+            let taskDate = NSDateFormatter().dateWithoutTime.stringFromDate(cellState.date)
+            print("Task String Date: \(taskDate)")
+            
+            let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: formatter)
+            let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(taskDate, formatter: NSDateFormatter().dateWithoutTime)
+            let journalList = DatabaseFunctions.sharedInstance.getJournalByDate(stringDate, formatter: formatter)
             var appointmentString = String()
             var taskString = String()
             var journalString = String()
+            let bullet = "• "
 
             
-            for a in appointmentDictionary{
-                appointmentString += a.title + "\n"
+            for a in appointmentList{
+                appointmentString += bullet + a.title + "\n   " + a.appLocation + "\n "
             }
             appointment = appointmentString
         
-            for t in taskDictionary{
-                print("Task in dictionary in calendar view controller \(t.taskTitle)")
-                taskString += t.taskTitle + "\n"
+            for t in taskList{
+                taskString += bullet + t.taskTitle + "\n   " + t.taskInfo + "\n "
             }
             task = taskString
         
-            for j in journalDictionary{
-                journalString += j.journalEntry + "\n"
+            for j in journalList{
+                journalString += bullet + j.journalEntry + "\n "
             }
             journal = journalString
             

@@ -23,9 +23,9 @@ class CalendarCell: JTAppleDayCellView{
     private var fillColorForCircle: UIColor = UIColor.clearColor()
     private var formatter = NSDateFormatter().dateWithoutTime
     var cellState:CellState!
-    var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
-    var taskDictionary: Dictionary<String, [TaskItem]> = [:]
-    var journalDictionary: Dictionary<String, [JournalItem]> = [:]
+//    var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
+//    var taskDictionary: Dictionary<String, [TaskItem]> = [:]
+//    var journalDictionary: Dictionary<String, [JournalItem]> = [:]
     var appointmentCounter = 0
     var taskCounter = 0
     var journalCounter = 0
