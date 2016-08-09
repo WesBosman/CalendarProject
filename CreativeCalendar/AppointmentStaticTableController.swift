@@ -9,6 +9,24 @@
 
 import UIKit
 
+extension NSDate
+{
+    func isInRange(from: NSDate, to:NSDate) -> Bool
+    {
+        if(self.compare(from) == NSComparisonResult.OrderedDescending || self.compare(from) == NSComparisonResult.OrderedSame)
+        {
+            if(self.compare(to) == NSComparisonResult.OrderedAscending || self.compare(to) == NSComparisonResult.OrderedSame)
+            {
+                // date is in range
+                return true
+            }
+        }
+        // date is not in range
+        return false
+    }
+}
+
+
 class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
     @IBOutlet weak var appointmentNameTextField: UITextField!
@@ -42,6 +60,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var endDate: NSDate? = nil
     private var otherTextString: String = String()
     private let currentDate = NSDate()
+    private var appointmentTimes: [NSDate] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,11 +168,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
             (!startingTimeDetailLabel.text!.isEmpty) &&
             (!endingTimeDetailLabel.text!.isEmpty) &&
-            (!appointmentLocationTextBox.text!.isEmpty)){
+            (!appointmentLocationTextBox.text!.isEmpty) &&
+            (!repeatAppointmentRightDetail.text!.isEmpty)){
+            
+            for app in appointmentTimes{
         
             let appointmentItem = AppointmentItem(type: otherTextString
                                                         + typeOfAppointmentRightDetail.text!,
-                                                  startTime: startDate!,
+                                                  startTime: app,
                                                   endTime: endDate!,
                                                   title: appointmentNameTextField.text!,
                                                   location: appointmentLocationTextBox.text!,
@@ -169,7 +191,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             // IF the additional information text box has not been changed then add an empty string to that field of the database
             if additionalInfoTextBox.text == "Additional Information..."{
                 let newAppointmentItem = AppointmentItem(type: appointmentItem.type,
-                                                      startTime: startDate!,
+                                                      startTime: app,
                                                       endTime: endDate!,
                                                       title: appointmentItem.title,
                                                       location: appointmentItem.appLocation,
@@ -186,6 +208,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             // Otherwise add what is in the additional information text box.
             else{
                 db.addToAppointmentDatabase(appointmentItem)
+                }
             }
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
@@ -323,8 +346,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         if let r = defaults.arrayForKey("RepeatAppointmentCell"){
             var str: String = String()
             for rep in r{
+                makeNewNotificationTime(rep as! String, start: startDate!)
                 str += (rep as! String) + " "
-                print("Rep: \(rep), Str: \(str)")
+//                print("Rep: \(rep), Str: \(str)")
                 repeatAppointmentRightDetail.text = str
             }
         }
@@ -332,4 +356,95 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         tableView.endUpdates()
     }
     
+//    func clairesMethod(){
+//        // create calendar
+//        let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
+//        let formatDate = NSDateFormatter().dateWithoutTime
+//        
+//        // today's date
+//        let today = NSDate()
+//        let todayComponent = calendar.components([.Day, .Month, .Year], fromDate: today)
+//        
+//        // Range of Days
+//        let till = NSCalendar.currentCalendar().dateWithEra(1, year: todayComponent.year + 1, month: todayComponent.month, day: todayComponent.day, hour: todayComponent.hour, minute: todayComponent.minute, second: todayComponent.second, nanosecond: todayComponent.nanosecond)!
+//        
+//        // Used to calculate a year in advance.
+//        let time = NSCalendar.currentCalendar().components(.Day, fromDate: today, toDate: till, options: .MatchNextTime)
+//        
+//        // range of dates to get day intervals from
+//        let thisWeekDateRange = calendar.rangeOfUnit(.Day, inUnit: .Year , forDate:today)
+//        
+//        // date interval from today to beginning of week
+//        let dayInterval = thisWeekDateRange.location - todayComponent.day
+//        
+//        // date for beginning day of this week, ie. this week's Sunday's date
+//        let beginningOfWeek = calendar.dateByAddingUnit(.Day, value: dayInterval, toDate: today, options: .MatchNextTime)
+//        
+//        var formattedDays: [String] = []
+//        
+//        // This will let us calculate from todays date to a year in the future
+//        let yearStartingToday = (time.day + 14)
+//        
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        if let listOfDays = defaults.arrayForKey("RepeatAppointmentCell"){
+//        
+//        for i in (todayComponent.day - 1) ... yearStartingToday{
+//            // Get the strings of the days we want to set reminders for.
+//            for dayz in listOfDays{
+//                let date = calendar.dateByAddingUnit(.Day, value: i, toDate: beginningOfWeek!, options: .MatchNextTime)!
+//                let stringDate = formatDate.stringFromDate(date)
+//                // If the date starts with the day from our set then add it to formatted days
+//                if (stringDate.hasPrefix(dayz as! String)){
+//                    print("Date : \(stringDate)")
+////                    formattedDays.append(formatDate(date))
+//                }
+//            }
+//        }
+//        }
+//    }
+    
+    func makeNewNotificationTime(interval:String, start: NSDate){
+        print("Make New Notification Interval: \(interval)")
+        let calendar = NSCalendar.currentCalendar()
+        let dateComponents = NSDateComponents()
+        let calendarEndComponents = NSDateComponents()
+        
+        switch(interval){
+            case "Never":
+                break
+            case "Every Day":
+                dateComponents.day = 1
+                break
+            case "Every Week":
+                dateComponents.day = 7
+                break
+            case "Every Two Weeks":
+                dateComponents.day = 14
+                break
+            case "Every Month":
+                dateComponents.day = 28
+                break
+            default:
+                break
+        }
+        
+        calendarEndComponents.month = 1
+        let endDate = calendar.dateByAddingComponents(calendarEndComponents, toDate: startDate!, options: .MatchStrictly)
+        let newTime = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
+
+        
+        let time = NSCalendar.currentCalendar().components([.Day, .Month, .Year], fromDate: start, toDate: endDate!, options: .MatchNextTime)
+//        print("Time : \(time.month)/\(time.day)/\(time.year)")
+        
+        
+        print("End Date")
+        print(NSDateFormatter().dateWithoutTime.stringFromDate(endDate!))
+        print("New Time")
+        print(NSDateFormatter().dateWithTime.stringFromDate(newTime!))
+            
+        if(NSDateFormatter().dateWithoutTime.stringFromDate(newTime!) != NSDateFormatter().dateWithoutTime.stringFromDate(endDate!) && newTime?.isInRange(startDate!, to: endDate!) == true){
+            appointmentTimes.append(newTime!)
+            makeNewNotificationTime(interval, start: newTime!)
+        }
+    }
 }

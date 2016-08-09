@@ -23,9 +23,6 @@ class CalendarCell: JTAppleDayCellView{
     private var fillColorForCircle: UIColor = UIColor.clearColor()
     private var formatter = NSDateFormatter().dateWithoutTime
     var cellState:CellState!
-//    var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
-//    var taskDictionary: Dictionary<String, [TaskItem]> = [:]
-//    var journalDictionary: Dictionary<String, [JournalItem]> = [:]
     var appointmentCounter = 0
     var taskCounter = 0
     var journalCounter = 0
@@ -79,7 +76,7 @@ class CalendarCell: JTAppleDayCellView{
         }
         
         for t in taskList{
-            if cellDate == formatter.stringFromDate(t.dateCreated){
+            if cellDate == formatter.stringFromDate(t.estimateCompletionDate){
                 self.taskCounter += 1
                 self.drawTask = true
             }

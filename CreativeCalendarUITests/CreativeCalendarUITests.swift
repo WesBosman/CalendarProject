@@ -48,8 +48,10 @@ class CreativeCalendarUITests: XCTestCase {
         let nameOfAppointment = app.tables.cells.textFields["Name of Appointment"]
         nameOfAppointment.tap()
         nameOfAppointment.typeText("UI Test Appointment")
-        app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0).childrenMatchingType(.TextField).element
-        app.keyboards.buttons["Hide keyboard"].tap()
+        
+        // Try to save the appointment without adding all the information
+        app.tables.buttons["Save Appointment"].tap()
+        app.alerts["Missing Required Fields"].collectionViews.buttons["OK"].tap()
         
         
         // Click the type of appointment cell and adjust the picker
@@ -114,8 +116,12 @@ class CreativeCalendarUITests: XCTestCase {
         let startTime = app.tables.cells.staticTexts["Start Time"]
         startTime.tap()
         let startDay = app.tables.containingType(.Other, identifier:"APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["Today"]
+        let startHour = app.tables.containingType(.Other, identifier: "APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["12"]
+        let startMinute = app.tables.containingType(.Other, identifier: "APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["27"]
+        
         startDay.tap()
-        startDay.adjustToPickerWheelValue("Aug 30")
+        startHour.tap() //adjustToPickerWheelValue("1")
+        startMinute.tap() //adjustToPickerWheelValue("30")
         
         let endTime = app.tables.cells.staticTexts["End Time"]
         endTime.tap()
@@ -190,9 +196,15 @@ class CreativeCalendarUITests: XCTestCase {
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Tasks"].tap()
+        
         // Add task
         let tasksNavigationBar = app.navigationBars["Tasks"]
         tasksNavigationBar.buttons["Add"].tap()
+        
+        // Try to save the task without filling in all the information
+        app.tables.buttons["Save Task"].tap()
+        app.alerts["Missing Task Title or Date"].collectionViews.buttons["OK"].tap()
+        
         
         // Add task name
         let tablesQuery = app.tables
@@ -457,6 +469,7 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
     func testCalendar(){
         
         let app = XCUIApplication()
+        
         app.buttons["Start"].tap()
         app.tabBars.buttons["Calendar"].tap()
         
@@ -471,20 +484,8 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let thirdView = elementsQuery.staticTexts["Journals"]
         thirdView.swipeRight()
         secondView.swipeRight()
+        XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Image).elementBoundByIndex(3).tap()
         
-        
-        let element = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).elementBoundByIndex(1)
-        let image = element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Image).elementBoundByIndex(3)
-        image.tap()
-        app.collectionViews.childrenMatchingType(.Cell).elementBoundByIndex(9).staticTexts["9"].tap()
-        moreButton.tap()
-        
-        let uYStaticText = elementsQuery.staticTexts["• u    y  "]
-        uYStaticText.tap()
-        uYStaticText.tap()
-        uYStaticText.tap()
-        element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).element.tap()
-        image.tap()
         
         let rightarrowdarkButton = app.buttons["RightArrowDark"]
         rightarrowdarkButton.tap()

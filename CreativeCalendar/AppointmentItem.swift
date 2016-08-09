@@ -41,5 +41,6 @@ struct AppointmentItem {
     
     // Is the starting time earlier than the current date
     var isOverdue: Bool {
-        return (NSDate().compare(self.startingTime) == NSComparisonResult.OrderedDescending)     }
+        return (NSDate().compare(self.startingTime) == NSComparisonResult.OrderedDescending)
+    }
 }

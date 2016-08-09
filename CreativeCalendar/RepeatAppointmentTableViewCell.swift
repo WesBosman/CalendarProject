@@ -12,12 +12,13 @@ class RepeatAppointmentTableViewCell: UITableViewCell, UITableViewDelegate, UITa
 
     let repeatIdentifier = "RepeatAppointmentCell"
     let defaults = NSUserDefaults.standardUserDefaults()
-    let repeatDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    let repeatDays = ["Never", "Every Day", "Every Week", "Every Two Weeks", "Every Month"]
     var repeatTableView:UITableView?
     var arrayOfDays:[String] = []
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        repeatTableView?.allowsMultipleSelection = false
         setUpTableView()
     }
     
@@ -83,6 +84,7 @@ class RepeatAppointmentTableViewCell: UITableViewCell, UITableViewDelegate, UITa
             defaults.setValue(arrayOfDays, forKey: repeatIdentifier)
         }
     }
+    
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
