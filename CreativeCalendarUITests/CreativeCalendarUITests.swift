@@ -37,7 +37,7 @@ class CreativeCalendarUITests: XCTestCase {
         XCUIApplication().terminate()
     }
     
-    func testAddAppointment(){
+    func testAddAndCompleteAppointment(){
         
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
@@ -115,10 +115,38 @@ class CreativeCalendarUITests: XCTestCase {
         startTime.tap()
         let startDay = app.tables.containingType(.Other, identifier:"APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["Today"]
         startDay.tap()
-        startDay.adjustToPickerWheelValue("Jul 30")
+        startDay.adjustToPickerWheelValue("Aug 30")
         
         let endTime = app.tables.cells.staticTexts["End Time"]
         endTime.tap()
+        
+        let appointmentLocation = app.tables.cells.textFields["Location of Appointment"]
+        appointmentLocation.tap()
+        appointmentLocation.typeText("UI Location of Appointment")
+        
+        let additionalInformation = app.tables.cells.textViews["Additional Information..."]
+        additionalInformation.tap()
+//        additionalInformation.typeText("UI Additional Information")
+        
+        let repeatAppointment = app.tables.cells.staticTexts["Schedule a repeating Appointment"]
+        repeatAppointment.tap()
+        
+        let saveButton = app.tables.cells.buttons["Save Appointment"]
+        saveButton.tap()
+        
+        
+        let appointmentsNavigationBar = app.navigationBars["Appointments"]
+        appointmentsNavigationBar.buttons["Edit"].tap()
+        
+        let tablesQuery = app.tables
+        tablesQuery.buttons["Delete Event: UI Test Appointment, Type: Other: Other, Starting Time:  Aug 30 at 9:59 PM, Ending Time:   Aug 08 at 9:59 PM, Location: UI Location of Appointment, Additional Info:"].tap()
+        tablesQuery.buttons["Complete"].tap()
+        app.alerts["Complete Appointment"].collectionViews.buttons["Complete Appointment"].tap()
+        appointmentsNavigationBar.buttons["Done"].tap()
+        app.tabBars.buttons["Home"].tap()
+        
+        
+        
     }
     
     func testAddAndCompleteTask(){
@@ -201,8 +229,11 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         // Go to the home screen
         app.tabBars.buttons["Home"].tap()
-        app.tables.staticTexts["\(stringFullDate)"].tap()
-        app.alerts["Hello"].collectionViews.buttons["Exit Menu"].tap()
+        
+        app.tables.cells.containingType(.StaticText, identifier:"UI Automated Test To Complete").staticTexts["\(stringFullDate)"].tap()
+        
+        let exitMenuButton = app.alerts["Hello"].collectionViews.buttons["Exit Menu"]
+        exitMenuButton.tap()
     }
 
     
@@ -274,13 +305,18 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         tablesQuery.buttons["Delete Event: UI Automated Test To Cancel, Complete by: \(stringFullDate), Additional Info: Additional Information for Task to Cancel"].tap()
 
         tablesQuery.buttons["Cancel"].tap()
-        app.alerts["Cancel Task"].collectionViews.buttons["Cancel Task"].tap()
+        
+        
+        let cancelTaskButton = app.alerts["Cancel Task"].collectionViews.buttons["Cancel Task"]
+        XCTAssert(cancelTaskButton.enabled == false, "Cancel Task Button should be disabled")
+        
+        
+        let collectionViewsQuery = app.alerts["Cancel Task"].collectionViews
+        let cancelReason = collectionViewsQuery.textFields["Reason for Cancel"]
+        cancelReason.typeText("Reason to Cancel Task")
+        collectionViewsQuery.buttons["Cancel Task"].tap()
         tasksNavigationBar.buttons["Done"].tap()
-        
-        
         app.tabBars.buttons["Home"].tap()
-        app.tables.staticTexts["UI Automated Test to Cancel"].tap()
-        app.alerts["Hello"].collectionViews.buttons["Exit Menu"].tap()
     }
     
     func testAddAndDeleteTask() {
@@ -355,10 +391,20 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let editButton = tasksNavigationBar.buttons["Edit"]
         editButton.tap()
         
-        tablesQuery.buttons["Delete Event: UI Automated Test To Delete, Complete by: \(stringFullDate), Additional Info:"].tap()
+        tablesQuery.buttons["Delete Event: UI Automated Test To Delete, Complete by: \(stringFullDate), Additional Info: UI Additional Information"].tap()
         tablesQuery.buttons["Delete"].tap()
-        app.alerts["Delete Task"].collectionViews.buttons["Delete Task"].tap()
-        tasksNavigationBar.buttons["Done"].tap()
+        
+        let collectionViewsQuery = app.alerts["Delete Task"].collectionViews
+        let deleteTaskButton = collectionViewsQuery.buttons["Delete Task"]
+        let deleteReason = collectionViewsQuery.textFields["Reason for Delete"]
+        XCTAssertTrue(deleteTaskButton.enabled == false, "Delete button is not yet enabled for tasks")
+        deleteReason.tap()
+        deleteReason.typeText("Reason to delete task")
+        XCTAssertTrue(deleteTaskButton.enabled == true, "Delete button is now enabled for tasks")
+        
+        deleteTaskButton.tap()
+        app.navigationBars["Tasks"].buttons["Done"].tap()
+        app.buttons["Home"].tap()
     }
     
     func testAddAndDeleteJournal(){
@@ -383,29 +429,29 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
         let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
-                
-        let tabBarsQuery = app.tabBars
-        let journalsButton = tabBarsQuery.buttons["Journals"]
-        journalsButton.tap()
-        
-        let journalsNavigationBar = app.navigationBars["Journals"]
-        let addButton = journalsNavigationBar.buttons["Add"]
-        addButton.tap()
-        
-        let element = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
-        element.childrenMatchingType(.TextView).element.tap()
-//        element.childrenMatchingType(.TextView).element.typeText("Journal Text Goes Here...")
+        app.tabBars.buttons["Journals"].tap()
+        app.navigationBars.buttons["Add"].tap()
+        let textView = app.textViews["\(stringFullDate) : "]
+        textView.tap()
+        textView.typeText("Click Click Click ")
+        app.buttons["Hide keyboard"].tap()
         app.buttons["Save Journal Entry"].tap()
         
-        let editButton = journalsNavigationBar.buttons["Edit"]
-        editButton.tap()
+        
+        let journalsNavigationBar = app.navigationBars["Journals"]
+        journalsNavigationBar.buttons["Edit"].tap()
         
         let tablesQuery = app.tables
-        tablesQuery.buttons["Delete Tuesday, August 02, 2016, Tuesday, August 02, 2016 :"].tap()
-        tablesQuery.buttons["Delete"].tap()
-        app.alerts["Delete Journal"].collectionViews.buttons["Delete Journal"].tap()
+        tablesQuery.buttons["Delete \(stringFullDate), Click Click Click \(stringFullDate) :"].tap()
+        let deleteJournal = tablesQuery.buttons["Delete"]
+        deleteJournal.tap()
+        let collectionViewsQuery = app.alerts["Delete Journal"].collectionViews
+        let reasonToDelete = collectionViewsQuery.textFields["Reason for Delete"]
+        reasonToDelete.tap()
+        reasonToDelete.typeText("Reason To Delete Journal")
+        collectionViewsQuery.buttons["Delete Journal"].tap()
         app.navigationBars["Journals"].buttons["Done"].tap()
-        app.tabBars.buttons["Home"].tap()
+        
     }
     
     func testCalendar(){
@@ -413,32 +459,43 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let app = XCUIApplication()
         app.buttons["Start"].tap()
         app.tabBars.buttons["Calendar"].tap()
-        app.collectionViews.staticTexts["20"].tap()
         
-        let window = app.childrenMatchingType(.Window).elementBoundByIndex(0)
-        window.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
-        app.buttons["More"].tap()
+        let moreButton = app.buttons["More"]
+        moreButton.tap()
         
-        let element = window.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.Other).element
-        element.tap()
-        element.tap()
-        element.tap()
-        element.tap()
-        element.tap()
-        element.tap()
-        app.otherElements["PopoverDismissRegion"].tap()
+        let elementsQuery = app.scrollViews.otherElements
+        let firstView = elementsQuery.staticTexts["Appointments"]
+        firstView.swipeLeft()
+        let secondView = elementsQuery.staticTexts["Tasks"]
+        secondView.swipeLeft()
+        let thirdView = elementsQuery.staticTexts["Journals"]
+        thirdView.swipeRight()
+        secondView.swipeRight()
         
-        let rightarrowButton = app.buttons["RightArrow"]
-        rightarrowButton.tap()
-        rightarrowButton.tap()
-        rightarrowButton.tap()
-        rightarrowButton.tap()
         
-        let leftarrowButton = app.buttons["LeftArrow"]
-        leftarrowButton.tap()
-        leftarrowButton.tap()
-        leftarrowButton.tap()
-        leftarrowButton.tap()
+        let element = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).elementBoundByIndex(1)
+        let image = element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Image).elementBoundByIndex(3)
+        image.tap()
+        app.collectionViews.childrenMatchingType(.Cell).elementBoundByIndex(9).staticTexts["9"].tap()
+        moreButton.tap()
+        
+        let uYStaticText = elementsQuery.staticTexts["• u    y  "]
+        uYStaticText.tap()
+        uYStaticText.tap()
+        uYStaticText.tap()
+        element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).element.tap()
+        image.tap()
+        
+        let rightarrowdarkButton = app.buttons["RightArrowDark"]
+        rightarrowdarkButton.tap()
+        rightarrowdarkButton.tap()
+        rightarrowdarkButton.tap()
+        
+        let leftarrowdarkButton = app.buttons["LeftArrowDark"]
+        leftarrowdarkButton.tap()
+        leftarrowdarkButton.tap()
+        leftarrowdarkButton.tap()
+        app.tabBars.buttons["Home"].tap()
         
     }
     

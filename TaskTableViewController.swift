@@ -157,6 +157,8 @@ class TaskTableViewController: UITableViewController {
                 self.db.updateTask(taskForAction)
                 
             })
+            self.actionToEnable = deleteTask
+            self.actionToEnable?.enabled = false
             deleteOptions.addAction(deleteTask)
             deleteOptions.addAction(exitMenu)
             self.presentViewController(deleteOptions, animated: true, completion: nil)
@@ -181,6 +183,8 @@ class TaskTableViewController: UITableViewController {
                 self.db.updateTask(taskForAction)
                 
             })
+            self.actionToEnable = cancelAction
+            self.actionToEnable?.enabled = false
             cancelOptions.addAction(cancelAction)
             cancelOptions.addAction(exitMenu)
             self.presentViewController(cancelOptions, animated: true, completion: nil)
