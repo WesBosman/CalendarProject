@@ -12,7 +12,7 @@
 		3F7115AD1C5943F70071542F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AC1C5943F70071542F /* Images.xcassets */; };
 		3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AE1C5943F70071542F /* LaunchScreen.xib */; };
 		DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06631E1C6D321600DE42CA /* HomeViewController.swift */; };
-		DE1D2D441D4A613B0015EFF3 /* RepeatAppointmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1D2D431D4A613B0015EFF3 /* RepeatAppointmentTableViewCell.swift */; };
+		DE1D2D441D4A613B0015EFF3 /* RepeatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1D2D431D4A613B0015EFF3 /* RepeatTableViewCell.swift */; };
 		DE25D7CA1D108DE0000D657D /* CreativeCalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */; };
 		DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2736251D05CF26000583A7 /* JournalTableViewController.swift */; };
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
@@ -48,6 +48,7 @@
 		DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */; };
 		DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00D1D1B0066003ED54E /* TaskCell.swift */; };
 		DE62D0121D1D8FF7003ED54E /* DatabaseFunctionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */; };
+		DE977CB51D5B507200A571A4 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE977CB41D5B507200A571A4 /* AlertTableViewCell.swift */; };
 		DEDB07821D5A2B4F00E32208 /* homeTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB07811D5A2B4F00E32208 /* homeTaskTests.swift */; };
 		DEE276E21D4012DC005F74B7 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */; };
 		E759A587BCEE558A4B683337 /* Pods_CreativeCalendarTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE431EAD256831BC6909CC4 /* Pods_CreativeCalendarTests.framework */; };
@@ -119,7 +120,7 @@
 		871144C1698231A7DF2CBE20 /* Pods_CreativeCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CreativeCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEC58869E415966FF0DA8DD0 /* Pods-CreativeCalendarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendarTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendarTests/Pods-CreativeCalendarTests.release.xcconfig"; sourceTree = "<group>"; };
 		DE06631E1C6D321600DE42CA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		DE1D2D431D4A613B0015EFF3 /* RepeatAppointmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatAppointmentTableViewCell.swift; sourceTree = "<group>"; };
+		DE1D2D431D4A613B0015EFF3 /* RepeatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatTableViewCell.swift; sourceTree = "<group>"; };
 		DE25D7C71D108DE0000D657D /* CreativeCalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CreativeCalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreativeCalendarUITests.swift; sourceTree = "<group>"; };
 		DE25D7CB1D108DE0000D657D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -161,6 +162,7 @@
 		DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctions.swift; sourceTree = "<group>"; };
 		DE62D00D1D1B0066003ED54E /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctionsTest.swift; sourceTree = "<group>"; };
+		DE977CB41D5B507200A571A4 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
 		DEDB07811D5A2B4F00E32208 /* homeTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = homeTaskTests.swift; sourceTree = "<group>"; };
 		DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		E5179464284A4CF33184FC2A /* Pods-CreativeCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendar/Pods-CreativeCalendar.release.xcconfig"; sourceTree = "<group>"; };
@@ -247,7 +249,8 @@
 				DE553AB01CE781B4006288E6 /* AppointmentCell.swift */,
 				DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */,
 				DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */,
-				DE1D2D431D4A613B0015EFF3 /* RepeatAppointmentTableViewCell.swift */,
+				DE977CB41D5B507200A571A4 /* AlertTableViewCell.swift */,
+				DE1D2D431D4A613B0015EFF3 /* RepeatTableViewCell.swift */,
 				DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */,
 				DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */,
 				DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */,
@@ -637,6 +640,7 @@
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
 				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
+				DE977CB51D5B507200A571A4 /* AlertTableViewCell.swift in Sources */,
 				DEE276E21D4012DC005F74B7 /* PopoverViewController.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
@@ -648,7 +652,7 @@
 				DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */,
 				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
-				DE1D2D441D4A613B0015EFF3 /* RepeatAppointmentTableViewCell.swift in Sources */,
+				DE1D2D441D4A613B0015EFF3 /* RepeatTableViewCell.swift in Sources */,
 				DE5FD1601D48EE98004DA1F7 /* EligibilityViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
 				DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */,

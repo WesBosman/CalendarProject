@@ -15,8 +15,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     let userCalendar = NSCalendar.currentCalendar()
     let formatter = NSDateFormatter().calendarFormat
     let components = NSDateComponents()
-    var calendarStartDate:NSDate = NSDate()
-    var calendarEndDate:NSDate = NSDate()
     var weekdayLabel:String = String()
     var numberOfRows = 6
     var selectedCell:CalendarCell = CalendarCell()
@@ -97,10 +95,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
-        components.month = 3
-        calendarStartDate = formatter.dateFromString("7/01/2016")!
-        calendarEndDate = userCalendar.dateByAddingComponents(components, toDate: calendarStartDate, options: [])!        
-        return(startDate: calendarStartDate, endDate: calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
+        // Use the NSDate Extensions for the start and end date
+        return(startDate: NSDate().calendarStartDate, endDate: NSDate().calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
     }
     
     // Is about to display cell calls set up before display from cell
@@ -219,19 +215,20 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if segue.identifier == "calendarPopover"{
-            print("Popover Segue")
+//            print("Popover Segue")
             if let vc = segue.destinationViewController as? PopoverViewController{
             
                 let controller = vc.popoverPresentationController
                 vc.appointment = appointment
-                print("Appointment: \(appointment)")
+//                print("Appointment: \(appointment)")
                 
                 vc.task = task
-                print("Task: \(task)")
+//                print("Task: \(task)")
                 
                 vc.journal = journal
-                print("Journal: \(journal)")
+//                print("Journal: \(journal)")
                 
                 if controller != nil{
                     controller?.delegate = self

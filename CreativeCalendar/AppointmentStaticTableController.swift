@@ -45,19 +45,23 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var repeatDaysDone: UIButton!
     @IBOutlet weak var saveAppointment: UIButton!
     @IBOutlet weak var otherEnterButton: UIButton!
+    @IBOutlet weak var alertAppointmentRightDetail: UILabel!
+    @IBOutlet weak var alertAppointmentTitle: UILabel!
     
     private var startDatePickerHidden = false
     private var endDatePickerHidden = false
     private var appointmentTypeHidden = false
     private var otherIsHidden = false
     private var repeatAppointmentTableHidden = false
+    private var alertAppointmentTableHidden = false
+    
     private let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
     private let cellID: String = "AppointmentCells"
     
     private let dateFormat:NSDateFormatter = NSDateFormatter().dateWithTime
     private let db = DatabaseFunctions.sharedInstance
-    private var startDate:NSDate? = nil
-    private var endDate: NSDate? = nil
+    private var startingDate:NSDate? = nil
+    private var endingDate: NSDate? = nil
     private var otherTextString: String = String()
     private let currentDate = NSDate()
     private var appointmentTimes: [NSDate] = []
@@ -72,6 +76,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         toggleEndDatePicker()
         toggleOther()
         toggleRepeatAppointment()
+        toggleAlertAppointment()
         
         // Set the data source and delegate for the appointment picker
         appointmentPicker.dataSource = self
@@ -90,14 +95,19 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         otherEnterButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         otherEnterButton.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
         
+        // Set the maximum and minimum dates for the date pickers
         appointmentStartDate.minimumDate = currentDate
         appointmentEndDate.minimumDate = currentDate
+        appointmentStartDate.maximumDate = NSDate().calendarEndDate
+        appointmentEndDate.maximumDate = NSDate().calendarEndDate
         
         appointmentNameTextField.placeholder = "Name of Appointment"
         appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
         repeatAppointmentTitle.text = "Schedule a repeating Appointment"
-        repeatAppointmentRightDetail.text = String()
+        repeatAppointmentRightDetail.text = RepeatTableViewCell().repeatDays[0]
+        alertAppointmentTitle.text = "Schedule an Alert"
+        alertAppointmentRightDetail.text = AlertTableViewCell().alertArray[0]
         
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
@@ -176,7 +186,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             let appointmentItem = AppointmentItem(type: otherTextString
                                                         + typeOfAppointmentRightDetail.text!,
                                                   startTime: app,
-                                                  endTime: endDate!,
+                                                  endTime: endingDate!,
                                                   title: appointmentNameTextField.text!,
                                                   location: appointmentLocationTextBox.text!,
                                                   additional: additionalInfoTextBox.text!,
@@ -192,7 +202,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             if additionalInfoTextBox.text == "Additional Information..."{
                 let newAppointmentItem = AppointmentItem(type: appointmentItem.type,
                                                       startTime: app,
-                                                      endTime: endDate!,
+                                                      endTime: endingDate!,
                                                       title: appointmentItem.title,
                                                       location: appointmentItem.appLocation,
                                                       additional: "",
@@ -257,13 +267,13 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     func startDatePickerDidChange(){
-        startDate = calcNotificationTime(appointmentStartDate.date)
-        startingTimeDetailLabel.text = dateFormat.stringFromDate(startDate!)
+        startingDate = calcNotificationTime(appointmentStartDate.date)
+        startingTimeDetailLabel.text = dateFormat.stringFromDate(startingDate!)
     }
     
     func endDatePickerDidChange(){
-        endDate = calcNotificationTime(appointmentEndDate.date)
-        endingTimeDetailLabel.text = dateFormat.stringFromDate(endDate!)
+        endingDate = calcNotificationTime(appointmentEndDate.date)
+        endingTimeDetailLabel.text = dateFormat.stringFromDate(endingDate!)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -281,6 +291,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
         else if indexPath.section == 5 && indexPath.row == 0{
             toggleRepeatAppointment()
+        }
+        else if indexPath.section == 6 && indexPath.row == 0{
+            toggleAlertAppointment()
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
@@ -305,6 +318,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             return 0
         }
         else if repeatAppointmentTableHidden && indexPath.section == 5 && indexPath.row == 1{
+            return 0
+        }
+        else if alertAppointmentTableHidden && indexPath.section == 6 && indexPath.row == 1{
             return 0
         }
         // Return the normal height otherwise
@@ -343,74 +359,53 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     func toggleRepeatAppointment(){
         repeatAppointmentTableHidden = !repeatAppointmentTableHidden
         let defaults = NSUserDefaults.standardUserDefaults()
-        if let r = defaults.arrayForKey("RepeatAppointmentCell"){
-            var str: String = String()
-            for rep in r{
-                makeNewNotificationTime(rep as! String, start: startDate!)
-                str += (rep as! String) + " "
-//                print("Rep: \(rep), Str: \(str)")
-                repeatAppointmentRightDetail.text = str
-            }
+        
+        if let r = defaults.objectForKey("RepeatAppointmentCell"){
+            print("Toggle Repeat Appointments : r = \(r)")
+            makeNewNotificationTime(r as! String, start: startingDate!)
+            repeatAppointmentRightDetail.text = String(r)
+            
         }
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
-//    func clairesMethod(){
-//        // create calendar
-//        let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
-//        let formatDate = NSDateFormatter().dateWithoutTime
-//        
-//        // today's date
-//        let today = NSDate()
-//        let todayComponent = calendar.components([.Day, .Month, .Year], fromDate: today)
-//        
-//        // Range of Days
-//        let till = NSCalendar.currentCalendar().dateWithEra(1, year: todayComponent.year + 1, month: todayComponent.month, day: todayComponent.day, hour: todayComponent.hour, minute: todayComponent.minute, second: todayComponent.second, nanosecond: todayComponent.nanosecond)!
-//        
-//        // Used to calculate a year in advance.
-//        let time = NSCalendar.currentCalendar().components(.Day, fromDate: today, toDate: till, options: .MatchNextTime)
-//        
-//        // range of dates to get day intervals from
-//        let thisWeekDateRange = calendar.rangeOfUnit(.Day, inUnit: .Year , forDate:today)
-//        
-//        // date interval from today to beginning of week
-//        let dayInterval = thisWeekDateRange.location - todayComponent.day
-//        
-//        // date for beginning day of this week, ie. this week's Sunday's date
-//        let beginningOfWeek = calendar.dateByAddingUnit(.Day, value: dayInterval, toDate: today, options: .MatchNextTime)
-//        
-//        var formattedDays: [String] = []
-//        
-//        // This will let us calculate from todays date to a year in the future
-//        let yearStartingToday = (time.day + 14)
-//        
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        if let listOfDays = defaults.arrayForKey("RepeatAppointmentCell"){
-//        
-//        for i in (todayComponent.day - 1) ... yearStartingToday{
-//            // Get the strings of the days we want to set reminders for.
-//            for dayz in listOfDays{
-//                let date = calendar.dateByAddingUnit(.Day, value: i, toDate: beginningOfWeek!, options: .MatchNextTime)!
-//                let stringDate = formatDate.stringFromDate(date)
-//                // If the date starts with the day from our set then add it to formatted days
-//                if (stringDate.hasPrefix(dayz as! String)){
-//                    print("Date : \(stringDate)")
-////                    formattedDays.append(formatDate(date))
-//                }
-//            }
-//        }
-//        }
-//    }
+    // Toggle alert appointment
+    func toggleAlertAppointment(){
+        alertAppointmentTableHidden = !alertAppointmentTableHidden
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let alertTime = defaults.objectForKey("AlertIdentifier"){
+            print("Alert Time: \(alertTime)")
+        }
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func makeAlertForNotification(time:String){
+        switch(time){
+            case "At Time of Event":
+                break
+            case "5 Minutes Before":
+                break
+            case "15 Minutes Before":
+                break
+            case "30 Minutes Before":
+                break
+            case "1 Hour Before":
+                break
+            default:
+                break
+        }
+    }
     
     func makeNewNotificationTime(interval:String, start: NSDate){
         print("Make New Notification Interval: \(interval)")
         let calendar = NSCalendar.currentCalendar()
         let dateComponents = NSDateComponents()
-        let calendarEndComponents = NSDateComponents()
         
         switch(interval){
             case "Never":
+                dateComponents.day = 0
                 break
             case "Every Day":
                 dateComponents.day = 1
@@ -428,23 +423,20 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 break
         }
         
-        calendarEndComponents.month = 1
-        let endDate = calendar.dateByAddingComponents(calendarEndComponents, toDate: startDate!, options: .MatchStrictly)
-        let newTime = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
+        // Calendar end date is the boundary for calculating the new dates
+        let endDate = NSDate().calendarEndDate
+        let newStart = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
+        let newEnd = calendar.dateByAddingComponents(dateComponents, toDate: endingDate!, options: .MatchStrictly)
+        
+        let endDateString = NSDateFormatter().dateWithoutTime.stringFromDate(endDate)
+        let newTimeString = NSDateFormatter().dateWithTime.stringFromDate(newStart!)
+        print("New Time : \(newTimeString)")
+        print("End Date : \(endDateString)")
 
         
-        let time = NSCalendar.currentCalendar().components([.Day, .Month, .Year], fromDate: start, toDate: endDate!, options: .MatchNextTime)
-//        print("Time : \(time.month)/\(time.day)/\(time.year)")
-        
-        
-        print("End Date")
-        print(NSDateFormatter().dateWithoutTime.stringFromDate(endDate!))
-        print("New Time")
-        print(NSDateFormatter().dateWithTime.stringFromDate(newTime!))
-            
-        if(NSDateFormatter().dateWithoutTime.stringFromDate(newTime!) != NSDateFormatter().dateWithoutTime.stringFromDate(endDate!) && newTime?.isInRange(startDate!, to: endDate!) == true){
-            appointmentTimes.append(newTime!)
-            makeNewNotificationTime(interval, start: newTime!)
+        if(newStart?.isInRange(startingDate!, to: endingDate!) == true){
+            appointmentTimes.append(newStart!)
+            makeNewNotificationTime(interval, start: newStart!)
         }
     }
 }

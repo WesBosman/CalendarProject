@@ -16,6 +16,40 @@ import UIKit
 import ResearchKit
 
 
+// Dates for Calendar starting and ending dates. 
+extension NSDate{
+    private struct CalendarDates{
+        private static let calendarStartDate:NSDate = {
+            let startDate = NSDateFormatter().calendarFormat.dateFromString("7/01/2016")
+            print("Calendar Dates StartDate: \(startDate!)")
+            return startDate!
+        }()
+        
+        private static let calendarEndDate:NSDate = {
+            let calendarComponents = NSDateComponents()
+            let calendar = NSCalendar.currentCalendar()
+            // Gets the last day of the month
+            calendarComponents.month = 3
+            calendarComponents.day = -1
+            let endDate = calendar.dateByAddingComponents(calendarComponents, toDate: CalendarDates.calendarStartDate, options: .MatchStrictly)
+            print("Calendar Dates EndDate: \(endDate!)")
+            return endDate!
+        }()
+    }
+    
+        var calendarStartDate:NSDate {
+            get{
+                return CalendarDates.calendarStartDate
+            }
+        }
+        
+        var calendarEndDate:NSDate {
+            get{
+                return CalendarDates.calendarEndDate
+            }
+        }
+}
+
 // Dates are getting formatted so much I might as well an extension
 extension NSDateFormatter{
     private struct Formatters{

@@ -18,10 +18,13 @@ class TaskStaticTableViewController: UITableViewController {
     @IBOutlet weak var repeatingTaskRightDetail: UILabel!
     @IBOutlet weak var repeatingTaskTitle: UILabel!
     @IBOutlet weak var saveTask: UIButton!
+    @IBOutlet weak var alertTaskTitle: UILabel!
+    @IBOutlet weak var alertTaskRightDetail: UILabel!
     
     private let db = DatabaseFunctions.sharedInstance
     private var taskDatePickerIsHidden = false
     private var taskRepeatDayIsHidden = false
+    private var taskAlertIsHidden = false
     private let taskFormatter = NSDateFormatter().dateWithoutTime
     private let currentDate = NSDate()
 
@@ -32,9 +35,14 @@ class TaskStaticTableViewController: UITableViewController {
         taskFinishDateLabel.text = "Estimated Task Completion Date"
         taskFinishDateRightDetail.text = taskFormatter.stringFromDate(currentDate)
         repeatingTaskTitle.text = "Schedule a repeating Task"
-        repeatingTaskRightDetail.text = String()
+        alertTaskTitle.text = "Schedule an alert"
+        alertTaskRightDetail.text = AlertTableViewCell().alertArray[0]
+        repeatingTaskRightDetail.text = RepeatTableViewCell().repeatDays[0]
         taskDatePicker.datePickerMode = UIDatePickerMode.Date
+        
+        // Set the boundary dates for the maximum and minimum dates of the date picker
         taskDatePicker.minimumDate = NSDate()
+        taskDatePicker.maximumDate = NSDate().calendarEndDate
         
         // Set the color and shape of the save button
         saveTask.layer.cornerRadius = 10
@@ -46,6 +54,7 @@ class TaskStaticTableViewController: UITableViewController {
         // Hide the pickers from the user
         toggleTaskDatePicker()
         toggleRepeatDayPicker()
+        toggleAlertTableView()
     }
     
     func toggleTaskDatePicker(){
@@ -60,12 +69,21 @@ class TaskStaticTableViewController: UITableViewController {
         tableView.endUpdates()
     }
     
+    func toggleAlertTableView(){
+        taskAlertIsHidden = !taskAlertIsHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 && indexPath.section == 2{
             toggleTaskDatePicker()
         }
         else if indexPath.row == 0 && indexPath.section == 3{
             toggleRepeatDayPicker()
+        }
+        else if indexPath.row == 0 && indexPath.section == 4{
+            toggleAlertTableView()
         }
     }
     
@@ -74,6 +92,9 @@ class TaskStaticTableViewController: UITableViewController {
             return 0
         }
         else if taskRepeatDayIsHidden && indexPath.section == 3 && indexPath.row == 1{
+            return 0
+        }
+        else if taskAlertIsHidden && indexPath.section == 4 && indexPath.row == 1{
             return 0
         }
         else{
