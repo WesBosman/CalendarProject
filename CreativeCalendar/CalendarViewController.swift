@@ -17,7 +17,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     let components = NSDateComponents()
     var weekdayLabel:String = String()
     var numberOfRows = 6
-    var selectedCell:CalendarCell = CalendarCell()
+    var selectedCell: CalendarCell = CalendarCell()
     var appointment:String = String()
     var task:String = String()
     var journal:String = String()
@@ -32,7 +32,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
         calendarView.delegate = self
         calendarView.dataSource = self
-        calendarView.cellSnapsToEdge = true
         calendarView.backgroundColor = UIColor.clearColor()
         
         // Make the gradient background
@@ -49,7 +48,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         // Select the current date
         calendarView.reloadData() {
-            self.calendarView.scrollToDate(NSDate())
             self.calendarView.selectDates([NSDate()])
         }
     }
@@ -62,9 +60,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     override func viewDidAppear(animated: Bool) {
-//        print("Calendar View did appear animated")
+        // This almost works the way I would like it to but I am experiencing problems with the popover view when trying to set the current date as a selected one.
         calendarView.reloadData(){
-            self.calendarView.scrollToDate(NSDate())
             self.calendarView.selectDates([NSDate()])
         }
     }
@@ -82,13 +79,20 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
-        if selectedCell.cellState.isSelected == true{
-            let popoverVC = PopoverViewController()
-            popoverPresentationController.permittedArrowDirections = [.Up, .Down]
-            popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
-            popoverPresentationController.sourceView = selectedCell
-            popoverPresentationController.backgroundColor = UIColor.orangeColor()
-            presentViewController(popoverVC, animated: true, completion: nil)
+        if selectedCell.cellState != nil{
+            if selectedCell.cellState.isSelected == true{
+                let popoverVC = PopoverViewController()
+                popoverPresentationController.permittedArrowDirections = [.Up, .Down]
+                popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
+                popoverPresentationController.sourceView = selectedCell
+                popoverPresentationController.backgroundColor = UIColor.orangeColor()
+                presentViewController(popoverVC, animated: true, completion: nil)
+            }
+        }
+        else{
+            selectedCell.cellState = calendarView.cellStatusForDate(NSDate())
+            print("Selected Cell is selected : \(selectedCell.cellState.isSelected)")
+            print("Calendar Cell has not initally been selected...")
         }
     }
     
@@ -136,12 +140,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
         
         if let calendarCell = cell as? CalendarCell{
-            
             let stringDate = formatter.stringFromDate(cellState.date)
-            print("Calendar Cell String Date: \(stringDate)")
             
             let taskDate = NSDateFormatter().dateWithoutTime.stringFromDate(cellState.date)
-            print("Task String Date: \(taskDate)")
             
             let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: formatter)
             let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(taskDate, formatter: NSDateFormatter().dateWithoutTime)
@@ -193,42 +194,39 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     // Size of the header view
-    func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate date: (startDate: NSDate, endDate: NSDate)) -> CGSize {
+    func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate dateRange: (start: NSDate, end: NSDate), belongingTo month: Int) -> CGSize {
         return CGSize(width: calendarView.frame.size.width, height: 100)
+
     }
     
-    func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, date: (startDate: NSDate, endDate: NSDate), identifier: String) {
-        
+    func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, dateRange: (start: NSDate, end: NSDate), identifier: String) {
         if let headerView = header as? CalendarHeaderView{
-            headerView.topLabel.text = setUpHeaderView(date.startDate)
-        
+            headerView.topLabel.text = setUpHeaderView(dateRange.start)
+            
             var weekdayString = String()
-        
+            
             for index in 1...7 {
                 let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
-//              print("Day: \(day)")
+                //              print("Day: \(day)")
                 let spaces = String(count: 14, repeatedValue: (" " as Character))
                 weekdayString += day.substringToIndex(3).uppercaseString + spaces
             }
             headerView.bottomLabel.text = weekdayString
         }
+
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "calendarPopover"{
-//            print("Popover Segue")
+
             if let vc = segue.destinationViewController as? PopoverViewController{
             
                 let controller = vc.popoverPresentationController
+                
                 vc.appointment = appointment
-//                print("Appointment: \(appointment)")
-                
                 vc.task = task
-//                print("Task: \(task)")
-                
                 vc.journal = journal
-//                print("Journal: \(journal)")
                 
                 if controller != nil{
                     controller?.delegate = self

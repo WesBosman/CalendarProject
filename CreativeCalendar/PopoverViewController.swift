@@ -13,7 +13,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
     let pageTitles = ["Appointments", "Tasks", "Journals"]
     let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(150, 260, 200, 25))
     let scrollView: UIScrollView = UIScrollView(frame: CGRectMake(20, 20, 260, 225))
-    var colors: [UIColor] = [UIColor.redColor(), UIColor.greenColor(), UIColor.yellowColor()]
+    var colors: [UIColor] = [UIColor().appointmentColor, UIColor().taskColor, UIColor().journalColor]
     var frame = CGRectMake(0, 0, 0, 0)
     var appointment:String = String()
     var task:String = String()
@@ -22,11 +22,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        print("Appointment Label: \(appointment)")
-        print("Task Label: \(task)")
-        print("Journal Label: \(journal)")
-
+        // Do any additional setup after loading the view.        
         
         configurePageController()
         scrollView.layer.cornerRadius = 10

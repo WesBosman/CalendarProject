@@ -65,6 +65,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var otherTextString: String = String()
     private let currentDate = NSDate()
     private var appointmentTimes: [NSDate] = []
+    private var appointmentAlertTimes: [NSDate] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,6 +174,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     // Pass the information from this view to the previous view
     @IBAction func saveButtonPressed(sender: AnyObject) {
+        // If additional info was left untouched set it to be an empty string.
+        var additionalInfoString = additionalInfoTextBox.text!
+        if additionalInfoString == "Additional Information..."{
+            additionalInfoString = String()
+        }
+        print("Additional Info String: \(additionalInfoString)")
+        print("Appointment Times is empty = \(appointmentTimes.isEmpty)")
+
         
         // If all the required fields are filled in then save the appointment otherwise show an alert
         if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
@@ -181,47 +190,62 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             (!appointmentLocationTextBox.text!.isEmpty) &&
             (!repeatAppointmentRightDetail.text!.isEmpty)){
             
-            for app in appointmentTimes{
-        
-            let appointmentItem = AppointmentItem(type: otherTextString
-                                                        + typeOfAppointmentRightDetail.text!,
-                                                  startTime: app,
-                                                  endTime: endingDate!,
-                                                  title: appointmentNameTextField.text!,
-                                                  location: appointmentLocationTextBox.text!,
-                                                  additional: additionalInfoTextBox.text!,
-                                                  isComplete:  false,
-                                                  isCanceled:  false,
-                                                  isDeleted:   false,
-                                                  dateFinished:  nil,
-                                                  cancelReason:  nil,
-                                                  deleteReason:  nil,
-                                                  UUID: NSUUID().UUIDString)
+            
+            if !appointmentTimes.isEmpty{
+            
+                for app in appointmentTimes{
+                    print("Repeat Time : \(NSDateFormatter().dateWithTime.stringFromDate(app))")
                     
-            // IF the additional information text box has not been changed then add an empty string to that field of the database
-            if additionalInfoTextBox.text == "Additional Information..."{
-                let newAppointmentItem = AppointmentItem(type: appointmentItem.type,
+                    let appointmentItem = AppointmentItem(type: otherTextString
+                                                        + typeOfAppointmentRightDetail.text!,
                                                       startTime: app,
                                                       endTime: endingDate!,
-                                                      title: appointmentItem.title,
-                                                      location: appointmentItem.appLocation,
-                                                      additional: "",
-                                                      isComplete: false,
-                                                      isCanceled: false,
-                                                      isDeleted:  false,
+                                                      title: appointmentNameTextField.text!,
+                                                      location: appointmentLocationTextBox.text!,
+                                                      additional: additionalInfoString,
+                                                      isComplete:  false,
+                                                      isCanceled:  false,
+                                                      isDeleted:   false,
                                                       dateFinished:  nil,
                                                       cancelReason:  nil,
                                                       deleteReason:  nil,
-                                                      UUID: appointmentItem.UUID)
-                db.addToAppointmentDatabase(newAppointmentItem)
-            }
-            // Otherwise add what is in the additional information text box.
-            else{
-                db.addToAppointmentDatabase(appointmentItem)
+                                                      UUID: NSUUID().UUIDString)
+            
+                    db.addToAppointmentDatabase(appointmentItem)
+                
                 }
             }
+            else{
+                let appointmentItem = AppointmentItem(type: otherTextString
+                    + typeOfAppointmentRightDetail.text!,
+                                                      startTime: startingDate!,
+                                                      endTime: endingDate!,
+                                                      title: appointmentNameTextField.text!,
+                                                      location: appointmentLocationTextBox.text!,
+                                                      additional: additionalInfoString,
+                                                      isComplete:  false,
+                                                      isCanceled:  false,
+                                                      isDeleted:   false,
+                                                      dateFinished:  nil,
+                                                      cancelReason:  nil,
+                                                      deleteReason:  nil,
+                                                      UUID: NSUUID().UUIDString)
+                
+                db.addToAppointmentDatabase(appointmentItem)
+
+            }
+            
+            if(!appointmentAlertTimes.isEmpty){
+                for app in appointmentAlertTimes{
+                    print("Alert Time : \(NSDateFormatter().dateWithTime.stringFromDate(app))")
+                }
+            }
+            
+            
+            
+            
             self.navigationController?.popToRootViewControllerAnimated(true)
-        }
+            }
         else{
             let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
             someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
@@ -360,10 +384,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         repeatAppointmentTableHidden = !repeatAppointmentTableHidden
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        if let r = defaults.objectForKey("RepeatAppointmentCell"){
-            print("Toggle Repeat Appointments : r = \(r)")
-            makeNewNotificationTime(r as! String, start: startingDate!)
-            repeatAppointmentRightDetail.text = String(r)
+        if let repeatTime = defaults.objectForKey("RepeatIdentifier"){
+            makeNewNotificationTime(repeatTime as! String, start: startingDate!)
+            repeatAppointmentRightDetail.text = String(repeatTime)
             
         }
         tableView.beginUpdates()
@@ -375,26 +398,45 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         alertAppointmentTableHidden = !alertAppointmentTableHidden
         let defaults = NSUserDefaults.standardUserDefaults()
         if let alertTime = defaults.objectForKey("AlertIdentifier"){
-            print("Alert Time: \(alertTime)")
+            makeAlertForNotification(alertTime as! String, start: startingDate!)
+            alertAppointmentRightDetail.text = String(alertTime)
         }
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
-    func makeAlertForNotification(time:String){
+    func makeAlertForNotification(time:String, start: NSDate){
+        let calendar = NSCalendar.currentCalendar()
+        let timeComponents = NSDateComponents()
+        print("Make Alert For Notification time : \(time)")
+        
         switch(time){
             case "At Time of Event":
-                break
+                timeComponents.minute = 0
+            
             case "5 Minutes Before":
-                break
+                timeComponents.minute = -5
+            
             case "15 Minutes Before":
-                break
+                timeComponents.minute = -15
+
             case "30 Minutes Before":
-                break
+                timeComponents.minute = -30
+            
             case "1 Hour Before":
-                break
+                timeComponents.hour = -1
+            
             default:
                 break
+            
+            let newTime = calendar.dateByAddingComponents(timeComponents, toDate: start, options: .MatchStrictly)
+            print("New Time For Alert: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
+            
+            if(newTime?.isInRange(startingDate!, to: endingDate!) == true){
+                    appointmentAlertTimes.append(newTime!)
+                    makeAlertForNotification(time, start: newTime!)
+            }
+
         }
     }
     
@@ -427,6 +469,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         let endDate = NSDate().calendarEndDate
         let newStart = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
         let newEnd = calendar.dateByAddingComponents(dateComponents, toDate: endingDate!, options: .MatchStrictly)
+        print("New Appointment Start Time: \(NSDateFormatter().dateWithTime.stringFromDate(newStart!))")
+        print("New Appointment End Time: \(NSDateFormatter().dateWithTime.stringFromDate(newEnd!))")
         
         let endDateString = NSDateFormatter().dateWithoutTime.stringFromDate(endDate)
         let newTimeString = NSDateFormatter().dateWithTime.stringFromDate(newStart!)

@@ -10,7 +10,7 @@ import UIKit
 
 class RepeatTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
 
-    private let repeatIdentifier = "RepeatAppointmentCell"
+    private let repeatIdentifier = "RepeatIdentifier"
     private let defaults = NSUserDefaults.standardUserDefaults()
     let repeatDays = ["Never", "Every Day", "Every Week", "Every Two Weeks", "Every Month"]
     private var repeatTableView: UITableView?
@@ -73,37 +73,18 @@ class RepeatTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         // Remove the accessory checkmark from the previously selected cell
         previousCell?.accessoryType = UITableViewCellAccessoryType.None
-        
-//        if let cell = tableView.cellForRowAtIndexPath(indexPath){
-//            cell.accessoryType = UITableViewCellAccessoryType.None
-//            let index = arrayOfDays.indexOf((cell.textLabel?.text)!)
-//            print("Remove: \((cell.textLabel?.text)!) from Array Of Days at index: \(index!)")
-//            arrayOfDays.removeAtIndex(index!)
-//            defaults.setValue(arrayOfDays, forKey: repeatIdentifier)
-//        }
-
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        print("Section: \(indexPath.section)  Row:   \(indexPath.row)")
-        
         // Add an accessory checkmark to the selected cell
         if indexPath.row <= repeatDays.count && indexPath.section == 0{
             if let cell = tableView.cellForRowAtIndexPath(indexPath){
                 previousCell = cell
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
                 let cellText = cell.textLabel?.text
-//                arrayOfDays.append((cell.textLabel?.text)!)
-                print("Cell Text: \(cellText!) at index: \(indexPath.row) repeat Identifier: \(repeatIdentifier)")
+                print("Repeat Cell Text: \(cellText!) At Index: \(indexPath.row) Repeat Identifier: \(repeatIdentifier)")
                 defaults.setValue(cellText!, forKey: repeatIdentifier)
             }
         }
     }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

@@ -19,7 +19,6 @@ class AlertTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataS
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,12 +36,6 @@ class AlertTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataS
     override func layoutSubviews() {
         super.layoutSubviews()
         alertTableView?.frame = CGRectMake(0.2, 0.3, self.bounds.size.width-5, self.bounds.size.height-5)
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     func setUpTableView(){
@@ -66,9 +59,16 @@ class AlertTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        previousCell = cell
-        cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
+        // Set a checkmark on the newly selected cell and add the text to user defaults
+        if indexPath.row <= alertArray.count && indexPath.section == 0{
+            if let cell = tableView.cellForRowAtIndexPath(indexPath){
+                previousCell = cell
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                let cellText = cell.textLabel?.text
+                print("Alert Cell Text: \(cellText!) At Index: \(indexPath.row) Alert Identifier: \(alertIdentifier)")
+                defaults.setValue(cellText!, forKey: alertIdentifier)
+            }
+        }
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
