@@ -8,25 +8,47 @@
 
 import UIKit
 
-class PopoverViewController: UIViewController , UIScrollViewDelegate {
+class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     let pageTitles = ["Appointments", "Tasks", "Journals"]
-    let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(150, 260, 200, 25))
-    let scrollView: UIScrollView = UIScrollView(frame: CGRectMake(20, 20, 260, 225))
-    var colors: [UIColor] = [UIColor().appointmentColor, UIColor().taskColor, UIColor().journalColor]
+    let scrollView: UIScrollView = UIScrollView(frame: CGRectMake(20, 20, 335, 325))
+    let appointmentTableView: UITableView = UITableView(frame: CGRectMake(10,35, 315, 280))
+    let taskTableView: UITableView = UITableView(frame: CGRectMake(10, 35, 315, 280))
+    let journalTableView: UITableView = UITableView(frame: CGRectMake(10, 35, 315, 280))
+    let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(180,  350, 200, 25))
     var frame = CGRectMake(0, 0, 0, 0)
     var appointment:String = String()
     var task:String = String()
     var journal:String = String()
+    var appointmentList:[AppointmentItem] = []
+    var taskList:[TaskItem] = []
+    var journalList:[JournalItem] = []
+    var selectedDate:NSDate = NSDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.        
+        // Do any additional setup after loading the view. 
+        
+        appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
+        
+        taskList = DatabaseFunctions.sharedInstance.getTaskByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
+        
+        journalList = DatabaseFunctions.sharedInstance.getJournalByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
         
         configurePageController()
         scrollView.layer.cornerRadius = 10
+        appointmentTableView.layer.cornerRadius = 10
+        taskTableView.layer.cornerRadius = 10
+        journalTableView.layer.cornerRadius = 10
+        
         self.scrollView.delegate = self
+        self.appointmentTableView.delegate = self
+        self.appointmentTableView.dataSource = self
+        self.taskTableView.delegate = self
+        self.taskTableView.dataSource = self
+        self.journalTableView.delegate = self
+        self.journalTableView.dataSource = self
         self.view.addSubview(scrollView)
         
         for index in 0..<3 {
@@ -34,48 +56,40 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
             frame.origin.x = self.scrollView.frame.size.width * CGFloat(index)
             frame.size = self.scrollView.frame.size
             self.scrollView.pagingEnabled = true
+//            self.scrollView.scrollEnabled = true
             
             switch(index){
             case 0:
                 // Appointment subview
                 let subView = UIView(frame: frame)
-                subView.backgroundColor = colors[index]
+                subView.backgroundColor = UIColor().appointmentColor
                 let appointmentHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width - 10, height: 20))
                 appointmentHeader.text = "Appointments"
-                let appointmentLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width - 10, height: subView.frame.height))
-                appointmentLabel.lineBreakMode = .ByWordWrapping
-                appointmentLabel.numberOfLines = 0
-                appointmentLabel.text = appointment
+                
                 subView.addSubview(appointmentHeader)
-                subView.addSubview(appointmentLabel)
+                subView.addSubview(appointmentTableView)
                 self.scrollView .addSubview(subView)
                 
             case 1:
                 // Task subview
                 let subView = UIView(frame: frame)
-                subView.backgroundColor = colors[index]
+                subView.backgroundColor = UIColor().taskColor
                 let taskHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width - 10, height: 20))
                 taskHeader.text = "Tasks"
-                let taskLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width - 10, height: subView.frame.height))
-                taskLabel.lineBreakMode = .ByWordWrapping
-                taskLabel.numberOfLines = 0
-                taskLabel.text = task
+                
                 subView.addSubview(taskHeader)
-                subView.addSubview(taskLabel)
+                subView.addSubview(taskTableView)
                 self.scrollView .addSubview(subView)
                 
             case 2:
                 // Journal subview
                 let subView = UIView(frame: frame)
-                subView.backgroundColor = colors[index]
+                subView.backgroundColor = UIColor().journalColor
                 let journalHeader = UILabel(frame: CGRect(x: 10, y: 10, width: subView.frame.width - 10, height: 20))
                 journalHeader.text = "Journals"
-                let journalLabel = UILabel(frame: CGRect(x: 10, y: 20, width: subView.frame.width - 10, height: subView.frame.height))
-                journalLabel.lineBreakMode = .ByWordWrapping
-                journalLabel.numberOfLines = 0
-                journalLabel.text = journal
+                
                 subView.addSubview(journalHeader)
-                subView.addSubview(journalLabel)
+                subView.addSubview(journalTableView)
                 self.scrollView .addSubview(subView)
                 
             default:
@@ -84,15 +98,17 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
             }
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 4, self.scrollView.frame.size.height)
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)
+        
         pageControl.addTarget(self, action: #selector(PopoverViewController.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
     }
     
+    // MARK - Page Controller Methods
+    
     func configurePageController(){
-        pageControl.numberOfPages = colors.count
+        pageControl.numberOfPages = 3
         pageControl.currentPage = 0
         pageControl.pageIndicatorTintColor = UIColor.whiteColor()
-        pageControl.backgroundColor = UIColor.blueColor()
         pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
         self.view.addSubview(pageControl)
     }
@@ -111,15 +127,53 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == appointmentTableView{
+            return appointmentList.count
+        }
+        else if tableView == taskTableView{
+            return taskList.count
+        }
+        else{
+            return journalList.count
+        }
     }
-    */
-
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        if tableView == appointmentTableView{
+            let appointment = appointmentList[indexPath.row] as AppointmentItem
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "AppointmentPopover")
+            cell.textLabel?.text = appointment.title
+            cell.detailTextLabel?.text = "type: " + appointment.type + "\n"
+                + "start: " + NSDateFormatter().dateWithTime.stringFromDate(appointment.startingTime)
+                + "\nend: " +  NSDateFormatter().dateWithTime.stringFromDate(appointment.endingTime)
+            cell.detailTextLabel?.numberOfLines = 0
+            cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            return cell
+        }
+        else if tableView == taskTableView{
+            let task = taskList[indexPath.row] as TaskItem
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "TaskPopover")
+            cell.textLabel?.text = task.taskTitle
+            cell.detailTextLabel?.text = task.taskInfo + "\n" + NSDateFormatter().dateWithoutTime.stringFromDate(task.estimateCompletionDate)
+            cell.detailTextLabel?.numberOfLines = 0
+            cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            return cell
+        }
+        else{
+            let journal = journalList[indexPath.row] as JournalItem
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "JournalPopover")
+            cell.textLabel?.text = journal.getSimplifiedDate()
+            cell.detailTextLabel?.text = journal.journalEntry
+            cell.detailTextLabel?.numberOfLines = 0
+            cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 100
+    }
 }

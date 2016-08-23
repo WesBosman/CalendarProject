@@ -18,9 +18,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var weekdayLabel:String = String()
     var numberOfRows = 6
     var selectedCell: CalendarCell = CalendarCell()
-    var appointment:String = String()
-    var task:String = String()
-    var journal:String = String()
+    var selectedDate: NSDate = NSDate()
     @IBOutlet weak var calendarInfo: UIButton!
     @IBOutlet weak var leftCalendarArrow: UIButton!
     @IBOutlet weak var rightCalendarArrow: UIButton!
@@ -45,10 +43,10 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarInfo.layer.borderColor = UIColor.whiteColor().CGColor
         calendarInfo.setTitleColor(UIColor().defaultButtonColor, forState: .Normal)
         calendarInfo.backgroundColor = UIColor.whiteColor()
-        
+                
         // Select the current date
         calendarView.reloadData() {
-            self.calendarView.selectDates([NSDate()])
+            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
         }
     }
     
@@ -60,9 +58,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     override func viewDidAppear(animated: Bool) {
-        // This almost works the way I would like it to but I am experiencing problems with the popover view when trying to set the current date as a selected one.
+        // If the user does not have to scroll to the next segment themselves then pressing the more button will never fail.
         calendarView.reloadData(){
-            self.calendarView.selectDates([NSDate()])
+            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
         }
     }
     
@@ -72,13 +70,20 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     @IBAction func rightCalendarArrowPressed(sender: AnyObject) {
         calendarView.scrollToNextSegment()
+        calendarView.reloadData(){
+            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
+        }
     }
     
     @IBAction func leftCalendarArrowPressed(sender: AnyObject) {
         calendarView.scrollToPreviousSegment()
+        calendarView.reloadData(){
+            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
+        }
     }
     
     func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
+        
         if selectedCell.cellState != nil{
             if selectedCell.cellState.isSelected == true{
                 let popoverVC = PopoverViewController()
@@ -90,15 +95,14 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             }
         }
         else{
-            selectedCell.cellState = calendarView.cellStatusForDate(NSDate())
-            print("Selected Cell is selected : \(selectedCell.cellState.isSelected)")
-            print("Calendar Cell has not initally been selected...")
+            print("Calendar Cell has not initally been selected and is nil...")
         }
     }
     
     
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
+
         // Use the NSDate Extensions for the start and end date
         return(startDate: NSDate().calendarStartDate, endDate: NSDate().calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
     }
@@ -131,6 +135,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             else{
                 calendarCell.journalCounterLabel.hidden = true
             }
+            selectedCell = calendarCell
             calendarCell.setNeedsDisplay()
         }
         
@@ -138,37 +143,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Function for when the cell has been selected
     func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
-        
+        // Send the selected date to the popover so we know which appointments tasks and journals to retrieve from the database
         if let calendarCell = cell as? CalendarCell{
-            let stringDate = formatter.stringFromDate(cellState.date)
-            
-            let taskDate = NSDateFormatter().dateWithoutTime.stringFromDate(cellState.date)
-            
-            let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: formatter)
-            let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(taskDate, formatter: NSDateFormatter().dateWithoutTime)
-            let journalList = DatabaseFunctions.sharedInstance.getJournalByDate(stringDate, formatter: formatter)
-            var appointmentString = String()
-            var taskString = String()
-            var journalString = String()
-            let bullet = "• "
-
-            
-            for a in appointmentList{
-                appointmentString += bullet + a.title + "\n   " + a.appLocation + "\n "
-            }
-            appointment = appointmentString
-        
-            for t in taskList{
-                taskString += bullet + t.taskTitle + "\n   " + t.taskInfo + "\n "
-            }
-            task = taskString
-        
-            for j in journalList{
-                journalString += bullet + j.journalEntry + "\n "
-            }
-            journal = journalString
-            
-            
+            selectedDate = cellState.date
             selectedCell = calendarCell
             calendarCell.updateCell(cellState)
         }
@@ -176,7 +153,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Function for when the cell has been deselected
     func calendar(calendar: JTAppleCalendarView, didDeselectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
-        
+        // Update the cell state to deselect it
         if let calendarCell = cell as? CalendarCell{
             calendarCell.updateCell(cellState)
         }
@@ -222,14 +199,13 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
 
             if let vc = segue.destinationViewController as? PopoverViewController{
             
+                vc.preferredContentSize = CGSize(width: 375.0, height: 375.0)
                 let controller = vc.popoverPresentationController
-                
-                vc.appointment = appointment
-                vc.task = task
-                vc.journal = journal
-                
+                vc.selectedDate = selectedDate
+
                 if controller != nil{
                     controller?.delegate = self
+
                 }
             }
         }
