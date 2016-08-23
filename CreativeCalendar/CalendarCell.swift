@@ -12,9 +12,9 @@ import JTAppleCalendar
 class CalendarCell: JTAppleDayCellView{
 
     @IBOutlet weak var dayLabel: UILabel!
-    @IBInspectable var appointmentColor:UIColor = UIColor.redColor()
-    @IBInspectable var taskColor:UIColor = UIColor.greenColor()
-    @IBInspectable var journalColor:UIColor = UIColor.yellowColor()
+    @IBInspectable var appointmentColor:UIColor = UIColor().appointmentColor
+    @IBInspectable var taskColor:UIColor = UIColor().taskColor
+    @IBInspectable var journalColor:UIColor = UIColor().journalColor
     @IBInspectable var dotHeight: CGFloat = 15.0
     @IBInspectable var dotWidth: CGFloat = 15.0
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)

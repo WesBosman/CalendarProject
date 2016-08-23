@@ -64,8 +64,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var endingDate: NSDate? = nil
     private var otherTextString: String = String()
     private let currentDate = NSDate()
-    private var appointmentTimes: [NSDate] = []
     private var appointmentAlertTimes: [NSDate] = []
+    
+    private var startAndEndTimesTupleArray:[(start: NSDate, end: NSDate)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,7 +181,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             additionalInfoString = String()
         }
         print("Additional Info String: \(additionalInfoString)")
-        print("Appointment Times is empty = \(appointmentTimes.isEmpty)")
 
         
         // If all the required fields are filled in then save the appointment otherwise show an alert
@@ -190,16 +190,36 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             (!appointmentLocationTextBox.text!.isEmpty) &&
             (!repeatAppointmentRightDetail.text!.isEmpty)){
             
+            // Add the original appointment that the user entered into the database.
+            let appointmentItem = AppointmentItem(type: otherTextString
+                + typeOfAppointmentRightDetail.text!,
+                                                  startTime: startingDate!,
+                                                  endTime: endingDate!,
+                                                  title: appointmentNameTextField.text!,
+                                                  location: appointmentLocationTextBox.text!,
+                                                  additional: additionalInfoString,
+                                                  isComplete:  false,
+                                                  isCanceled:  false,
+                                                  isDeleted:   false,
+                                                  dateFinished:  nil,
+                                                  cancelReason:  nil,
+                                                  deleteReason:  nil,
+                                                  UUID: NSUUID().UUIDString)
             
-            if !appointmentTimes.isEmpty{
+            db.addToAppointmentDatabase(appointmentItem)
             
-                for app in appointmentTimes{
-                    print("Repeat Time : \(NSDateFormatter().dateWithTime.stringFromDate(app))")
+            // If the user has scheduled a repeat appointment then this code will execute.
+            print("Start and end tuple array is empty: \(startAndEndTimesTupleArray.isEmpty)")
+            if !startAndEndTimesTupleArray.isEmpty{
+            
+                for (start, end) in startAndEndTimesTupleArray{
+                    print("Start in Start and end tuple array : \(NSDateFormatter().dateWithTime.stringFromDate(start))")
+                    print("End in Start and end tuple array: \(NSDateFormatter().dateWithTime.stringFromDate(end))")
                     
                     let appointmentItem = AppointmentItem(type: otherTextString
                                                         + typeOfAppointmentRightDetail.text!,
-                                                      startTime: app,
-                                                      endTime: endingDate!,
+                                                      startTime: start,
+                                                      endTime: end,
                                                       title: appointmentNameTextField.text!,
                                                       location: appointmentLocationTextBox.text!,
                                                       additional: additionalInfoString,
@@ -215,26 +235,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 
                 }
             }
-            else{
-                let appointmentItem = AppointmentItem(type: otherTextString
-                    + typeOfAppointmentRightDetail.text!,
-                                                      startTime: startingDate!,
-                                                      endTime: endingDate!,
-                                                      title: appointmentNameTextField.text!,
-                                                      location: appointmentLocationTextBox.text!,
-                                                      additional: additionalInfoString,
-                                                      isComplete:  false,
-                                                      isCanceled:  false,
-                                                      isDeleted:   false,
-                                                      dateFinished:  nil,
-                                                      cancelReason:  nil,
-                                                      deleteReason:  nil,
-                                                      UUID: NSUUID().UUIDString)
-                
-                db.addToAppointmentDatabase(appointmentItem)
-
-            }
             
+            print("Appointment Alert Times is empty == \(appointmentAlertTimes.isEmpty)")
             if(!appointmentAlertTimes.isEmpty){
                 for app in appointmentAlertTimes{
                     print("Alert Time : \(NSDateFormatter().dateWithTime.stringFromDate(app))")
@@ -385,7 +387,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if let repeatTime = defaults.objectForKey("RepeatIdentifier"){
-            makeNewNotificationTime(repeatTime as! String, start: startingDate!)
+            makeNewNotificationTime(repeatTime as! String, start: startingDate!, end: endingDate!)
             repeatAppointmentRightDetail.text = String(repeatTime)
             
         }
@@ -440,7 +442,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
-    func makeNewNotificationTime(interval:String, start: NSDate){
+    func makeNewNotificationTime(interval:String, start: NSDate, end: NSDate){
         print("Make New Notification Interval: \(interval)")
         let calendar = NSCalendar.currentCalendar()
         let dateComponents = NSDateComponents()
@@ -464,23 +466,19 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             default:
                 break
         }
-        
-        // Calendar end date is the boundary for calculating the new dates
+        // Get the time for the users appointment
         let endDate = NSDate().calendarEndDate
         let newStart = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
-        let newEnd = calendar.dateByAddingComponents(dateComponents, toDate: endingDate!, options: .MatchStrictly)
-        print("New Appointment Start Time: \(NSDateFormatter().dateWithTime.stringFromDate(newStart!))")
-        print("New Appointment End Time: \(NSDateFormatter().dateWithTime.stringFromDate(newEnd!))")
+        let newEnd = calendar.dateByAddingComponents(dateComponents, toDate: end, options: .MatchStrictly)
         
-        let endDateString = NSDateFormatter().dateWithoutTime.stringFromDate(endDate)
-        let newTimeString = NSDateFormatter().dateWithTime.stringFromDate(newStart!)
-        print("New Time : \(newTimeString)")
-        print("End Date : \(endDateString)")
-
+        // Add the new start and end time to this array of tuples
+        startAndEndTimesTupleArray.append((start: newStart!, end: newEnd!))
         
-        if(newStart?.isInRange(startingDate!, to: endingDate!) == true){
-            appointmentTimes.append(newStart!)
-            makeNewNotificationTime(interval, start: newStart!)
+        // If the new date is still within range of the calendar boundary dates then call this method again
+        if((newStart?.isInRange(startingDate!, to: endDate) == true)
+            && newEnd?.isInRange(startingDate!, to: endDate) == true){
+            
+            makeNewNotificationTime(interval, start: newStart!, end: newEnd!)
         }
     }
 }
