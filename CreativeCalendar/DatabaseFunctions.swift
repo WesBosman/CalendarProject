@@ -101,7 +101,7 @@ class DatabaseFunctions{
         }
         
         let dateCreatedAsString = dateFormat.stringFromDate(item.dateCreated)
-        let estimatedCompletionDate = NSDateFormatter().dateWithoutTime.stringFromDate(item.estimateCompletionDate)
+        let estimatedCompletionDate = NSDateFormatter().dateWithTime.stringFromDate(item.estimateCompletionDate)
         
         do{
             let rs = try db.executeQuery("SELECT date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid FROM Tasks", values: nil)
@@ -182,28 +182,36 @@ class DatabaseFunctions{
                 if isComplete == true{
 //                    print("Appointment Completed")
                     try db.executeUpdate(updateCompleteStatement, values: [isComplete, currentDateString, item.UUID])
+                    removeAppointmentNotification(item)
                 }
                 // If the appointment was already completed turn it off
                 else{
 //                    print("Appointment Incomplete")
                     try db.executeUpdate(updateCompleteStatement, values: [isComplete, "" ,  item.UUID])
+                    setAppointmentNotification(item)
                 }
                 
                 // Appointment Canceled
                 if isCanceled == true{
 //                    print("Appointment Canceled")
                     try db.executeUpdate(updateCancelStatement, values: [true, currentDateString, item.canceledReason!, item.UUID])
+                    
+                    // When they cancel the appointment remove the notification
+                    removeAppointmentNotification(item)
                 }
                 else{
 //                    print("Appointment no longer Canceled")
                     try db.executeUpdate(updateCancelStatement, values: [false, "","", item.UUID])
+                    setAppointmentNotification(item)
                 }
                 
                 // Appointment Deleted
                 if isDeleted == true{
 //                    print("Appointment Deleted")
                     try db.executeUpdate(updateDeleteStatement, values: [true, currentDateString, item.deletedReason!, item.UUID])
-                    removeAppointmentNotification(item.UUID)
+                    
+                    // When they delete the appointment remove the notification
+                    removeAppointmentNotification(item)
                 }
                 else{
 //                    print("Appointment no longer Deleted")
@@ -239,7 +247,7 @@ class DatabaseFunctions{
         // If date completed equals false then do this...
         do{
             // Get the value of the completed column for the task with the given uuid
-            let selectStatement = "SELECT completed FROM Tasks WHERE uuid=?"
+            let selectStatement = "SELECT completed, canceled, deleted FROM Tasks WHERE uuid=?"
             let selectResult = try db.executeQuery(selectStatement, values: [item.UUID])
             
             while selectResult.next(){
@@ -250,27 +258,32 @@ class DatabaseFunctions{
                 let completedStatement = "UPDATE Tasks SET completed=?, date_completed=? WHERE uuid=?"
                 let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
                 let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
-                print("Task Name: \(item.taskTitle) Completed: \(item.completed)")
+//                print("Task Name: \(item.taskTitle) Completed: \(item.completed)")
 
                 // Complete the Task
                 if isComplete == true{
                     try db.executeUpdate(completedStatement, values: [isComplete, currentDateString, item.UUID])
+                    removeTaskNotification(item)
                 }
                 else{
                     try db.executeUpdate(completedStatement, values: [isComplete, "" , item.UUID])
+                    setTaskNotification(item)
                 }
                 
                 // Cancel the Task
                 if isCanceled == true{
                     try db.executeUpdate(canceledStatement, values: [isCanceled, currentDateString , item.canceledReason!, item.UUID])
+                    removeTaskNotification(item)
                 }
                 else{
                     try db.executeUpdate(canceledStatement, values: [isCanceled, "", "", item.UUID])
+                    setTaskNotification(item)
                 }
                 
                 // Delete the Task
                 if isDeleted == true{
                     try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.deletedReason!, item.UUID])
+                    removeTaskNotification(item)
                 }
                 else{
                     try db.executeUpdate(deletedStatement, values: [isDeleted, "", "", item.UUID])
@@ -397,14 +410,14 @@ class DatabaseFunctions{
         var taskArray:[TaskItem] = []
         
         do{
-            let fetchTaskByDateStatement = "SELECT * FROM Tasks WHERE estimated_completed_date=? AND deleted=?"
-            let task = try db.executeQuery(fetchTaskByDateStatement, values: [date, false])
+            let fetchTaskByDateStatement = "SELECT date_created, task, additional, completed, canceled, deleted, estimated_completed_date, date_completed, cancel_reason, delete_reason, uuid FROM Tasks WHERE deleted=?"
+            let task = try db.executeQuery(fetchTaskByDateStatement, values: [false])
             
             while task.next(){
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task") as! String
                 let taskAdditional = task.objectForColumnName("additional") as! String
-                let estimatedDateCompleted = formatter.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
+                let estimatedDateCompleted = NSDateFormatter().dateWithTime.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
@@ -426,11 +439,11 @@ class DatabaseFunctions{
                                         UUID: taskUUID)
                 
                 let newTaskStartTime = formatter.stringFromDate(estimatedDateCompleted!)
-                print("New Task Start Time: \(newTaskStartTime) == \(date)")
+//                print("New Task Start Time: \(newTaskStartTime) == \(date)")
                 
                 if (newTaskStartTime == date && !taskArray.contains{ $0.UUID == taskItem.UUID}){
-                    print("Array Date: \(date)")
-                    print("Array Contains Task item with name: \(taskItem.taskTitle)")
+//                    print("Array Date: \(date)")
+//                    print("Array Contains Task item with name: \(taskItem.taskTitle)")
                     taskArray.append(taskItem)
                 }
             }
@@ -569,8 +582,7 @@ class DatabaseFunctions{
                 let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task") as! String
                 let taskAdditional = task.objectForColumnName("additional") as! String
-                let estimatedDateCompleted = NSDateFormatter().dateWithoutTime.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
-                //.objectForColumnName("estimated_completed_date") as! String
+                let estimatedDateCompleted = NSDateFormatter().dateWithTime.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
@@ -641,11 +653,73 @@ class DatabaseFunctions{
         return journalArray
     }
     
+    // MARK - Batch Delete Methods
+    
+    func removeAllAppointmentsOfSameType(item:AppointmentItem){
+        let db = makeDb
+        
+        if !(db.open()){
+            db.open()
+        }
+        
+        defer{
+            db.close()
+        }
+        
+        let currentDate = NSDate()
+        
+        do{
+            let selectTask = "SELECT * FROM Appointments"
+//            let canceledStatement = "UPDATE Appointments SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
+//            let deletedStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
+//            let appointment = try db.executeQuery(selectTask, values: [item.canceled, currentDate, item.canceledReason!])
+        }
+        
+    }
+    
+    func removeAllTasksOfSameType(item: TaskItem, option: String){
+        let db = makeDb
+        
+        if !(db.open()){
+            db.open()
+        }
+        
+        defer{
+            db.close()
+        }
+        
+        let date = NSDate()
+        let currentDateAsString = dateFormat.stringFromDate(date)
+        
+        do{
+            let selectTask = "SELECT completed, canceled, deleted FROM Tasks WHERE title=? AND additional=?"
+            let task = try db.executeQuery(selectTask, values: [item.taskTitle, item.taskInfo])
+            let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE title=? AND additional=?"
+            let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE title=? AND additional=?"
+            
+            while(task.next()){
+                switch(option){
+                    case "cancel":
+                        try db.executeUpdate(canceledStatement, values: [true, currentDateAsString, item.canceledReason!, item.taskTitle, item.taskInfo])
+                    
+                    case "delete":
+                        try db.executeUpdate(deletedStatement, values: [true, currentDateAsString, item.deletedReason!, item.taskTitle, item.taskInfo])
+                    default:
+                        break
+                }
+            }
+        }
+        catch let err as NSError{
+            print("Remove All Tasks: Error \(err.localizedDescription)")
+        }
+
+    }
+    
     // MARK - Notification Methods
     
-    // Set the notification time for an appointment based on the starting time
+    // Set the notification time for an appointment based on the uuid
     func setAppointmentNotification(item: AppointmentItem){
-        print("Appointment starting time Notification!!!: \(item.startingTime)")
+        print("Appointment Notification: \(item.startingTime)")
         
         // create a corresponding local notification
         let notification =  UILocalNotification()
@@ -658,16 +732,42 @@ class DatabaseFunctions{
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
     }
     
-    // Remove an appointment notification using its unique identifier
-    func removeAppointmentNotification(uuid: String){
+    // Remove an appointment notification using its unique identifier or title
+    func removeAppointmentNotification(item:AppointmentItem){
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {
-            // Retrieve the notification based on the unique identifier
-            if notification.userInfo!["UUID"] as! String == uuid{
+            let identifier = notification.userInfo!["UUID"] as! String
+            
+            if (identifier == item.UUID || identifier == item.title){
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
-//                break
-                }
             }
-
+        }
+    }
+    
+    // Set a notification for a task based on uuid
+    func setTaskNotification(item: TaskItem){
+        print("Task Notification: \(item.estimateCompletionDate)")
+        
+        // create local notification
+        let notification = UILocalNotification()
+        notification.alertBody = "Task \"\(item.taskTitle)\" Has Started"
+        notification.alertAction = "open"
+        notification.fireDate = item.estimateCompletionDate
+        notification.soundName = UILocalNotificationDefaultSoundName
+        notification.userInfo = ["UUID": item.UUID]
+        notification.category = "TASK_CATEGORY"
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        
+    }
+    
+    // Remove a task notification using its unique identifier or title
+    func removeTaskNotification(item: TaskItem){
+        for notification in UIApplication.sharedApplication().scheduledLocalNotifications!{
+            let identifier = notification.userInfo!["UUID"] as! String
+            
+            if (identifier == item.UUID || identifier == item.taskTitle){
+                UIApplication.sharedApplication().cancelLocalNotification(notification)
+            }
+        }
     }
         
     // MARK - Clear Function

@@ -195,7 +195,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // Make the day label with the checkmark.
         daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
         
-        
     }
     
     // Failable Initializer for tab bar controller
@@ -214,10 +213,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         let newSubstring = (todaysSubString as String) + " __"
         let newStringPlusCheck = (todaysSubString as String) + " " + checkmark
         let newText = daysOfTheWeekText.text?.stringByReplacingOccurrencesOfString(newSubstring, withString: newStringPlusCheck, options: .LiteralSearch, range: nil)
-//        print("NEW STRING PLUS CHECK \(newStringPlusCheck)")
-//        print("New Text : \(newText)")
         return newText! as String
-
     }
     
     // Clear all NSUser Defaults
@@ -550,7 +546,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 
             // If the task is completed it should have a green checkbox
             taskCell.homeTaskCompleted(task)
-            taskCell.homeTaskCompletionDate.text = NSDateFormatter().dateWithoutTime.stringFromDate(task.estimateCompletionDate)
+            taskCell.homeTaskCompletionDate.text = NSDateFormatter().dateWithTime.stringFromDate(task.estimateCompletionDate)
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             return taskCell

@@ -54,7 +54,7 @@ class TaskTableViewController: UITableViewController {
             
             if !(taskSections.contains(dateForSectionAsString)){
                 taskSections.append(dateForSectionAsString)
-                print("Task Section Date: \(dateForSectionAsString)")
+//                print("Task Section Date: \(dateForSectionAsString)")
             }
         }
         
@@ -120,8 +120,8 @@ class TaskTableViewController: UITableViewController {
         
         // Configure the cell...
         cell.taskCompleted(taskItem)
-        cell.taskCompletionDate.text = "Complete by: \(taskDateFormatter.stringFromDate(taskItem.estimateCompletionDate))"
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
+        cell.taskCompletionDate.text = "Complete by: \(NSDateFormatter().dateWithTime.stringFromDate(taskItem.estimateCompletionDate))"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         return cell
     }

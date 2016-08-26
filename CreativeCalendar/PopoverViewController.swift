@@ -15,7 +15,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     let appointmentTableView: UITableView = UITableView(frame: CGRectMake(10,35, 315, 280))
     let taskTableView: UITableView = UITableView(frame: CGRectMake(10, 35, 315, 280))
     let journalTableView: UITableView = UITableView(frame: CGRectMake(10, 35, 315, 280))
-    let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(180,  350, 200, 25))
+    let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(185,  350, 200, 25))
     var frame = CGRectMake(0, 0, 0, 0)
     var appointment:String = String()
     var task:String = String()
@@ -157,7 +157,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             let task = taskList[indexPath.row] as TaskItem
             let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "TaskPopover")
             cell.textLabel?.text = task.taskTitle
-            cell.detailTextLabel?.text = task.taskInfo + "\n" + NSDateFormatter().dateWithoutTime.stringFromDate(task.estimateCompletionDate)
+            cell.detailTextLabel?.text = NSDateFormatter().dateWithTime.stringFromDate(task.estimateCompletionDate) + "\n" + task.taskInfo
             cell.detailTextLabel?.numberOfLines = 0
             cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
             return cell

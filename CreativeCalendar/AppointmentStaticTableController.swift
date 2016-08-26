@@ -387,7 +387,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if let repeatTime = defaults.objectForKey("RepeatIdentifier"){
-            makeNewNotificationTime(repeatTime as! String, start: startingDate!, end: endingDate!)
+            makeRecurringAppointment(repeatTime as! String, start: startingDate!, end: endingDate!)
             repeatAppointmentRightDetail.text = String(repeatTime)
             
         }
@@ -400,14 +400,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         alertAppointmentTableHidden = !alertAppointmentTableHidden
         let defaults = NSUserDefaults.standardUserDefaults()
         if let alertTime = defaults.objectForKey("AlertIdentifier"){
-            makeAlertForNotification(alertTime as! String, start: startingDate!)
+            makeAlertForAppointment(alertTime as! String, start: startingDate!)
             alertAppointmentRightDetail.text = String(alertTime)
         }
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
-    func makeAlertForNotification(time:String, start: NSDate){
+    func makeAlertForAppointment(time:String, start: NSDate){
         let calendar = NSCalendar.currentCalendar()
         let timeComponents = NSDateComponents()
         print("Make Alert For Notification time : \(time)")
@@ -430,19 +430,36 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             
             default:
                 break
-            
-            let newTime = calendar.dateByAddingComponents(timeComponents, toDate: start, options: .MatchStrictly)
-            print("New Time For Alert: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
-            
-            if(newTime?.isInRange(startingDate!, to: endingDate!) == true){
-                    appointmentAlertTimes.append(newTime!)
-                    makeAlertForNotification(time, start: newTime!)
             }
+        
+        let newTime = calendar.dateByAddingComponents(timeComponents, toDate: start, options: .MatchStrictly)
+        print("New Time For Alert: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
+        
+        if let appointmentTitle = appointmentNameTextField.text{
+            print("Scheduling an alert for the appointment \(appointmentTitle)")
+            let notification = UILocalNotification()
+            notification.fireDate = newTime
+            notification.alertTitle = "This is the an alert"
+            notification.alertBody = "This alert is for your \(appointmentTitle) appointment"
+            notification.soundName = UILocalNotificationDefaultSoundName
+            notification.alertAction = "open"
+            notification.category = "APPOINTMENT_CATEGORY"
+            notification.userInfo = ["UUID": appointmentTitle]
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
 
+        }
+        else{
+            print("Not scheduling an alert for your appointment")
+        }
+        
+            
+        if(newTime?.isInRange(startingDate!, to: endingDate!) == true){
+                appointmentAlertTimes.append(newTime!)
+                makeAlertForAppointment(time, start: newTime!)
         }
     }
     
-    func makeNewNotificationTime(interval:String, start: NSDate, end: NSDate){
+    func makeRecurringAppointment(interval:String, start: NSDate, end: NSDate){
         print("Make New Notification Interval: \(interval)")
         let calendar = NSCalendar.currentCalendar()
         let dateComponents = NSDateComponents()
@@ -478,7 +495,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         if((newStart?.isInRange(startingDate!, to: endDate) == true)
             && newEnd?.isInRange(startingDate!, to: endDate) == true){
             
-            makeNewNotificationTime(interval, start: newStart!, end: newEnd!)
+            makeRecurringAppointment(interval, start: newStart!, end: newEnd!)
         }
     }
 }

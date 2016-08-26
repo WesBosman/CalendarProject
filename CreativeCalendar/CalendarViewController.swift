@@ -48,7 +48,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.reloadData() {
             self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
         }
-    }
+    }    
     
     // Failable Initializer for tab bar controller
     required init?(coder aDecoder: NSCoder) {

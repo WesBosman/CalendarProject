@@ -927,14 +927,16 @@
                             <constraint firstItem="wyU-Nc-bpF" firstAttribute="top" secondItem="Vpq-id-wdN" secondAttribute="bottom" constant="13" id="Cv4-S2-EOh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="wyU-Nc-bpF" secondAttribute="trailing" constant="33" id="DS7-yS-ma8"/>
                             <constraint firstItem="9sR-Jf-YDE" firstAttribute="top" secondItem="Whv-xF-flI" secondAttribute="bottom" constant="8" symbolic="YES" id="JCW-qJ-EDh">
-                                <variation key="heightClass=regular-widthClass=regular" constant="19"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="50"/>
                             </constraint>
-                            <constraint firstItem="Whv-xF-flI" firstAttribute="centerX" secondItem="sCB-3v-Aha" secondAttribute="centerX" id="WzR-3r-1n4"/>
+                            <constraint firstItem="Whv-xF-flI" firstAttribute="centerX" secondItem="sCB-3v-Aha" secondAttribute="centerX" id="WzR-3r-1n4">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.5"/>
+                            </constraint>
                             <constraint firstItem="wyU-Nc-bpF" firstAttribute="leading" secondItem="Maq-Pr-o0a" secondAttribute="leadingMargin" constant="29" id="Xtd-Vb-R4k"/>
                             <constraint firstItem="wyU-Nc-bpF" firstAttribute="leading" secondItem="sCB-3v-Aha" secondAttribute="leading" id="eTL-AC-8UY"/>
                             <constraint firstItem="wyU-Nc-bpF" firstAttribute="trailing" secondItem="sCB-3v-Aha" secondAttribute="trailing" id="jbl-56-LG0"/>
                             <constraint firstItem="Whv-xF-flI" firstAttribute="top" secondItem="sCB-3v-Aha" secondAttribute="bottom" constant="8" symbolic="YES" id="nlt-gv-pyv">
-                                <variation key="heightClass=regular-widthClass=regular" constant="17"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="8"/>
                             </constraint>
                             <constraint firstItem="sCB-3v-Aha" firstAttribute="top" secondItem="wyU-Nc-bpF" secondAttribute="bottom" constant="29" id="x4l-4k-XG3"/>
                         </constraints>

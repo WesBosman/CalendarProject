@@ -63,18 +63,24 @@ public var Consent: ORKOrderedTask {
 }
 
 
-class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate {
+class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, ORKPasscodeDelegate {
 
     @IBOutlet weak var headingLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var greetingLabel: UILabel!
     let defaults = NSUserDefaults.standardUserDefaults()
     let defaultsConsentKey = "UserConsent"
+    let loginKey = "UserLogin"
+    let forgotLoginKey = "UserForgotLogin"
+    let passcodeStep:ORKPasscodeStep = ORKPasscodeStep.init(identifier: "PassCode")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        clearAllUserDefaults()
+        
         // Do any additional setup after loading the view.
+        passcodeStep.passcodeType = ORKPasscodeType.Type4Digit
         startButton.hidden = true
         headingLabel.numberOfLines = 0
         headingLabel.lineBreakMode = .ByWordWrapping
@@ -89,8 +95,26 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate {
         startButton.backgroundColor = UIColor().defaultButtonColor
     }
     
+    // Clear all NSUser Defaults
+    func clearAllUserDefaults(){
+        //The below two lines of code can clear out NSUser Defaults
+        let appDomain = NSBundle.mainBundle().bundleIdentifier!
+        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
+    }
+    
     override func viewDidAppear(animated: Bool) {
+        // Print the values of stored login booleans
         print("defaults bool for key: UserConsent -> \(defaults.boolForKey(defaultsConsentKey))")
+        print("defaults bool for key: UserLogin -> \(defaults.boolForKey(loginKey))")
+        print("defaults bool for key: UserForgotLogin -> \(defaults.boolForKey(forgotLoginKey))")
+        
+        // Need a server to do logins and send emails.
+//        let registrationStep = ORKRegistrationStep.init(identifier: "RegistrationStep", title: "Registration", text: "Please set up an account")
+//        let task = ORKOrderedTask.init(identifier:"Registration", steps: [registrationStep])
+//        let registrationViewController = ORKTaskViewController.init(task: task, taskRunUUID: nil)
+//        registrationViewController.delegate = self
+//        self.presentViewController(registrationViewController, animated: true, completion: nil)
+
         
         if defaults.boolForKey(defaultsConsentKey) == false{
             let taskViewController = ORKTaskViewController(task: Consent, taskRunUUID: nil)
@@ -100,6 +124,50 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate {
         else{
             startButton.hidden = false
             greetingLabel.hidden = false
+            headingLabel.hidden = false
+        }
+        
+        
+        // Is the passcode already stored in the keychain
+        if PasscodeViewController.isPasscodeStoredInKeychain() == true{
+            print("Passcode is stored in the keychain")
+            let userIsLoggedIn = defaults.boolForKey(loginKey)
+            let userForgotLogin = defaults.boolForKey(forgotLoginKey)
+            startButton.hidden = true
+            greetingLabel.hidden = true
+            headingLabel.hidden = true
+            
+            if !userIsLoggedIn == true{
+                print("User must log in")
+                if userForgotLogin == true{
+                    print("User forgot their login passcode")
+                    startButton.hidden = false
+                    greetingLabel.hidden = false
+                    headingLabel.hidden = false
+                }
+                else{
+                    print("User did not forget their login and their login is in the keychain")
+                    let passcodeViewController = ORKPasscodeViewController.passcodeAuthenticationViewControllerWithText("After Authentication you will be Able to Enter the Application", delegate: self)
+                    self.presentViewController(passcodeViewController, animated: true, completion: nil)
+                    startButton.hidden = true
+                    greetingLabel.hidden = true
+                    headingLabel.hidden = false
+                }
+            }
+            else{
+                print("User is logged in")
+                startButton.hidden = false
+                greetingLabel.hidden = false
+                headingLabel.hidden = false
+            }
+
+        }
+        else{
+            // Passcode step for creating a new passcode
+            let task: ORKOrderedTask = ORKOrderedTask.init(identifier: "PassCodeStep", steps: [passcodeStep])
+            let controller: ORKTaskViewController = ORKTaskViewController.init(task: task, taskRunUUID: nil)
+            controller.delegate = self
+            self.presentViewController(controller, animated: true, completion: nil)
         }
     }
 
@@ -113,6 +181,42 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate {
         defaults.setBool(true, forKey: defaultsConsentKey)
         taskViewController.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    // Upon completion dismiss the current passcode view controller.
+    func passcodeViewControllerDidFinishWithSuccess(viewController: UIViewController) {
+        print("Passcode authentication succeeded!")
+        defaults.setBool(true, forKey: loginKey)
+        viewController.dismissViewControllerAnimated(true, completion: nil)
+        headingLabel.hidden = false
+        greetingLabel.hidden = false
+        startButton.hidden = false
+    }
+    
+    // User fails authentication
+    func passcodeViewControllerDidFailAuthentication(viewController: UIViewController) {
+        print("Passcode authentication failed")
+    }
+    
+    // If the user presses the cancel button
+    func passcodeViewControllerDidCancel(viewController: UIViewController) {
+        print("Cancel button tapped")
+    }
+    
+    // If the user forgot their passcode present them with a way to create a new passcode
+    func passcodeViewControllerForgotPasscodeTapped(viewController: UIViewController) {
+        print("Forgot passcode tapped")
+        if (PasscodeViewController.isPasscodeStoredInKeychain() == true){
+            let forgotPasscodeController = ORKPasscodeViewController.passcodeEditingViewControllerWithText("Enter A Passcode that you will easily remember", delegate: self, passcodeType: .Type4Digit)
+            defaults.setBool(true, forKey: forgotLoginKey)
+            self.dismissViewControllerAnimated(true, completion: nil)
+            self.presentViewController(forgotPasscodeController, animated: false, completion: nil)
+        }
+    }
+    
+    func passcodeViewControllerTextForForgotPasscode(viewController: UIViewController) -> String {
+        return "Forgot your passcode?"
+    }
+
     
     // MARK: - Navigation
 
