@@ -2242,7 +2242,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBX-uQ-xBh">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="75" id="gBi-9Z-Ziz"/>
+                                            <constraint firstAttribute="height" constant="75" id="gBi-9Z-Ziz">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="104"/>
+                                            </constraint>
                                         </constraints>
                                         <state key="normal" image="LeftArrowDark"/>
                                         <variation key="default">
@@ -2262,7 +2264,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E4N-TK-cZ5">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="73" id="JOE-RZ-wRN"/>
+                                            <constraint firstAttribute="height" constant="73" id="JOE-RZ-wRN">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="104"/>
+                                            </constraint>
                                         </constraints>
                                         <state key="normal" image="RightArrowDark"/>
                                         <variation key="default">
@@ -2285,14 +2289,14 @@
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="G1z-3q-f71"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="OBX-uQ-xBh" secondAttribute="trailing" constant="8" symbolic="YES" id="Gtc-e5-pCj"/>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="top" secondItem="krf-j0-1qK" secondAttribute="top" constant="282" id="LkL-Ss-jya">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="340"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="323"/>
                                     </constraint>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="vV2-Cu-ToG" secondAttribute="centerX" id="OLQ-Aa-mnv"/>
                                     <constraint firstAttribute="bottom" secondItem="vV2-Cu-ToG" secondAttribute="bottom" constant="44" id="TMk-Jb-3rd"/>
                                     <constraint firstItem="vV2-Cu-ToG" firstAttribute="top" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="38" id="ckD-9K-xxC"/>
                                     <constraint firstItem="OBX-uQ-xBh" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leadingMargin" id="f5i-JJ-2tq"/>
                                     <constraint firstItem="OBX-uQ-xBh" firstAttribute="baseline" secondItem="E4N-TK-cZ5" secondAttribute="baseline" id="gaP-vf-Jix">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="-1"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                     </constraint>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="trailing" secondItem="krf-j0-1qK" secondAttribute="trailingMargin" id="pl1-Oc-sb3"/>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="leading" secondItem="TYL-uE-jje" secondAttribute="trailing" constant="8" symbolic="YES" id="uBl-Lf-5Yz"/>

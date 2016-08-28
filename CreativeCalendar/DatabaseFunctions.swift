@@ -36,9 +36,9 @@ class DatabaseFunctions{
         }
         // Create the three tables for storing our information.
         do{
-            try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
             
             try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, delete_reason, uuid text)", values: nil)
             
@@ -66,21 +66,20 @@ class DatabaseFunctions{
             db.close()
         }
 
-        let current = NSDate()
-        let currentDateString = dateFormat.stringFromDate(current)
+        let currentDateString = dateFormat.stringFromDate(NSDate())
         let startDateString = dateFormat.stringFromDate(item.startingTime)
         let endDateString = dateFormat.stringFromDate(item.endingTime)
         
         do{
-            let rs = try db.executeQuery("SELECT date_created, title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, date_canceled, date_deleted FROM Appointments", values: nil)
+            let rs = try db.executeQuery("SELECT date_created, title, type, start_date, end_date, location, additional, repeat_time, alert_time, completed, canceled, deleted, date_completed, date_canceled, date_deleted FROM Appointments", values: nil)
             var count: Int = 1
             while rs.next(){
                 count += 1
             }
             print("Number of items in Appointments Table database: \(count)")
-            try db.executeUpdate("INSERT into Appointments( date_created, title, type, start_date, end_date, location, additional,completed, canceled, deleted, uuid) values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values:[currentDateString, item.title, item.type, startDateString, endDateString, item.appLocation, item.additionalInfo, false, false, false, item.UUID])
+            try db.executeUpdate("INSERT into Appointments( date_created, title, type, start_date, end_date, location, additional,repeat_time, alert_time, completed, canceled, deleted, uuid) values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values:[currentDateString, item.title, item.type, startDateString, endDateString, item.appLocation, item.additionalInfo, item.repeating, item.alert, false, false, false, item.UUID])
             
-            // Add a notification for the item.
+            // Add a notification for the appointment item.
             setAppointmentNotification(item)
             
         } catch let err as NSError{
@@ -100,17 +99,20 @@ class DatabaseFunctions{
             db.close()
         }
         
-        let dateCreatedAsString = dateFormat.stringFromDate(item.dateCreated)
+        let dateCreatedAsString = dateFormat.stringFromDate(NSDate())
         let estimatedCompletionDate = NSDateFormatter().dateWithTime.stringFromDate(item.estimateCompletionDate)
         
         do{
-            let rs = try db.executeQuery("SELECT date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid FROM Tasks", values: nil)
+            let rs = try db.executeQuery("SELECT date_created, task, additional, repeat_time, alert_time, completed, canceled, deleted, estimated_completed_date, uuid FROM Tasks", values: nil)
             var count:Int = 1
             while rs.next(){
                 count += 1
             }
             print("Number of items in Task Table database: \(count)")
-            try db.executeUpdate("INSERT into Tasks(date_created, task, additional, completed, canceled, deleted, estimated_completed_date, uuid) values(?, ?, ?, ?, ?, ?, ?, ?)", values:[ dateCreatedAsString, item.taskTitle, item.taskInfo, item.completed, item.canceled, item.deleted, estimatedCompletionDate, item.UUID])
+            try db.executeUpdate("INSERT into Tasks(date_created, task, additional, repeat_time, alert_time, completed, canceled, deleted, estimated_completed_date, uuid) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values:[ dateCreatedAsString, item.taskTitle, item.taskInfo, item.repeating, item.alert, item.completed, item.canceled, item.deleted, estimatedCompletionDate, item.UUID])
+            
+            // Add a notification for the task item
+            setTaskNotification(item)
             
         } catch let err as NSError{
             print("Add Task to Database ERROR: \(err.localizedDescription)")
@@ -349,7 +351,7 @@ class DatabaseFunctions{
         var appointmentArray: [AppointmentItem] = []
 
         do{
-            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?"
+            let fetchAppointmentByDateStatement = "SELECT title, type, start_date, end_date, location, additional, repeat_time, alert_time, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?"
             let query = try db.executeQuery(fetchAppointmentByDateStatement, values: [false])
             
             while query.next(){
@@ -359,6 +361,8 @@ class DatabaseFunctions{
                 let appointmentEnd = dateFormat.dateFromString(query.objectForColumnName("end_date") as! String)
                 let appointmentLocation = query.objectForColumnName("location") as! String
                 let appointmentAdditional = query.objectForColumnName("additional") as! String
+                let appointmentRepeatTime = query.objectForColumnName("repeat_time") as! String
+                let appointmentAlertTime = query.objectForColumnName("alert_time") as! String
                 let appointmentComplete = query.objectForColumnName("completed") as! Bool
                 let appointmentCanceled = query.objectForColumnName("canceled") as! Bool
                 let appointmentDeleted = query.objectForColumnName("deleted") as! Bool
@@ -374,6 +378,8 @@ class DatabaseFunctions{
                                                       title: appointmentTitle,
                                                       location: appointmentLocation,
                                                       additional: appointmentAdditional,
+                                                      repeatTime: appointmentRepeatTime,
+                                                      alertTime: appointmentAlertTime,
                                                       isComplete: appointmentComplete,
                                                       isCanceled: appointmentCanceled,
                                                       isDeleted: appointmentDeleted,
@@ -410,14 +416,15 @@ class DatabaseFunctions{
         var taskArray:[TaskItem] = []
         
         do{
-            let fetchTaskByDateStatement = "SELECT date_created, task, additional, completed, canceled, deleted, estimated_completed_date, date_completed, cancel_reason, delete_reason, uuid FROM Tasks WHERE deleted=?"
+            let fetchTaskByDateStatement = "SELECT task, additional, repeat_time, alert_time, completed, canceled, deleted, estimated_completed_date, date_completed, cancel_reason, delete_reason, uuid FROM Tasks WHERE deleted=?"
             let task = try db.executeQuery(fetchTaskByDateStatement, values: [false])
             
             while task.next(){
-                let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task") as! String
                 let taskAdditional = task.objectForColumnName("additional") as! String
                 let estimatedDateCompleted = NSDateFormatter().dateWithTime.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
+                let taskRepeatTime = task.objectForColumnName("repeat_time") as! String
+                let taskAlertTime = task.objectForColumnName("alert_time") as! String
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
@@ -426,13 +433,14 @@ class DatabaseFunctions{
                 let taskDeleteReason = task.objectForColumnName("delete_reason") as? String
                 let taskUUID = task.objectForColumnName("uuid") as! String
                 
-                let taskItem = TaskItem(dateMade: taskMade!,
-                                        title: taskTitle,
+                let taskItem = TaskItem(title: taskTitle,
                                         info: taskAdditional,
                                         estimatedCompletion: estimatedDateCompleted!,
-                                        completed: taskCompleted,
-                                        canceled: taskCanceled,
-                                        deleted:  taskDeleted,
+                                        repeatTime: taskRepeatTime,
+                                        alertTime:  taskAlertTime,
+                                        isComplete: taskCompleted,
+                                        isCanceled: taskCanceled,
+                                        isDeleted:  taskDeleted,
                                         dateFinished: taskDone,
                                         cancelReason: taskCancelReason,
                                         deleteReason: taskDeleteReason,
@@ -519,7 +527,7 @@ class DatabaseFunctions{
 //        let dateFormat = NSDateFormatter().universalFormatter()
         
         do{
-            let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?", values: [false])
+            let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, repeat_time, alert_time, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?", values: [false])
             
             while appointment.next(){
                 let appointmentTitle = appointment.objectForColumnName("title") as! String
@@ -528,6 +536,8 @@ class DatabaseFunctions{
                 let appointmentEnd = dateFormat.dateFromString(appointment.objectForColumnName("end_date") as! String)
                 let appointmentLocation = appointment.objectForColumnName("location") as! String
                 let appointmentAdditional = appointment.objectForColumnName("additional") as! String
+                let appointmentRepeatTime = appointment.objectForColumnName("repeat_time") as! String
+                let appointmentAlertTime = appointment.objectForColumnName("alert_time") as! String
                 let appointmentComplete = appointment.objectForColumnName("completed") as! Bool
                 let appointmentCanceled = appointment.objectForColumnName("canceled") as! Bool
                 let appointmentDeleted = appointment.objectForColumnName("deleted") as! Bool
@@ -543,6 +553,8 @@ class DatabaseFunctions{
                                                       title: appointmentTitle,
                                                       location: appointmentLocation,
                                                       additional: appointmentAdditional,
+                                                      repeatTime: appointmentRepeatTime,
+                                                      alertTime:  appointmentAlertTime,
                                                       isComplete: appointmentComplete,
                                                       isCanceled: appointmentCanceled,
                                                       isDeleted: appointmentDeleted,
@@ -572,17 +584,15 @@ class DatabaseFunctions{
         defer{
             db.close()
         }
-        let dateFormat = NSDateFormatter().universalFormatter
-        
         var taskArray: [TaskItem] = []
         do{
-            let task:FMResultSet = try db.executeQuery("SELECT date_created,task, additional, estimated_completed_date, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Tasks WHERE deleted=?", values: [false])
+            let task:FMResultSet = try db.executeQuery("SELECT date_created,task, additional, estimated_completed_date, repeat_time, alert_time, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Tasks WHERE deleted=?", values: [false])
             while task.next(){
-//                print("Task Item from database.")
-                let taskMade = dateFormat.dateFromString(task.objectForColumnName("date_created") as! String)
                 let taskTitle = task.objectForColumnName("task") as! String
                 let taskAdditional = task.objectForColumnName("additional") as! String
                 let estimatedDateCompleted = NSDateFormatter().dateWithTime.dateFromString(task.objectForColumnName("estimated_completed_date") as! String)
+                let taskRepeatTime = task.objectForColumnName("repeat_time") as! String
+                let taskAlertTime = task.objectForColumnName("alert_time") as! String
                 let taskCompleted = task.boolForColumn("completed")
                 let taskCanceled = task.boolForColumn("canceled")
                 let taskDeleted = task.boolForColumn("deleted")
@@ -590,15 +600,15 @@ class DatabaseFunctions{
                 let taskCancelReason = task.objectForColumnName("cancel_reason") as? String
                 let taskDeleteReason = task.objectForColumnName("delete_reason") as? String
                 let taskUUID = task.objectForColumnName("uuid") as! String
-//                print("Task: \(taskTitle) date created: \(taskMade)")
                 
-                let taskItem = TaskItem(dateMade: taskMade!,
-                                        title: taskTitle,
+                let taskItem = TaskItem(title: taskTitle,
                                         info: taskAdditional,
                                         estimatedCompletion: estimatedDateCompleted!,
-                                        completed: taskCompleted,
-                                        canceled: taskCanceled,
-                                        deleted:  taskDeleted,
+                                        repeatTime: taskRepeatTime,
+                                        alertTime: taskAlertTime,
+                                        isComplete: taskCompleted,
+                                        isCanceled: taskCanceled,
+                                        isDeleted:  taskDeleted,
                                         dateFinished: taskDone,
                                         cancelReason: taskCancelReason,
                                         deleteReason: taskDeleteReason,
@@ -730,14 +740,56 @@ class DatabaseFunctions{
         notification.userInfo = ["UUID": item.UUID, ]
         notification.category = "APPOINTMENT_CATEGORY"
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        
+        let alertTime = item.alert
+        
+        // If there is an alert create another notification
+        if alertTime != "At Time of Event"{
+            let calendar = NSCalendar.currentCalendar()
+            let timeComponents = NSDateComponents()
+            print("Make Alert Notification For Time : \(alertTime)")
+        
+            switch(alertTime){
+                case "5 Minutes Before":
+                    timeComponents.minute = -5
+            
+                case "15 Minutes Before":
+                    timeComponents.minute = -15
+            
+                case "30 Minutes Before":
+                    timeComponents.minute = -30
+            
+                case "1 Hour Before":
+                    timeComponents.hour = -1
+            
+                default:
+                    break
+            }
+        
+            let newTime = calendar.dateByAddingComponents(timeComponents, toDate: item.startingTime, options: .MatchStrictly)
+            print("New Appointment Alert Notification Time: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
+            
+            let notification =  UILocalNotification()
+            notification.alertBody = "Alert For Appointment \"\(item.title)\""
+            notification.alertAction = "open"
+            notification.fireDate = newTime!
+            notification.soundName = UILocalNotificationDefaultSoundName
+            notification.userInfo = ["ALERT_UUID": item.UUID]
+            notification.category = "APPOINTMENT_CATEGORY"
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+
+
+        }
+        
     }
     
     // Remove an appointment notification using its unique identifier or title
     func removeAppointmentNotification(item:AppointmentItem){
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {
             let identifier = notification.userInfo!["UUID"] as! String
+            let alertIdentifier = notification.userInfo!["ALERT_UUID"] as! String
             
-            if (identifier == item.UUID || identifier == item.title){
+            if (identifier == item.UUID || alertIdentifier == item.UUID){
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
             }
         }
@@ -757,14 +809,53 @@ class DatabaseFunctions{
         notification.category = "TASK_CATEGORY"
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
         
+        let alert = item.alert
+        let calendar = NSCalendar.currentCalendar()
+        let timeComponents = NSDateComponents()
+        print("Make Alert For Notification time : \(alert)")
+
+        // If the event has an alert create another notification
+        if alert != "At Time of Event"{
+            switch(alert){
+                case "5 Minutes Before":
+                    timeComponents.minute = -5
+                
+                case "15 Minutes Before":
+                    timeComponents.minute = -15
+                
+                case "30 Minutes Before":
+                    timeComponents.minute = -30
+                
+                case "1 Hour Before":
+                    timeComponents.hour = -1
+                
+                default:
+                    break
+                }
+            
+            // Caluclate the time for the users task by adding time components
+            let newStart = calendar.dateByAddingComponents(timeComponents, toDate: item.estimateCompletionDate, options: .MatchStrictly)
+            print("New Task Alert Notification Time: \(newStart!)")
+            
+            let notification = UILocalNotification()
+            notification.alertBody = "Alert For Task \"\(item.taskTitle)\""
+            notification.alertAction = "open"
+            notification.fireDate = newStart!
+            notification.soundName = UILocalNotificationDefaultSoundName
+            notification.userInfo = ["ALERT_UUID": item.UUID]
+            notification.category = "TASK_CATEGORY"
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+
+        }
     }
     
     // Remove a task notification using its unique identifier or title
     func removeTaskNotification(item: TaskItem){
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications!{
             let identifier = notification.userInfo!["UUID"] as! String
+            let alertIdentifier = notification.userInfo!["ALERT_UUID"] as! String
             
-            if (identifier == item.UUID || identifier == item.taskTitle){
+            if (identifier == item.UUID || alertIdentifier == item.UUID){
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
             }
         }
@@ -793,3 +884,4 @@ class DatabaseFunctions{
         }
     }
 }
+

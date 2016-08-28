@@ -57,7 +57,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     private let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
     private let cellID: String = "AppointmentCells"
-    
     private let dateFormat:NSDateFormatter = NSDateFormatter().dateWithTime
     private let db = DatabaseFunctions.sharedInstance
     private var startingDate:NSDate? = nil
@@ -65,7 +64,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var otherTextString: String = String()
     private let currentDate = NSDate()
     private var appointmentAlertTimes: [NSDate] = []
-    
     private var startAndEndTimesTupleArray:[(start: NSDate, end: NSDate)] = []
     
     override func viewDidLoad() {
@@ -193,11 +191,13 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             // Add the original appointment that the user entered into the database.
             let appointmentItem = AppointmentItem(type: otherTextString
                 + typeOfAppointmentRightDetail.text!,
-                                                  startTime: startingDate!,
-                                                  endTime: endingDate!,
-                                                  title: appointmentNameTextField.text!,
-                                                  location: appointmentLocationTextBox.text!,
+                                                  startTime:  startingDate!,
+                                                  endTime:    endingDate!,
+                                                  title:      appointmentNameTextField.text!,
+                                                  location:   appointmentLocationTextBox.text!,
                                                   additional: additionalInfoString,
+                                                  repeatTime: repeatAppointmentRightDetail.text!,
+                                                  alertTime:  alertAppointmentRightDetail.text!,
                                                   isComplete:  false,
                                                   isCanceled:  false,
                                                   isDeleted:   false,
@@ -223,6 +223,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                       title: appointmentNameTextField.text!,
                                                       location: appointmentLocationTextBox.text!,
                                                       additional: additionalInfoString,
+                                                      repeatTime: repeatAppointmentRightDetail.text!,
+                                                      alertTime: alertAppointmentRightDetail.text!,
                                                       isComplete:  false,
                                                       isCanceled:  false,
                                                       isDeleted:   false,
@@ -236,6 +238,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 }
             }
             
+            // MARK TO-DO
             print("Appointment Alert Times is empty == \(appointmentAlertTimes.isEmpty)")
             if(!appointmentAlertTimes.isEmpty){
                 for app in appointmentAlertTimes{
@@ -400,63 +403,10 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         alertAppointmentTableHidden = !alertAppointmentTableHidden
         let defaults = NSUserDefaults.standardUserDefaults()
         if let alertTime = defaults.objectForKey("AlertIdentifier"){
-            makeAlertForAppointment(alertTime as! String, start: startingDate!)
             alertAppointmentRightDetail.text = String(alertTime)
         }
         tableView.beginUpdates()
         tableView.endUpdates()
-    }
-    
-    func makeAlertForAppointment(time:String, start: NSDate){
-        let calendar = NSCalendar.currentCalendar()
-        let timeComponents = NSDateComponents()
-        print("Make Alert For Notification time : \(time)")
-        
-        switch(time){
-            case "At Time of Event":
-                timeComponents.minute = 0
-            
-            case "5 Minutes Before":
-                timeComponents.minute = -5
-            
-            case "15 Minutes Before":
-                timeComponents.minute = -15
-
-            case "30 Minutes Before":
-                timeComponents.minute = -30
-            
-            case "1 Hour Before":
-                timeComponents.hour = -1
-            
-            default:
-                break
-            }
-        
-        let newTime = calendar.dateByAddingComponents(timeComponents, toDate: start, options: .MatchStrictly)
-        print("New Time For Alert: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
-        
-        if let appointmentTitle = appointmentNameTextField.text{
-            print("Scheduling an alert for the appointment \(appointmentTitle)")
-            let notification = UILocalNotification()
-            notification.fireDate = newTime
-            notification.alertTitle = "This is the an alert"
-            notification.alertBody = "This alert is for your \(appointmentTitle) appointment"
-            notification.soundName = UILocalNotificationDefaultSoundName
-            notification.alertAction = "open"
-            notification.category = "APPOINTMENT_CATEGORY"
-            notification.userInfo = ["UUID": appointmentTitle]
-            UIApplication.sharedApplication().scheduleLocalNotification(notification)
-
-        }
-        else{
-            print("Not scheduling an alert for your appointment")
-        }
-        
-            
-        if(newTime?.isInRange(startingDate!, to: endingDate!) == true){
-                appointmentAlertTimes.append(newTime!)
-                makeAlertForAppointment(time, start: newTime!)
-        }
     }
     
     func makeRecurringAppointment(interval:String, start: NSDate, end: NSDate){

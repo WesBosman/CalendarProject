@@ -42,7 +42,7 @@ class TaskStaticTableViewController: UITableViewController {
         alertTaskTitle.text = "Schedule an alert"
         alertTaskRightDetail.text = AlertTableViewCell().alertArray[0]
         repeatingTaskRightDetail.text = RepeatTableViewCell().repeatDays[0]
-        taskDatePicker.datePickerMode = UIDatePickerMode.DateAndTime
+//        taskDatePicker.datePickerMode = UIDatePickerMode.DateAndTime
         
         // Set the boundary dates for the maximum and minimum dates of the date picker
         taskDatePicker.minimumDate = NSDate()
@@ -59,33 +59,6 @@ class TaskStaticTableViewController: UITableViewController {
         toggleTaskDatePicker()
         toggleRepeatDayPicker()
         toggleAlertTableView()
-    }
-    
-    func toggleTaskDatePicker(){
-        taskDatePickerIsHidden = !taskDatePickerIsHidden
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
-    func toggleRepeatDayPicker(){
-        taskRepeatDayIsHidden = !taskRepeatDayIsHidden
-        if let taskRepeat = defaults.objectForKey("RepeatIdentifier"){
-            makeRecurringTask( String(taskRepeat), start: taskDatePicker.date)
-            repeatingTaskRightDetail.text = String(taskRepeat)
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
-    func toggleAlertTableView(){
-        
-        taskAlertIsHidden = !taskAlertIsHidden
-        if let taskAlert = defaults.objectForKey("AlertIdentifier"){
-            makeTaskAlert(String(taskAlert), start: taskDatePicker.date)
-            alertTaskRightDetail.text = String(taskAlert)
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -117,29 +90,31 @@ class TaskStaticTableViewController: UITableViewController {
     
     @IBAction func taskDatePickerChanged(sender: AnyObject) {
         let dateAsString = taskFormatter.stringFromDate(taskDatePicker.date)
-//        print("Task Date: \(dateAsString)")
+        print("Task Date: \(dateAsString)")
         taskFinishDateRightDetail.text = dateAsString
     }
     
     // Save the information to pass it to the previous view
     @IBAction func saveTaskPressed(sender: AnyObject) {
         // Make sure there is atleast a task title in order to let the user save the task
-        let current = NSDate()
+//        let current = NSDate()
         var additionalInfoString = String()
         
         if !(taskAdditionalInfoTextBox.text! == "Additional Information") || !((taskAdditionalInfoTextBox.text?.isEmpty)!){
-            print("Task additional Information is not empty")
+            print("Task additional Information is not empty && does not equal additional information")
             additionalInfoString = taskAdditionalInfoTextBox.text!
         }
         
         if (!taskNameTextField.text!.isEmpty && !taskFinishDateRightDetail.text!.isEmpty){
-            let taskItem = TaskItem(dateMade: current,
-                                    title: taskNameTextField.text!,
+            print("Task Formatter.dateFromString = \(taskFormatter.dateFromString(taskFinishDateRightDetail.text!)!)")
+            let taskItem = TaskItem(title: taskNameTextField.text!,
                                     info: additionalInfoString,
                                     estimatedCompletion: taskFormatter.dateFromString(taskFinishDateRightDetail.text!)!,
-                                    completed: false,
-                                    canceled: false,
-                                    deleted: false,
+                                    repeatTime: repeatingTaskRightDetail.text!,
+                                    alertTime:  alertTaskRightDetail.text!,
+                                    isComplete: false,
+                                    isCanceled: false,
+                                    isDeleted: false,
                                     dateFinished: nil,
                                     cancelReason: nil,
                                     deleteReason: nil,
@@ -147,21 +122,26 @@ class TaskStaticTableViewController: UITableViewController {
             
             db.addToTaskDatabase(taskItem)
             
-            for task in startTimesArray{
-                let taskItem = TaskItem(dateMade: current,
-                                        title: taskNameTextField.text!,
-                                        info: additionalInfoString,
-                                        estimatedCompletion: task,
-                                        completed: false,
-                                        canceled: false,
-                                        deleted: false,
-                                        dateFinished: nil,
-                                        cancelReason: nil,
-                                        deleteReason: nil,
-                                        UUID: NSUUID().UUIDString)
+            if startTimesArray.isEmpty == false{
+                print("Start Times Array is not empty!")
                 
-                db.addToTaskDatabase(taskItem)
+                for task in startTimesArray{
+                    let taskItem = TaskItem(title: taskNameTextField.text!,
+                                            info: additionalInfoString,
+                                            estimatedCompletion: task,
+                                            repeatTime: repeatingTaskRightDetail.text!,
+                                            alertTime: alertTaskRightDetail.text!,
+                                            isComplete: false,
+                                            isCanceled: false,
+                                            isDeleted: false,
+                                            dateFinished: nil,
+                                            cancelReason: nil,
+                                            deleteReason: nil,
+                                            UUID: NSUUID().UUIDString)
+                
+                    db.addToTaskDatabase(taskItem)
 
+                }
             }
             
             
@@ -177,57 +157,30 @@ class TaskStaticTableViewController: UITableViewController {
         }
     }
     
-    func makeTaskAlert(time:String , start: NSDate){
-        let calendar = NSCalendar.currentCalendar()
-        let timeComponents = NSDateComponents()
-        print("Make Alert For Notification time : \(time)")
-        
-        switch(time){
-        case "At Time of Event":
-            timeComponents.minute = 0
-            
-        case "5 Minutes Before":
-            timeComponents.minute = -5
-            
-        case "15 Minutes Before":
-            timeComponents.minute = -15
-            
-        case "30 Minutes Before":
-            timeComponents.minute = -30
-            
-        case "1 Hour Before":
-            timeComponents.hour = -1
-            
-        default:
-            break
+    func toggleTaskDatePicker(){
+        taskDatePickerIsHidden = !taskDatePickerIsHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func toggleRepeatDayPicker(){
+        taskRepeatDayIsHidden = !taskRepeatDayIsHidden
+        if let taskRepeat = defaults.objectForKey("RepeatIdentifier"){
+            makeRecurringTask( String(taskRepeat), start: taskDatePicker.date)
+            repeatingTaskRightDetail.text = String(taskRepeat)
         }
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func toggleAlertTableView(){
         
-        let newTime = calendar.dateByAddingComponents(timeComponents, toDate: start, options: .MatchStrictly)
-        print("New Time For Alert: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
-        
-        if let taskTitle = taskNameTextField.text{
-            print("Scheduling an alert for the appointment \(taskTitle)")
-            let notification = UILocalNotification()
-            notification.fireDate = newTime
-            notification.alertTitle = "This is the an alert"
-            notification.alertBody = "This alert is for your \(taskTitle) appointment"
-            notification.soundName = UILocalNotificationDefaultSoundName
-            notification.alertAction = "open"
-            notification.category = "APPOINTMENT_CATEGORY"
-            notification.userInfo = ["UUID": taskTitle]
-            UIApplication.sharedApplication().scheduleLocalNotification(notification)
-            
+        taskAlertIsHidden = !taskAlertIsHidden
+        if let taskAlert = defaults.objectForKey("AlertIdentifier"){
+            alertTaskRightDetail.text = String(taskAlert)
         }
-        else{
-            print("Not scheduling an alert for your appointment")
-        }
-        
-        
-        if(newTime?.isInRange(currentDate, to: NSDate().calendarEndDate) == true){
-            alertTimesArray.append(newTime!)
-            makeTaskAlert(time, start: newTime!)
-        }
-
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
     
     // Tasks only are worried about the estiated completion time
@@ -268,8 +221,6 @@ class TaskStaticTableViewController: UITableViewController {
             makeRecurringTask(interval, start: newStart!)
         }
     }
-
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

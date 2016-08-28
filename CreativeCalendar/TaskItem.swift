@@ -9,11 +9,13 @@
 import Foundation
 
 struct TaskItem{
-    var dateCreated: NSDate
+//    var dateCreated: NSDate
     var dateCompleted: String?
     var estimateCompletionDate: NSDate
     var taskTitle: String
     var taskInfo: String
+    var repeating: String
+    var alert: String
     var completed: Bool
     var canceled: Bool
     var deleted: Bool
@@ -21,14 +23,15 @@ struct TaskItem{
     var deletedReason: String?
     var UUID: String
     
-    init(dateMade:NSDate, title: String, info: String, estimatedCompletion: NSDate, completed:Bool, canceled: Bool, deleted: Bool, dateFinished:String?, cancelReason: String?, deleteReason: String?, UUID: String){
-        self.dateCreated = dateMade
+    init(title: String, info: String, estimatedCompletion: NSDate, repeatTime: String, alertTime: String, isComplete:Bool, isCanceled: Bool, isDeleted: Bool, dateFinished:String?, cancelReason: String?, deleteReason: String?, UUID: String){
         self.dateCompleted = dateFinished
         self.taskTitle = title
         self.taskInfo = info
-        self.completed = completed
-        self.canceled = canceled
-        self.deleted = deleted
+        self.repeating = repeatTime
+        self.alert = alertTime
+        self.completed = isComplete
+        self.canceled = isCanceled
+        self.deleted = isDeleted
         self.estimateCompletionDate = estimatedCompletion
         self.canceledReason = cancelReason
         self.deletedReason = deleteReason
