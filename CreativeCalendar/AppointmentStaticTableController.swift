@@ -37,7 +37,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var appointmentLocationTextBox: UITextField!
     @IBOutlet weak var additionalInfoTextBox: UITextView!
     @IBOutlet weak var appointmentPicker: UIPickerView!
-    @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     @IBOutlet weak var otherTextField: UITextField!
     @IBOutlet weak var repeatAppointmentTitle: UILabel!
     @IBOutlet weak var repeatAppointmentRightDetail: UILabel!
@@ -47,6 +46,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var otherEnterButton: UIButton!
     @IBOutlet weak var alertAppointmentRightDetail: UILabel!
     @IBOutlet weak var alertAppointmentTitle: UILabel!
+    @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     
     private var startDatePickerHidden = false
     private var endDatePickerHidden = false
@@ -238,19 +238,10 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 }
             }
             
-            // MARK TO-DO
-            print("Appointment Alert Times is empty == \(appointmentAlertTimes.isEmpty)")
-            if(!appointmentAlertTimes.isEmpty){
-                for app in appointmentAlertTimes{
-                    print("Alert Time : \(NSDateFormatter().dateWithTime.stringFromDate(app))")
-                }
-            }
-            
-            
-            
-            
             self.navigationController?.popToRootViewControllerAnimated(true)
-            }
+        }
+            
+        // Let the user know that some required fields are not filled in
         else{
             let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
             someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
@@ -342,13 +333,15 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         else if endDatePickerHidden && indexPath.section == 2 && indexPath.row == 3{
             return 0
         }
-        // Not sure how to get the correct picker view item.
+        // Hide the other tableview cell
         else if otherIsHidden && indexPath.section == 1 && indexPath.row == 2{
             return 0
         }
+        // Hide the repeat appointment table
         else if repeatAppointmentTableHidden && indexPath.section == 5 && indexPath.row == 1{
             return 0
         }
+        // Hide the alert appointment table
         else if alertAppointmentTableHidden && indexPath.section == 6 && indexPath.row == 1{
             return 0
         }

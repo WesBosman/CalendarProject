@@ -75,6 +75,10 @@ class RepeatTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         previousCell?.accessoryType = UITableViewCellAccessoryType.None
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 55
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Add an accessory checkmark to the selected cell
         if indexPath.row <= repeatDays.count && indexPath.section == 0{

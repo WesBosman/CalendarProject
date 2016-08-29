@@ -191,28 +191,78 @@ class AppointmentTableViewController: UITableViewController{
                 textField.placeholder = "Reason for Delete"
                 textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
             })
-
             
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
-                // Delete the row from the data source
-                let key = self.appointmentSections[indexPath.section]
-                print("Key for removal: \(key)")
-//                print("The value associated with the key: \(self.appointmentDaySections[key])")
-                self.appointmentDaySections[key]?.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
-                //Delete from database
-                appointmentForAction.completed = false
-                appointmentForAction.canceled = false
-                appointmentForAction.deleted = true
-                appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
-                self.db.updateAppointment(appointmentForAction)
+                let deleteAllAppointmentController = UIAlertController(title: "Delete All", message: "Would you like to delete all of the corresponding appointments of this type?", preferredStyle: .Alert)
+                let yesAction = UIAlertAction(title: "Delete All Appointments", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    
+                    print("Delete All Appointments")
+                    
+                    // Get all elements with the same title and type
+                    for key in self.appointmentDaySections.keys{
+                        // Get the section key
+                        if let k = self.appointmentDaySections[key]{
+                            // Get the appointment based on the key
+                            for app in k{
+                                // If the appointment title is equal to the one we are deleting 
+                                // Then remove it
+                                if app.title == appointmentForAction.title
+                                    && app.type == appointmentForAction.type
+                                    && app.appLocation == appointmentForAction.appLocation
+                                    && app.additionalInfo == appointmentForAction.additionalInfo{
+                                    
+                                    if let index = k.indexOf({$0.title == appointmentForAction.title}){
+                                        self.appointmentDaySections[key]?.removeAtIndex(index)
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    appointmentForAction.completed = false
+                    appointmentForAction.canceled = false
+                    appointmentForAction.deleted = true
+                    appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
+                    self.db.removeAllAppointmentsOfSameType(appointmentForAction, option: "delete")
+                    self.tableView.reloadData()
+                    
+                    
+                    })
+                
+                let noAction = UIAlertAction(title: "Delete This Appointment Only", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    
+                    print("Delete just this appointment")
+                    // Delete the row from the data source
+                    let key = self.appointmentSections[indexPath.section]
+                    print("Key for removal: \(key)")
+                    self.appointmentDaySections[key]?.removeAtIndex(indexPath.row)
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    
+                    //Delete from database
+                    appointmentForAction.completed = false
+                    appointmentForAction.canceled = false
+                    appointmentForAction.deleted = true
+                    appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
+                    self.db.updateAppointment(appointmentForAction)
+
+                    
+                    })
+                
+                let exitAction = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+                
+                deleteAllAppointmentController.addAction(yesAction)
+                deleteAllAppointmentController.addAction(noAction)
+                deleteAllAppointmentController.addAction(exitAction)
+                self.presentViewController(deleteAllAppointmentController, animated: true, completion: nil)
                 
             })
             self.actionToEnable = deleteAppointment
             deleteAppointment.enabled = false
             deleteOptions.addAction(deleteAppointment)
+//            deleteOptions.addAction(deleteAllAppointments)
             deleteOptions.addAction(exitMenu)
             
             self.presentViewController(deleteOptions, animated: true, completion: nil)

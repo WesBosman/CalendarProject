@@ -75,6 +75,10 @@ class AlertTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataS
         previousCell?.accessoryType = UITableViewCellAccessoryType.None
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 55
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(alertIdentifier)
         
