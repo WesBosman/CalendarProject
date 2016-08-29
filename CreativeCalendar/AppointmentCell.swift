@@ -16,7 +16,8 @@ class AppointmentCell: UITableViewCell {
     @IBOutlet weak var appointmentLocation: UILabel!
     @IBOutlet weak var appointmentAdditionalInfo: UILabel!
     @IBOutlet weak var appointmentCompletedImage: UIImageView!
-
+    @IBOutlet weak var appointmentAlert: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

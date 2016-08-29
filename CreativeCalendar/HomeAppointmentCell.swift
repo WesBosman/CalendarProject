@@ -9,6 +9,7 @@
 import UIKit
 
 class HomeAppointmentCell: UITableViewCell {
+    @IBOutlet weak var homeAppointmentAlert: UILabel!
     @IBOutlet weak var homeAppointmentTitle: UILabel!
     @IBOutlet weak var homeAppointmentImage: UIImageView!
     @IBOutlet weak var homeAppointmentStart: UILabel!

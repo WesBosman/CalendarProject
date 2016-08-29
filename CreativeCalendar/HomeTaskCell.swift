@@ -13,6 +13,7 @@ class HomeTaskCell: UITableViewCell {
     @IBOutlet weak var homeTaskTitle: UILabel!
     @IBOutlet weak var homeTaskInfo: UILabel!
     @IBOutlet weak var homeTaskCompletionDate: UILabel!
+    @IBOutlet weak var homeTaskAlertLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

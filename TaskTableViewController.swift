@@ -15,8 +15,9 @@ class TaskTableViewController: UITableViewController {
     private let db = DatabaseFunctions.sharedInstance
     private var taskSections: [String] = []
     private let taskDateFormatter = NSDateFormatter().dateWithoutTime
-    private var taskDayForSections: Dictionary<String, [TaskItem]> = [:]
+    var taskDayForSections: Dictionary<String, [TaskItem]> = [:]
     weak var actionToEnable: UIAlertAction?
+    private let defaults = NSUserDefaults.standardUserDefaults()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +62,16 @@ class TaskTableViewController: UITableViewController {
         for section in taskSections{
             taskList = db.getTaskByDate(section, formatter: taskDateFormatter)
             taskDayForSections.updateValue(taskList, forKey: section)
+            
+            // Trying to save as user defaults
+//            let data = NSKeyedArchiver.archivedDataWithRootObject(taskList)
+//            defaults.setObject(data, forKey: section)
+//            print("Section: \(section)")
+        }
+        
+        // Dont let the user add more than 64 tasks in one day
+        if taskList.count > 64{
+            self.navigationItem.rightBarButtonItem?.enabled = false
         }
         
         tableView.reloadData()
@@ -123,6 +134,12 @@ class TaskTableViewController: UITableViewController {
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
         cell.taskCompletionDate.text = "Complete by: \(NSDateFormatter().dateWithTime.stringFromDate(taskItem.estimateCompletionDate))"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
+        cell.taskAlert.text = "Alert: \(taskItem.alert)"
+        
+        // If the task item is past due color it red
+        if taskItem.isOverdue{
+            cell.taskCompletionDate.textColor = UIColor.redColor()
+        }
         return cell
     }
     

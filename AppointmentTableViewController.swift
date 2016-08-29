@@ -78,6 +78,7 @@ class AppointmentTableViewController: UITableViewController{
             defaults.setObject(appointmentList as? AnyObject, forKey: str)
         }
         
+        // If there are more than 64 appointments today do not let the user add more appointments
         if appointmentList.count > 64{
             self.navigationItem.rightBarButtonItem?.enabled = false
         }
@@ -136,7 +137,7 @@ class AppointmentTableViewController: UITableViewController{
         let tableSection = appointmentDaySections[appointmentSections[indexPath.section]]
         let appItem = tableSection![indexPath.row]
         
-            // If the current time is later than the starting time of the appointment then the color is set to red.
+        // If the current time is later than the starting time of the appointment then the color is set to red.
         if (appItem.isOverdue) {
             cell.appointmentStart.textColor = UIColor.redColor()
         }
@@ -159,6 +160,7 @@ class AppointmentTableViewController: UITableViewController{
         cell.appointmentEnd.text = endingTime
         cell.appointmentLocation.text = "Location: \(appItem.appLocation)"
         cell.appointmentAdditionalInfo.text = "Additional Info: \(appItem.additionalInfo)"
+        cell.appointmentAlert.text = "Alert: \(appItem.alert)"
         
         return cell
     }

@@ -139,6 +139,8 @@ extension CAGradientLayer{
 
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     
+    
+    @IBOutlet weak var taskAlertLabel: UILabel!
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var daysOfTheWeekText: UILabel!
@@ -536,6 +538,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.homeAppointmentEnd.text = "end: \(endFormatter.stringFromDate(appointment.endingTime))"
             appointmentCell.homeAppointmentLocation.text = "location: \(appointment.appLocation)"
             appointmentCell.homeAppointmentAdditional.text = "info: \(appointment.additionalInfo)"
+            appointmentCell.homeAppointmentAlert.text = "alert: \(appointment.alert)"
             
             return appointmentCell
         }
@@ -549,6 +552,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             taskCell.homeTaskCompletionDate.text = NSDateFormatter().dateWithTime.stringFromDate(task.estimateCompletionDate)
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
+            taskCell.homeTaskAlertLabel.text = "Alert: " + task.alert
+            
+            // Task has past its due date
+            if task.isOverdue{
+                taskCell.homeTaskCompletionDate.textColor = UIColor.redColor()
+            }
             return taskCell
         }
     }

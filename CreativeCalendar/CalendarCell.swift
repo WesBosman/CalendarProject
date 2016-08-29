@@ -68,6 +68,8 @@ class CalendarCell: JTAppleDayCellView{
         let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(cellDate, formatter: formatter)
         let journalList = DatabaseFunctions.sharedInstance.getJournalByDate(cellDate, formatter: formatter)
         
+//        let taskList = NSUserDefaults.standardUserDefaults().objectForKey(cellDate) as! [TaskItem]
+        
         for a in appointmentList{
             if cellDate == formatter.stringFromDate(a.startingTime){
                 self.appointmentCounter += 1

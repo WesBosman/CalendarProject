@@ -680,9 +680,12 @@ class DatabaseFunctions{
         
         do{
             let selectTask = "SELECT * FROM Appointments"
-//            let canceledStatement = "UPDATE Appointments SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
-//            let deletedStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
-//            let appointment = try db.executeQuery(selectTask, values: [item.canceled, currentDate, item.canceledReason!])
+            let canceledStatement = "UPDATE Appointments SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
+            let deletedStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
+            let appointment = try db.executeQuery(selectTask, values: [item.canceled, currentDate, item.canceledReason!])
+        }
+        catch let err as NSError{
+            print("Remove All Appointments ERROR: \(err.localizedDescription)")
         }
         
     }
@@ -774,7 +777,7 @@ class DatabaseFunctions{
             notification.alertAction = "open"
             notification.fireDate = newTime!
             notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["ALERT_UUID": item.UUID]
+            notification.userInfo = ["UUID": item.UUID]
             notification.category = "APPOINTMENT_CATEGORY"
             UIApplication.sharedApplication().scheduleLocalNotification(notification)
 
@@ -787,9 +790,9 @@ class DatabaseFunctions{
     func removeAppointmentNotification(item:AppointmentItem){
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {
             let identifier = notification.userInfo!["UUID"] as! String
-            let alertIdentifier = notification.userInfo!["ALERT_UUID"] as! String
+//            let alertIdentifier = notification.userInfo!["ALERT_UUID"] as! String
             
-            if (identifier == item.UUID || alertIdentifier == item.UUID){
+            if (identifier == item.UUID){
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
             }
         }
@@ -842,7 +845,7 @@ class DatabaseFunctions{
             notification.alertAction = "open"
             notification.fireDate = newStart!
             notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["ALERT_UUID": item.UUID]
+            notification.userInfo = ["UUID": item.UUID]
             notification.category = "TASK_CATEGORY"
             UIApplication.sharedApplication().scheduleLocalNotification(notification)
 
@@ -853,9 +856,9 @@ class DatabaseFunctions{
     func removeTaskNotification(item: TaskItem){
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications!{
             let identifier = notification.userInfo!["UUID"] as! String
-            let alertIdentifier = notification.userInfo!["ALERT_UUID"] as! String
+//            let alertIdentifier = notification.userInfo!["ALERT_UUID"] as! String
             
-            if (identifier == item.UUID || alertIdentifier == item.UUID){
+            if (identifier == item.UUID){
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
             }
         }
