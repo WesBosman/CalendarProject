@@ -195,59 +195,75 @@ class AppointmentTableViewController: UITableViewController{
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 
-                let deleteAllAppointmentController = UIAlertController(title: "Delete All", message: "Would you like to delete all of the corresponding appointments of this type?", preferredStyle: .Alert)
+                let deleteAllAppointmentController = UIAlertController(title: "Delete", message: "Would you like to delete all of the corresponding appointments of this type with this title?", preferredStyle: .Alert)
+                
                 let yesAction = UIAlertAction(title: "Delete All Appointments", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
                     print("Delete All Appointments")
                     
-                    // Get all elements with the same title and type
-                    for key in self.appointmentDaySections.keys{
-                        // Get the section key
-                        if let k = self.appointmentDaySections[key]{
-                            // Get the appointment based on the key
-                            for app in k{
-                                // If the appointment title is equal to the one we are deleting 
-                                // Then remove it
-                                if app.title == appointmentForAction.title
-                                    && app.type == appointmentForAction.type
-                                    && app.appLocation == appointmentForAction.appLocation
-                                    && app.additionalInfo == appointmentForAction.additionalInfo{
-                                    
-                                    if let index = k.indexOf({$0.title == appointmentForAction.title}){
-                                        self.appointmentDaySections[key]?.removeAtIndex(index)
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this appointment?", preferredStyle: .Alert)
+                    let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                        // Get all elements with the same title and type
+                        for key in self.appointmentDaySections.keys{
+                            // Get the section key
+                            if let k = self.appointmentDaySections[key]{
+                                // Get the appointment based on the key
+                                for app in k{
+                                    // If the appointment title is equal to the one we are deleting
+                                    // Then remove it
+                                    if app.title == appointmentForAction.title
+                                        && app.type == appointmentForAction.type
+                                        && app.appLocation == appointmentForAction.appLocation
+                                        && app.additionalInfo == appointmentForAction.additionalInfo{
                                         
+                                        if let index = k.indexOf({$0.title == appointmentForAction.title}){
+                                            self.appointmentDaySections[key]?.removeAtIndex(index)
+                                            
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    
-                    appointmentForAction.completed = false
-                    appointmentForAction.canceled = false
-                    appointmentForAction.deleted = true
-                    appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
-                    self.db.removeAllAppointmentsOfSameType(appointmentForAction, option: "delete")
-                    self.tableView.reloadData()
-                    
+                        appointmentForAction.completed = false
+                        appointmentForAction.canceled = false
+                        appointmentForAction.deleted = true
+                        appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
+                        self.db.removeAllAppointmentsOfSameType(appointmentForAction, option: "delete")
+                        self.tableView.reloadData()
+                    })
+                    let noConfirmation = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+
+                    confirmationController.addAction(yesConfirmation)
+                    confirmationController.addAction(noConfirmation)
+                    self.presentViewController(confirmationController, animated: true, completion: nil)
                     
                     })
                 
-                let noAction = UIAlertAction(title: "Delete This Appointment Only", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                let noAction = UIAlertAction(title: "Delete This Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
-                    print("Delete just this appointment")
-                    // Delete the row from the data source
-                    let key = self.appointmentSections[indexPath.section]
-                    print("Key for removal: \(key)")
-                    self.appointmentDaySections[key]?.removeAtIndex(indexPath.row)
-                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Delete only this appointment with title \(appointmentForAction.title)", preferredStyle: .Alert)
+                    let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                        
+                        // Delete the row from the data source
+                        let key = self.appointmentSections[indexPath.section]
+                        print("Key for removal: \(key)")
+                        self.appointmentDaySections[key]?.removeAtIndex(indexPath.row)
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                        
+                        //Delete from database
+                        appointmentForAction.completed = false
+                        appointmentForAction.canceled = false
+                        appointmentForAction.deleted = true
+                        appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
+                        self.db.updateAppointment(appointmentForAction)
+                        
+                    })
                     
-                    //Delete from database
-                    appointmentForAction.completed = false
-                    appointmentForAction.canceled = false
-                    appointmentForAction.deleted = true
-                    appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
-                    self.db.updateAppointment(appointmentForAction)
-
+                    let noConfirmation = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+                    
+                    confirmationController.addAction(yesConfirmation)
+                    confirmationController.addAction(noConfirmation)
+                    self.presentViewController(confirmationController, animated: true, completion: nil)
                     
                     })
                 
@@ -343,8 +359,6 @@ class AppointmentTableViewController: UITableViewController{
         if segue.identifier == "Home"{
             let view = segue.destinationViewController as! HomeViewController
             let indexPath = sender as! NSIndexPath
-            
-            
         }
     }
     */

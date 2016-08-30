@@ -160,18 +160,90 @@ class TaskTableViewController: UITableViewController {
             
             let deleteTask = UIAlertAction(title: "Delete Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
-                // Delete the row from the data source
-                let key = self.taskSections[indexPath.section]
-                print("Key for removal: \(key)")
-                self.taskDayForSections[key]?.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                let deleteAllTasksController = UIAlertController(title: "Delete", message: "Would you like to delete all tasks of this type with this title", preferredStyle: .Alert)
                 
-                //Delete from database
-                taskForAction.completed = false
-                taskForAction.canceled = false
-                taskForAction.deleted = true
-                taskForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
-                self.db.updateTask(taskForAction)
+                let deleteAllAction = UIAlertAction(title: "Delete All Tasks", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this task with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+                    
+                    let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                        
+                        // Delete the row from the data source
+                        // Get all elements with the same title and type
+                        for key in self.taskDayForSections.keys{
+                            // Get the section key
+                            if let k = self.taskDayForSections[key]{
+                                // Get the appointment based on the key
+                                for task in k{
+                                    // If the appointment title is equal to the one we are deleting
+                                    // Then remove it
+                                    if task.taskTitle == taskForAction.taskTitle
+                                        && task.taskInfo == taskForAction.taskInfo{
+                                        
+                                        if let index = k.indexOf({$0.taskTitle == taskForAction.taskTitle}){
+                                            self.taskDayForSections[key]?.removeAtIndex(index)
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        taskForAction.completed = false
+                        taskForAction.canceled = false
+                        taskForAction.deleted = true
+                        taskForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
+                        self.db.removeAllTasksOfSameType(taskForAction, option: "delete")
+                        self.tableView.reloadData()
+                        
+                        
+                    })
+                    
+                    let noConfirmation = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+                    
+                    confirmationController.addAction(yesConfirmation)
+                    confirmationController.addAction(noConfirmation)
+                    self.presentViewController(confirmationController, animated: true, completion: nil)
+
+                
+                
+                })
+                let deleteOneAction = UIAlertAction(title: "Delete This Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this task with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+                    
+                    let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                        
+                        // Delete the row from the data source
+                        let key = self.taskSections[indexPath.section]
+                        print("Key for removal: \(key)")
+                        self.taskDayForSections[key]?.removeAtIndex(indexPath.row)
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                        
+                        //Delete from database
+                        taskForAction.completed = false
+                        taskForAction.canceled = false
+                        taskForAction.deleted = true
+                        taskForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
+                        self.db.updateTask(taskForAction)
+
+                        
+                    })
+                    
+                    let noConfirmation = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+                    
+                    confirmationController.addAction(yesConfirmation)
+                    confirmationController.addAction(noConfirmation)
+                    self.presentViewController(confirmationController, animated: true, completion: nil)
+                    
+                })
+                
+                let exitAction = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+                
+                deleteAllTasksController.addAction(deleteAllAction)
+                deleteAllTasksController.addAction(deleteOneAction)
+                deleteAllTasksController.addAction(exitAction)
+                self.presentViewController(deleteAllTasksController, animated: true, completion: nil)
+                
                 
             })
             self.actionToEnable = deleteTask

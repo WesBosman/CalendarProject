@@ -38,7 +38,7 @@ class DatabaseFunctions{
         do{
             try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
             
-            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
+            try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text ,repeat_time, alert_time, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
             
             try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, delete_reason, uuid text)", values: nil)
             
@@ -682,6 +682,7 @@ class DatabaseFunctions{
             let appointment = try db.executeQuery(selectAppointment, values: [item.title, item.type, false])
             
             let canceledStatement = "UPDATE Appointments SET canceled=?, date_canceled=?, cancel_reason=? WHERE title=? AND type=?"
+            
             let deletedStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE title=? AND type=?"
             
             while (appointment.next()){
@@ -710,6 +711,8 @@ class DatabaseFunctions{
         
     }
     
+    // MARK - TODO 
+    
     func removeAllTasksOfSameType(item: TaskItem, option: String){
         let db = makeDb
         
@@ -724,9 +727,11 @@ class DatabaseFunctions{
         let currentDateAsString = dateFormat.stringFromDate(NSDate())
         
         do{
-            let selectTask = "SELECT completed, canceled, deleted FROM Tasks WHERE title=? AND additional=?"
-            let task = try db.executeQuery(selectTask, values: [item.taskTitle, item.taskInfo])
+            let selectTask = "SELECT task, additional, repeat_time, alert_time, completed, canceled, deleted, cancel_reason, dekete_reason FROM Tasks WHERE title=? AND additional=? AND deleted=?"
+            
+            let task = try db.executeQuery(selectTask, values: [item.taskTitle, item.taskInfo, false])
             let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE title=? AND additional=?"
+            
             let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE title=? AND additional=?"
             
             while(task.next()){
