@@ -93,6 +93,8 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, OR
         startButton.layer.borderColor = UIColor().defaultButtonColor.CGColor
         startButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         startButton.backgroundColor = UIColor().defaultButtonColor
+        // Make the user login everytime they enter the application
+        defaults.removeObjectForKey(loginKey)
     }
     
     // Clear all NSUser Defaults
@@ -115,17 +117,17 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, OR
 //        registrationViewController.delegate = self
 //        self.presentViewController(registrationViewController, animated: true, completion: nil)
 
-        
-        if defaults.boolForKey(defaultsConsentKey) == false{
-            let taskViewController = ORKTaskViewController(task: Consent, taskRunUUID: nil)
-            taskViewController.delegate = self
-            self.presentViewController(taskViewController, animated: true, completion: nil)
-        }
-        else{
-            startButton.hidden = false
-            greetingLabel.hidden = false
-            headingLabel.hidden = false
-        }
+          // This code is for consent
+//        if defaults.boolForKey(defaultsConsentKey) == false{
+//            let taskViewController = ORKTaskViewController(task: Consent, taskRunUUID: nil)
+//            taskViewController.delegate = self
+//            self.presentViewController(taskViewController, animated: true, completion: nil)
+//        }
+//        else{
+//            startButton.hidden = false
+//            greetingLabel.hidden = false
+//            headingLabel.hidden = false
+//        }
         
         
         // Is the passcode already stored in the keychain
@@ -178,7 +180,8 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, OR
         
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         //Handle results with taskViewController.result
-        defaults.setBool(true, forKey: defaultsConsentKey)
+        
+//        defaults.setBool(true, forKey: defaultsConsentKey)
         taskViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     

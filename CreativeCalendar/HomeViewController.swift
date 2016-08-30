@@ -218,6 +218,26 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         return newText! as String
     }
     
+//    @IBAction func homeTaskLongPress(sender: AnyObject) {
+//        if sender.state == UIGestureRecognizerState.Began{
+//            let pointPressed: CGPoint = sender.locationInView(taskViewTable)
+//            if let indexPath: NSIndexPath = taskViewTable.indexPathForRowAtPoint(pointPressed){
+//                let createTaskController = TaskStaticTableViewController()
+//                self.presentViewController(createTaskController, animated: true, completion: nil)
+//            }
+//        }
+//    }
+//    
+//    @IBAction func homeAppointmentLongPress(sender: AnyObject) {
+//        if sender.state == UIGestureRecognizerState.Began{
+//            let pointPressed: CGPoint = sender.locationInView(appointmentViewTable)
+//            if let indexPath: NSIndexPath = appointmentViewTable.indexPathForRowAtPoint(pointPressed){
+//                
+//            }
+//        }
+//    }
+    
+    
     // Clear all NSUser Defaults
 //    func clearAllUserDefaults(){
 //        //The below two lines of code can clear out NSUser Defaults
@@ -531,7 +551,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.homeAppointmentCompleted(appointment)
             
             // Set the other images and labels.
-            appointmentCell.homeAppointmentImage.image = UIImage(named: "Calendar")
+            appointmentCell.homeAppointmentImage.image = UIImage(named: "Appointments")
             appointmentCell.homeAppointmentTitle.text = appointment.title
             appointmentCell.homeAppointmentType.text = "type: \(appointment.type)"
             appointmentCell.homeAppointmentStart.text = "start: \(startFormatter.stringFromDate(appointment.startingTime))"
@@ -553,6 +573,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             taskCell.homeTaskAlertLabel.text = "Alert: " + task.alert
+            taskCell.homeTaskTypeImage.image = UIImage(named: "Tasks")
             
             // Task has past its due date
             if task.isOverdue{

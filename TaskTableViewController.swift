@@ -162,8 +162,10 @@ class TaskTableViewController: UITableViewController {
                 
                 let deleteAllTasksController = UIAlertController(title: "Delete", message: "Would you like to delete all tasks of this type with this title", preferredStyle: .Alert)
                 
+                // Delete all tasks
                 let deleteAllAction = UIAlertAction(title: "Delete All Tasks", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
+                    // Confirmation controller
                     let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete All Tasks with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
                     
                     let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
@@ -205,8 +207,11 @@ class TaskTableViewController: UITableViewController {
                 
                 
                 })
+                
+                // Delete only that task
                 let deleteOneAction = UIAlertAction(title: "Delete This Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
+                    // Confirmation controller
                     let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this task with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
                     
                     let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in

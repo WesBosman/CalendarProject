@@ -14,7 +14,8 @@ class HomeTaskCell: UITableViewCell {
     @IBOutlet weak var homeTaskInfo: UILabel!
     @IBOutlet weak var homeTaskCompletionDate: UILabel!
     @IBOutlet weak var homeTaskAlertLabel: UILabel!
-
+    @IBOutlet weak var homeTaskTypeImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
