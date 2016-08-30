@@ -686,12 +686,12 @@ class DatabaseFunctions{
             let deletedStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE title=? AND type=?"
             
             while (appointment.next()){
-                print("Appointments gathered")
-                let title = appointment.stringForColumn("title")
-                let type = appointment.stringForColumn("type")
-                
-                print("Appointment Title: \(title)")
-                print("Appointment Type: \(type)")
+//                print("Appointments gathered")
+//                let title = appointment.stringForColumn("title")
+//                let type = appointment.stringForColumn("type")
+//                
+//                print("Appointment Title: \(title)")
+//                print("Appointment Type: \(type)")
                 
                 switch(option){
                     case "cancel":
@@ -727,12 +727,12 @@ class DatabaseFunctions{
         let currentDateAsString = dateFormat.stringFromDate(NSDate())
         
         do{
-            let selectTask = "SELECT task, additional, repeat_time, alert_time, completed, canceled, deleted, cancel_reason, dekete_reason FROM Tasks WHERE title=? AND additional=? AND deleted=?"
+            let selectTask = "SELECT task, additional, repeat_time, alert_time, completed, canceled, deleted, cancel_reason, delete_reason FROM Tasks WHERE task=? AND additional=? AND deleted=?"
             
             let task = try db.executeQuery(selectTask, values: [item.taskTitle, item.taskInfo, false])
-            let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE title=? AND additional=?"
+            let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE task=? AND additional=?"
             
-            let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE title=? AND additional=?"
+            let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE task=? AND additional=?"
             
             while(task.next()){
                 switch(option){

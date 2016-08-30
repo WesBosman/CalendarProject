@@ -224,8 +224,6 @@ class AppointmentTableViewController: UITableViewController{
                                 }
                             }
                         }
-                        appointmentForAction.completed = false
-                        appointmentForAction.canceled = false
                         appointmentForAction.deleted = true
                         appointmentForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
                         self.db.removeAllAppointmentsOfSameType(appointmentForAction, option: "delete")

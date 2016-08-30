@@ -164,7 +164,7 @@ class TaskTableViewController: UITableViewController {
                 
                 let deleteAllAction = UIAlertAction(title: "Delete All Tasks", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                     
-                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this task with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete All Tasks with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
                     
                     let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                         
@@ -188,8 +188,6 @@ class TaskTableViewController: UITableViewController {
                                 }
                             }
                         }
-                        taskForAction.completed = false
-                        taskForAction.canceled = false
                         taskForAction.deleted = true
                         taskForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
                         self.db.removeAllTasksOfSameType(taskForAction, option: "delete")
