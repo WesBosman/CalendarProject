@@ -30,13 +30,13 @@ class HomeAppointmentCell: UITableViewCell {
     
     func homeAppointmentCompleted(appointment:AppointmentItem){
         if appointment.completed == true{
-            homeAppointmentCompletedImage.image = UIImage(named:"CircleTickedGreen")
+            homeAppointmentCompletedImage.image = UIImage(named: "checkbox") //"CircleTickedGreen")
         }
         else if appointment.completed == false && appointment.canceled == false && appointment.deleted == false{
-            homeAppointmentCompletedImage.image = UIImage(named: "EmptyCircle")
+            homeAppointmentCompletedImage.image = UIImage(named: "EmptyBox") //"EmptyCircle")
         }
         else{
-            homeAppointmentCompletedImage.image = UIImage(named:"CircleUntickedRed")
+            homeAppointmentCompletedImage.image = UIImage(named: "uncheckbox") //"CircleUntickedRed")
         }
     }
 }

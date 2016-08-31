@@ -123,6 +123,7 @@ class JournalTableViewController: UITableViewController {
         let journalItem = tableSection![indexPath.row] as JournalItem
         
         cell.textLabel!.text = journalItem.getSimplifiedDate()
+        cell.imageView?.image = UIImage(named: "Journals")
         cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel!.text = journalItem.journalEntry

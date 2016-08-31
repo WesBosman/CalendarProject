@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var dbFilePath: NSString = NSString()
     let defaults = NSUserDefaults.standardUserDefaults()
     let loginKey = "UserLogin"
-    let forgotLoginKey = "UserForgotLogin"
     
     // Set up the global dictionaries for the calendars and tables
     let db = DatabaseFunctions.sharedInstance
@@ -40,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         
         NSNotificationCenter.defaultCenter().postNotificationName("AppointmentListShouldRefresh", object: self)
+        NSNotificationCenter.defaultCenter().postNotificationName("TaskListShouldRefresh", object: self)
+        
         // If the app is running the user will not recieve a notification so we should alert them.
         // We could also add a badge to the tab bar for appointments.
         let state: UIApplicationState = UIApplication.sharedApplication().applicationState
@@ -53,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let hostController = self.window?.rootViewController{
 
         if state == UIApplicationState.Active{
-            let db = DatabaseFunctions.sharedInstance
             print("Date in App Delegate: \(dateFormatter.stringFromDate(newDate!))")
             print("Date for Db fetch: \(dateFormatter.stringFromDate(date))")
             
@@ -64,17 +64,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Get the title of the appointment based on the notification fire date
             let appointment = db.getAppointmentByDate(dateFormatter.stringFromDate(newDate!), formatter: dateFormatter)
             
+            let task = db.getTaskByDate(dateFormatter.stringFromDate(newDate!), formatter: dateFormatter)
+            
+            // Get the appointment that has started the notification
             for app in appointment{
-            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(app.title)", preferredStyle: .Alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                let alert: UIAlertController = UIAlertController(title: "Alert", message: "Appointment is starting: \(app.title)", preferredStyle: .Alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
                             alert.addAction(dismissAction)
             
             
-            // Update the badge for the appointments.
-            if let tbc: UITabBarController = self.window?.rootViewController as? UITabBarController{
-                tbc.tabBar.items?[1].badgeValue = "1"
+                // Update the badge for the appointments.
+                if let tbc: UITabBarController = self.window?.rootViewController as? UITabBarController{
+                    tbc.tabBar.items?[1].badgeValue = "1"
+                }
+                currentController.presentViewController(alert, animated: true, completion: nil)
             }
-            currentController.presentViewController(alert, animated: true, completion: nil)
+            
+            // Get the task that has started the notification
+            for t in task{
+                let alert: UIAlertController = UIAlertController(title: "Alert", message: "Task is starting: \(t.taskTitle)", preferredStyle: .Alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                alert.addAction(dismissAction)
+                
+                // Update the badge for tasks.
+                if let tbc: UITabBarController = self.window?.rootViewController as? UITabBarController{
+                    tbc.tabBar.items?[2].badgeValue = "1"
+                }
             }
             }
         }
@@ -84,6 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        defaults.removeObjectForKey(loginKey)
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
@@ -91,7 +107,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         defaults.removeObjectForKey(loginKey)
-        defaults.removeObjectForKey(forgotLoginKey)
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -101,7 +116,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         NSNotificationCenter.defaultCenter().postNotificationName("AppointmentListShouldRefresh", object: self)
+        NSNotificationCenter.defaultCenter().postNotificationName("TaskListShouldRefresh", object:self)
         
+        // Initially get the appointments, tasks and journals from the database and put them
+        // Into globally accessible dictionaries
         setUpAppointments()
         setUpTasks()
         setUpJournals()
@@ -183,10 +201,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        defaults.removeObjectForKey(loginKey)
-        defaults.removeObjectForKey(forgotLoginKey)
     }
-
-
 }
 

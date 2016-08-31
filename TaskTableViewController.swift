@@ -31,6 +31,9 @@ class TaskTableViewController: UITableViewController {
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
         nav?.tintColor = UIColor.blueColor()
+        NSNotificationCenter
+            .defaultCenter()
+            .addObserver(self, selector: #selector(TaskTableViewController.refreshList), name: "TaskListShouldRefresh", object: nil)
     }
     
     // Failable Initializer for tab bar controller
@@ -73,10 +76,6 @@ class TaskTableViewController: UITableViewController {
             
             // Set up the global dictionary
             GlobalTasks.taskDictionary = taskDayForSections
-            
-//            for (date, taskList) in GlobalTasks.taskDictionary{
-//                print("Date: \(date) taskList: \(taskList)")
-//            }
         }
         
         // Dont let the user add more than 64 tasks in one day
