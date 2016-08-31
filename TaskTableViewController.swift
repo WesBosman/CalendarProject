@@ -8,6 +8,10 @@
 
 import UIKit
 
+struct GlobalTasks{
+    static var taskDictionary:Dictionary<String, [TaskItem]> = [:]
+}
+
 class TaskTableViewController: UITableViewController {
     private let taskId = "TaskCells"
     private var taskList:[TaskItem] = []
@@ -60,13 +64,19 @@ class TaskTableViewController: UITableViewController {
         }
         
         for section in taskSections{
+            
+            // Get tasks from database based on date
             taskList = db.getTaskByDate(section, formatter: taskDateFormatter)
+            
+            // Set the task dictionary up
             taskDayForSections.updateValue(taskList, forKey: section)
             
-            // Trying to save as user defaults
-//            let data = NSKeyedArchiver.archivedDataWithRootObject(taskList)
-//            defaults.setObject(data, forKey: section)
-//            print("Section: \(section)")
+            // Set up the global dictionary
+            GlobalTasks.taskDictionary = taskDayForSections
+            
+//            for (date, taskList) in GlobalTasks.taskDictionary{
+//                print("Date: \(date) taskList: \(taskList)")
+//            }
         }
         
         // Dont let the user add more than 64 tasks in one day

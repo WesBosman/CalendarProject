@@ -26,7 +26,6 @@ extension NSDate
     }
 }
 
-
 class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
     @IBOutlet weak var appointmentNameTextField: UITextField!

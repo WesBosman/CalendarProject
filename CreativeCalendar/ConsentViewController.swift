@@ -93,6 +93,7 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, OR
         startButton.layer.borderColor = UIColor().defaultButtonColor.CGColor
         startButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         startButton.backgroundColor = UIColor().defaultButtonColor
+        
         // Make the user login everytime they enter the application
         defaults.removeObjectForKey(loginKey)
     }
@@ -128,7 +129,9 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, OR
 //            greetingLabel.hidden = false
 //            headingLabel.hidden = false
 //        }
-        
+        startButton.hidden = true
+        greetingLabel.hidden = true
+        headingLabel.hidden = true
         
         // Is the passcode already stored in the keychain
         if PasscodeViewController.isPasscodeStoredInKeychain() == true{
@@ -153,7 +156,7 @@ class ConsentViewController: UIViewController, ORKTaskViewControllerDelegate, OR
                     self.presentViewController(passcodeViewController, animated: true, completion: nil)
                     startButton.hidden = true
                     greetingLabel.hidden = true
-                    headingLabel.hidden = false
+                    headingLabel.hidden = true
                 }
             }
             else{

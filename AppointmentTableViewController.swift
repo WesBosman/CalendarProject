@@ -9,6 +9,10 @@
 
 import UIKit
 
+struct GlobalAppointments{
+    static var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
+}
+
 class AppointmentTableViewController: UITableViewController{
     
     private let cellID = "AppointmentCells"
@@ -52,6 +56,7 @@ class AppointmentTableViewController: UITableViewController{
     
     // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){
+        
         // Get all appointments that are not marked as deleted.
         appointmentList = db.getAllAppointments()
         
@@ -75,7 +80,10 @@ class AppointmentTableViewController: UITableViewController{
             // Add those items to the dictionary that the table view relies on
             appointmentDaySections.updateValue(appointmentList, forKey: str)
             
-            defaults.setObject(appointmentList as? AnyObject, forKey: str)
+            // Set the global dictionary up
+            GlobalAppointments.appointmentDictionary = appointmentDaySections
+            
+//            defaults.setObject(appointmentList as? AnyObject, forKey: str)
         }
         
         // If there are more than 64 appointments today do not let the user add more appointments

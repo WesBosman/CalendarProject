@@ -30,12 +30,20 @@ class DatabaseFunctions{
         let fileURL = documents.URLByAppendingPathComponent("Database.sqlite")
         
         let db = FMDatabase(path: fileURL.path)
+        
+        // Set encryption key
+//        db.setKey("SarahLEncrypt")
+        
         // If the database is not open for editing then make it editable
         if(!db.open()){
             db.open()
         }
         // Create the three tables for storing our information.
         do{
+            print("Application ID: \(db.applicationID())")
+            
+//            try db.executeUpdate("ATTACH database ? AS encrypted KEY ?", values: [db, "SarahLEncrypt"])
+
             try db.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
             
             try db.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text ,repeat_time, alert_time, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
@@ -43,7 +51,7 @@ class DatabaseFunctions{
             try db.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, delete_reason, uuid text)", values: nil)
             
             // Get DatabasePath
-            NSLog("Database File Path: \(fileURL.path!)")
+            print("Database File Path: \(fileURL.path!)")
             
         }
         catch let err as NSError{

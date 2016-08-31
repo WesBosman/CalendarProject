@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class JournalViewController: UIViewController, UITextViewDelegate {
 
     // Text box for user to enter journal enteries

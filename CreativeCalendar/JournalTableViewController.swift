@@ -8,6 +8,10 @@
 
 import UIKit
 
+struct GlobalJournals{
+    static var journalDictionary: Dictionary<String, [JournalItem]> = [:]
+}
+
 class JournalTableViewController: UITableViewController {
     private var journalItems:[JournalItem] = []
     private let journalIdentifier = "Journal Cells"
@@ -44,21 +48,28 @@ class JournalTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         journalItems = db.getAllJournals()
+        
         // Sort the journals based on their dates
         journalItems = journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
         
         for journal in journalItems{
             let journalDate = journalDateFormatter.stringFromDate(journal.journalDate)
             
+            // If the journal sections array does not contain the date then add it
             if(!journalSections.contains(journalDate)){
                 journalSections.append(journalDate)
-                print("Journal Date: \(journalDate)")
             }
         }
         
         for section in journalSections{
+            // Get journal items based on the date
             journalItems = db.getJournalByDate(section, formatter: journalDateFormatter)
+            
+            // Set the table view controllers dictionary
             journalDayForSection.updateValue(journalItems, forKey: section)
+            
+            // Set the global journal dictionary
+            GlobalJournals.journalDictionary = journalDayForSection
         }
         tableView.reloadData()
     }

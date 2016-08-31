@@ -64,31 +64,28 @@ class CalendarCell: JTAppleDayCellView{
     func setUpCellDots(cellState: CellState){
         // Get all the scheduled appointments from the database.
         let cellDate = formatter.stringFromDate(cellState.date)
-        let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(cellDate, formatter:  formatter)
-        let taskList = DatabaseFunctions.sharedInstance.getTaskByDate(cellDate, formatter: formatter)
-        let journalList = DatabaseFunctions.sharedInstance.getJournalByDate(cellDate, formatter: formatter)
         
-//        let taskList = NSUserDefaults.standardUserDefaults().objectForKey(cellDate) as! [TaskItem]
+        // Use dictionaries for fast loading of the calendar
+        let appointmentDictionary = GlobalAppointments.appointmentDictionary
+        let taskDictionary = GlobalTasks.taskDictionary
+        let journalDictionary = GlobalJournals.journalDictionary
         
-        for a in appointmentList{
-            if cellDate == formatter.stringFromDate(a.startingTime){
-                self.appointmentCounter += 1
-                self.drawAppointment = true
-            }
+        if let appointmentList = appointmentDictionary[cellDate]{
+//            print("Appointment List: \(appointmentList)")
+            self.appointmentCounter = appointmentList.count
+            self.drawAppointment = true
         }
         
-        for t in taskList{
-            if cellDate == formatter.stringFromDate(t.estimateCompletionDate){
-                self.taskCounter += 1
-                self.drawTask = true
-            }
+        if let taskList = taskDictionary[cellDate]{
+//            print("Task List: \(taskList)")
+            self.taskCounter = taskList.count
+            self.drawTask = true
         }
         
-        for j in journalList{
-            if cellDate == formatter.stringFromDate(j.journalDate){
-                self.journalCounter += 1
-                self.drawJournal = true
-            }
+        if let journalList = journalDictionary[cellDate]{
+//            print("Journal List: \(journalList)")
+            self.journalCounter = journalList.count
+            self.drawJournal = true
         }
     }
     
