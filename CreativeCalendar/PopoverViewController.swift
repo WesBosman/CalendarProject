@@ -24,12 +24,12 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     var taskList:[TaskItem] = []
     var journalList:[JournalItem] = []
     var selectedDate:NSDate = NSDate()
+    var journalCellHeightArray: [CGFloat] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view. 
-        
+        // Do any additional setup after loading the view.
         appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
         
         taskList = DatabaseFunctions.sharedInstance.getTaskByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
@@ -50,6 +50,8 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         self.journalTableView.delegate = self
         self.journalTableView.dataSource = self
         self.view.addSubview(scrollView)
+        
+//        journalTableView.registerClass(JournalCell.self, forCellReuseIdentifier: "JournalPopover")
         
         for index in 0..<3 {
             
@@ -163,17 +165,36 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             return cell
         }
         else{
+            // TO-DO How to poisitin the text so its readable even if the text is large
+            
             let journal = journalList[indexPath.row] as JournalItem
             let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "JournalPopover")
+//            let cell:JournalCell = JournalCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "JournalPopover")
+//            cell.journalCellTitle.text = journal.getSimplifiedDate()
+//            cell.journalCellSubtitle.text = journal.journalEntry
+            
             cell.textLabel?.text = journal.getSimplifiedDate()
             cell.detailTextLabel?.text = journal.journalEntry
             cell.detailTextLabel?.numberOfLines = 0
             cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            cell.textLabel?.sizeToFit()
+            cell.detailTextLabel?.sizeToFit()
+            
+            let journalTitleHeight = cell.textLabel?.frame.height
+            let journalSubtitleHeight = cell.textLabel?.frame.height
+            let combinedHeight = journalTitleHeight! + journalSubtitleHeight!
+            print("Journal Combined Height: \(combinedHeight)")
+            
+            journalCellHeightArray.append(combinedHeight)
+            cell.sizeToFit()
             return cell
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if tableView == journalTableView{
+            return 300
+        }
         return 100
     }
 }

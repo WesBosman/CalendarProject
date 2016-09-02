@@ -20,7 +20,12 @@ class JournalTableViewController: UITableViewController {
     private var journalSections: [String] = []
     private let journalDateFormatter = NSDateFormatter().dateWithoutTime
     weak var actionToEnable: UIAlertAction?
-
+    private var selectedIndexPath: NSIndexPath?
+    private var isExpanded: Bool = false
+    private var cellHeightDictionary: Dictionary<Int, [CGFloat]> = [:]
+    private var cellHeightArray: [CGFloat] = []
+    private var previousSection = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
@@ -49,6 +54,9 @@ class JournalTableViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         journalItems = db.getAllJournals()
         
+        // Reset previous section to zero
+        previousSection = 0
+
         // Sort the journals based on their dates
         journalItems = journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
         
@@ -86,7 +94,8 @@ class JournalTableViewController: UITableViewController {
         return journalDayForSection[journalSections[section]]!.count
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    {
         if !journalSections[section].isEmpty{
             return journalSections[section]
         }
@@ -118,17 +127,51 @@ class JournalTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(journalIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(journalIdentifier, forIndexPath: indexPath) as! JournalCell
         let tableSection = journalDayForSection[journalSections[indexPath.section]]
         let journalItem = tableSection![indexPath.row] as JournalItem
         
-        cell.textLabel!.text = journalItem.getSimplifiedDate()
-        cell.imageView?.image = UIImage(named: "Journals")
-        cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel!.text = journalItem.journalEntry
+        cell.journalCellTitle.text = journalItem.getSimplifiedDate()
+        cell.journalCellImage.image = UIImage(named: "Journals")
+        cell.journalCellSubtitle.text = journalItem.journalEntry
         
+        // The background is to let me know the size of what is stored in the cell
+//        cell.journalCellTitle.backgroundColor = UIColor.cyanColor()
+//        cell.journalCellSubtitle.backgroundColor = UIColor.greenColor()
+        cell.journalCellTitle.sizeToFit()
+        cell.journalCellSubtitle.sizeToFit()
+        
+        let titleHeight = cell.journalCellTitle.frame.height
+        let subtitleHeight = cell.journalCellSubtitle.frame.height
+        let combinedHeight = titleHeight + subtitleHeight
+        let section = indexPath.section
+        
+        createHeightForJournal(section, combinedHeight: combinedHeight)
+        
+//        print("Title Height: \(titleHeight)")
+//        print("Subtitle Height: \(subtitleHeight)")
+        
+        cell.detailTextLabel?.backgroundColor = UIColor.cyanColor()
         return cell
+    }
+    
+    func createHeightForJournal(section: Int, combinedHeight: CGFloat){
+        // Set up the dictionary for each cell so we can adjust its height based on whats stored in the journal entry
+        if previousSection == section{
+            cellHeightArray.append(combinedHeight)
+            cellHeightDictionary.updateValue(cellHeightArray, forKey: section)
+        }
+            // If there is a new section increment the previous section and create a new array for storing the height of elements in the next section
+        else{
+            previousSection += 1
+            cellHeightArray = []
+            cellHeightArray.append(combinedHeight)
+        }
+        
+//        print("Title Height + Subtitle Height: \(combinedHeight)")
+//        print("Section: \(section)")
+//        print("Cell Height Array: \(cellHeightArray)")
+
     }
 
     
@@ -173,11 +216,46 @@ class JournalTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+        
+        let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! JournalCell
+        selectedIndexPath = tableView.indexPathForCell(selectedCell)
+        
+        if selectedIndexPath!.row == indexPath.row && selectedIndexPath?.section == indexPath.section{
+            toggleExpanded()
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if isExpanded && selectedIndexPath?.row == indexPath.row && selectedIndexPath?.section == indexPath.section{
+            for (key, value) in cellHeightDictionary{
+                print("Key: \(key)")
+                print("Value: \(value)")
+            }
+            if let heightArray = cellHeightDictionary[indexPath.section]{
+                print("Height Array: \(heightArray)")
+                print("Height Of Cell: \(heightArray[indexPath.row])")
+                return heightArray[indexPath.row]
+            }
+            else{
+                print("Return 350")
+                return 350
+            }
+        }
+        else{
+            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        }
+    }
+    
     func textChanged(sender:UITextField) {
         self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
     }
-
     
+    func toggleExpanded(){
+        isExpanded = !isExpanded
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
 
     /*
     // MARK: - Navigation

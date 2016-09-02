@@ -1171,35 +1171,97 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Journal Cells" textLabel="b1j-FA-ePf" detailTextLabel="9ru-iE-1KK" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="KEF-lW-tvd">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Journal Cells" rowHeight="100" id="KEF-lW-tvd" customClass="JournalCell" customModule="CreativeCalendar" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KEF-lW-tvd" id="Ucc-G4-fA0">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="99.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="553" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b1j-FA-ePf">
-                                            <rect key="frame" x="15" y="30" width="33.5" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBR-ea-XGl">
+                                            <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=regular">
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9ru-iE-1KK">
-                                            <rect key="frame" x="15" y="50.5" width="59" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RY3-Sy-jlS">
+                                            <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="601" id="awS-XT-btx">
+                                                    <variation key="heightClass=regular-widthClass=regular" constant="633"/>
+                                                </constraint>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="awS-XT-btx"/>
+                                                </mask>
+                                            </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
-                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                <mask key="constraints">
+                                                    <include reference="awS-XT-btx"/>
+                                                </mask>
                                             </variation>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PSJ-tV-M4W">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                                <rect key="frame" x="8" y="24" width="35" height="35"/>
+                                            </variation>
+                                        </imageView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="RY3-Sy-jlS" firstAttribute="top" secondItem="RBR-ea-XGl" secondAttribute="bottom" constant="8" symbolic="YES" id="IQq-lV-UNa"/>
+                                        <constraint firstItem="RY3-Sy-jlS" firstAttribute="top" secondItem="Ucc-G4-fA0" secondAttribute="topMargin" constant="45" id="NLC-Ko-9kE"/>
+                                        <constraint firstItem="PSJ-tV-M4W" firstAttribute="centerY" secondItem="Ucc-G4-fA0" secondAttribute="centerY" id="TXs-0g-MYi"/>
+                                        <constraint firstItem="RY3-Sy-jlS" firstAttribute="leading" secondItem="RBR-ea-XGl" secondAttribute="leading" id="b7j-rR-jYL"/>
+                                        <constraint firstItem="RY3-Sy-jlS" firstAttribute="trailing" secondItem="RBR-ea-XGl" secondAttribute="trailing" id="iZ3-8I-Wau"/>
+                                        <constraint firstAttribute="trailing" secondItem="RY3-Sy-jlS" secondAttribute="trailing" id="l5X-Lu-etG"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="RY3-Sy-jlS" secondAttribute="bottom" constant="17.5" id="waX-4r-OTl"/>
+                                        <constraint firstAttribute="leadingMargin" secondItem="PSJ-tV-M4W" secondAttribute="leading" id="yD5-W9-gjp"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="subviews">
+                                            <exclude reference="RBR-ea-XGl"/>
+                                            <exclude reference="RY3-Sy-jlS"/>
+                                            <exclude reference="PSJ-tV-M4W"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <exclude reference="IQq-lV-UNa"/>
+                                            <exclude reference="NLC-Ko-9kE"/>
+                                            <exclude reference="b7j-rR-jYL"/>
+                                            <exclude reference="iZ3-8I-Wau"/>
+                                            <exclude reference="l5X-Lu-etG"/>
+                                            <exclude reference="waX-4r-OTl"/>
+                                            <exclude reference="TXs-0g-MYi"/>
+                                            <exclude reference="yD5-W9-gjp"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="subviews">
+                                            <include reference="RBR-ea-XGl"/>
+                                            <include reference="RY3-Sy-jlS"/>
+                                            <include reference="PSJ-tV-M4W"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <include reference="IQq-lV-UNa"/>
+                                            <include reference="NLC-Ko-9kE"/>
+                                            <include reference="b7j-rR-jYL"/>
+                                            <include reference="iZ3-8I-Wau"/>
+                                            <include reference="l5X-Lu-etG"/>
+                                            <include reference="waX-4r-OTl"/>
+                                            <include reference="TXs-0g-MYi"/>
+                                            <include reference="yD5-W9-gjp"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="journalCellImage" destination="PSJ-tV-M4W" id="7cO-3V-4M8"/>
+                                    <outlet property="journalCellSubtitle" destination="RY3-Sy-jlS" id="qSF-jN-MeM"/>
+                                    <outlet property="journalCellTitle" destination="RBR-ea-XGl" id="DKX-GE-Ei4"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1829,6 +1891,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="0.0" width="255" height="33"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLL-8Y-4u2">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -1843,7 +1908,8 @@
                                                             <exclude reference="gCl-ZO-GE9"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=regular">
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="61" width="255" height="16"/>
                                                         <mask key="constraints">
                                                             <include reference="gCl-ZO-GE9"/>
                                                         </mask>
@@ -1870,12 +1936,18 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="35" width="255" height="19.5"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvn-c8-dvf">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="80" width="255" height="21"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rME-V8-bBZ">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -2025,18 +2097,27 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="200" y="94" width="112" height="49"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0q-bL-r12">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="8" width="160" height="34"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SnF-JH-2gR">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="8" y="127" width="251" height="16"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUa-YT-UI6">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
@@ -2065,12 +2146,18 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="57" y="41" width="160" height="15"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPu-WT-xnW">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="200" y="64" width="112" height="25"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GEi-uh-SzT">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -2111,7 +2198,8 @@
                                                             <exclude reference="Pr3-PM-NDK"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=regular">
+                                                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="270" y="8" width="42" height="41"/>
                                                         <mask key="constraints">
                                                             <include reference="Hbx-08-lvz"/>
                                                             <include reference="Pr3-PM-NDK"/>

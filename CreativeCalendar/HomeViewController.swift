@@ -20,7 +20,7 @@ import ResearchKit
 extension NSDate{
     private struct CalendarDates{
         private static let calendarStartDate:NSDate = {
-            let startDate = NSDateFormatter().calendarFormat.dateFromString("7/01/2016")
+            let startDate = NSDateFormatter().calendarFormat.dateFromString("9/01/2016")
             print("Calendar Dates StartDate: \(startDate!)")
             return startDate!
         }()
@@ -237,13 +237,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 //        }
 //    }
     
-    
     // Clear all NSUser Defaults
 //    func clearAllUserDefaults(){
 //        //The below two lines of code can clear out NSUser Defaults
 //        let appDomain = NSBundle.mainBundle().bundleIdentifier!
 //        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
 //    }
+    
     
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
