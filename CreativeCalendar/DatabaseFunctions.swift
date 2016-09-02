@@ -301,7 +301,7 @@ class DatabaseFunctions{
         }
     }
     
-    func updateJournal(item: JournalItem){
+    func updateJournal(item: JournalItem, option: String){
         let db = makeDb
         
         if (!db.open()){
@@ -312,22 +312,38 @@ class DatabaseFunctions{
             db.close()
         }
         
-        let current = NSDate()
-        let currentDateString = dateFormat.stringFromDate(current)
+        let currentDateString = dateFormat.stringFromDate(NSDate())
         
-        // If date completed equals false then do this...
         do{
             // Get the value of the completed column for the task with the given uuid
-            let selectStatement = "SELECT deleted FROM Journals WHERE uuid=?"
+            let selectStatement = "SELECT journal, deleted, date_deleted, delete_reason, uuid FROM Journals WHERE uuid=?"
             let selectResult = try db.executeQuery(selectStatement, values: [item.journalUUID])
             
             while selectResult.next(){
-                let isDeleted = item.journalDeleted
-                let deletedStatement = "UPDATE Journals SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
-                
-                // Delete the Journal
-                if isDeleted == true{
-                    try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.journalDeletedReason! , item.journalUUID])
+                switch(option){
+                    case "delete":
+                        print("Delete Journal")
+                        let isDeleted = item.journalDeleted
+                        let deletedStatement = "UPDATE Journals SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
+                        
+                        // Delete the Journal
+                        if isDeleted == true{
+                            try db.executeUpdate(deletedStatement, values: [isDeleted, currentDateString, item.journalDeletedReason! , item.journalUUID])
+                    }
+                    case "edit":
+                        print("Edit Journal")
+                        print("Journal Entry: \(item.journalEntry)")
+                        print("Journal UUID: \(item.journalUUID)")
+                        let journalUUID = selectResult.objectForColumnName("uuid") as! String
+                        
+                        if journalUUID == item.journalUUID{
+                            print("Edit Statement")
+                            let editStatement = "UPDATE Journals SET journal=? WHERE uuid=?"
+                            try db.executeUpdate(editStatement, values: [item.journalEntry, item.journalUUID])
+                    }
+                    
+                    default:
+                        break
                 }
             }
         }

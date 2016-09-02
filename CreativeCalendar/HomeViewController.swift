@@ -178,7 +178,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
         todaysDate = dateFormat.stringFromDate(currentDate)
         homeDateLabel.text = todaysDate
-        homeDateLabel.textColor = UIColor.whiteColor()
+//        homeDateLabel.textColor = UIColor.whiteColor()
         
         // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()

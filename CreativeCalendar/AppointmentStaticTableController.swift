@@ -110,6 +110,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
+        additionalInfoTextBox.font = UIFont(name: "Helvetica", size: 18.0)
         additionalInfoTextBox.textColor = UIColor.lightGrayColor()
         otherTextField.placeholder = "Please enter the type of appointment"
     }
@@ -296,8 +297,18 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+
+        if indexPath.section == 0 && indexPath.row == 0{
+            appointmentNameTextField.becomeFirstResponder()
+            cell?.selectionStyle = UITableViewCellSelectionStyle.None
+        }
+        else if indexPath.section == 3 && indexPath.row == 0{
+            appointmentLocationTextBox.becomeFirstResponder()
+            cell?.selectionStyle = UITableViewCellSelectionStyle.None
+        }
         // Appointment drop down
-        if indexPath.section == 1 && indexPath.row == 0{
+        else if indexPath.section == 1 && indexPath.row == 0{
             toggleAppointmentDropDown()
         }
         // Starting date picker

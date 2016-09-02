@@ -90,7 +90,7 @@
                         <segue destination="SO2-1b-2ll" kind="relationship" relationship="viewControllers" id="7Ji-lz-aMS"/>
                         <segue destination="d6C-2V-t5a" kind="relationship" relationship="viewControllers" id="e17-Lu-GOI"/>
                         <segue destination="5ML-Zw-jj0" kind="relationship" relationship="viewControllers" id="ZBg-sN-V01"/>
-                        <segue destination="dHM-vo-Fq1" kind="relationship" relationship="viewControllers" id="2o9-Vk-h2n"/>
+                        <segue destination="hhh-jJ-d5l" kind="relationship" relationship="viewControllers" id="2o9-Vk-h2n"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -1160,7 +1160,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Jq-Jq-ZUn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1497" y="1087"/>
+            <point key="canvasLocation" x="2256" y="1086.75"/>
         </scene>
         <!--Journals-->
         <scene sceneID="H8X-ez-rym">
@@ -1261,6 +1261,7 @@
                                     <outlet property="journalCellImage" destination="PSJ-tV-M4W" id="7cO-3V-4M8"/>
                                     <outlet property="journalCellSubtitle" destination="RY3-Sy-jlS" id="qSF-jN-MeM"/>
                                     <outlet property="journalCellTitle" destination="RBR-ea-XGl" id="DKX-GE-Ei4"/>
+                                    <segue destination="3Sd-Ee-9Ka" kind="show" identifier="editJournalSegue" id="gwZ-PE-xC9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1272,7 +1273,7 @@
                     <navigationItem key="navigationItem" title="Journals" id="Eyx-hX-omc">
                         <barButtonItem key="rightBarButtonItem" title="Add" id="zQj-h3-hDN">
                             <connections>
-                                <segue destination="3Sd-Ee-9Ka" kind="show" id="oCr-1u-dIF"/>
+                                <segue destination="3Sd-Ee-9Ka" kind="show" identifier="addJournalSegue" id="oCr-1u-dIF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -2712,7 +2713,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.22140272659999999" green="0.65783414760000003" blue="0.93480983149999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="0.25686298076923075" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="centerY" secondItem="krf-j0-1qK" secondAttribute="centerY" id="1UJ-W6-Q1w"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="G1z-3q-f71"/>
@@ -2734,7 +2735,7 @@
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="trailing" secondItem="krf-j0-1qK" secondAttribute="trailingMargin" id="pl1-Oc-sb3"/>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="leading" secondItem="TYL-uE-jje" secondAttribute="trailing" constant="8" symbolic="YES" id="uBl-Lf-5Yz"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerY" secondItem="krf-j0-1qK" secondAttribute="centerY" id="ucG-K2-UPH">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="-24"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="15.5"/>
                                     </constraint>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leading" constant="90" id="zAo-Xk-JhX"/>
                                 </constraints>
@@ -2817,7 +2818,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Calendar" image="Calendar" id="MeB-ID-E5W"/>
+                    <navigationItem key="navigationItem" title="Calendar" id="hUl-Qb-vIq"/>
                     <connections>
                         <outlet property="calendarInfo" destination="vV2-Cu-ToG" id="NR6-Sv-tce"/>
                         <outlet property="calendarView" destination="TYL-uE-jje" id="p3K-CN-937"/>
@@ -2829,6 +2830,25 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kij-pg-Dis" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1650.75" y="1096.5"/>
+        </scene>
+        <!--Calendar-->
+        <scene sceneID="Nf6-ke-g0a">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hhh-jJ-d5l" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Calendar" image="Calendar" id="MeB-ID-E5W"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xn7-vc-U9r">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dHM-vo-Fq1" kind="relationship" relationship="rootViewController" id="Zfy-ey-IxE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LOy-eh-Ad8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="891.75" y="1096.5"/>
         </scene>
@@ -2842,4 +2862,7 @@
         <image name="RightArrowDark" width="29" height="30"/>
         <image name="Tasks" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="gwZ-PE-xC9"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -126,7 +126,7 @@ class CalendarCell: JTAppleDayCellView{
     // Draw the view
     override func drawRect(rect: CGRect) {
         // Draw a circle around the day of the calendar.        
-        let path = UIBezierPath(ovalInRect: CGRect(x: 0, y: self.center.y / 2 , width: self.frame.size.width, height: self.frame.size.height / 2))
+        let path = UIBezierPath(ovalInRect: CGRect(x: 0, y: self.center.y / 1.8 , width: self.frame.size.width, height: self.frame.size.height / 2.1))
         
         // If cell has been selected
         if cellState.isSelected == true{
@@ -159,19 +159,20 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawAppointmentDot(){
-        let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width / 4 - 10, y: 20.0, width: dotWidth, height: dotHeight))
+        let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width / 4 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         appointmentColor.setFill()
         appointmentCircle.fill()
     }
     
     func drawTaskDot(){
-        let taskCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width / 2 - 10, y: 20.0, width: dotWidth, height: dotHeight))
+        let taskCircle = UIBezierPath(rect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        //ovalInRect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         taskColor.setFill()
         taskCircle.fill()
     }
     
     func drawJournalDot(){
-        let journalCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width/1.35 - 10, y: 20.0, width: dotWidth, height: dotHeight))
+        let journalCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width/1.35 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         journalColor.setFill()
         journalCircle.fill()
     }

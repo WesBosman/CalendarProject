@@ -28,12 +28,17 @@ class JournalTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Navigation Bar
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         // Navigation bar
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
         nav?.tintColor = UIColor.blueColor()
+        
+        self.tableView.allowsSelectionDuringEditing = true
+        self.tableView.allowsSelection = false
 
     }
     
@@ -161,7 +166,7 @@ class JournalTableViewController: UITableViewController {
             cellHeightArray.append(combinedHeight)
             cellHeightDictionary.updateValue(cellHeightArray, forKey: section)
         }
-            // If there is a new section increment the previous section and create a new array for storing the height of elements in the next section
+        // If there is a new section increment the previous section and create a new array for storing the height of elements in the next section
         else{
             previousSection += 1
             cellHeightArray = []
@@ -204,7 +209,7 @@ class JournalTableViewController: UITableViewController {
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                     journal!.journalDeleted = true
                     journal!.journalDeletedReason = deleteOptions.textFields![0].text!
-                    self.db.updateJournal(journal!)
+                    self.db.updateJournal(journal!, option: "delete")
                 })
                 let cancelDelete = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
                 self.actionToEnable = deleteJournal
@@ -257,14 +262,24 @@ class JournalTableViewController: UITableViewController {
         tableView.endUpdates()
     }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "editJournalSegue"{
+            let source = segue.sourceViewController as! JournalTableViewController
+            let destination = segue.destinationViewController as! JournalViewController
+            
+            let indexPath = tableView.indexPathForSelectedRow!
+            let tableSection = journalDayForSection[journalSections[indexPath.section]]
+            let journalItem = tableSection![indexPath.row] as JournalItem
+            
+            destination.journalItemToEdit = journalItem
+            
+        }
     }
-    */
 
 }

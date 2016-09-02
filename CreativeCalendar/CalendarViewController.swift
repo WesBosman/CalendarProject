@@ -37,6 +37,12 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, atIndex: 0)
         
+        // Navigation bar
+        let nav = self.navigationController?.navigationBar
+        let barColor = UIColor().navigationBarColor
+        nav?.barTintColor = barColor
+        nav?.tintColor = UIColor.blueColor()
+        
         // Set up the info button on the calendar
         calendarInfo.layer.cornerRadius = 10
         calendarInfo.layer.borderWidth = 2
@@ -185,7 +191,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             for index in 1...7 {
                 let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
                 //              print("Day: \(day)")
-                let spaces = String(count: 14, repeatedValue: (" " as Character))
+                let spaces = String(count: 12, repeatedValue: (" " as Character))
                 weekdayString += day.substringToIndex(3).uppercaseString + spaces
             }
             headerView.bottomLabel.text = weekdayString

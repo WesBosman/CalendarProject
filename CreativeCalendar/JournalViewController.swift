@@ -16,7 +16,9 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var journalLabel: UILabel!
     private var date = NSDate()
     private let dateFormat = NSDateFormatter().journalFormat
-    private var journalText:String = String()
+    var journalText:String = String()
+    var journalItemToEdit:JournalItem? = nil
+    let db = DatabaseFunctions.sharedInstance
     @IBOutlet weak var saveJournal: UIButton!
     
     override func viewDidLoad() {
@@ -24,8 +26,14 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         journalTextBox.delegate = self
         journalLabel.text = "Make a Journal Entry"
         journalLabel.textColor = UIColor.whiteColor()
-        let currentDateAsString = dateFormat.stringFromDate(date)
-        journalTextBox.text = "\(currentDateAsString) : "
+        
+        if journalItemToEdit != nil{
+            journalTextBox.text = journalItemToEdit?.journalEntry
+        }
+        else{
+            let currentDateAsString = dateFormat.stringFromDate(date)
+            journalTextBox.text = "\(currentDateAsString) : "
+        }
         
         // Navigation bar
         let nav = self.navigationController?.navigationBar
@@ -53,16 +61,25 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
         journalText = textView.text
+        print("Journal Text: \(journalText)")
     }
 
     
     // When the save button is clicked pass the information to a journal item.
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
-        date = NSDate()
-        journalText = journalTextBox.text
-        let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: date, deleted: false, deleteReason: nil)
-        let db = DatabaseFunctions.sharedInstance
-        db.addToJournalDatabase(journalItem)
+        
+        // Journal Item is already in the database just update it TODO
+        if let journalItem = journalItemToEdit{
+            print("Journal Item To Edit is not null")
+            journalItem.journalEntry = journalText
+            db.updateJournal(journalItem, option: "edit")
+        }
+        // Else Add a new Journal Item
+        else{
+            print("Journal Item to Edit is null")
+            let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: NSDate(), deleted: false, deleteReason: nil)
+            db.addToJournalDatabase(journalItem)
+        }
         self.navigationController?.popViewControllerAnimated(true)
     }
 

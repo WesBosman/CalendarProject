@@ -62,7 +62,17 @@ class TaskStaticTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 0 && indexPath.section == 2{
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+
+        if indexPath.row == 0 && indexPath.section == 0{
+            taskNameTextField.becomeFirstResponder()
+            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        }
+        else if indexPath.row == 0 && indexPath.section == 1{
+            taskAdditionalInfoTextBox.becomeFirstResponder()
+            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        }
+        else if indexPath.row == 0 && indexPath.section == 2{
             toggleTaskDatePicker()
         }
         else if indexPath.row == 0 && indexPath.section == 3{
