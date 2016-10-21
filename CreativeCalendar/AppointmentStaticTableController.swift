@@ -53,8 +53,11 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     private var otherIsHidden = false
     private var repeatAppointmentTableHidden = false
     private var alertAppointmentTableHidden = false
-    
-    private let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Class", "Self Care", "Other"]
+    private let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" ,
+                                      "Medication Times" , "Social Event" , "Leisure" ,
+                                      "Household", "Work", "Physical Therapy",
+                                      "Occupational Therapy", "Speech Therapy", "Class",
+                                      "Self Care", "Other"]
     private let cellID: String = "AppointmentCells"
     private let dateFormat:NSDateFormatter = NSDateFormatter().dateWithTime
     private let db = DatabaseFunctions.sharedInstance

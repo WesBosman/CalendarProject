@@ -68,7 +68,8 @@ class CalendarCell: JTAppleDayCellView{
         // Use dictionaries for fast loading of the calendar
         let appointmentDictionary = GlobalAppointments.appointmentDictionary
         let taskDictionary = GlobalTasks.taskDictionary
-        let journalDictionary = GlobalJournals.journalDictionary
+//        let journalDictionary = GlobalJournals.journalDictionary
+        let journalDictionary = GlobalJournalStructures.journalDictionary
         
         if let appointmentList = appointmentDictionary[cellDate]{
 //            print("Appointment List: \(appointmentList)")
@@ -165,8 +166,9 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawTaskDot(){
-        let taskCircle = UIBezierPath(rect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
-        //ovalInRect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+//        let taskCircle = UIBezierPath(rect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        
+        let taskCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         taskColor.setFill()
         taskCircle.fill()
     }

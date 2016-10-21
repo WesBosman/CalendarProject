@@ -8,16 +8,10 @@
 
 import UIKit
 
-struct GlobalJournals{
-    static var journalDictionary: Dictionary<String, [JournalItem]> = [:]
-}
 
 class JournalTableViewController: UITableViewController {
-    private var journalItems:[JournalItem] = []
     private let journalIdentifier = "Journal Cells"
     private let db = DatabaseFunctions.sharedInstance
-    private var journalDayForSection: Dictionary<String, [JournalItem]> = [:]
-    private var journalSections: [String] = []
     private let journalDateFormatter = NSDateFormatter().dateWithoutTime
     weak var actionToEnable: UIAlertAction?
     private var selectedIndexPath: NSIndexPath?
@@ -31,7 +25,6 @@ class JournalTableViewController: UITableViewController {
         
         // Navigation Bar
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        // Navigation bar
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
@@ -56,53 +49,29 @@ class JournalTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // Should no longer require hitting the database
     override func viewDidAppear(animated: Bool) {
-        journalItems = db.getAllJournals()
-        
-        // Reset previous section to zero
         previousSection = 0
-
-        // Sort the journals based on their dates
-        journalItems = journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
-        
-        for journal in journalItems{
-            let journalDate = journalDateFormatter.stringFromDate(journal.journalDate)
-            
-            // If the journal sections array does not contain the date then add it
-            if(!journalSections.contains(journalDate)){
-                journalSections.append(journalDate)
-            }
-        }
-        
-        for section in journalSections{
-            // Get journal items based on the date
-            journalItems = db.getJournalByDate(section, formatter: journalDateFormatter)
-            
-            // Set the table view controllers dictionary
-            journalDayForSection.updateValue(journalItems, forKey: section)
-            
-            // Set the global journal dictionary
-            GlobalJournals.journalDictionary = journalDayForSection
-        }
+        GlobalJournalStructures.journalHeightArray = []
         tableView.reloadData()
+        self.tableView.estimatedRowHeight = 100
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
     }
 
     // MARK: - Section Methods
-    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return journalSections.count
+        return GlobalJournalStructures.journalSections.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return journalDayForSection[journalSections[section]]!.count
+        return GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[section]]!.count
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
-        if !journalSections[section].isEmpty{
-            return journalSections[section]
+        if(!GlobalJournalStructures.journalSections[section].isEmpty){
+            return GlobalJournalStructures.journalSections[section]
         }
         return nil
     }
@@ -133,7 +102,9 @@ class JournalTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(journalIdentifier, forIndexPath: indexPath) as! JournalCell
-        let tableSection = journalDayForSection[journalSections[indexPath.section]]
+        
+//        let tableSection = journalDayForSection[journalSections[indexPath.section]]
+        let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[indexPath.section]]
         let journalItem = tableSection![indexPath.row] as JournalItem
         
         cell.journalCellTitle.text = journalItem.getSimplifiedDate()
@@ -141,18 +112,22 @@ class JournalTableViewController: UITableViewController {
         cell.journalCellSubtitle.text = journalItem.journalEntry
         
         // The background is to let me know the size of what is stored in the cell
-//        cell.journalCellTitle.backgroundColor = UIColor.cyanColor()
-//        cell.journalCellSubtitle.backgroundColor = UIColor.greenColor()
+        cell.journalCellTitle.backgroundColor = UIColor.cyanColor()
+        cell.journalCellSubtitle.backgroundColor = UIColor.greenColor()
         cell.journalCellTitle.sizeToFit()
         cell.journalCellSubtitle.sizeToFit()
         
-        let titleHeight = cell.journalCellTitle.frame.height
-        let subtitleHeight = cell.journalCellSubtitle.frame.height
-        let combinedHeight = titleHeight + subtitleHeight
-        let section = indexPath.section
+//        let titleHeight = cell.journalCellTitle.frame.height
+//        let subtitleHeight = cell.journalCellSubtitle.frame.height
+//        let combinedHeight = titleHeight + subtitleHeight
+//        print("CELL FOR ROW AT INDEX PATH Combined Height Cell: \(combinedHeight)")
+//        
+//        let section = indexPath.section
+//        let row = indexPath.row
         
-        createHeightForJournal(section, combinedHeight: combinedHeight)
-        
+        // TODO fix the height of the journal cells
+//        createHeightForJournal(section, row: row,  combinedHeight: combinedHeight)
+//        
 //        print("Title Height: \(titleHeight)")
 //        print("Subtitle Height: \(subtitleHeight)")
         
@@ -160,24 +135,28 @@ class JournalTableViewController: UITableViewController {
         return cell
     }
     
-    func createHeightForJournal(section: Int, combinedHeight: CGFloat){
-        // Set up the dictionary for each cell so we can adjust its height based on whats stored in the journal entry
-        if previousSection == section{
-            cellHeightArray.append(combinedHeight)
-            cellHeightDictionary.updateValue(cellHeightArray, forKey: section)
-        }
-        // If there is a new section increment the previous section and create a new array for storing the height of elements in the next section
-        else{
-            previousSection += 1
-            cellHeightArray = []
-            cellHeightArray.append(combinedHeight)
-        }
-        
-//        print("Title Height + Subtitle Height: \(combinedHeight)")
-//        print("Section: \(section)")
-//        print("Cell Height Array: \(cellHeightArray)")
-
-    }
+    // This may need work!! TODO needs to be updated as soon as the journal gets added or edited
+//    func createHeightForJournal(section: Int, row:Int,  combinedHeight: CGFloat){
+//        // Set up the dictionary for each cell so we can adjust its height based on whats stored in the journal entry
+//        
+//        if(GlobalJournalStructures.journalHeightArray.indices.contains(row)){
+//            var oldHeight = GlobalJournalStructures.journalHeightArray[row]
+//            print("Old Combined Height value: \(oldHeight) at index: \(row)")
+//            GlobalJournalStructures.journalHeightArray.insert(Float(combinedHeight), atIndex: row)
+//            print("Combined Height: \(combinedHeight) added at index: \(row)")
+//        }
+//        else{
+//            GlobalJournalStructures.journalHeightArray.append(Float(combinedHeight))
+//            print("Combined Height added: \(combinedHeight) at index: \(row)")
+//        }
+//        
+//        for(key, value) in GlobalJournalStructures.journalHeightDictionary{
+//            print("Key in Global Height: \(key)")
+//            print("Value in Global Height: \(value)")
+//        }
+//      
+//        GlobalJournalStructures.journalHeightDictionary.updateValue(GlobalJournalStructures.journalHeightArray, forKey: section)
+//    }
 
     
     // Override to support conditional editing of the table view.
@@ -190,8 +169,9 @@ class JournalTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
+            
             // Delete the row from the data source
-            let tableSection = journalDayForSection[journalSections[indexPath.section]]
+            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[indexPath.section]]
             let journalItemToDelete = tableSection![indexPath.row] as JournalItem
             
             let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .Alert)
@@ -202,22 +182,27 @@ class JournalTableViewController: UITableViewController {
             
             
             let deleteJournal = UIAlertAction(title: "Delete Journal", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
-                    
-//                    let journal = self.journalItems.removeAtIndex(indexPath.row)
-                    let key = self.journalSections[indexPath.section]
-                    let journal = self.journalDayForSection[key]?.removeAtIndex(indexPath.row)
-                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                    journal!.journalDeleted = true
-                    journal!.journalDeletedReason = deleteOptions.textFields![0].text!
-                    self.db.updateJournal(journal!, option: "delete")
-                })
-                let cancelDelete = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
-                self.actionToEnable = deleteJournal
-                deleteJournal.enabled = false
-                deleteOptions.addAction(cancelDelete)
-                deleteOptions.addAction(deleteJournal)
+
+                let key = GlobalJournalStructures.journalSections[indexPath.section]
+                let journal = GlobalJournalStructures.journalDictionary[key]?.removeAtIndex(indexPath.row)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                journal!.journalDeleted = true
+                journal!.journalDeletedReason = deleteOptions.textFields![0].text!
+                self.db.updateJournal(journal!, option: "delete")
                 
-                self.presentViewController(deleteOptions, animated: true, completion: nil)
+                // Remove the height value stored in the height dictionary
+//                var heightValues = GlobalJournalStructures.journalHeightDictionary[indexPath.section]
+//                heightValues?.removeAtIndex(indexPath.row)
+
+                })
+            
+            let cancelDelete = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+            self.actionToEnable = deleteJournal
+            deleteJournal.enabled = false
+            deleteOptions.addAction(cancelDelete)
+            deleteOptions.addAction(deleteJournal)
+                
+            self.presentViewController(deleteOptions, animated: true, completion: nil)
         }
     }
     
@@ -233,19 +218,7 @@ class JournalTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if isExpanded && selectedIndexPath?.row == indexPath.row && selectedIndexPath?.section == indexPath.section{
-            for (key, value) in cellHeightDictionary{
-                print("Key: \(key)")
-                print("Value: \(value)")
-            }
-            if let heightArray = cellHeightDictionary[indexPath.section]{
-                print("Height Array: \(heightArray)")
-                print("Height Of Cell: \(heightArray[indexPath.row])")
-                return heightArray[indexPath.row]
-            }
-            else{
-                print("Return 350")
-                return 350
-            }
+            return UITableViewAutomaticDimension
         }
         else{
             return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
@@ -270,11 +243,13 @@ class JournalTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "editJournalSegue"{
-            let source = segue.sourceViewController as! JournalTableViewController
+//            let source = segue.sourceViewController as! JournalTableViewController
             let destination = segue.destinationViewController as! JournalViewController
             
             let indexPath = tableView.indexPathForSelectedRow!
-            let tableSection = journalDayForSection[journalSections[indexPath.section]]
+//            let tableSection = journalDayForSection[journalSections[indexPath.section]]
+            
+            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[indexPath.section]]
             let journalItem = tableSection![indexPath.row] as JournalItem
             
             destination.journalItemToEdit = journalItem

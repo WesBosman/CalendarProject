@@ -71,7 +71,21 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     @IBAction func moreButtonPressed(sender: AnyObject) {
-        self.performSegueWithIdentifier("calendarPopover", sender: self)
+        // If cell is in the current month then show the popover view controller.
+        if(selectedCell.cellState.dateBelongsTo == .ThisMonth){
+            self.performSegueWithIdentifier("calendarPopover", sender: self)
+        }
+        // Otherwise show an alert dialog letting the user know what went wrong.
+        else{
+            // Get the calendar date of the currently selected cell.
+            let calendarDateSelected = formatter.stringFromDate(selectedDate)
+            print("Calendar Date Selected: \(calendarDateSelected)")
+            
+            let alert: UIAlertController = UIAlertController(title: "Calendar", message: "Sorry, the date you have currently selected: \(calendarDateSelected) is not in this month", preferredStyle: .Alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil)
+            alert.addAction(dismissAction)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func rightCalendarArrowPressed(sender: AnyObject) {
@@ -91,14 +105,17 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
         
         if selectedCell.cellState != nil{
-            if selectedCell.cellState.isSelected == true{
-                let popoverVC = PopoverViewController()
-                popoverPresentationController.permittedArrowDirections = [.Up, .Down]
-                popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
-                popoverPresentationController.sourceView = selectedCell
-                popoverPresentationController.backgroundColor = UIColor.orangeColor()
-                presentViewController(popoverVC, animated: true, completion: nil)
-            }
+                if selectedCell.cellState.isSelected == true{
+                    let popoverVC = PopoverViewController()
+                    popoverPresentationController.permittedArrowDirections = [.Up, .Down]
+                    popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
+                    popoverPresentationController.sourceView = selectedCell
+                    popoverPresentationController.backgroundColor = UIColor.orangeColor()
+                    presentViewController(popoverVC, animated: true, completion: nil)
+                }
+                else{
+                    print("Selected Cell: \(selectedCell.cellState.date) is not selected")
+                }
         }
         else{
             print("Calendar Cell has not initally been selected and is nil...")
@@ -202,11 +219,12 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "calendarPopover"{
-
+            
             if let vc = segue.destinationViewController as? PopoverViewController{
             
                 vc.preferredContentSize = CGSize(width: 375.0, height: 375.0)
                 let controller = vc.popoverPresentationController
+                
                 vc.selectedDate = selectedDate
 
                 if controller != nil{

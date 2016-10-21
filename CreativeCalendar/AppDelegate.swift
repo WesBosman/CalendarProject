@@ -12,18 +12,9 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var dbFilePath: NSString = NSString()
     let defaults = NSUserDefaults.standardUserDefaults()
     let loginKey = "UserLogin"
-    
-    // Set up the global dictionaries for the calendars and tables
     let db = DatabaseFunctions.sharedInstance
-    var appointmentItems:[AppointmentItem] = []
-    var taskItems:[TaskItem] = []
-    var journalItems:[JournalItem] = []
-    var appointmentSections:[String] = []
-    var taskSections:[String] = []
-    var journalSections: [String] = []
     let formatter = NSDateFormatter().dateWithoutTime
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -120,83 +111,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Initially get the appointments, tasks and journals from the database and put them
         // Into globally accessible dictionaries
-        setUpAppointments()
-        setUpTasks()
-        setUpJournals()
-    }
-    
-    func setUpAppointments(){
-        appointmentItems = db.getAllAppointments()
-        
-        // Sort appointments based on starting time
-        appointmentItems = appointmentItems.sort({$0.startingTime.compare($1.startingTime) == NSComparisonResult.OrderedAscending })
-        
-        for appointment in appointmentItems{
-            let appointmentDate = formatter.stringFromDate(appointment.startingTime)
-            
-            // If appointment sections does not contain the journal date add it
-            if(!appointmentSections.contains(appointmentDate)){
-                appointmentSections.append(appointmentDate)
-            }
-        }
-        
-        for section in appointmentSections{
-            // Get appointments based on their date
-            appointmentItems = db.getAppointmentByDate(section, formatter: formatter)
-            
-            // Set up the global appointments dictionary
-            GlobalAppointments.appointmentDictionary.updateValue(appointmentItems, forKey: section)
-        }
-    }
-    
-    func setUpTasks(){
-        taskItems = db.getAllTasks()
-        
-        // Sort the tasks based on estimated completion date
-        taskItems = taskItems.sort({$0.estimateCompletionDate.compare($1.estimateCompletionDate) == NSComparisonResult.OrderedAscending})
-            
-        for task in taskItems{
-            let taskDate = formatter.stringFromDate(task.estimateCompletionDate)
-            
-            // If task sections does not contain the date add it
-            if(!taskSections.contains(taskDate)){
-                taskSections.append(taskDate)
-            }
-        }
-        
-        for section in taskSections{
-            // Get the tasks based on their date
-            taskItems = db.getTaskByDate(section, formatter: formatter)
-            
-            // Set the global task dictionary
-            GlobalTasks.taskDictionary.updateValue(taskItems, forKey: section)
-        }
-        
-    }
-    
-    func setUpJournals(){
-        journalItems = db.getAllJournals()
-        
-        // Sort the journals based on their dates
-        journalItems = journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
-        
-        for journal in journalItems{
-            let journalDate = formatter.stringFromDate(journal.journalDate)
-            
-            // If the journal sections array does not contain the date then add it
-            if(!journalSections.contains(journalDate)){
-                journalSections.append(journalDate)
-            }
-        }
-        
-        for section in journalSections{
-            // Get journal items based on the date
-            journalItems = db.getJournalByDate(section, formatter: formatter)
-            
-            // Set the global journal dictionary
-            GlobalJournals.journalDictionary.updateValue(journalItems, forKey: section)
-        }
-
+        Appointments().setUpAppointmentDictionary()
+        GlobalTasks().setUpTaskDictionary()
+        GlobalJournals().setUpJournalDictionary()
     }
 
     func applicationWillTerminate(application: UIApplication) {

@@ -5,9 +5,45 @@
 //  Created by Wes on 5/18/16.
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
 //
-//  Very basic class for holding a journal item.
 
-import Foundation
+
+// These structures are global so that the database doesn't constantly have to be accessed
+struct GlobalJournalStructures{
+    static var journalHeightDictionary: Dictionary<Int, [Float]> = [:]
+    static var journalDictionary: Dictionary<String, [JournalItem]> = [:]
+    static var journalSections: [String] = []
+    static var journalItems: [JournalItem] = []
+    static var journalHeightArray: [Float] = []
+}
+
+class GlobalJournals{
+    private let db = DatabaseFunctions.sharedInstance
+    private let journalDateFormatter = NSDateFormatter().dateWithoutTime
+    
+    func setUpJournalDictionary(){
+        GlobalJournalStructures.journalItems = db.getAllJournals()
+        
+        // Sort the journals based on their dates
+        GlobalJournalStructures.journalItems = GlobalJournalStructures.journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
+    
+        for journal in GlobalJournalStructures.journalItems{
+            let journalDate = journalDateFormatter.stringFromDate(journal.journalDate)
+    
+            // If the journal sections array does not contain the date then add it
+            if(!GlobalJournalStructures.journalSections.contains(journalDate)){
+                GlobalJournalStructures.journalSections.append(journalDate)
+            }
+        }
+    
+        for section in GlobalJournalStructures.journalSections{
+            // Get journal items based on the date
+            GlobalJournalStructures.journalItems = db.getJournalByDate(section, formatter: journalDateFormatter)
+    
+            // Set the table view controllers dictionary
+            GlobalJournalStructures.journalDictionary.updateValue(GlobalJournalStructures.journalItems, forKey: section)
+        }
+    }
+}
 
 class JournalItem{
     var journalEntry: String = String()

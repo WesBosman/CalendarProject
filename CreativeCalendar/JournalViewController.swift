@@ -5,7 +5,6 @@
 //  Created by Wes on 2/5/16.
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
 //
-
 import UIKit
 
 
@@ -66,19 +65,44 @@ class JournalViewController: UIViewController, UITextViewDelegate {
 
     
     // When the save button is clicked pass the information to a journal item.
+    // Add the height of the text to the journal dictionary!!!
     @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
         
-        // Journal Item is already in the database just update it TODO
+        // The date format that works with the global journal dictionary
+        let newDateFormat = NSDateFormatter().dateWithoutTime
+        
+        // Journal Item is already in the database just update it
         if let journalItem = journalItemToEdit{
             print("Journal Item To Edit is not null")
             journalItem.journalEntry = journalText
             db.updateJournal(journalItem, option: "edit")
+            
+            // Add the item to the global dictionary
+            let journalDate = newDateFormat.stringFromDate(journalItem.journalDate)
+            var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
+            
+            if let found = journalArray?.indexOf({$0.journalUUID == journalItem.journalUUID}){
+                print("Found: \(found)")
+                journalArray?.insert(journalItem, atIndex: found)
+            }
+//            GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
         }
         // Else Add a new Journal Item
         else{
             print("Journal Item to Edit is null")
             let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: NSDate(), deleted: false, deleteReason: nil)
             db.addToJournalDatabase(journalItem)
+            
+            // Get the key and value from the dictionary
+            let journalDate = newDateFormat.stringFromDate(journalItem.journalDate)
+            var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
+            print("Journal Date: \(journalDate)")
+            print("Journal Array: \(journalArray)")
+            
+            // Add the journal item to the Global Dictionary
+            journalArray?.append(journalItem)
+            GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
+            
         }
         self.navigationController?.popViewControllerAnimated(true)
     }

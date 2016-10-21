@@ -42,6 +42,10 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         taskTableView.layer.cornerRadius = 10
         journalTableView.layer.cornerRadius = 10
         
+        self.appointmentTableView.estimatedRowHeight = 85.0
+        self.taskTableView.estimatedRowHeight = 85.0
+        self.journalTableView.estimatedRowHeight = 85.0
+        
         self.scrollView.delegate = self
         self.appointmentTableView.delegate = self
         self.appointmentTableView.dataSource = self
@@ -50,8 +54,6 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         self.journalTableView.delegate = self
         self.journalTableView.dataSource = self
         self.view.addSubview(scrollView)
-        
-//        journalTableView.registerClass(JournalCell.self, forCellReuseIdentifier: "JournalPopover")
         
         for index in 0..<3 {
             
@@ -148,9 +150,12 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             let appointment = appointmentList[indexPath.row] as AppointmentItem
             let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "AppointmentPopover")
             cell.textLabel?.text = appointment.title
-            cell.detailTextLabel?.text = "type: " + appointment.type + "\n"
-                + "start: " + NSDateFormatter().dateWithTime.stringFromDate(appointment.startingTime)
-                + "\nend: " +  NSDateFormatter().dateWithTime.stringFromDate(appointment.endingTime)
+            cell.detailTextLabel?.text = "type: " + appointment.type
+                + "\nlocation: " + appointment.appLocation
+                + "\nstart: " + NSDateFormatter().dateWithTime.stringFromDate(appointment.startingTime)
+                + "\nend:   " +  NSDateFormatter().dateWithTime.stringFromDate(appointment.endingTime)
+                + "\nadditional info: " + appointment.additionalInfo
+            
             cell.detailTextLabel?.numberOfLines = 0
             cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
             return cell
@@ -165,20 +170,18 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             return cell
         }
         else{
-            // TO-DO How to poisitin the text so its readable even if the text is large
-            
+            // TO-DO How to poisition the text so its readable even if the text is large
             let journal = journalList[indexPath.row] as JournalItem
             let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "JournalPopover")
-//            let cell:JournalCell = JournalCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "JournalPopover")
-//            cell.journalCellTitle.text = journal.getSimplifiedDate()
-//            cell.journalCellSubtitle.text = journal.journalEntry
-            
             cell.textLabel?.text = journal.getSimplifiedDate()
             cell.detailTextLabel?.text = journal.journalEntry
             cell.detailTextLabel?.numberOfLines = 0
             cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
             cell.textLabel?.sizeToFit()
             cell.detailTextLabel?.sizeToFit()
+            
+            cell.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleTopMargin]
+            
             
             let journalTitleHeight = cell.textLabel?.frame.height
             let journalSubtitleHeight = cell.textLabel?.frame.height
@@ -192,9 +195,6 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if tableView == journalTableView{
-            return 300
-        }
-        return 100
+        return UITableViewAutomaticDimension
     }
 }

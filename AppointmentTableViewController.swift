@@ -5,23 +5,18 @@
 //  Created by Wes on 2/12/16.
 //  Followed a source code example on github for an accordian menu.
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
-//  The appointment list is from a tutorial by Jason Newell
 
 import UIKit
-
-struct GlobalAppointments{
-    static var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
-}
 
 class AppointmentTableViewController: UITableViewController{
     
     private let cellID = "AppointmentCells"
-    private var appointmentList:[AppointmentItem] = [];
+    private var appointmentList:[AppointmentItem] = GlobalAppointments.appointmentItems
     private var selectedIndexPath: NSIndexPath?
     private let db = DatabaseFunctions.sharedInstance
-    private var appointmentDaySections: Dictionary<String, [AppointmentItem]> = [:]
+    private var appointmentDaySections: Dictionary<String, [AppointmentItem]> = GlobalAppointments.appointmentDictionary
     private let appointmentDateFormatter = NSDateFormatter().dateWithoutTime
-    private var appointmentSections: [String] = []
+    private var appointmentSections: [String] = GlobalAppointments.appointmentSections
     private let defaults = NSUserDefaults.standardUserDefaults()
     weak var actionToEnable:UIAlertAction?
     
@@ -48,7 +43,6 @@ class AppointmentTableViewController: UITableViewController{
         tabBarItem = UITabBarItem(title: "Appointments", image: UIImage(named: "Appointment"), tag: 2)
     }
 
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refreshList()
@@ -202,7 +196,7 @@ class AppointmentTableViewController: UITableViewController{
             
             let deleteAppointment = UIAlertAction(title: "Delete Appointment", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
                 
-                
+                // Present an option to delete either only that appointment or all appointments of that type
                 let deleteAllAppointmentController = UIAlertController(title: "Delete", message: "Would you like to delete all of the corresponding appointments of this type with this title?", preferredStyle: .Alert)
                 
                 let yesAction = UIAlertAction(title: "Delete All Appointments", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
@@ -275,8 +269,8 @@ class AppointmentTableViewController: UITableViewController{
                 
                 let exitAction = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
                 
-                deleteAllAppointmentController.addAction(yesAction)
                 deleteAllAppointmentController.addAction(noAction)
+                deleteAllAppointmentController.addAction(yesAction)
                 deleteAllAppointmentController.addAction(exitAction)
                 self.presentViewController(deleteAllAppointmentController, animated: true, completion: nil)
                 

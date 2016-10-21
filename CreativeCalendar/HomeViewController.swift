@@ -139,7 +139,6 @@ extension CAGradientLayer{
 
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
     
-    
     @IBOutlet weak var taskAlertLabel: UILabel!
     @IBOutlet weak var appointmentLabel: UILabel!
     @IBOutlet weak var taskLabel: UILabel!
@@ -178,7 +177,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
         todaysDate = dateFormat.stringFromDate(currentDate)
         homeDateLabel.text = todaysDate
-//        homeDateLabel.textColor = UIColor.whiteColor()
         
         // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()
@@ -193,6 +191,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         
         // Make it so the journal is uneditable from the home screen.
         journalViewBox.editable = false
+        journalViewBox.scrollRangeToVisible(NSRange(location: 0, length: 0))
         
         // Make the day label with the checkmark.
         daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
@@ -202,13 +201,11 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // Failable Initializer for tab bar controller
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         // Initialize Tab Bar Item
         tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "Home"), tag: 1)
     }
     
     func setUpDaysOfTheWeekLabel() -> String{
-
         var todaysSubString = todaysDate as NSString
         todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
         let checkmark = "✅"
@@ -217,25 +214,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         let newText = daysOfTheWeekText.text?.stringByReplacingOccurrencesOfString(newSubstring, withString: newStringPlusCheck, options: .LiteralSearch, range: nil)
         return newText! as String
     }
-    
-//    @IBAction func homeTaskLongPress(sender: AnyObject) {
-//        if sender.state == UIGestureRecognizerState.Began{
-//            let pointPressed: CGPoint = sender.locationInView(taskViewTable)
-//            if let indexPath: NSIndexPath = taskViewTable.indexPathForRowAtPoint(pointPressed){
-//                let createTaskController = TaskStaticTableViewController()
-//                self.presentViewController(createTaskController, animated: true, completion: nil)
-//            }
-//        }
-//    }
-//    
-//    @IBAction func homeAppointmentLongPress(sender: AnyObject) {
-//        if sender.state == UIGestureRecognizerState.Began{
-//            let pointPressed: CGPoint = sender.locationInView(appointmentViewTable)
-//            if let indexPath: NSIndexPath = appointmentViewTable.indexPathForRowAtPoint(pointPressed){
-//                
-//            }
-//        }
-//    }
     
     // Clear all NSUser Defaults
 //    func clearAllUserDefaults(){
@@ -274,6 +252,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
         let firstString = "You have (\(journalCount)) journal entries for today.\n"
         journalViewBox.text = firstString + journalText
+        journalViewBox.scrollRangeToVisible(NSRange(location: 0, length: 0))
     }
 
 
@@ -432,6 +411,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // Create exit menu action to reuse
         let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
 
+        // If we are dealing with the appointments table
         if tableName == "Appointments"{
             var appointment = appointmentArray[indexPath.row] as AppointmentItem
             let appointmentCell = appointmentViewTable.cellForRowAtIndexPath(indexPath) as! HomeAppointmentCell
@@ -478,6 +458,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 alert.addAction(exitMenu)
                 return alert
         }
+        // If we are dealing with the tasks table
         else{
             var task = taskArray[indexPath.row] as TaskItem
             let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell

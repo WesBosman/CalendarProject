@@ -8,9 +8,6 @@
 
 import UIKit
 
-struct GlobalTasks{
-    static var taskDictionary:Dictionary<String, [TaskItem]> = [:]
-}
 
 class TaskTableViewController: UITableViewController {
     private let taskId = "TaskCells"

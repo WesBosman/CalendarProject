@@ -6,7 +6,38 @@
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
 //  This structure is similar to the appointment item structure 
 
-import Foundation
+
+class GlobalTasks{
+    static var taskDictionary:Dictionary<String, [TaskItem]> = [:]
+    private var taskItems: [TaskItem] = []
+    private var taskSections: [String] = []
+    private let db = DatabaseFunctions.sharedInstance
+    private var formatter = NSDateFormatter().dateWithoutTime
+    
+    func setUpTaskDictionary(){
+        taskItems = db.getAllTasks()
+        
+        // Sort the tasks based on estimated completion date
+        taskItems = taskItems.sort({$0.estimateCompletionDate.compare($1.estimateCompletionDate) == NSComparisonResult.OrderedAscending})
+        
+        for task in taskItems{
+            let taskDate = formatter.stringFromDate(task.estimateCompletionDate)
+            
+            // If task sections does not contain the date add it
+            if(!taskSections.contains(taskDate)){
+                taskSections.append(taskDate)
+            }
+        }
+        
+        for section in taskSections{
+            // Get the tasks based on their date
+            taskItems = db.getTaskByDate(section, formatter: formatter)
+            
+            // Set the global task dictionary
+            GlobalTasks.taskDictionary.updateValue(taskItems, forKey: section)
+        }
+    }
+}
 
 struct TaskItem{
     var dateCompleted: String?
@@ -41,37 +72,4 @@ struct TaskItem{
     var isOverdue: Bool {
         return (NSDate().compare(self.estimateCompletionDate) == NSComparisonResult.OrderedDescending)
     }
-    
-//    init(aCoder: NSCoder){
-//        self.taskTitle = aCoder.decodeObjectForKey("taskTitle") as! String
-//        self.taskInfo = aCoder.decodeObjectForKey("taskInfo") as! String
-//        self.estimateCompletionDate = aCoder.decodeObjectForKey("taskEstimatedCompletionDate") as! NSDate
-//        self.dateCompleted = aCoder.decodeObjectForKey("taskDateCompleted") as? String
-//        self.deleted = aCoder.decodeBoolForKey("taskDelete")
-//        self.canceled = aCoder.decodeBoolForKey("taskCancel")
-//        self.completed = aCoder.decodeBoolForKey("taskComplete")
-//        self.repeating = aCoder.decodeObjectForKey("taskRepeat") as! String
-//        self.alert = aCoder.decodeObjectForKey("taskAlert") as! String
-//        self.canceledReason = aCoder.decodeObjectForKey("taskCancelReason") as? String
-//        self.deletedReason = aCoder.decodeObjectForKey("taskDeleteReason") as? String
-//        self.estimateCompletionDate = aCoder.decodeObjectForKey("taskEstimatedCompletionDate") as! NSDate
-//        self.UUID = aCoder.decodeObjectForKey("taskUUID") as! String
-//    }
-//    
-//    func encoderWithEncoder(aCoder: NSCoder){
-//        aCoder.encodeObject(self.taskTitle, forKey: "taskTitle")
-//        aCoder.encodeObject(self.taskInfo, forKey: "taskInfo")
-//        aCoder.encodeObject(self.repeating, forKey: "taskRepeat")
-//        aCoder.encodeObject(self.alert, forKey: "taskAlert")
-//        aCoder.encodeObject(self.canceled, forKey: "taskCancel")
-//        aCoder.encodeObject(self.completed, forKey: "taskComplete")
-//        aCoder.encodeObject(self.deleted, forKey: "taskDelete")
-//        aCoder.encodeObject(self.canceledReason, forKey: "taskCancelReason")
-//        aCoder.encodeObject(self.deletedReason, forKey: "taskDeleteReason")
-//        aCoder.encodeObject(self.dateCompleted, forKey: "taskDateCompleted")
-//        aCoder.encodeObject(self.estimateCompletionDate, forKey: "taskEstimatedCompletionDate")
-//        aCoder.encodeObject(self.UUID, forKey: "taskUUID")
-//
-//    }
-
 }
