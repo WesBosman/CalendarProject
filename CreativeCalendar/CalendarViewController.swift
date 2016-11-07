@@ -12,13 +12,13 @@ import JTAppleCalendar
 class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
-    let userCalendar = NSCalendar.currentCalendar()
-    let formatter = NSDateFormatter().calendarFormat
-    let components = NSDateComponents()
+    let userCalendar = Calendar.current
+    let formatter = DateFormatter().calendarFormat
+    let components = DateComponents()
     var weekdayLabel:String = String()
     var numberOfRows = 6
     var selectedCell: CalendarCell = CalendarCell()
-    var selectedDate: NSDate = NSDate()
+    var selectedDate: Date = Date()
     @IBOutlet weak var calendarInfo: UIButton!
     @IBOutlet weak var leftCalendarArrow: UIButton!
     @IBOutlet weak var rightCalendarArrow: UIButton!
@@ -26,92 +26,99 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendarView.registerCellViewXib(fileName: "CellView")
-        calendarView.registerHeaderViewXibs(fileNames: ["HeaderView"])
+        print("Calendar View View Did Load Method")
+        calendarView.registerCellViewXib(file: "CellView")
+        calendarView.registerHeaderView(xibFileNames: ["HeaderView"])
         calendarView.delegate = self
         calendarView.dataSource = self
-        calendarView.backgroundColor = UIColor.clearColor()
+        calendarView.backgroundColor = UIColor.clear
         
         // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
-        self.view.layer.insertSublayer(background, atIndex: 0)
+        self.view.layer.insertSublayer(background, at: 0)
         
         // Navigation bar
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blueColor()
+        nav?.tintColor = UIColor.blue
         
         // Set up the info button on the calendar
         calendarInfo.layer.cornerRadius = 10
         calendarInfo.layer.borderWidth = 2
-        calendarInfo.layer.borderColor = UIColor.whiteColor().CGColor
-        calendarInfo.setTitleColor(UIColor().defaultButtonColor, forState: .Normal)
-        calendarInfo.backgroundColor = UIColor.whiteColor()
+        calendarInfo.layer.borderColor = UIColor.white.cgColor
+        calendarInfo.setTitleColor(UIColor().defaultButtonColor, for: UIControlState())
+        calendarInfo.backgroundColor = UIColor.white
                 
         // Select the current date
         calendarView.reloadData() {
-            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
+            self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
     }    
     
     // Failable Initializer for tab bar controller
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        print("Calendar Init Coder Method")
         // Initialize Tab Bar Item
         tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         // If the user does not have to scroll to the next segment themselves then pressing the more button will never fail.
+        print("Calendar View Did Appear Animated Method")
         calendarView.reloadData(){
-            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
+            self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
     }
     
-    @IBAction func moreButtonPressed(sender: AnyObject) {
+    @IBAction func moreButtonPressed(_ sender: AnyObject) {
+        print("More Button Pressed")
         // If cell is in the current month then show the popover view controller.
-        if(selectedCell.cellState.dateBelongsTo == .ThisMonth){
-            self.performSegueWithIdentifier("calendarPopover", sender: self)
+        if(selectedCell.cellState.dateBelongsTo == .thisMonth){
+            self.performSegue(withIdentifier: "calendarPopover", sender: self)
         }
         // Otherwise show an alert dialog letting the user know what went wrong.
         else{
             // Get the calendar date of the currently selected cell.
-            let calendarDateSelected = formatter.stringFromDate(selectedDate)
+            let calendarDateSelected = formatter.string(from: selectedDate)
             print("Calendar Date Selected: \(calendarDateSelected)")
             
-            let alert: UIAlertController = UIAlertController(title: "Calendar", message: "Sorry, the date you have currently selected: \(calendarDateSelected) is not in this month", preferredStyle: .Alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil)
+            let alert: UIAlertController = UIAlertController(title: "Calendar", message: "Sorry, the date you have currently selected: \(calendarDateSelected) is not in this month", preferredStyle: .alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             alert.addAction(dismissAction)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
-    @IBAction func rightCalendarArrowPressed(sender: AnyObject) {
+    @IBAction func rightCalendarArrowPressed(_ sender: AnyObject) {
+        print("Right Arrow Pressed Action")
         calendarView.scrollToNextSegment()
         calendarView.reloadData(){
-            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
+            self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
     }
     
-    @IBAction func leftCalendarArrowPressed(sender: AnyObject) {
+    @IBAction func leftCalendarArrowPressed(_ sender: AnyObject) {
+        print("Left Arrow Pressed Action")
         calendarView.scrollToPreviousSegment()
         calendarView.reloadData(){
-            self.calendarView.selectDates([NSDate()], triggerSelectionDelegate: true)
+            self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
     }
     
-    func prepareForPopoverPresentation(popoverPresentationController: UIPopoverPresentationController) {
-        
+    // Present the popover when the more button is pressed
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        print("Prepare For Popover Presentation Method")
         if selectedCell.cellState != nil{
                 if selectedCell.cellState.isSelected == true{
                     let popoverVC = PopoverViewController()
-                    popoverPresentationController.permittedArrowDirections = [.Up, .Down]
+                    popoverPresentationController.permittedArrowDirections = [.up, .down]
                     popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
                     popoverPresentationController.sourceView = selectedCell
-                    popoverPresentationController.backgroundColor = UIColor.orangeColor()
-                    presentViewController(popoverVC, animated: true, completion: nil)
+                    popoverPresentationController.backgroundColor = UIColor.orange
+                    present(popoverVC, animated: true, completion: nil)
                 }
                 else{
                     print("Selected Cell: \(selectedCell.cellState.date) is not selected")
@@ -124,48 +131,61 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     
     // Calendar must know the number of rows, start date, end date and calendar
-    func configureCalendar(calendar: JTAppleCalendarView) -> (startDate: NSDate, endDate: NSDate, numberOfRows: Int, calendar: NSCalendar) {
-
+    func configureCalendar(_ calendar: JTAppleCalendarView) -> (startDate: Date, endDate: Date, numberOfRows: Int, calendar: Calendar) {
+        print("Old Configure Calendar Method")
         // Use the NSDate Extensions for the start and end date
-        return(startDate: NSDate().calendarStartDate, endDate: NSDate().calendarEndDate, numberOfRows: numberOfRows, calendar: userCalendar)
+        return(startDate: Date().calendarStartDate as Date, endDate: Date().calendarEndDate as Date, numberOfRows: numberOfRows, calendar: userCalendar)
     }
     
-    // Is about to display cell calls set up before display from cell
-    func calendar(calendar: JTAppleCalendarView, isAboutToDisplayCell cell: JTAppleDayCellView, date: NSDate, cellState: CellState) {
-        
+    // Configure the calendar
+    func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
+        print("Congifure Calendar Method")
+        let parameters = ConfigurationParameters(startDate: Date().calendarStartDate,
+                                                 endDate: Date().calendarEndDate,
+                                                 numberOfRows: numberOfRows,
+                                                 calendar: userCalendar,
+                                                 //generateInDates: generateInDates,
+                                                 //generateOutDates: generateOutDates,
+                                                 firstDayOfWeek: .sunday)
+        return parameters
+    }
+    
+    func calendar(_ calendar: JTAppleCalendarView, willDisplayCell cell: JTAppleDayCellView, date: Date, cellState: CellState) {
+        print("Will Display Cell Method")
         if let calendarCell = cell as? CalendarCell{
             calendarCell.setUpCellBeforeDisplay(cellState)
             if calendarCell.appointmentCounter > 0{
-                calendarCell.appointmentCounterLabel.hidden = false
+                calendarCell.appointmentCounterLabel.isHidden = false
                 calendarCell.appointmentCounterLabel.text = String(calendarCell.appointmentCounter)
             }
             else{
-                calendarCell.appointmentCounterLabel.hidden = true
+                calendarCell.appointmentCounterLabel.isHidden = true
             }
             
             if calendarCell.taskCounter > 0{
-                calendarCell.taskCounterLabel.hidden = false
+                calendarCell.taskCounterLabel.isHidden = false
                 calendarCell.taskCounterLabel.text = String(calendarCell.taskCounter)
             }
             else{
-                calendarCell.taskCounterLabel.hidden = true
+                calendarCell.taskCounterLabel.isHidden = true
             }
             
             if calendarCell.journalCounter > 0{
-                calendarCell.journalCounterLabel.hidden = false
+                calendarCell.journalCounterLabel.isHidden = false
                 calendarCell.journalCounterLabel.text = String(calendarCell.journalCounter)
             }
             else{
-                calendarCell.journalCounterLabel.hidden = true
+                calendarCell.journalCounterLabel.isHidden = true
             }
             selectedCell = calendarCell
             calendarCell.setNeedsDisplay()
         }
-        
+
     }
     
     // Function for when the cell has been selected
-    func calendar(calendar: JTAppleCalendarView, didSelectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
+    func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleDayCellView?, cellState: CellState) {
+        print("Did Select Date Method")
         // Send the selected date to the popover so we know which appointments tasks and journals to retrieve from the database
         if let calendarCell = cell as? CalendarCell{
             selectedDate = cellState.date
@@ -175,7 +195,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     // Function for when the cell has been deselected
-    func calendar(calendar: JTAppleCalendarView, didDeselectDate date: NSDate, cell: JTAppleDayCellView?, cellState: CellState) {
+    func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleDayCellView?, cellState: CellState) {
+        print("Did De-Select Date Method")
         // Update the cell state to deselect it
         if let calendarCell = cell as? CalendarCell{
             calendarCell.updateCell(cellState)
@@ -185,42 +206,47 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     // MARK - Header Methods
     
     // Sets up the month and year for the header view.
-    func setUpHeaderView(startingMonth: NSDate) -> String {
-        let month = userCalendar.component([.Month], fromDate: startingMonth)
+    func setUpHeaderView(_ startingMonth: Date) -> String {
+        print("Set Up Header Method")
+        let month = (userCalendar as NSCalendar).component([.month], from: startingMonth)
         let monthName = formatter.monthSymbols[(month - 1) % 12]
-        let year = userCalendar.component([.Year], fromDate: startingMonth)
+        let year = (userCalendar as NSCalendar).component([.year], from: startingMonth)
         let dateString = monthName + " " + String(year)
         return dateString
     }
-    
-    // Size of the header view
-    func calendar(calendar: JTAppleCalendarView, sectionHeaderSizeForDate dateRange: (start: NSDate, end: NSDate), belongingTo month: Int) -> CGSize {
-        return CGSize(width: calendarView.frame.size.width, height: 100)
 
-    }
-    
-    func calendar(calendar: JTAppleCalendarView, isAboutToDisplaySectionHeader header: JTAppleHeaderView, dateRange: (start: NSDate, end: NSDate), identifier: String) {
+    // Display the section header
+    func calendar(_ calendar: JTAppleCalendarView, willDisplaySectionHeader header: JTAppleHeaderView, range: (start: Date, end: Date), identifier: String) {
+        print("Will Display Section Header Method")
         if let headerView = header as? CalendarHeaderView{
-            headerView.topLabel.text = setUpHeaderView(dateRange.start)
+            headerView.topLabel.text = setUpHeaderView(range.start)
             
             var weekdayString = String()
             
             for index in 1...7 {
                 let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
                 //              print("Day: \(day)")
-                let spaces = String(count: 12, repeatedValue: (" " as Character))
-                weekdayString += day.substringToIndex(3).uppercaseString + spaces
+                let spaces = String(repeating: String((" " as Character)), count: 12)
+                weekdayString += day.substring(to: 3).uppercased() + spaces
             }
             headerView.bottomLabel.text = weekdayString
         }
 
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+    // Set the size of the section header
+    func calendar(_ calendar: JTAppleCalendarView, sectionHeaderSizeFor range: (start: Date, end: Date), belongingTo month: Int) -> CGSize {
+        print("Section Header Size For Method")
+        return CGSize(width: calendarView.frame.size.width, height: 100)
+    }
+    
+    // MARK - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Prepare For Segue From Calendar View")
         if segue.identifier == "calendarPopover"{
             
-            if let vc = segue.destinationViewController as? PopoverViewController{
+            if let vc = segue.destination as? PopoverViewController{
             
                 vc.preferredContentSize = CGSize(width: 375.0, height: 375.0)
                 let controller = vc.popoverPresentationController
@@ -234,5 +260,4 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             }
         }
     }
-
 }

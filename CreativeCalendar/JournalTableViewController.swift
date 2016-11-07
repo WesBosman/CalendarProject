@@ -10,25 +10,25 @@ import UIKit
 
 
 class JournalTableViewController: UITableViewController {
-    private let journalIdentifier = "Journal Cells"
-    private let db = DatabaseFunctions.sharedInstance
-    private let journalDateFormatter = NSDateFormatter().dateWithoutTime
+    fileprivate let journalIdentifier = "Journal Cells"
+    fileprivate let db = DatabaseFunctions.sharedInstance
+    fileprivate let journalDateFormatter = DateFormatter().dateWithoutTime
     weak var actionToEnable: UIAlertAction?
-    private var selectedIndexPath: NSIndexPath?
-    private var isExpanded: Bool = false
-    private var cellHeightDictionary: Dictionary<Int, [CGFloat]> = [:]
-    private var cellHeightArray: [CGFloat] = []
-    private var previousSection = 0
+    fileprivate var selectedIndexPath: IndexPath?
+    fileprivate var isExpanded: Bool = false
+    fileprivate var cellHeightDictionary: Dictionary<Int, [CGFloat]> = [:]
+    fileprivate var cellHeightArray: [CGFloat] = []
+    fileprivate var previousSection = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Navigation Bar
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blueColor()
+        nav?.tintColor = UIColor.blue
         
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.allowsSelection = false
@@ -50,7 +50,7 @@ class JournalTableViewController: UITableViewController {
     }
     
     // Should no longer require hitting the database
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         previousSection = 0
         GlobalJournalStructures.journalHeightArray = []
         tableView.reloadData()
@@ -60,15 +60,15 @@ class JournalTableViewController: UITableViewController {
     }
 
     // MARK: - Section Methods
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return GlobalJournalStructures.journalSections.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[section]]!.count
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         if(!GlobalJournalStructures.journalSections[section].isEmpty){
             return GlobalJournalStructures.journalSections[section]
@@ -76,7 +76,7 @@ class JournalTableViewController: UITableViewController {
         return nil
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
             return 0.0
         }
@@ -85,35 +85,35 @@ class JournalTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
             return nil
         }
         else{
-            return tableView.headerViewForSection(section)
+            return tableView.headerView(forSection: section)
         }
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.contentView.backgroundColor = UIColor().defaultButtonColor
-        header.textLabel?.textColor = UIColor.whiteColor()
+        header.textLabel?.textColor = UIColor.white
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(journalIdentifier, forIndexPath: indexPath) as! JournalCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: journalIdentifier, for: indexPath) as! JournalCell
         
 //        let tableSection = journalDayForSection[journalSections[indexPath.section]]
-        let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[indexPath.section]]
-        let journalItem = tableSection![indexPath.row] as JournalItem
+        let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
+        let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
         
         cell.journalCellTitle.text = journalItem.getSimplifiedDate()
         cell.journalCellImage.image = UIImage(named: "Journals")
         cell.journalCellSubtitle.text = journalItem.journalEntry
         
         // The background is to let me know the size of what is stored in the cell
-        cell.journalCellTitle.backgroundColor = UIColor.cyanColor()
-        cell.journalCellSubtitle.backgroundColor = UIColor.greenColor()
+        cell.journalCellTitle.backgroundColor = UIColor.cyan
+        cell.journalCellSubtitle.backgroundColor = UIColor.green
         cell.journalCellTitle.sizeToFit()
         cell.journalCellSubtitle.sizeToFit()
         
@@ -131,7 +131,7 @@ class JournalTableViewController: UITableViewController {
 //        print("Title Height: \(titleHeight)")
 //        print("Subtitle Height: \(subtitleHeight)")
         
-        cell.detailTextLabel?.backgroundColor = UIColor.cyanColor()
+        cell.detailTextLabel?.backgroundColor = UIColor.cyan
         return cell
     }
     
@@ -160,32 +160,32 @@ class JournalTableViewController: UITableViewController {
 
     
     // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
 
     
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             
             // Delete the row from the data source
-            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[indexPath.section]]
-            let journalItemToDelete = tableSection![indexPath.row] as JournalItem
+            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
+            let journalItemToDelete = tableSection![(indexPath as NSIndexPath).row] as JournalItem
             
-            let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .Alert)
-            deleteOptions.addTextFieldWithConfigurationHandler({(textField) in
+            let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .alert)
+            deleteOptions.addTextField(configurationHandler: {(textField) in
                 textField.placeholder = "Reason for Delete"
-                textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
             })
             
             
-            let deleteJournal = UIAlertAction(title: "Delete Journal", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+            let deleteJournal = UIAlertAction(title: "Delete Journal", style: .destructive, handler: {(action: UIAlertAction) -> Void in
 
-                let key = GlobalJournalStructures.journalSections[indexPath.section]
-                let journal = GlobalJournalStructures.journalDictionary[key]?.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                let key = GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]
+                let journal = GlobalJournalStructures.journalDictionary[key]?.remove(at: (indexPath as NSIndexPath).row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
                 journal!.journalDeleted = true
                 journal!.journalDeletedReason = deleteOptions.textFields![0].text!
                 self.db.updateJournal(journal!, option: "delete")
@@ -196,37 +196,37 @@ class JournalTableViewController: UITableViewController {
 
                 })
             
-            let cancelDelete = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+            let cancelDelete = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
             self.actionToEnable = deleteJournal
-            deleteJournal.enabled = false
+            deleteJournal.isEnabled = false
             deleteOptions.addAction(cancelDelete)
             deleteOptions.addAction(deleteJournal)
                 
-            self.presentViewController(deleteOptions, animated: true, completion: nil)
+            self.present(deleteOptions, animated: true, completion: nil)
         }
     }
     
-    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         
-        let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! JournalCell
-        selectedIndexPath = tableView.indexPathForCell(selectedCell)
+        let selectedCell = tableView.cellForRow(at: indexPath) as! JournalCell
+        selectedIndexPath = tableView.indexPath(for: selectedCell)
         
-        if selectedIndexPath!.row == indexPath.row && selectedIndexPath?.section == indexPath.section{
+        if (selectedIndexPath! as NSIndexPath).row == (indexPath as NSIndexPath).row && (selectedIndexPath as NSIndexPath?)?.section == (indexPath as NSIndexPath).section{
             toggleExpanded()
         }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if isExpanded && selectedIndexPath?.row == indexPath.row && selectedIndexPath?.section == indexPath.section{
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if isExpanded && (selectedIndexPath as NSIndexPath?)?.row == (indexPath as NSIndexPath).row && (selectedIndexPath as NSIndexPath?)?.section == (indexPath as NSIndexPath).section{
             return UITableViewAutomaticDimension
         }
         else{
-            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
     
-    func textChanged(sender:UITextField) {
-        self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
+    func textChanged(_ sender:UITextField) {
+        self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }
     
     func toggleExpanded(){
@@ -238,19 +238,19 @@ class JournalTableViewController: UITableViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "editJournalSegue"{
 //            let source = segue.sourceViewController as! JournalTableViewController
-            let destination = segue.destinationViewController as! JournalViewController
+            let destination = segue.destination as! JournalViewController
             
             let indexPath = tableView.indexPathForSelectedRow!
 //            let tableSection = journalDayForSection[journalSections[indexPath.section]]
             
-            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[indexPath.section]]
-            let journalItem = tableSection![indexPath.row] as JournalItem
+            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
+            let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
             
             destination.journalItemToEdit = journalItem
             

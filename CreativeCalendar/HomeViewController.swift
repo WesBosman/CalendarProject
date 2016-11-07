@@ -17,33 +17,33 @@ import ResearchKit
 
 
 // Dates for Calendar starting and ending dates. 
-extension NSDate{
-    private struct CalendarDates{
-        private static let calendarStartDate:NSDate = {
-            let startDate = NSDateFormatter().calendarFormat.dateFromString("9/01/2016")
+extension Date{
+    fileprivate struct CalendarDates{
+        fileprivate static let calendarStartDate:Date = {
+            let startDate = DateFormatter().calendarFormat.date(from: "9/01/2016")
             print("Calendar Dates StartDate: \(startDate!)")
             return startDate!
         }()
         
-        private static let calendarEndDate:NSDate = {
-            let calendarComponents = NSDateComponents()
-            let calendar = NSCalendar.currentCalendar()
+        fileprivate static let calendarEndDate:Date = {
+            var calendarComponents = DateComponents()
+            let calendar = Calendar.current
             // Gets the last day of the month
             calendarComponents.month = 3
             calendarComponents.day = -1
-            let endDate = calendar.dateByAddingComponents(calendarComponents, toDate: CalendarDates.calendarStartDate, options: .MatchStrictly)
+            let endDate = (calendar as NSCalendar).date(byAdding: calendarComponents, to: CalendarDates.calendarStartDate, options: .matchStrictly)
             print("Calendar Dates EndDate: \(endDate!)")
             return endDate!
         }()
     }
     
-        var calendarStartDate:NSDate {
+        var calendarStartDate:Date {
             get{
                 return CalendarDates.calendarStartDate
             }
         }
         
-        var calendarEndDate:NSDate {
+        var calendarEndDate:Date {
             get{
                 return CalendarDates.calendarEndDate
             }
@@ -51,64 +51,64 @@ extension NSDate{
 }
 
 // Dates are getting formatted so much I might as well an extension
-extension NSDateFormatter{
-    private struct Formatters{
-        private static let fullFormat:NSDateFormatter = {
-            let dateFormatter = NSDateFormatter()
+extension DateFormatter{
+    fileprivate struct Formatters{
+        fileprivate static let fullFormat:DateFormatter = {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEEE M/dd/yyyy hh:mm:ss a"
             return dateFormatter
         }()
         
-        private static let fullDateFormat:NSDateFormatter = {
-            let dateFormatter = NSDateFormatter()
+        fileprivate static let fullDateFormat:DateFormatter = {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
             return dateFormatter
         }()
 
     
-        private static let monthDayYearFormat:NSDateFormatter = {
-            let dateFormatter = NSDateFormatter()
+        fileprivate static let monthDayYearFormat:DateFormatter = {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMMM dd yyyy"
             return dateFormatter
         }()
         
-        private static let monthDayYearHourMinuteFormat: NSDateFormatter = {
-            let dateFormatter = NSDateFormatter()
+        fileprivate static let monthDayYearHourMinuteFormat: DateFormatter = {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEEE M/dd/yyyy h:mm a"
             return dateFormatter
         }()
         
-        private static let monthDayYearWithoutTime: NSDateFormatter = {
-            let dateFormatter = NSDateFormatter()
+        fileprivate static let monthDayYearWithoutTime: DateFormatter = {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "M/dd/yyyy"
             return dateFormatter
         }()
     }
     
-    var universalFormatter: NSDateFormatter {
+    var universalFormatter: DateFormatter {
         get{
             return Formatters.fullFormat
         }
     }
-    var dateWithoutTime:NSDateFormatter {
+    var dateWithoutTime:DateFormatter {
         get{
             return Formatters.monthDayYearFormat
         }
     }
     
-    var dateWithTime: NSDateFormatter {
+    var dateWithTime: DateFormatter {
         get{
             return Formatters.monthDayYearHourMinuteFormat
         }
     }
     
-    var calendarFormat: NSDateFormatter{
+    var calendarFormat: DateFormatter{
         get{
             return Formatters.monthDayYearWithoutTime
         }
     }
     
-    var journalFormat: NSDateFormatter{
+    var journalFormat: DateFormatter{
         get{
             return Formatters.fullDateFormat
         }
@@ -119,17 +119,17 @@ extension NSDateFormatter{
 extension UIColor{
     var defaultButtonColor: UIColor { return UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)}
     var navigationBarColor: UIColor { return UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)}
-    var appointmentColor: UIColor { return UIColor.redColor()}
-    var taskColor: UIColor { return UIColor.greenColor()}
-    var journalColor: UIColor { return UIColor.yellowColor()}
+    var appointmentColor: UIColor { return UIColor.red}
+    var taskColor: UIColor { return UIColor.green}
+    var journalColor: UIColor { return UIColor.yellow}
 }
 
 // This extension is for making a background gradient
 extension CAGradientLayer{
     func makeGradientBackground() -> CAGradientLayer{
         let gradientBackground = CAGradientLayer()
-        let lightTopColor = UIColor(red: (102/255.0), green: (204/255.0), blue: (255/255.0), alpha: 1.0).CGColor
-        let darkBottomColor = UIColor(red: (0/255.0), green: (128/255.0), blue: (200/255.0), alpha: 1.0).CGColor
+        let lightTopColor = UIColor(red: (102/255.0), green: (204/255.0), blue: (255/255.0), alpha: 1.0).cgColor
+        let darkBottomColor = UIColor(red: (0/255.0), green: (128/255.0), blue: (200/255.0), alpha: 1.0).cgColor
         gradientBackground.colors = [lightTopColor, darkBottomColor]
         gradientBackground.locations = [0.0, 1.0]
 //        gradientBackground.zPosition = -1
@@ -152,36 +152,36 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     let db = DatabaseFunctions.sharedInstance
     let appointmentCellID = "AppointmentHomeCell"
     let taskCellID = "TaskHomeCell"
-    private var taskCell: HomeTaskCell = HomeTaskCell()
-    private var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
+    fileprivate var taskCell: HomeTaskCell = HomeTaskCell()
+    fileprivate var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
     var appointmentArray: [AppointmentItem] = []
     var taskArray: [TaskItem] = []
     var journalArray: [JournalItem] = []
     var todaysDate: String = String()
     var consentGiven = false
-    let dateFormat = NSDateFormatter()
-    let currentDate = NSDate()
+    let dateFormat = DateFormatter()
+    let currentDate = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set color and text of the text labels
         //clearAllUserDefaults()
         appointmentLabel.text = "Appointments"
-        appointmentLabel.textColor = UIColor.whiteColor()
+        appointmentLabel.textColor = UIColor.white
         taskLabel.text = "To-Do List"
-        taskLabel.textColor = UIColor.whiteColor()
+        taskLabel.textColor = UIColor.white
         journalLabel.text = "Journal"
-        journalLabel.textColor = UIColor.whiteColor()
+        journalLabel.textColor = UIColor.white
         
         // Current Date
-        dateFormat.dateStyle = NSDateFormatterStyle.FullStyle
-        todaysDate = dateFormat.stringFromDate(currentDate)
+        dateFormat.dateStyle = DateFormatter.Style.full
+        todaysDate = dateFormat.string(from: currentDate)
         homeDateLabel.text = todaysDate
         
         // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
-        self.view.layer.insertSublayer(background, atIndex: 0)
+        self.view.layer.insertSublayer(background, at: 0)
         
         // Set this class up to be the delegate for the two different table views
         self.taskViewTable.delegate = self
@@ -190,7 +190,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         self.appointmentViewTable.dataSource = self
         
         // Make it so the journal is uneditable from the home screen.
-        journalViewBox.editable = false
+        journalViewBox.isEditable = false
         journalViewBox.scrollRangeToVisible(NSRange(location: 0, length: 0))
         
         // Make the day label with the checkmark.
@@ -207,11 +207,11 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     
     func setUpDaysOfTheWeekLabel() -> String{
         var todaysSubString = todaysDate as NSString
-        todaysSubString = todaysSubString.substringWithRange(NSRange(location: 0, length: 3))
+        todaysSubString = todaysSubString.substring(with: NSRange(location: 0, length: 3)) as NSString
         let checkmark = "✅"
         let newSubstring = (todaysSubString as String) + " __"
         let newStringPlusCheck = (todaysSubString as String) + " " + checkmark
-        let newText = daysOfTheWeekText.text?.stringByReplacingOccurrencesOfString(newSubstring, withString: newStringPlusCheck, options: .LiteralSearch, range: nil)
+        let newText = daysOfTheWeekText.text?.replacingOccurrences(of: newSubstring, with: newStringPlusCheck, options: .literal, range: nil)
         return newText! as String
     }
     
@@ -225,10 +225,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     
     // When the home screen appears we set the appointment and task arrays based on the data stored there
     // We then reload the tables so that the changes from the other tabs are reflected here.
-    override func viewWillAppear(animated: Bool) {
-        let currentDateAsString = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
-        appointmentArray = db.getAppointmentByDate(currentDateAsString, formatter: NSDateFormatter().dateWithoutTime)
-        taskArray = db.getTaskByDate(currentDateAsString, formatter: NSDateFormatter().dateWithoutTime)
+    override func viewWillAppear(_ animated: Bool) {
+        let currentDateAsString = DateFormatter().dateWithoutTime.string(from: currentDate)
+        appointmentArray = db.getAppointmentByDate(currentDateAsString, formatter: DateFormatter().dateWithoutTime)
+        taskArray = db.getTaskByDate(currentDateAsString, formatter: DateFormatter().dateWithoutTime)
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         printJournals()
@@ -240,8 +240,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         //print("Journal code for view will appear method.")
         var journalText: String = ""
         var journalCount: Int = 0
-        let today = NSDateFormatter().dateWithoutTime.stringFromDate(currentDate)
-        journalArray = DatabaseFunctions.sharedInstance.getJournalByDate(today, formatter: NSDateFormatter().dateWithoutTime)
+        let today = DateFormatter().dateWithoutTime.string(from: currentDate)
+        journalArray = DatabaseFunctions.sharedInstance.getJournalByDate(today, formatter: DateFormatter().dateWithoutTime)
         for journal in journalArray{
             if !journalArray.isEmpty{
                 print("Journal Entry: \(journal.journalEntry)")
@@ -261,7 +261,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == appointmentViewTable{
             return appointmentArray.count
         }
@@ -270,26 +270,26 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
-        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
         
         if tableView == taskViewTable{
             // Get the task item and task cell
-            var task = taskArray[indexPath.row] as TaskItem
-            let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
+            var task = taskArray[(indexPath as NSIndexPath).row] as TaskItem
+            let taskCell = taskViewTable.cellForRow(at: indexPath) as! HomeTaskCell
             
             // Create an Alert to ask the user if they have completed the task.
-            let alert = (UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert))
+            let alert = (UIAlertController(title: "Hello", message: "Have you completed the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.alert))
             
             // Add the option to complete a task or exit the menu
-            let completeTaskAction = (UIAlertAction(title: "Complete Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+            let completeTaskAction = (UIAlertAction(title: "Complete Task", style: UIAlertActionStyle.default, handler: {(action: UIAlertAction) in
                 
-                let completeTask = UIAlertController(title: "Confirmation", message: "Are you sure you want to Complete the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
+                let completeTask = UIAlertController(title: "Confirmation", message: "Are you sure you want to Complete the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.alert)
                 
                 // Add complete action to the complete task controller
-                let complete = UIAlertAction(title: "Complete", style: .Destructive, handler: {(action: UIAlertAction) in
+                let complete = UIAlertAction(title: "Complete", style: .destructive, handler: {(action: UIAlertAction) in
                     task.completed = true
                     task.canceled = false
                     task.deleted = false
@@ -300,31 +300,31 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 
                 completeTask.addAction(complete)
                 completeTask.addAction(exitMenu)
-                self.presentViewController(completeTask, animated: true, completion: nil)
+                self.present(completeTask, animated: true, completion: nil)
 
             }))
             // Add the option to cancel a task and a confirmation menu
-            let cancelTaskAction = (UIAlertAction(title: "Cancel Task", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction) in
+            let cancelTaskAction = (UIAlertAction(title: "Cancel Task", style: UIAlertActionStyle.default, handler: {(action: UIAlertAction) in
                 let confirmationMenu = self.confirmationMenu("Tasks", typeOfAction: "Cancel", indexPath: indexPath)
                 // Why is the user canceling the task
-                confirmationMenu.addTextFieldWithConfigurationHandler({(textField) in
+                confirmationMenu.addTextField(configurationHandler: {(textField) in
                     textField.placeholder = "Reason for cancel"
-                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
                 })
-                self.presentViewController(confirmationMenu, animated: true, completion: nil)
+                self.present(confirmationMenu, animated: true, completion: nil)
 
             }))
             // Add the option to delete a task and a confirmation menu
-            let deleteTaskAction = (UIAlertAction(title: "Delete Task", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+            let deleteTaskAction = (UIAlertAction(title: "Delete Task", style: UIAlertActionStyle.destructive, handler: { (action: UIAlertAction) in
                 
                 let confirmationMenu = self.confirmationMenu("Tasks", typeOfAction: "Delete", indexPath: indexPath)
                 // Why is the user deleting the task
-                confirmationMenu.addTextFieldWithConfigurationHandler({(textField) in
+                confirmationMenu.addTextField(configurationHandler: {(textField) in
                     textField.placeholder = "Reason for delete"
-                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
                 })
 
-                self.presentViewController(confirmationMenu, animated: true, completion: nil)
+                self.present(confirmationMenu, animated: true, completion: nil)
             } ))
             
             alert.addAction(completeTaskAction)
@@ -333,23 +333,23 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addAction(exitMenu)
             
             // Show the alert to the user
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
             
         // Set up Appointment Table on the Home Screen
         else if tableView == appointmentViewTable{
             // Get the appointment item
-            var appointment = appointmentArray[indexPath.row] as AppointmentItem
-            let appointmentCell = appointmentViewTable.cellForRowAtIndexPath(indexPath) as! HomeAppointmentCell
+            var appointment = appointmentArray[(indexPath as NSIndexPath).row] as AppointmentItem
+            let appointmentCell = appointmentViewTable.cellForRow(at: indexPath) as! HomeAppointmentCell
             
             // Create an Alert to ask the user if they have completed the task.
-            let alert = UIAlertController(title: "Hello", message: "Have you finished the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Hello", message: "Have you finished the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.alert)
             
             // Add the option to complete an appointment and a confirmation menu
-            let completeAppointmentAction = (UIAlertAction(title: "Complete Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            let completeAppointmentAction = (UIAlertAction(title: "Complete Appointment", style: UIAlertActionStyle.default, handler: { (action: UIAlertAction) in
 
-                let completeAppointment = UIAlertController(title: "Confirmation", message: "Are you sure you want to Complete the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
-                let complete = (UIAlertAction(title: "Complete", style: .Destructive, handler: {(action: UIAlertAction) in
+                let completeAppointment = UIAlertController(title: "Confirmation", message: "Are you sure you want to Complete the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.alert)
+                let complete = (UIAlertAction(title: "Complete", style: .destructive, handler: {(action: UIAlertAction) in
                     
                     appointment.completed = true
                     appointment.canceled = false
@@ -362,35 +362,35 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 
                 completeAppointment.addAction(complete)
                 completeAppointment.addAction(exitMenu)
-                self.presentViewController(completeAppointment, animated: true, completion: nil)
+                self.present(completeAppointment, animated: true, completion: nil)
             } ))
             
             // Add the option to cancel an appointment and a confirmation menu
-            let cancelAppointmentAction = (UIAlertAction(title: "Cancel Appointment", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction) in
+            let cancelAppointmentAction = (UIAlertAction(title: "Cancel Appointment", style: UIAlertActionStyle.default, handler: { (action: UIAlertAction) in
                 
                 // Present the confirmation menu
                 let confirmationAlert = self.confirmationMenu("Appointments", typeOfAction: "Cancel", indexPath: indexPath)
                 
                 // Why is the user canceling the appointment
-                confirmationAlert.addTextFieldWithConfigurationHandler({(textField) in
+                confirmationAlert.addTextField(configurationHandler: {(textField) in
                     textField.placeholder = "Reason for cancel"
-                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
                 })
-                self.presentViewController(confirmationAlert, animated: true, completion: nil)
+                self.present(confirmationAlert, animated: true, completion: nil)
                 
             } ))
             // Add the option to delete an appointment and a confirmation menu
-            let deleteAppointmentAction = (UIAlertAction(title: "Delete Appointment", style: UIAlertActionStyle.Destructive, handler: { (action: UIAlertAction) in
+            let deleteAppointmentAction = (UIAlertAction(title: "Delete Appointment", style: UIAlertActionStyle.destructive, handler: { (action: UIAlertAction) in
                 
                 // Present the confirmation menu
                 let confirmationAlert = self.confirmationMenu("Appointments", typeOfAction: "Delete", indexPath: indexPath)
                 
                 // Why is the user deleting the appointment
-                confirmationAlert.addTextFieldWithConfigurationHandler({(textField) in
+                confirmationAlert.addTextField(configurationHandler: {(textField) in
                     textField.placeholder = "Reason for delete"
-                    textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                    textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
                 })
-                self.presentViewController(confirmationAlert, animated: true, completion: nil)
+                self.present(confirmationAlert, animated: true, completion: nil)
                 
             } ))
             
@@ -400,26 +400,26 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addAction(exitMenu)
             
             // Show the alert to the user
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
 
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // The confirmation menu checks that a user is preforming their desired action for the item
-    func confirmationMenu(tableName:String, typeOfAction: String, indexPath: NSIndexPath) -> UIAlertController{
+    func confirmationMenu(_ tableName:String, typeOfAction: String, indexPath: IndexPath) -> UIAlertController{
         // Create exit menu action to reuse
-        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
 
         // If we are dealing with the appointments table
         if tableName == "Appointments"{
-            var appointment = appointmentArray[indexPath.row] as AppointmentItem
-            let appointmentCell = appointmentViewTable.cellForRowAtIndexPath(indexPath) as! HomeAppointmentCell
+            var appointment = appointmentArray[(indexPath as NSIndexPath).row] as AppointmentItem
+            let appointmentCell = appointmentViewTable.cellForRow(at: indexPath) as! HomeAppointmentCell
             
         
-            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.alert)
             
-                let action = (UIAlertAction(title: "\(typeOfAction)", style: .Destructive, handler: {(action: UIAlertAction) in
+                let action = (UIAlertAction(title: "\(typeOfAction)", style: .destructive, handler: {(action: UIAlertAction) in
                     
                 switch(typeOfAction){
                     case "Cancel":
@@ -443,8 +443,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                         // Get the reason the user is deleting the appointment
                         appointment.deletedReason = alert.textFields![0].text ?? ""
                         self.db.updateAppointment(appointment)
-                        self.appointmentArray.removeAtIndex(indexPath.row)
-                        self.appointmentViewTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        self.appointmentArray.remove(at: (indexPath as NSIndexPath).row)
+                        self.appointmentViewTable.deleteRows(at: [indexPath], with: .automatic)
                     
                     default:
                         break
@@ -453,18 +453,18 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 
                 }))
                 self.actionToEnable = action
-                action.enabled = false
+                action.isEnabled = false
                 alert.addAction(action)
                 alert.addAction(exitMenu)
                 return alert
         }
         // If we are dealing with the tasks table
         else{
-            var task = taskArray[indexPath.row] as TaskItem
-            let taskCell = taskViewTable.cellForRowAtIndexPath(indexPath) as! HomeTaskCell
+            var task = taskArray[(indexPath as NSIndexPath).row] as TaskItem
+            let taskCell = taskViewTable.cellForRow(at: indexPath) as! HomeTaskCell
             
-            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.Alert)
-            let action = (UIAlertAction(title: "\(typeOfAction)", style: .Destructive, handler: {(action: UIAlertAction) in
+            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the task: \n\(task.taskTitle)?", preferredStyle: UIAlertControllerStyle.alert)
+            let action = (UIAlertAction(title: "\(typeOfAction)", style: .destructive, handler: {(action: UIAlertAction) in
                 
                 switch(typeOfAction){
                     // Give the task a red x mark and mark it as canceled in database
@@ -487,8 +487,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                         // Get the reason the user is deleting the task
                         task.deletedReason = alert.textFields![0].text ?? ""
                         self.db.updateTask(task)
-                        self.taskArray.removeAtIndex(indexPath.row)
-                        self.taskViewTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        self.taskArray.remove(at: (indexPath as NSIndexPath).row)
+                        self.taskViewTable.deleteRows(at: [indexPath], with: .automatic)
                     
                     default:
                         break
@@ -496,7 +496,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                 
             }))
             self.actionToEnable = action
-            action.enabled = false
+            action.isEnabled = false
             alert.addAction(action)
             alert.addAction(exitMenu)
             return alert
@@ -505,27 +505,27 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     
     // If the text field is empty when the user cancels or deletes an appointment or task do not let
     // them cancel or delete the item
-    func textChanged(sender:UITextField) {
-        self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
+    func textChanged(_ sender:UITextField) {
+        self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // fill the appointment table view cell and return it
         if tableView == appointmentViewTable{
-            let appointment = appointmentArray[indexPath.row] as AppointmentItem
-            let appointmentCell = appointmentViewTable.dequeueReusableCellWithIdentifier(appointmentCellID, forIndexPath: indexPath) as! HomeAppointmentCell
-            let startFormatter = NSDateFormatter()
-            let endFormatter = NSDateFormatter()
+            let appointment = appointmentArray[(indexPath as NSIndexPath).row] as AppointmentItem
+            let appointmentCell = appointmentViewTable.dequeueReusableCell(withIdentifier: appointmentCellID, for: indexPath) as! HomeAppointmentCell
+            let startFormatter = DateFormatter()
+            let endFormatter = DateFormatter()
             startFormatter.dateFormat = "MMM dd ',' h:mm a"
             endFormatter.dateFormat = " MMM dd ',' h:mm a"
             
             // If the appointment is overdue then the starting date text color is red
             if appointment.isOverdue == true{
-                appointmentCell.homeAppointmentStart.textColor = UIColor.redColor()
+                appointmentCell.homeAppointmentStart.textColor = UIColor.red
             }
             else{
-                appointmentCell.homeAppointmentStart.textColor = UIColor.blackColor()
+                appointmentCell.homeAppointmentStart.textColor = UIColor.black
             }
             
             // If the appointment has been completed then we need to mark it with a check
@@ -535,8 +535,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.homeAppointmentImage.image = UIImage(named: "Appointments")
             appointmentCell.homeAppointmentTitle.text = appointment.title
             appointmentCell.homeAppointmentType.text = "type: \(appointment.type)"
-            appointmentCell.homeAppointmentStart.text = "start: \(startFormatter.stringFromDate(appointment.startingTime))"
-            appointmentCell.homeAppointmentEnd.text = "end: \(endFormatter.stringFromDate(appointment.endingTime))"
+            appointmentCell.homeAppointmentStart.text = "start: \(startFormatter.string(from: appointment.startingTime as Date))"
+            appointmentCell.homeAppointmentEnd.text = "end: \(endFormatter.string(from: appointment.endingTime as Date))"
             appointmentCell.homeAppointmentLocation.text = "location: \(appointment.appLocation)"
             appointmentCell.homeAppointmentAdditional.text = "info: \(appointment.additionalInfo)"
             appointmentCell.homeAppointmentAlert.text = "alert: \(appointment.alert)"
@@ -545,12 +545,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         }
         // Otherwise fill the task table cell and return it
         else{
-            let task = taskArray[indexPath.row] as TaskItem
-            taskCell = taskViewTable.dequeueReusableCellWithIdentifier(taskCellID, forIndexPath: indexPath) as! HomeTaskCell
+            let task = taskArray[(indexPath as NSIndexPath).row] as TaskItem
+            taskCell = taskViewTable.dequeueReusableCell(withIdentifier: taskCellID, for: indexPath) as! HomeTaskCell
 
             // If the task is completed it should have a green checkbox
             taskCell.homeTaskCompleted(task)
-            taskCell.homeTaskCompletionDate.text = NSDateFormatter().dateWithTime.stringFromDate(task.estimateCompletionDate)
+            taskCell.homeTaskCompletionDate.text = DateFormatter().dateWithTime.string(from: task.estimateCompletionDate as Date)
             taskCell.homeTaskTitle.text = task.taskTitle
             taskCell.homeTaskInfo.text = task.taskInfo
             taskCell.homeTaskAlertLabel.text = "Alert: " + task.alert
@@ -558,7 +558,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             
             // Task has past its due date
             if task.isOverdue{
-                taskCell.homeTaskCompletionDate.textColor = UIColor.redColor()
+                taskCell.homeTaskCompletionDate.textColor = UIColor.red
             }
             return taskCell
         }

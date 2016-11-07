@@ -20,7 +20,7 @@ class TaskCell: UITableViewCell {
         // Initialization code        
     }
     
-    func taskCompleted(task: TaskItem){
+    func taskCompleted(_ task: TaskItem){
         if task.completed == true{
             taskImage.image = UIImage(named: "checkbox")
         }

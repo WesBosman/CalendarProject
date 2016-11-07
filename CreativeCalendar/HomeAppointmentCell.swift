@@ -22,13 +22,13 @@ class HomeAppointmentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        homeAppointmentTitle.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        homeAppointmentTitle.lineBreakMode = NSLineBreakMode.byWordWrapping
         homeAppointmentTitle.numberOfLines = 0
-        homeAppointmentAdditional.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        homeAppointmentAdditional.lineBreakMode = NSLineBreakMode.byWordWrapping
         homeAppointmentAdditional.numberOfLines = 0
     }
     
-    func homeAppointmentCompleted(appointment:AppointmentItem){
+    func homeAppointmentCompleted(_ appointment:AppointmentItem){
         if appointment.completed == true{
             homeAppointmentCompletedImage.image = UIImage(named: "checkbox") //"CircleTickedGreen")
         }

@@ -36,9 +36,7 @@
 		DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE58D3C91CECE0B30032CB9C /* JournalItem.swift */; };
 		DE5FD15B1D48E137004DA1F7 /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */; };
 		DE5FD15C1D48E137004DA1F7 /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		DE5FD1601D48EE98004DA1F7 /* EligibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5FD15F1D48EE98004DA1F7 /* EligibilityViewController.swift */; };
 		DE5FD1621D48F2D4004DA1F7 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5FD1611D48F2D4004DA1F7 /* ConsentViewController.swift */; };
-		DE5FD1641D48F863004DA1F7 /* ConsentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5FD1631D48F863004DA1F7 /* ConsentTask.swift */; };
 		DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFF81D14787E003ED54E /* FMDatabase.m */; };
 		DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFFC1D1479F3003ED54E /* FMResultSet.m */; };
 		DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0001D147AAD003ED54E /* FMDatabaseAdditions.m */; };
@@ -51,6 +49,12 @@
 		DE8E7D4E1D74C92300C69B71 /* PasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E7D4D1D74C92300C69B71 /* PasscodeViewController.swift */; };
 		DE8E7D561D77E67B00C69B71 /* JournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E7D551D77E67B00C69B71 /* JournalCell.swift */; };
 		DE977CB51D5B507200A571A4 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE977CB41D5B507200A571A4 /* AlertTableViewCell.swift */; };
+		DEBE20531DD11D83009933C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEBE20521DD11D83009933C7 /* GoogleService-Info.plist */; };
+		DEBE20541DD11D83009933C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEBE20521DD11D83009933C7 /* GoogleService-Info.plist */; };
+		DEBE20551DD11D83009933C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEBE20521DD11D83009933C7 /* GoogleService-Info.plist */; };
+		DEBE20581DD11F09009933C7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBE20571DD11F09009933C7 /* LoginViewController.swift */; };
+		DEBE205C1DD12312009933C7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBE205B1DD12312009933C7 /* SignUpViewController.swift */; };
+		DEBE205E1DD1232C009933C7 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBE205D1DD1232C009933C7 /* ForgotPasswordViewController.swift */; };
 		DEDB07821D5A2B4F00E32208 /* homeTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB07811D5A2B4F00E32208 /* homeTaskTests.swift */; };
 		DEE276E21D4012DC005F74B7 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */; };
 		E759A587BCEE558A4B683337 /* Pods_CreativeCalendarTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE431EAD256831BC6909CC4 /* Pods_CreativeCalendarTests.framework */; };
@@ -146,9 +150,7 @@
 		DE553AB01CE781B4006288E6 /* AppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentCell.swift; sourceTree = "<group>"; };
 		DE58D3C91CECE0B30032CB9C /* JournalItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
 		DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = "../../Downloads/ResearchKit-master/ResearchKit.xcodeproj"; sourceTree = "<group>"; };
-		DE5FD15F1D48EE98004DA1F7 /* EligibilityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EligibilityViewController.swift; sourceTree = "<group>"; };
 		DE5FD1611D48F2D4004DA1F7 /* ConsentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentViewController.swift; sourceTree = "<group>"; };
-		DE5FD1631D48F863004DA1F7 /* ConsentTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentTask.swift; sourceTree = "<group>"; };
 		DE62CFF81D14787E003ED54E /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		DE62CFFA1D1478E0003ED54E /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		DE62CFFB1D14797B003ED54E /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
@@ -167,6 +169,10 @@
 		DE8E7D4D1D74C92300C69B71 /* PasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasscodeViewController.swift; sourceTree = "<group>"; };
 		DE8E7D551D77E67B00C69B71 /* JournalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalCell.swift; sourceTree = "<group>"; };
 		DE977CB41D5B507200A571A4 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
+		DEBE20521DD11D83009933C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DEBE20571DD11F09009933C7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		DEBE205B1DD12312009933C7 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		DEBE205D1DD1232C009933C7 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		DEDB07811D5A2B4F00E32208 /* homeTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = homeTaskTests.swift; sourceTree = "<group>"; };
 		DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		E5179464284A4CF33184FC2A /* Pods-CreativeCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendar/Pods-CreativeCalendar.release.xcconfig"; sourceTree = "<group>"; };
@@ -245,10 +251,11 @@
 			isa = PBXGroup;
 			children = (
 				DE539DA61CAEDFB0000615CD /* AppDelegate.swift */,
-				DE5FD15F1D48EE98004DA1F7 /* EligibilityViewController.swift */,
-				DE5FD1631D48F863004DA1F7 /* ConsentTask.swift */,
 				DE5FD1611D48F2D4004DA1F7 /* ConsentViewController.swift */,
 				DE8E7D4D1D74C92300C69B71 /* PasscodeViewController.swift */,
+				DEBE205D1DD1232C009933C7 /* ForgotPasswordViewController.swift */,
+				DEBE205B1DD12312009933C7 /* SignUpViewController.swift */,
+				DEBE20571DD11F09009933C7 /* LoginViewController.swift */,
 				DE62D00D1D1B0066003ED54E /* TaskCell.swift */,
 				DE553AB01CE781B4006288E6 /* AppointmentCell.swift */,
 				DE8E7D551D77E67B00C69B71 /* JournalCell.swift */,
@@ -274,6 +281,7 @@
 				DE4CAA791D261F5D00197FEF /* CellView.xib */,
 				DE4CAA7D1D26FD2100197FEF /* HeaderView.xib */,
 				DE2DCB511C652907004D3220 /* Main.storyboard */,
+				DEBE20521DD11D83009933C7 /* GoogleService-Info.plist */,
 				3F7115AC1C5943F70071542F /* Images.xcassets */,
 				3F7115AE1C5943F70071542F /* LaunchScreen.xib */,
 				3F7115A11C5943F70071542F /* Supporting Files */,
@@ -428,13 +436,16 @@
 					3F71159D1C5943F70071542F = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = GV7EE9PX98;
+						LastSwiftMigration = 0800;
 					};
 					3F7115B41C5943F70071542F = {
 						CreatedOnToolsVersion = 6.3.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 3F71159D1C5943F70071542F;
 					};
 					DE25D7C61D108DE0000D657D = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 3F71159D1C5943F70071542F;
 					};
 				};
@@ -492,6 +503,7 @@
 				3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */,
 				3F7115AD1C5943F70071542F /* Images.xcassets in Resources */,
 				DE2DCB531C652907004D3220 /* Main.storyboard in Resources */,
+				DEBE20531DD11D83009933C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +511,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEBE20541DD11D83009933C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +519,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEBE20551DD11D83009933C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +653,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEBE205E1DD1232C009933C7 /* ForgotPasswordViewController.swift in Sources */,
 				DE4D91661CE7D2A900CF89C4 /* TaskStaticTableViewController.swift in Sources */,
 				DE4CAA731D24679400197FEF /* CalendarViewController.swift in Sources */,
 				DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */,
@@ -655,16 +670,16 @@
 				DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */,
 				DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */,
 				DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */,
+				DEBE205C1DD12312009933C7 /* SignUpViewController.swift in Sources */,
 				DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */,
 				DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */,
+				DEBE20581DD11F09009933C7 /* LoginViewController.swift in Sources */,
 				DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */,
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE1D2D441D4A613B0015EFF3 /* RepeatTableViewCell.swift in Sources */,
-				DE5FD1601D48EE98004DA1F7 /* EligibilityViewController.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
 				DE8E7D4E1D74C92300C69B71 /* PasscodeViewController.swift in Sources */,
 				DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */,
-				DE5FD1641D48F863004DA1F7 /* ConsentTask.swift in Sources */,
 				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
 				DE5FD1621D48F2D4004DA1F7 /* ConsentViewController.swift in Sources */,
@@ -831,6 +846,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CreativeCalendar/CreativeCalendar-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -851,6 +867,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CreativeCalendar/CreativeCalendar-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
@@ -874,6 +891,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CreativeCalendar.app/CreativeCalendar";
 			};
 			name = Debug;
@@ -892,6 +910,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CreativeCalendar.app/CreativeCalendar";
 			};
 			name = Release;
@@ -907,6 +926,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Wes.CreativeCalendarUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = CreativeCalendar;
 			};
 			name = Debug;
@@ -921,6 +941,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Wes.CreativeCalendarUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = CreativeCalendar;
 			};
 			name = Release;

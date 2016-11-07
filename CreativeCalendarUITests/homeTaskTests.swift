@@ -37,27 +37,27 @@ class homeTaskTests: XCTestCase {
         app.tabBars.buttons["Tasks"].tap()
         app.navigationBars["Tasks"].buttons["Add"].tap()
         
-        let calendar = NSCalendar.currentCalendar()
-        let dateFormatter = NSDateFormatter()
-        let todaysDate = NSDate()
-        let calendarComponents = calendar.components([.Month, .Day, .Year], fromDate: todaysDate)
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        let todaysDate = Date()
+        let calendarComponents = (calendar as NSCalendar).components([.month, .day, .year], from: todaysDate)
         let thisDay = calendarComponents.day
         let thisMonth = calendarComponents.month
         let thisYear = calendarComponents.year
-        let todaysUpdatedDate = calendar.dateFromComponents(calendarComponents)
+        let todaysUpdatedDate = calendar.date(from: calendarComponents)
         print("This day: \(thisDay)")
         print("This Month: \(thisMonth)")
         print("This Year: \(thisYear)")
         print("Todays Updated Date: \(todaysUpdatedDate)")
         
         dateFormatter.dateFormat = "MMMM"
-        let stringMonth = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringMonth = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "d"
-        let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringDay = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
-        let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringYear = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "MMMM dd yyyy"
-        let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringFullDate = dateFormatter.string(from: todaysUpdatedDate!)
         
         let taskName = app.tables.cells.textFields["Task Name"]
         taskName.tap()
@@ -68,14 +68,14 @@ class homeTaskTests: XCTestCase {
         additionalInformation.tap()
         additionalInformation.typeText("UI Automated Home Task Additional Information")
         
-        let month = app.tables.pickerWheels.elementBoundByIndex(0)
-        let day = app.tables.pickerWheels.elementBoundByIndex(1)
-        let year = app.tables.pickerWheels.elementBoundByIndex(2)
+        let month = app.tables.pickerWheels.element(boundBy: 0)
+        let day = app.tables.pickerWheels.element(boundBy: 1)
+        let year = app.tables.pickerWheels.element(boundBy: 2)
         let estimatedCompletionDate = app.tables.staticTexts["Estimated Task Completion Date"]
         
-        month.adjustToPickerWheelValue(stringMonth)
-        day.adjustToPickerWheelValue(stringDay)
-        year.adjustToPickerWheelValue(stringYear)
+        month.adjust(toPickerWheelValue: stringMonth)
+        day.adjust(toPickerWheelValue: stringDay)
+        year.adjust(toPickerWheelValue: stringYear)
         estimatedCompletionDate.tap()
         
         let saveTaskButton = app.tables.buttons["Save Task"]
@@ -127,21 +127,21 @@ class homeTaskTests: XCTestCase {
         let typeOfAppointment = app.tables.cells.staticTexts["Type of Appointment"]
         typeOfAppointment.tap()
         
-        let appPicker = app.tables.cells.pickerWheels.elementBoundByIndex(0)
-        appPicker.adjustToPickerWheelValue("Medical")
+        let appPicker = app.tables.cells.pickerWheels.element(boundBy: 0)
+        appPicker.adjust(toPickerWheelValue: "Medical")
         XCTAssertTrue(app.tables.cells.staticTexts["Medical"].exists)
         
-        appPicker.adjustToPickerWheelValue("Recreational")
+        appPicker.adjust(toPickerWheelValue: "Recreational")
         XCTAssertTrue(app.tables.cells.staticTexts["Recreational"].exists)
         
-        appPicker.adjustToPickerWheelValue("Exercise")
+        appPicker.adjust(toPickerWheelValue: "Exercise")
         XCTAssertTrue(app.tables.cells.staticTexts["Exercise"].exists)
         
         typeOfAppointment.tap()
         
         let startTime = app.tables.cells.staticTexts["Start Time"]
         startTime.tap()
-        let startDay = app.tables.containingType(.Other, identifier:"APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["Today"]
+        let startDay = app.tables.containing(.other, identifier:"APPOINTMENT TIME *").children(matching: .cell).element(boundBy: 5).pickerWheels["Today"]
         startDay.tap()
         
         let endTime = app.tables.cells.staticTexts["End Time"]

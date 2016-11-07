@@ -13,8 +13,8 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     // Text box for user to enter journal enteries
     @IBOutlet weak var journalTextBox: UITextView!
     @IBOutlet weak var journalLabel: UILabel!
-    private var date = NSDate()
-    private let dateFormat = NSDateFormatter().journalFormat
+    fileprivate var date = Date()
+    fileprivate let dateFormat = DateFormatter().journalFormat
     var journalText:String = String()
     var journalItemToEdit:JournalItem? = nil
     let db = DatabaseFunctions.sharedInstance
@@ -24,13 +24,13 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         journalTextBox.delegate = self
         journalLabel.text = "Make a Journal Entry"
-        journalLabel.textColor = UIColor.whiteColor()
+        journalLabel.textColor = UIColor.white
         
         if journalItemToEdit != nil{
             journalTextBox.text = journalItemToEdit?.journalEntry
         }
         else{
-            let currentDateAsString = dateFormat.stringFromDate(date)
+            let currentDateAsString = dateFormat.string(from: date)
             journalTextBox.text = "\(currentDateAsString) : "
         }
         
@@ -38,19 +38,19 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blueColor()
+        nav?.tintColor = UIColor.blue
         
         // Set up background gradient
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
-        self.view.layer.insertSublayer(background, atIndex: 0)
+        self.view.layer.insertSublayer(background, at: 0)
         
         // Set up the Save Journal Button colors and border
         saveJournal.layer.cornerRadius = 10
         saveJournal.layer.borderWidth = 2
-        saveJournal.layer.borderColor = UIColor.whiteColor().CGColor
-        saveJournal.setTitleColor(UIColor().defaultButtonColor, forState: .Normal)
-        saveJournal.backgroundColor = UIColor.whiteColor()
+        saveJournal.layer.borderColor = UIColor.white.cgColor
+        saveJournal.setTitleColor(UIColor().defaultButtonColor, for: UIControlState())
+        saveJournal.backgroundColor = UIColor.white
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,7 +58,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         journalText = textView.text
         print("Journal Text: \(journalText)")
     }
@@ -66,10 +66,10 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     
     // When the save button is clicked pass the information to a journal item.
     // Add the height of the text to the journal dictionary!!!
-    @IBAction func saveJournalEntryIsPressed(sender: AnyObject) {
+    @IBAction func saveJournalEntryIsPressed(_ sender: AnyObject) {
         
         // The date format that works with the global journal dictionary
-        let newDateFormat = NSDateFormatter().dateWithoutTime
+        let newDateFormat = DateFormatter().dateWithoutTime
         
         // Journal Item is already in the database just update it
         if let journalItem = journalItemToEdit{
@@ -78,23 +78,23 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             db.updateJournal(journalItem, option: "edit")
             
             // Add the item to the global dictionary
-            let journalDate = newDateFormat.stringFromDate(journalItem.journalDate)
+            let journalDate = newDateFormat.string(from: journalItem.journalDate)
             var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
             
-            if let found = journalArray?.indexOf({$0.journalUUID == journalItem.journalUUID}){
+            if let found = journalArray?.index(where: {$0.journalUUID == journalItem.journalUUID}){
                 print("Found: \(found)")
-                journalArray?.insert(journalItem, atIndex: found)
+                journalArray?.insert(journalItem, at: found)
             }
 //            GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
         }
         // Else Add a new Journal Item
         else{
             print("Journal Item to Edit is null")
-            let journalItem = JournalItem(journal: journalText, UUID: NSUUID().UUIDString, date: NSDate(), deleted: false, deleteReason: nil)
+            let journalItem = JournalItem(journal: journalText, UUID: UUID().uuidString, date: Date(), deleted: false, deleteReason: nil)
             db.addToJournalDatabase(journalItem)
             
             // Get the key and value from the dictionary
-            let journalDate = newDateFormat.stringFromDate(journalItem.journalDate)
+            let journalDate = newDateFormat.string(from: journalItem.journalDate)
             var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
             print("Journal Date: \(journalDate)")
             print("Journal Array: \(journalArray)")
@@ -104,7 +104,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
             
         }
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     /*

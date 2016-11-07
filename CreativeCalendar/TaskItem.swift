@@ -9,19 +9,19 @@
 
 class GlobalTasks{
     static var taskDictionary:Dictionary<String, [TaskItem]> = [:]
-    private var taskItems: [TaskItem] = []
-    private var taskSections: [String] = []
-    private let db = DatabaseFunctions.sharedInstance
-    private var formatter = NSDateFormatter().dateWithoutTime
+    fileprivate var taskItems: [TaskItem] = []
+    fileprivate var taskSections: [String] = []
+    fileprivate let db = DatabaseFunctions.sharedInstance
+    fileprivate var formatter = DateFormatter().dateWithoutTime
     
     func setUpTaskDictionary(){
         taskItems = db.getAllTasks()
         
         // Sort the tasks based on estimated completion date
-        taskItems = taskItems.sort({$0.estimateCompletionDate.compare($1.estimateCompletionDate) == NSComparisonResult.OrderedAscending})
+        taskItems = taskItems.sorted(by: {$0.estimateCompletionDate.compare($1.estimateCompletionDate) == ComparisonResult.orderedAscending})
         
         for task in taskItems{
-            let taskDate = formatter.stringFromDate(task.estimateCompletionDate)
+            let taskDate = formatter.string(from: task.estimateCompletionDate)
             
             // If task sections does not contain the date add it
             if(!taskSections.contains(taskDate)){
@@ -41,7 +41,7 @@ class GlobalTasks{
 
 struct TaskItem{
     var dateCompleted: String?
-    var estimateCompletionDate: NSDate
+    var estimateCompletionDate: Date
     var taskTitle: String
     var taskInfo: String
     var repeating: String
@@ -53,7 +53,7 @@ struct TaskItem{
     var deletedReason: String?
     var UUID: String
     
-    init(title: String, info: String, estimatedCompletion: NSDate, repeatTime: String, alertTime: String, isComplete:Bool, isCanceled: Bool, isDeleted: Bool, dateFinished:String?, cancelReason: String?, deleteReason: String?, UUID: String){
+    init(title: String, info: String, estimatedCompletion: Date, repeatTime: String, alertTime: String, isComplete:Bool, isCanceled: Bool, isDeleted: Bool, dateFinished:String?, cancelReason: String?, deleteReason: String?, UUID: String){
         self.dateCompleted = dateFinished
         self.taskTitle = title
         self.taskInfo = info
@@ -70,6 +70,6 @@ struct TaskItem{
     
     // Is the task overdue
     var isOverdue: Bool {
-        return (NSDate().compare(self.estimateCompletionDate) == NSComparisonResult.OrderedDescending)
+        return (Date().compare(self.estimateCompletionDate) == ComparisonResult.orderedDescending)
     }
 }

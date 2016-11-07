@@ -13,18 +13,18 @@ struct GlobalAppointments{
 }
 
 class Appointments{
-    private var db = DatabaseFunctions.sharedInstance
-    private let formatter = NSDateFormatter().dateWithoutTime
+    fileprivate var db = DatabaseFunctions.sharedInstance
+    fileprivate let formatter = DateFormatter().dateWithoutTime
     
     // Set up the global dictionary based on what is in the database
     func setUpAppointmentDictionary(){
         GlobalAppointments.appointmentItems = db.getAllAppointments()
         
         // Sort appointments based on starting time
-        GlobalAppointments.appointmentItems = GlobalAppointments.appointmentItems.sort({$0.startingTime.compare($1.startingTime) == NSComparisonResult.OrderedAscending })
+        GlobalAppointments.appointmentItems = GlobalAppointments.appointmentItems.sorted(by: {$0.startingTime.compare($1.startingTime) == ComparisonResult.orderedAscending })
         
         for appointment in GlobalAppointments.appointmentItems{
-            let appointmentDate = formatter.stringFromDate(appointment.startingTime)
+            let appointmentDate = formatter.string(from: appointment.startingTime)
             
             // If appointment sections does not contain the appointment date add it
             if(!GlobalAppointments.appointmentSections.contains(appointmentDate)){
@@ -42,9 +42,9 @@ class Appointments{
     }
     
     // Add Appointment Item to the dictionary
-    func addAppointmentToDictionary(appointment: AppointmentItem){
+    func addAppointmentToDictionary(_ appointment: AppointmentItem){
         print("Adding Appointment Item to the dictionary: \(appointment)");
-        let appointmentDate = formatter.stringFromDate(appointment.startingTime)
+        let appointmentDate = formatter.string(from: appointment.startingTime)
         
         // If the date is not already a key in the dictionary
         if(GlobalAppointments.appointmentDictionary[appointmentDate] == nil){
@@ -64,7 +64,7 @@ class Appointments{
     }
     
     // Delete item from the dictionary
-    func removeAppointmentFromDictionary(appointment: AppointmentItem){
+    func removeAppointmentFromDictionary(_ appointment: AppointmentItem){
         print("Removing Appointment Item from dictionary: \(appointment)")
         
     }
@@ -72,8 +72,8 @@ class Appointments{
 
 struct AppointmentItem {
     var title: String
-    var startingTime: NSDate
-    var endingTime: NSDate
+    var startingTime: Date
+    var endingTime: Date
     var appLocation: String
     var additionalInfo: String
     var type: String
@@ -87,7 +87,7 @@ struct AppointmentItem {
     var deletedReason: String?
     var UUID: String
     
-    init(type:String, startTime: NSDate, endTime: NSDate, title: String, location: String, additional: String, repeatTime: String, alertTime: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool,dateFinished:String?, cancelReason: String?, deleteReason:String?, UUID: String) {
+    init(type:String, startTime: Date, endTime: Date, title: String, location: String, additional: String, repeatTime: String, alertTime: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool,dateFinished:String?, cancelReason: String?, deleteReason:String?, UUID: String) {
         self.title = title
         self.type = type
         self.startingTime = startTime
@@ -107,6 +107,6 @@ struct AppointmentItem {
     
     // Is the starting time earlier than the current date
     var isOverdue: Bool {
-        return (NSDate().compare(self.startingTime) == NSComparisonResult.OrderedDescending)
+        return (Date().compare(self.startingTime) == ComparisonResult.orderedDescending)
     }
 }

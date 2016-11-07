@@ -18,39 +18,38 @@ class PasscodeViewController: ORKPasscodeViewController, ORKTaskViewControllerDe
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        passcodeStep.passcodeType = ORKPasscodeType.Type4Digit
+        passcodeStep.passcodeType = ORKPasscodeType.type4Digit
     }
     
     // Since this view gets presented modally do all the set up in the view did appear method
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let task: ORKOrderedTask = ORKOrderedTask.init(identifier: "PassCodeStep", steps: [passcodeStep])
-        let controller: ORKTaskViewController = ORKTaskViewController.init(task: task, taskRunUUID: nil)
+        let controller: ORKTaskViewController = ORKTaskViewController.init(task: task, taskRun: nil)
         controller.delegate = self
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)
     }
     
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        taskViewController.dismiss(animated: true, completion: nil)
+    }
 
-        taskViewController.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func passcodeViewControllerDidFinishWithSuccess(viewController: UIViewController) {
+    func passcodeViewControllerDidFinish(withSuccess viewController: UIViewController) {
         print("Passcode authentication succeeded!")
     }
     
-    func passcodeViewControllerDidFailAuthentication(viewController: UIViewController) {
+    func passcodeViewControllerDidFailAuthentication(_ viewController: UIViewController) {
         print("Passcode authentication failed")
     }
     
-    func passcodeViewControllerDidCancel(viewController: UIViewController) {
+    func passcodeViewControllerDidCancel(_ viewController: UIViewController) {
         print("Cancel button tapped")
     }
     
-    func passcodeViewControllerForgotPasscodeTapped(viewController: UIViewController) {
+    func passcodeViewControllerForgotPasscodeTapped(_ viewController: UIViewController) {
         print("Forgot passcode tapped")
     }
     
-    func passcodeViewControllerTextForForgotPasscode(viewController: UIViewController) -> String {
+    func passcodeViewControllerText(forForgotPasscode viewController: UIViewController) -> String {
         print("Text for forgotten password")
         return "Forgot Your Passcode?"
     }

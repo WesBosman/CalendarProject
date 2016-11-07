@@ -10,13 +10,13 @@ import UIKit
 
 class RepeatTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
 
-    private let repeatIdentifier = "RepeatIdentifier"
-    private let defaults = NSUserDefaults.standardUserDefaults()
+    fileprivate let repeatIdentifier = "RepeatIdentifier"
+    fileprivate let defaults = UserDefaults.standard
     let repeatDays = ["Never", "Every Day", "Every Week", "Every Two Weeks", "Every Month"]
-    private var repeatTableView: UITableView?
-    private var arrayOfDays:[String] = []
-    private let firstIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-    private var previousCell: UITableViewCell?
+    fileprivate var repeatTableView: UITableView?
+    fileprivate var arrayOfDays:[String] = []
+    fileprivate let firstIndexPath = IndexPath(row: 0, section: 0)
+    fileprivate var previousCell: UITableViewCell?
 
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -32,61 +32,61 @@ class RepeatTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        defaults.removeObjectForKey(repeatIdentifier)
+        defaults.removeObject(forKey: repeatIdentifier)
         setUpTableView()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        repeatTableView?.frame = CGRectMake(0.2, 0.3, self.bounds.size.width-5, self.bounds.size.height-5)
+        repeatTableView?.frame = CGRect(x: 0.2, y: 0.3, width: self.bounds.size.width-5, height: self.bounds.size.height-5)
     }
     
     func setUpTableView(){
-        repeatTableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
+        repeatTableView = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         repeatTableView?.delegate = self
         repeatTableView?.dataSource = self
         repeatTableView?.allowsMultipleSelection = false
-        repeatTableView?.selectRowAtIndexPath(firstIndexPath, animated: true, scrollPosition: UITableViewScrollPosition.Top)
-        let cell = repeatTableView?.cellForRowAtIndexPath(firstIndexPath)
+        repeatTableView?.selectRow(at: firstIndexPath, animated: true, scrollPosition: UITableViewScrollPosition.top)
+        let cell = repeatTableView?.cellForRow(at: firstIndexPath)
         previousCell = cell
-        cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
+        cell?.accessoryType = UITableViewCellAccessoryType.checkmark
         self.addSubview(repeatTableView!)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(repeatIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: repeatIdentifier)
         if(cell == nil){
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: repeatIdentifier)
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: repeatIdentifier)
         }
-        cell?.textLabel?.text = repeatDays[indexPath.row]
+        cell?.textLabel?.text = repeatDays[(indexPath as NSIndexPath).row]
         return cell!
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repeatDays.count
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         // Remove the accessory checkmark from the previously selected cell
-        previousCell?.accessoryType = UITableViewCellAccessoryType.None
+        previousCell?.accessoryType = UITableViewCellAccessoryType.none
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Add an accessory checkmark to the selected cell
-        if indexPath.row <= repeatDays.count && indexPath.section == 0{
-            if let cell = tableView.cellForRowAtIndexPath(indexPath){
+        if (indexPath as NSIndexPath).row <= repeatDays.count && (indexPath as NSIndexPath).section == 0{
+            if let cell = tableView.cellForRow(at: indexPath){
                 previousCell = cell
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                cell.accessoryType = UITableViewCellAccessoryType.checkmark
                 let cellText = cell.textLabel?.text
-                print("Repeat Cell Text: \(cellText!) At Index: \(indexPath.row) Repeat Identifier: \(repeatIdentifier)")
+                print("Repeat Cell Text: \(cellText!) At Index: \((indexPath as NSIndexPath).row) Repeat Identifier: \(repeatIdentifier)")
                 defaults.setValue(cellText!, forKey: repeatIdentifier)
             }
         }

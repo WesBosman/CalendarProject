@@ -10,27 +10,26 @@ import UIKit
 
 
 class TaskTableViewController: UITableViewController {
-    private let taskId = "TaskCells"
-    private var taskList:[TaskItem] = []
-    private var selectedIndexPath = NSIndexPath?.self
-    private let db = DatabaseFunctions.sharedInstance
-    private var taskSections: [String] = []
-    private let taskDateFormatter = NSDateFormatter().dateWithoutTime
+    fileprivate let taskId = "TaskCells"
+    fileprivate var taskList:[TaskItem] = []
+    fileprivate var selectedIndexPath = IndexPath?.self
+    fileprivate let db = DatabaseFunctions.sharedInstance
+    fileprivate var taskSections: [String] = []
+    fileprivate let taskDateFormatter = DateFormatter().dateWithoutTime
     var taskDayForSections: Dictionary<String, [TaskItem]> = [:]
     weak var actionToEnable: UIAlertAction?
-    private let defaults = NSUserDefaults.standardUserDefaults()
+    fileprivate let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set the left navigation button to be the edit button.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         let nav = self.navigationController?.navigationBar
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blueColor()
-        NSNotificationCenter
-            .defaultCenter()
-            .addObserver(self, selector: #selector(TaskTableViewController.refreshList), name: "TaskListShouldRefresh", object: nil)
+        nav?.tintColor = UIColor.blue
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(TaskTableViewController.refreshList), name: NSNotification.Name(rawValue: "TaskListShouldRefresh"), object: nil)
     }
     
     // Failable Initializer for tab bar controller
@@ -43,7 +42,7 @@ class TaskTableViewController: UITableViewController {
 
     
     // View did appear needs to be called because we animated the view from the static table save button being pressed.
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         refreshList()
     }
@@ -52,10 +51,10 @@ class TaskTableViewController: UITableViewController {
     func refreshList(){
         taskList = db.getAllTasks()
         // Sort the task list based on the estimated completion date
-        taskList = taskList.sort({$0.estimateCompletionDate.compare($1.estimateCompletionDate) == NSComparisonResult.OrderedAscending})
+        taskList = taskList.sorted(by: {$0.estimateCompletionDate.compare($1.estimateCompletionDate as Date) == ComparisonResult.orderedAscending})
         
         for task in taskList{
-            let dateForSectionAsString = taskDateFormatter.stringFromDate(task.estimateCompletionDate)
+            let dateForSectionAsString = taskDateFormatter.string(from: task.estimateCompletionDate)
             
             if !(taskSections.contains(dateForSectionAsString)){
                 taskSections.append(dateForSectionAsString)
@@ -77,7 +76,7 @@ class TaskTableViewController: UITableViewController {
         
         // Dont let the user add more than 64 tasks in one day
         if taskList.count > 64{
-            self.navigationItem.rightBarButtonItem?.enabled = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         tableView.reloadData()
@@ -89,22 +88,22 @@ class TaskTableViewController: UITableViewController {
     }
 
     // MARK: - Section Methods
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return taskDayForSections.keys.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return taskDayForSections[taskSections[section]]!.count
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if !taskSections[section].isEmpty{
             return taskSections[section]
         }
         return nil
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
             return 0.0
         }
@@ -113,68 +112,68 @@ class TaskTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
             return nil
         }
         else{
-            return tableView.headerViewForSection(section)
+            return tableView.headerView(forSection: section)
         }
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.contentView.backgroundColor = UIColor().defaultButtonColor
-        header.textLabel?.textColor = UIColor.whiteColor()
+        header.textLabel?.textColor = UIColor.white
     }
 
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(taskId, forIndexPath: indexPath) as! TaskCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: taskId, for: indexPath) as! TaskCell
 //        let taskItem = taskList[indexPath.row] as TaskItem
-        let tableSection = taskDayForSections[taskSections[indexPath.section]]
-        let taskItem = tableSection![indexPath.row]
+        let tableSection = taskDayForSections[taskSections[(indexPath as NSIndexPath).section]]
+        let taskItem = tableSection![(indexPath as NSIndexPath).row]
         
         // Configure the cell...
         cell.taskCompleted(taskItem)
         cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
-        cell.taskCompletionDate.text = "Complete by: \(NSDateFormatter().dateWithTime.stringFromDate(taskItem.estimateCompletionDate))"
+        cell.taskCompletionDate.text = "Complete by: \(DateFormatter().dateWithTime.string(from: taskItem.estimateCompletionDate))"
         cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
         cell.taskAlert.text = "Alert: \(taskItem.alert)"
         
         // If the task item is past due color it red
         if taskItem.isOverdue{
-            cell.taskCompletionDate.textColor = UIColor.redColor()
+            cell.taskCompletionDate.textColor = UIColor.red
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let tableSection = taskDayForSections[taskSections[indexPath.section]]
-        var taskForAction = tableSection![indexPath.row] as TaskItem
-        let taskCellForAction = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
-        let exitMenu = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let tableSection = taskDayForSections[taskSections[(indexPath as NSIndexPath).section]]
+        var taskForAction = tableSection![(indexPath as NSIndexPath).row] as TaskItem
+        let taskCellForAction = tableView.cellForRow(at: indexPath) as! TaskCell
+        let exitMenu = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
         
         // Make custom actions for delete, cancel and complete.
-        let deletedAction = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+        let deletedAction = UITableViewRowAction(style: .default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath: IndexPath!) -> Void in
             
-            let deleteOptions = UIAlertController(title: "Delete Task", message: "Are you sure you want to delete the task: \(taskForAction.taskTitle)?", preferredStyle: .Alert)
-            deleteOptions.addTextFieldWithConfigurationHandler({(textField) in
+            let deleteOptions = UIAlertController(title: "Delete Task", message: "Are you sure you want to delete the task: \(taskForAction.taskTitle)?", preferredStyle: .alert)
+            deleteOptions.addTextField(configurationHandler: {(textField) in
                 textField.placeholder = "Reason for Delete"
-                textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
             })
             
-            let deleteTask = UIAlertAction(title: "Delete Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+            let deleteTask = UIAlertAction(title: "Delete Task", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                 
-                let deleteAllTasksController = UIAlertController(title: "Delete", message: "Would you like to delete all tasks of this type with this title", preferredStyle: .Alert)
+                let deleteAllTasksController = UIAlertController(title: "Delete", message: "Would you like to delete all tasks of this type with this title", preferredStyle: .alert)
                 
                 // Delete all tasks
-                let deleteAllAction = UIAlertAction(title: "Delete All Tasks", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                let deleteAllAction = UIAlertAction(title: "Delete All Tasks", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                     
                     // Confirmation controller
-                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete All Tasks with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete All Tasks with the title: \(taskForAction.taskTitle)", preferredStyle: .alert)
                     
-                    let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    let yesConfirmation = UIAlertAction(title: "Yes", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                         
                         // Delete the row from the data source
                         // Get all elements with the same title and type
@@ -188,8 +187,8 @@ class TaskTableViewController: UITableViewController {
                                     if task.taskTitle == taskForAction.taskTitle
                                         && task.taskInfo == taskForAction.taskInfo{
                                         
-                                        if let index = k.indexOf({$0.taskTitle == taskForAction.taskTitle}){
-                                            self.taskDayForSections[key]?.removeAtIndex(index)
+                                        if let index = k.index(where: {$0.taskTitle == taskForAction.taskTitle}){
+                                            self.taskDayForSections[key]?.remove(at: index)
                                             
                                         }
                                     }
@@ -204,29 +203,29 @@ class TaskTableViewController: UITableViewController {
                         
                     })
                     
-                    let noConfirmation = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+                    let noConfirmation = UIAlertAction(title: "No", style: .cancel, handler: nil)
                     
                     confirmationController.addAction(yesConfirmation)
                     confirmationController.addAction(noConfirmation)
-                    self.presentViewController(confirmationController, animated: true, completion: nil)
+                    self.present(confirmationController, animated: true, completion: nil)
 
                 
                 
                 })
                 
                 // Delete only that task
-                let deleteOneAction = UIAlertAction(title: "Delete This Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                let deleteOneAction = UIAlertAction(title: "Delete This Task", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                     
                     // Confirmation controller
-                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this task with the title: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+                    let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this task with the title: \(taskForAction.taskTitle)", preferredStyle: .alert)
                     
-                    let yesConfirmation = UIAlertAction(title: "Yes", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+                    let yesConfirmation = UIAlertAction(title: "Yes", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                         
                         // Delete the row from the data source
                         let key = self.taskSections[indexPath.section]
                         print("Key for removal: \(key)")
-                        self.taskDayForSections[key]?.removeAtIndex(indexPath.row)
-                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                        self.taskDayForSections[key]?.remove(at: indexPath.row)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
                         
                         //Delete from database
                         taskForAction.completed = false
@@ -238,39 +237,39 @@ class TaskTableViewController: UITableViewController {
                         
                     })
                     
-                    let noConfirmation = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+                    let noConfirmation = UIAlertAction(title: "No", style: .cancel, handler: nil)
                     
                     confirmationController.addAction(yesConfirmation)
                     confirmationController.addAction(noConfirmation)
-                    self.presentViewController(confirmationController, animated: true, completion: nil)
+                    self.present(confirmationController, animated: true, completion: nil)
                     
                 })
                 
-                let exitAction = UIAlertAction(title: "Exit Menu", style: .Cancel, handler: nil)
+                let exitAction = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
                 
                 deleteAllTasksController.addAction(deleteAllAction)
                 deleteAllTasksController.addAction(deleteOneAction)
                 deleteAllTasksController.addAction(exitAction)
-                self.presentViewController(deleteAllTasksController, animated: true, completion: nil)
+                self.present(deleteAllTasksController, animated: true, completion: nil)
                 
                 
             })
             self.actionToEnable = deleteTask
-            self.actionToEnable?.enabled = false
+            self.actionToEnable?.isEnabled = false
             deleteOptions.addAction(deleteTask)
             deleteOptions.addAction(exitMenu)
-            self.presentViewController(deleteOptions, animated: true, completion: nil)
+            self.present(deleteOptions, animated: true, completion: nil)
         })
         
         
-        let canceledAction = UITableViewRowAction(style: .Default, title: "Cancel", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-            let cancelOptions = UIAlertController(title: "Cancel Task", message: "Would you like to cancel the task: \(taskForAction.taskTitle)", preferredStyle: .Alert)
-            cancelOptions.addTextFieldWithConfigurationHandler({(textField) in
+        let canceledAction = UITableViewRowAction(style: .default, title: "Cancel", handler: {(action:UITableViewRowAction!, indexPath: IndexPath!) -> Void in
+            let cancelOptions = UIAlertController(title: "Cancel Task", message: "Would you like to cancel the task: \(taskForAction.taskTitle)", preferredStyle: .alert)
+            cancelOptions.addTextField(configurationHandler: {(textField) in
                 textField.placeholder = "Reason for Cancel"
-                textField.addTarget(self, action: #selector(self.textChanged(_:)), forControlEvents: .EditingChanged)
+                textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
             })
 
-            let cancelAction = UIAlertAction(title: "Cancel Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+            let cancelAction = UIAlertAction(title: "Cancel Task", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Cancel Appointment
                 taskForAction.completed = false
@@ -282,19 +281,19 @@ class TaskTableViewController: UITableViewController {
                 
             })
             self.actionToEnable = cancelAction
-            self.actionToEnable?.enabled = false
+            self.actionToEnable?.isEnabled = false
             cancelOptions.addAction(cancelAction)
             cancelOptions.addAction(exitMenu)
-            self.presentViewController(cancelOptions, animated: true, completion: nil)
+            self.present(cancelOptions, animated: true, completion: nil)
         })
         
         
-        let completedAction = UITableViewRowAction(style: .Default, title: "Complete", handler: {(action:UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+        let completedAction = UITableViewRowAction(style: .default, title: "Complete", handler: {(action:UITableViewRowAction!, indexPath: IndexPath!) -> Void in
             
-            let completeOptions = UIAlertController(title: "Complete Task", message: "Have you completed task: \(taskForAction.taskTitle)", preferredStyle: .Alert)
+            let completeOptions = UIAlertController(title: "Complete Task", message: "Have you completed task: \(taskForAction.taskTitle)", preferredStyle: .alert)
             
             // Appointment was completed.
-            let completeAction = UIAlertAction(title: "Complete Task", style: .Destructive, handler: {(action: UIAlertAction) -> Void in
+            let completeAction = UIAlertAction(title: "Complete Task", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                 
                 // Complete the appointment and update its image.
                 taskForAction.completed = true
@@ -306,17 +305,17 @@ class TaskTableViewController: UITableViewController {
             })            
             completeOptions.addAction(completeAction)
             completeOptions.addAction(exitMenu)
-            self.presentViewController(completeOptions, animated: true, completion: nil)
+            self.present(completeOptions, animated: true, completion: nil)
         })
         
-        completedAction.backgroundColor = UIColor.blueColor()
-        canceledAction.backgroundColor = UIColor.orangeColor()
+        completedAction.backgroundColor = UIColor.blue
+        canceledAction.backgroundColor = UIColor.orange
         return [deletedAction, canceledAction, completedAction]
         
     }
     
-    func textChanged(sender:UITextField) {
-        self.actionToEnable?.enabled = (sender.text!.isEmpty == false)
+    func textChanged(_ sender:UITextField) {
+        self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }
 
 

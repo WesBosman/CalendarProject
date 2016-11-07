@@ -10,12 +10,12 @@ import UIKit
 
 class AlertTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
     
-    private let alertIdentifier = "AlertIdentifier"
+    fileprivate let alertIdentifier = "AlertIdentifier"
     let alertArray = ["At Time of Event", "5 Minutes Before", "15 Minutes Before", "30 Minutes Before", "1 Hour Before"]
-    private var alertTableView: UITableView?
-    private let defaults = NSUserDefaults.standardUserDefaults()
-    private let firstIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-    private var previousCell: UITableViewCell?
+    fileprivate var alertTableView: UITableView?
+    fileprivate let defaults = UserDefaults.standard
+    fileprivate let firstIndexPath = IndexPath(row: 0, section: 0)
+    fileprivate var previousCell: UITableViewCell?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,63 +29,63 @@ class AlertTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataS
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        defaults.removeObjectForKey(alertIdentifier)
+        defaults.removeObject(forKey: alertIdentifier)
         setUpTableView()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        alertTableView?.frame = CGRectMake(0.2, 0.3, self.bounds.size.width-5, self.bounds.size.height-5)
+        alertTableView?.frame = CGRect(x: 0.2, y: 0.3, width: self.bounds.size.width-5, height: self.bounds.size.height-5)
     }
     
     func setUpTableView(){
-        alertTableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
+        alertTableView = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         alertTableView?.delegate = self
         alertTableView?.dataSource = self
         alertTableView?.allowsMultipleSelection = false
-        alertTableView?.selectRowAtIndexPath(firstIndexPath, animated: true, scrollPosition: UITableViewScrollPosition.Top)
-        let cell = alertTableView?.cellForRowAtIndexPath(firstIndexPath)
+        alertTableView?.selectRow(at: firstIndexPath, animated: true, scrollPosition: UITableViewScrollPosition.top)
+        let cell = alertTableView?.cellForRow(at: firstIndexPath)
         previousCell = cell
-        cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
+        cell?.accessoryType = UITableViewCellAccessoryType.checkmark
         self.addSubview(alertTableView!)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return alertArray.count
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Set a checkmark on the newly selected cell and add the text to user defaults
-        if indexPath.row <= alertArray.count && indexPath.section == 0{
-            if let cell = tableView.cellForRowAtIndexPath(indexPath){
+        if (indexPath as NSIndexPath).row <= alertArray.count && (indexPath as NSIndexPath).section == 0{
+            if let cell = tableView.cellForRow(at: indexPath){
                 previousCell = cell
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                cell.accessoryType = UITableViewCellAccessoryType.checkmark
                 let cellText = cell.textLabel?.text
-                print("Alert Cell Text: \(cellText!) At Index: \(indexPath.row) Alert Identifier: \(alertIdentifier)")
+                print("Alert Cell Text: \(cellText!) At Index: \((indexPath as NSIndexPath).row) Alert Identifier: \(alertIdentifier)")
                 defaults.setValue(cellText!, forKey: alertIdentifier)
             }
         }
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        previousCell?.accessoryType = UITableViewCellAccessoryType.None
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        previousCell?.accessoryType = UITableViewCellAccessoryType.none
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(alertIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell:UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: alertIdentifier)
         
         if (cell == nil){
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: alertIdentifier)
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: alertIdentifier)
         }
-        cell?.textLabel?.text = alertArray[indexPath.row]
+        cell?.textLabel?.text = alertArray[(indexPath as NSIndexPath).row]
         return cell!
     }
 

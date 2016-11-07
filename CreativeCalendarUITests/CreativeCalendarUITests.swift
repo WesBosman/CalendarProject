@@ -11,7 +11,7 @@ import XCTest
 extension CreativeCalendarUITests{
     var welcomeSurveyComplete:Bool {
         let defaultsConsentKey = "UserConsent"
-        let defaults = NSUserDefaults.standardUserDefaults().boolForKey(defaultsConsentKey)
+        let defaults = UserDefaults.standard.bool(forKey: defaultsConsentKey)
         return defaults
     }
 }
@@ -58,50 +58,50 @@ class CreativeCalendarUITests: XCTestCase {
         let typeOfAppointment = app.tables.cells.staticTexts["Type of Appointment"]
         typeOfAppointment.tap()
         
-        let appPicker = app.tables.cells.pickerWheels.elementBoundByIndex(0)
-        appPicker.adjustToPickerWheelValue("Medical")
+        let appPicker = app.tables.cells.pickerWheels.element(boundBy: 0)
+        appPicker.adjust(toPickerWheelValue: "Medical")
         XCTAssertTrue(app.tables.cells.staticTexts["Medical"].exists)
         
-        appPicker.adjustToPickerWheelValue("Recreational")
+        appPicker.adjust(toPickerWheelValue: "Recreational")
         XCTAssertTrue(app.tables.cells.staticTexts["Recreational"].exists)
 
-        appPicker.adjustToPickerWheelValue("Exercise")
+        appPicker.adjust(toPickerWheelValue: "Exercise")
         XCTAssertTrue(app.tables.cells.staticTexts["Exercise"].exists)
 
-        appPicker.adjustToPickerWheelValue("Medication Times")
+        appPicker.adjust(toPickerWheelValue: "Medication Times")
         XCTAssertTrue(app.tables.cells.staticTexts["Medication Times"].exists)
 
-        appPicker.adjustToPickerWheelValue("Social Event")
+        appPicker.adjust(toPickerWheelValue: "Social Event")
         XCTAssertTrue(app.tables.cells.staticTexts["Social Event"].exists)
 
-        appPicker.adjustToPickerWheelValue("Leisure")
+        appPicker.adjust(toPickerWheelValue: "Leisure")
         XCTAssertTrue(app.tables.cells.staticTexts["Leisure"].exists)
 
-        appPicker.adjustToPickerWheelValue("Household")
+        appPicker.adjust(toPickerWheelValue: "Household")
         XCTAssertTrue(app.tables.cells.staticTexts["Household"].exists)
 
-        appPicker.adjustToPickerWheelValue("Work")
+        appPicker.adjust(toPickerWheelValue: "Work")
         XCTAssertTrue(app.tables.cells.staticTexts["Work"].exists)
 
-        appPicker.adjustToPickerWheelValue("Physical Therapy")
+        appPicker.adjust(toPickerWheelValue: "Physical Therapy")
         XCTAssertTrue(app.tables.cells.staticTexts["Physical Therapy"].exists)
 
-        appPicker.adjustToPickerWheelValue("Occupational Therapy")
+        appPicker.adjust(toPickerWheelValue: "Occupational Therapy")
         XCTAssertTrue(app.tables.cells.staticTexts["Occupational Therapy"].exists)
 
-        appPicker.adjustToPickerWheelValue("Speech Therapy")
+        appPicker.adjust(toPickerWheelValue: "Speech Therapy")
         XCTAssertTrue(app.tables.cells.staticTexts["Speech Therapy"].exists)
         
         // Check that the cell to type in other appointment types comes up
-        appPicker.adjustToPickerWheelValue("Class")
+        appPicker.adjust(toPickerWheelValue: "Class")
         XCTAssertTrue(app.tables.cells.textFields["Please enter the type of appointment"].exists)
         XCTAssertTrue(app.tables.cells.buttons["Enter"].exists)
         
-        appPicker.adjustToPickerWheelValue("Self Care")
+        appPicker.adjust(toPickerWheelValue: "Self Care")
         XCTAssertTrue(app.tables.cells.textFields["Please enter the type of appointment"].exists)
         XCTAssertTrue(app.tables.cells.buttons["Enter"].exists)
 
-        appPicker.adjustToPickerWheelValue("Other")
+        appPicker.adjust(toPickerWheelValue: "Other")
         XCTAssertTrue(app.tables.cells.textFields["Please enter the type of appointment"].exists)
         XCTAssertTrue(app.tables.cells.buttons["Enter"].exists)
         
@@ -115,9 +115,9 @@ class CreativeCalendarUITests: XCTestCase {
         
         let startTime = app.tables.cells.staticTexts["Start Time"]
         startTime.tap()
-        let startDay = app.tables.containingType(.Other, identifier:"APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["Today"]
-        let startHour = app.tables.containingType(.Other, identifier: "APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["12"]
-        let startMinute = app.tables.containingType(.Other, identifier: "APPOINTMENT TIME *").childrenMatchingType(.Cell).elementBoundByIndex(5).pickerWheels["27"]
+        let startDay = app.tables.containing(.other, identifier:"APPOINTMENT TIME *").children(matching: .cell).element(boundBy: 5).pickerWheels["Today"]
+        let startHour = app.tables.containing(.other, identifier: "APPOINTMENT TIME *").children(matching: .cell).element(boundBy: 5).pickerWheels["12"]
+        let startMinute = app.tables.containing(.other, identifier: "APPOINTMENT TIME *").children(matching: .cell).element(boundBy: 5).pickerWheels["27"]
         
         startDay.tap()
         startHour.tap() //adjustToPickerWheelValue("1")
@@ -162,27 +162,27 @@ class CreativeCalendarUITests: XCTestCase {
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
         app.buttons["Start"].tap()
         
-        let calendar = NSCalendar.currentCalendar()
-        let dateFormatter = NSDateFormatter()
-        let todaysDate = NSDate()
-        let calendarComponents = calendar.components([.Month, .Day, .Year], fromDate: todaysDate)
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        let todaysDate = Date()
+        let calendarComponents = (calendar as NSCalendar).components([.month, .day, .year], from: todaysDate)
         let thisDay = calendarComponents.day
         let thisMonth = calendarComponents.month
         let thisYear = calendarComponents.year
-        let todaysUpdatedDate = calendar.dateFromComponents(calendarComponents)
+        let todaysUpdatedDate = calendar.date(from: calendarComponents)
         print("This day: \(thisDay)")
         print("This Month: \(thisMonth)")
         print("This Year: \(thisYear)")
         print("Todays Updated Date: \(todaysUpdatedDate)")
         
         dateFormatter.dateFormat = "MMMM"
-        let stringMonth = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringMonth = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "d"
-        let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringDay = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
-        let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringYear = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "MMMM dd yyyy"
-        let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringFullDate = dateFormatter.string(from: todaysUpdatedDate!)
         
         
         print("String Day: \(stringDay)")
@@ -217,14 +217,14 @@ class CreativeCalendarUITests: XCTestCase {
         additionalInformation.tap()
         additionalInformation.typeText("UI Additional Information")
         
-        let month = app.tables.pickerWheels.elementBoundByIndex(0)
-        let day = app.tables.pickerWheels.elementBoundByIndex(1)
-        let year = app.tables.pickerWheels.elementBoundByIndex(2)
+        let month = app.tables.pickerWheels.element(boundBy: 0)
+        let day = app.tables.pickerWheels.element(boundBy: 1)
+        let year = app.tables.pickerWheels.element(boundBy: 2)
         let estimatedCompletionDate = app.tables.staticTexts["Estimated Task Completion Date"]
         
-        month.adjustToPickerWheelValue(stringMonth)
-        day.adjustToPickerWheelValue(stringDay)
-        year.adjustToPickerWheelValue(stringYear)
+        month.adjust(toPickerWheelValue: stringMonth)
+        day.adjust(toPickerWheelValue: stringDay)
+        year.adjust(toPickerWheelValue: stringYear)
         estimatedCompletionDate.tap()
         
         let saveTaskButton = tablesQuery.buttons["Save Task"]
@@ -242,7 +242,7 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         // Go to the home screen
         app.tabBars.buttons["Home"].tap()
         
-        app.tables.cells.containingType(.StaticText, identifier:"UI Automated Test To Complete").staticTexts["\(stringFullDate)"].tap()
+        app.tables.cells.containing(.staticText, identifier:"UI Automated Test To Complete").staticTexts["\(stringFullDate)"].tap()
         
         let exitMenuButton = app.alerts["Hello"].collectionViews.buttons["Exit Menu"]
         exitMenuButton.tap()
@@ -256,27 +256,27 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
         app.buttons["Start"].tap()
         
-        let calendar = NSCalendar.currentCalendar()
-        let dateFormatter = NSDateFormatter()
-        let todaysDate = NSDate()
-        let calendarComponents = calendar.components([.Month, .Day, .Year], fromDate: todaysDate)
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        let todaysDate = Date()
+        let calendarComponents = (calendar as NSCalendar).components([.month, .day, .year], from: todaysDate)
         let thisDay = calendarComponents.day
         let thisMonth = calendarComponents.month
         let thisYear = calendarComponents.year
-        let todaysUpdatedDate = calendar.dateFromComponents(calendarComponents)
+        let todaysUpdatedDate = calendar.date(from: calendarComponents)
         print("This day: \(thisDay)")
         print("This Month: \(thisMonth)")
         print("This Year: \(thisYear)")
         print("Todays Updated Date: \(todaysUpdatedDate)")
         
         dateFormatter.dateFormat = "MMMM"
-        let stringMonth = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringMonth = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "d"
-        let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringDay = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
-        let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringYear = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "MMMM dd yyyy"
-        let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringFullDate = dateFormatter.string(from: todaysUpdatedDate!)
         
         print("String Day: \(stringDay)")
         print("String Month: \(stringMonth)")
@@ -298,14 +298,14 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         additionalInformation.tap()
         additionalInformation.typeText("Additional Information for Task to Cancel")
         
-        let month = app.tables.pickerWheels.elementBoundByIndex(0)
-        let day = app.tables.pickerWheels.elementBoundByIndex(1)
-        let year = app.tables.pickerWheels.elementBoundByIndex(2)
+        let month = app.tables.pickerWheels.element(boundBy: 0)
+        let day = app.tables.pickerWheels.element(boundBy: 1)
+        let year = app.tables.pickerWheels.element(boundBy: 2)
         let estimatedCompletionDate = app.tables.staticTexts["Estimated Task Completion Date"]
         
-        month.adjustToPickerWheelValue(stringMonth)
-        day.adjustToPickerWheelValue(stringDay)
-        year.adjustToPickerWheelValue(stringYear)
+        month.adjust(toPickerWheelValue: stringMonth)
+        day.adjust(toPickerWheelValue: stringDay)
+        year.adjust(toPickerWheelValue: stringYear)
         estimatedCompletionDate.tap()
         
         let saveTaskButton = tablesQuery.buttons["Save Task"]
@@ -320,7 +320,7 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         
         let cancelTaskButton = app.alerts["Cancel Task"].collectionViews.buttons["Cancel Task"]
-        XCTAssert(cancelTaskButton.enabled == false, "Cancel Task Button should be disabled")
+        XCTAssert(cancelTaskButton.isEnabled == false, "Cancel Task Button should be disabled")
         
         
         let collectionViewsQuery = app.alerts["Cancel Task"].collectionViews
@@ -338,27 +338,27 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
         app.buttons["Start"].tap()
         
-        let calendar = NSCalendar.currentCalendar()
-        let dateFormatter = NSDateFormatter()
-        let todaysDate = NSDate()
-        let calendarComponents = calendar.components([.Month, .Day, .Year], fromDate: todaysDate)
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        let todaysDate = Date()
+        let calendarComponents = (calendar as NSCalendar).components([.month, .day, .year], from: todaysDate)
         let thisDay = calendarComponents.day
         let thisMonth = calendarComponents.month
         let thisYear = calendarComponents.year
-        let todaysUpdatedDate = calendar.dateFromComponents(calendarComponents)
+        let todaysUpdatedDate = calendar.date(from: calendarComponents)
         print("This day: \(thisDay)")
         print("This Month: \(thisMonth)")
         print("This Year: \(thisYear)")
         print("Todays Updated Date: \(todaysUpdatedDate)")
         
         dateFormatter.dateFormat = "MMMM"
-        let stringMonth = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringMonth = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "d"
-        let stringDay = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringDay = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "yyyy"
-        let stringYear = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringYear = dateFormatter.string(from: todaysUpdatedDate!)
         dateFormatter.dateFormat = "MMMM dd yyyy"
-        let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringFullDate = dateFormatter.string(from: todaysUpdatedDate!)
         
         print("String Day: \(stringDay)")
         print("String Month: \(stringMonth)")
@@ -375,10 +375,10 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         taskName.tap()
         taskName.typeText("UI Automated Test To Delete")
         
-        let cell = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0)
-        cell.childrenMatchingType(.TextField).element
+        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        cell.children(matching: .textField).element
         app.buttons["Return"].tap()
-        cell.childrenMatchingType(.TextField).element
+        cell.children(matching: .textField).element
         let hideKeyboardButton = app.buttons["Hide keyboard"]
         hideKeyboardButton.tap()
         
@@ -387,14 +387,14 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         additionalInformation.tap()
         additionalInformation.typeText("UI Additional Information")
         
-        let month = app.tables.pickerWheels.elementBoundByIndex(0)
-        let day = app.tables.pickerWheels.elementBoundByIndex(1)
-        let year = app.tables.pickerWheels.elementBoundByIndex(2)
+        let month = app.tables.pickerWheels.element(boundBy: 0)
+        let day = app.tables.pickerWheels.element(boundBy: 1)
+        let year = app.tables.pickerWheels.element(boundBy: 2)
         let estimatedCompletionDate = app.tables.staticTexts["Estimated Task Completion Date"]
         
-        month.adjustToPickerWheelValue("\(stringMonth)")
-        day.adjustToPickerWheelValue("\(stringDay)")
-        year.adjustToPickerWheelValue("\(stringYear)")
+        month.adjust(toPickerWheelValue: "\(stringMonth)")
+        day.adjust(toPickerWheelValue: "\(stringDay)")
+        year.adjust(toPickerWheelValue: "\(stringYear)")
         estimatedCompletionDate.tap()
         
         let saveTaskButton = tablesQuery.buttons["Save Task"]
@@ -409,10 +409,10 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let collectionViewsQuery = app.alerts["Delete Task"].collectionViews
         let deleteTaskButton = collectionViewsQuery.buttons["Delete Task"]
         let deleteReason = collectionViewsQuery.textFields["Reason for Delete"]
-        XCTAssertTrue(deleteTaskButton.enabled == false, "Delete button is not yet enabled for tasks")
+        XCTAssertTrue(deleteTaskButton.isEnabled == false, "Delete button is not yet enabled for tasks")
         deleteReason.tap()
         deleteReason.typeText("Reason to delete task")
-        XCTAssertTrue(deleteTaskButton.enabled == true, "Delete button is now enabled for tasks")
+        XCTAssertTrue(deleteTaskButton.isEnabled == true, "Delete button is now enabled for tasks")
         
         deleteTaskButton.tap()
         app.navigationBars["Tasks"].buttons["Done"].tap()
@@ -426,21 +426,21 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
         app.buttons["Start"].tap()
         
-        let calendar = NSCalendar.currentCalendar()
-        let dateFormatter = NSDateFormatter()
-        let todaysDate = NSDate()
-        let calendarComponents = calendar.components([.Month, .Day, .Year], fromDate: todaysDate)
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        let todaysDate = Date()
+        let calendarComponents = (calendar as NSCalendar).components([.month, .day, .year], from: todaysDate)
         let thisDay = calendarComponents.day
         let thisMonth = calendarComponents.month
         let thisYear = calendarComponents.year
-        let todaysUpdatedDate = calendar.dateFromComponents(calendarComponents)
+        let todaysUpdatedDate = calendar.date(from: calendarComponents)
         print("This day: \(thisDay)")
         print("This Month: \(thisMonth)")
         print("This Year: \(thisYear)")
         print("Todays Updated Date: \(todaysUpdatedDate)")
         
         dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
-        let stringFullDate = dateFormatter.stringFromDate(todaysUpdatedDate!)
+        let stringFullDate = dateFormatter.string(from: todaysUpdatedDate!)
         app.tabBars.buttons["Journals"].tap()
         app.navigationBars.buttons["Add"].tap()
         let textView = app.textViews["\(stringFullDate) : "]
@@ -484,7 +484,7 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         let thirdView = elementsQuery.staticTexts["Journals"]
         thirdView.swipeRight()
         secondView.swipeRight()
-        XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Image).elementBoundByIndex(3).tap()
+        XCUIApplication().children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1).children(matching: .image).element(boundBy: 3).tap()
         
         
         let rightarrowdarkButton = app.buttons["RightArrowDark"]

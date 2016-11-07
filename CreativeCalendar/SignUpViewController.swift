@@ -1,42 +1,43 @@
 //
-//  EligibilityViewController.swift
+//  SignUpViewController.swift
 //  CreativeCalendar
 //
-//  Created by Wes Bosman on 7/27/16.
+//  Created by Wes Bosman on 11/7/16.
 //  Copyright © 2016 Wes Bosman. All rights reserved.
 //
 
 import UIKit
-import ResearchKit
 
-class EligibilityViewController: UIViewController, ORKTaskViewControllerDelegate {
+class SignUpViewController: UIViewController {
+    
+    @IBOutlet weak var signUpGreetingLabel: UILabel!
+    @IBOutlet weak var signUpEmailAddress: UITextField!
+    @IBOutlet weak var signUpPassword: UITextField!
+    @IBOutlet weak var signUpPasswordConfirm: UITextField!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var backToLoginButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let step: ORKInstructionStep = ORKInstructionStep.init(identifier: "EligibilitySurvey")
-        step.title = "Selection Survey"
-        step.text = "This survey will help us understand whether or not you are eligible to participate in this study."
 
         // Do any additional setup after loading the view.
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+        
         
     }
-    
     
 
     /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }

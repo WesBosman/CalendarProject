@@ -11,30 +11,30 @@ import UIKit
 class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     let pageTitles = ["Appointments", "Tasks", "Journals"]
-    let scrollView: UIScrollView = UIScrollView(frame: CGRectMake(20, 20, 335, 325))
-    let appointmentTableView: UITableView = UITableView(frame: CGRectMake(10,35, 315, 280))
-    let taskTableView: UITableView = UITableView(frame: CGRectMake(10, 35, 315, 280))
-    let journalTableView: UITableView = UITableView(frame: CGRectMake(10, 35, 315, 280))
-    let pageControl:UIPageControl = UIPageControl(frame: CGRectMake(185,  350, 200, 25))
-    var frame = CGRectMake(0, 0, 0, 0)
+    let scrollView: UIScrollView = UIScrollView(frame: CGRect(x: 20, y: 20, width: 335, height: 325))
+    let appointmentTableView: UITableView = UITableView(frame: CGRect(x: 10,y: 35, width: 315, height: 280))
+    let taskTableView: UITableView = UITableView(frame: CGRect(x: 10, y: 35, width: 315, height: 280))
+    let journalTableView: UITableView = UITableView(frame: CGRect(x: 10, y: 35, width: 315, height: 280))
+    let pageControl:UIPageControl = UIPageControl(frame: CGRect(x: 185,  y: 350, width: 200, height: 25))
+    var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
     var appointment:String = String()
     var task:String = String()
     var journal:String = String()
     var appointmentList:[AppointmentItem] = []
     var taskList:[TaskItem] = []
     var journalList:[JournalItem] = []
-    var selectedDate:NSDate = NSDate()
+    var selectedDate:Date = Date()
     var journalCellHeightArray: [CGFloat] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
+        appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(DateFormatter().dateWithoutTime.string(from: selectedDate), formatter: DateFormatter().dateWithoutTime)
         
-        taskList = DatabaseFunctions.sharedInstance.getTaskByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
+        taskList = DatabaseFunctions.sharedInstance.getTaskByDate(DateFormatter().dateWithoutTime.string(from: selectedDate), formatter: DateFormatter().dateWithoutTime)
         
-        journalList = DatabaseFunctions.sharedInstance.getJournalByDate(NSDateFormatter().dateWithoutTime.stringFromDate(selectedDate), formatter: NSDateFormatter().dateWithoutTime)
+        journalList = DatabaseFunctions.sharedInstance.getJournalByDate(DateFormatter().dateWithoutTime.string(from: selectedDate), formatter: DateFormatter().dateWithoutTime)
         
         configurePageController()
         scrollView.layer.cornerRadius = 10
@@ -59,7 +59,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             
             frame.origin.x = self.scrollView.frame.size.width * CGFloat(index)
             frame.size = self.scrollView.frame.size
-            self.scrollView.pagingEnabled = true
+            self.scrollView.isPagingEnabled = true
 //            self.scrollView.scrollEnabled = true
             
             switch(index){
@@ -102,9 +102,9 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             }
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width * 3, height: self.scrollView.frame.size.height)
         
-        pageControl.addTarget(self, action: #selector(PopoverViewController.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        pageControl.addTarget(self, action: #selector(PopoverViewController.changePage(_:)), for: UIControlEvents.valueChanged)
     }
     
     // MARK - Page Controller Methods
@@ -112,17 +112,17 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     func configurePageController(){
         pageControl.numberOfPages = 3
         pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = UIColor.whiteColor()
-        pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
+        pageControl.pageIndicatorTintColor = UIColor.white
+        pageControl.currentPageIndicatorTintColor = UIColor.black
         self.view.addSubview(pageControl)
     }
     
-    func changePage(sender: AnyObject) -> () {
+    func changePage(_ sender: AnyObject) -> () {
         let x = CGFloat(pageControl.currentPage) * scrollView.frame.size.width
-        scrollView.setContentOffset(CGPointMake(x, 0), animated: true)
+        scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
         pageControl.currentPage = Int(pageNumber)
     }
@@ -132,7 +132,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == appointmentTableView{
             return appointmentList.count
         }
@@ -144,43 +144,43 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == appointmentTableView{
-            let appointment = appointmentList[indexPath.row] as AppointmentItem
-            let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "AppointmentPopover")
+            let appointment = appointmentList[(indexPath as NSIndexPath).row] as AppointmentItem
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "AppointmentPopover")
             cell.textLabel?.text = appointment.title
             cell.detailTextLabel?.text = "type: " + appointment.type
                 + "\nlocation: " + appointment.appLocation
-                + "\nstart: " + NSDateFormatter().dateWithTime.stringFromDate(appointment.startingTime)
-                + "\nend:   " +  NSDateFormatter().dateWithTime.stringFromDate(appointment.endingTime)
+                + "\nstart: " + DateFormatter().dateWithTime.string(from: appointment.startingTime)
+                + "\nend:   " +  DateFormatter().dateWithTime.string(from: appointment.endingTime)
                 + "\nadditional info: " + appointment.additionalInfo
             
             cell.detailTextLabel?.numberOfLines = 0
-            cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
             return cell
         }
         else if tableView == taskTableView{
-            let task = taskList[indexPath.row] as TaskItem
-            let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "TaskPopover")
+            let task = taskList[(indexPath as NSIndexPath).row] as TaskItem
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "TaskPopover")
             cell.textLabel?.text = task.taskTitle
-            cell.detailTextLabel?.text = NSDateFormatter().dateWithTime.stringFromDate(task.estimateCompletionDate) + "\n" + task.taskInfo
+            cell.detailTextLabel?.text = DateFormatter().dateWithTime.string(from: task.estimateCompletionDate) + "\n" + task.taskInfo
             cell.detailTextLabel?.numberOfLines = 0
-            cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
             return cell
         }
         else{
             // TO-DO How to poisition the text so its readable even if the text is large
-            let journal = journalList[indexPath.row] as JournalItem
-            let cell = UITableViewCell.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "JournalPopover")
+            let journal = journalList[(indexPath as NSIndexPath).row] as JournalItem
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "JournalPopover")
             cell.textLabel?.text = journal.getSimplifiedDate()
             cell.detailTextLabel?.text = journal.journalEntry
             cell.detailTextLabel?.numberOfLines = 0
-            cell.detailTextLabel?.lineBreakMode = .ByWordWrapping
+            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
             cell.textLabel?.sizeToFit()
             cell.detailTextLabel?.sizeToFit()
             
-            cell.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleTopMargin]
+            cell.autoresizingMask = [UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin, UIViewAutoresizing.flexibleBottomMargin, UIViewAutoresizing.flexibleTopMargin]
             
             
             let journalTitleHeight = cell.textLabel?.frame.height
@@ -194,7 +194,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 }

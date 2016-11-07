@@ -17,17 +17,17 @@ struct GlobalJournalStructures{
 }
 
 class GlobalJournals{
-    private let db = DatabaseFunctions.sharedInstance
-    private let journalDateFormatter = NSDateFormatter().dateWithoutTime
+    fileprivate let db = DatabaseFunctions.sharedInstance
+    fileprivate let journalDateFormatter = DateFormatter().dateWithoutTime
     
     func setUpJournalDictionary(){
         GlobalJournalStructures.journalItems = db.getAllJournals()
         
         // Sort the journals based on their dates
-        GlobalJournalStructures.journalItems = GlobalJournalStructures.journalItems.sort({$0.journalDate.compare($1.journalDate) == NSComparisonResult.OrderedAscending})
+        GlobalJournalStructures.journalItems = GlobalJournalStructures.journalItems.sorted(by: {$0.journalDate.compare($1.journalDate) == ComparisonResult.orderedAscending})
     
         for journal in GlobalJournalStructures.journalItems{
-            let journalDate = journalDateFormatter.stringFromDate(journal.journalDate)
+            let journalDate = journalDateFormatter.string(from: journal.journalDate)
     
             // If the journal sections array does not contain the date then add it
             if(!GlobalJournalStructures.journalSections.contains(journalDate)){
@@ -48,12 +48,12 @@ class GlobalJournals{
 class JournalItem{
     var journalEntry: String = String()
     var journalUUID: String = String()
-    var journalDate: NSDate = NSDate()
+    var journalDate: Date = Date()
     var journalDeleted: Bool
     var journalDeletedReason: String?
-    let dateFormat = NSDateFormatter().journalFormat
+    let dateFormat = DateFormatter().journalFormat
     
-    init(journal: String, UUID: String, date: NSDate, deleted: Bool, deleteReason:String?){
+    init(journal: String, UUID: String, date: Date, deleted: Bool, deleteReason:String?){
         self.journalEntry = journal
         self.journalUUID = UUID
         self.journalDate = date
@@ -63,7 +63,7 @@ class JournalItem{
     
     // Get a simplified date that does not contain the hours and seconds
     func getSimplifiedDate() -> String{
-        let journalStringForDate = dateFormat.stringFromDate(journalDate)
+        let journalStringForDate = dateFormat.string(from: journalDate)
         return journalStringForDate
     }
 }

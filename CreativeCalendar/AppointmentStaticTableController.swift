@@ -9,13 +9,13 @@
 
 import UIKit
 
-extension NSDate
+extension Date
 {
-    func isInRange(from: NSDate, to:NSDate) -> Bool
+    func isInRange(_ from: Date, to:Date) -> Bool
     {
-        if(self.compare(from) == NSComparisonResult.OrderedDescending || self.compare(from) == NSComparisonResult.OrderedSame)
+        if(self.compare(from) == ComparisonResult.orderedDescending || self.compare(from) == ComparisonResult.orderedSame)
         {
-            if(self.compare(to) == NSComparisonResult.OrderedAscending || self.compare(to) == NSComparisonResult.OrderedSame)
+            if(self.compare(to) == ComparisonResult.orderedAscending || self.compare(to) == ComparisonResult.orderedSame)
             {
                 // date is in range
                 return true
@@ -47,26 +47,26 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var alertAppointmentTitle: UILabel!
     @IBOutlet weak var typeOfAppointmentRightDetail: UILabel!
     
-    private var startDatePickerHidden = false
-    private var endDatePickerHidden = false
-    private var appointmentTypeHidden = false
-    private var otherIsHidden = false
-    private var repeatAppointmentTableHidden = false
-    private var alertAppointmentTableHidden = false
-    private let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" ,
+    fileprivate var startDatePickerHidden = false
+    fileprivate var endDatePickerHidden = false
+    fileprivate var appointmentTypeHidden = false
+    fileprivate var otherIsHidden = false
+    fileprivate var repeatAppointmentTableHidden = false
+    fileprivate var alertAppointmentTableHidden = false
+    fileprivate let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" ,
                                       "Medication Times" , "Social Event" , "Leisure" ,
                                       "Household", "Work", "Physical Therapy",
                                       "Occupational Therapy", "Speech Therapy", "Class",
                                       "Self Care", "Other"]
-    private let cellID: String = "AppointmentCells"
-    private let dateFormat:NSDateFormatter = NSDateFormatter().dateWithTime
-    private let db = DatabaseFunctions.sharedInstance
-    private var startingDate:NSDate? = nil
-    private var endingDate: NSDate? = nil
-    private var otherTextString: String = String()
-    private let currentDate = NSDate()
-    private var appointmentAlertTimes: [NSDate] = []
-    private var startAndEndTimesTupleArray:[(start: NSDate, end: NSDate)] = []
+    fileprivate let cellID: String = "AppointmentCells"
+    fileprivate let dateFormat:DateFormatter = DateFormatter().dateWithTime
+    fileprivate let db = DatabaseFunctions.sharedInstance
+    fileprivate var startingDate:Date? = nil
+    fileprivate var endingDate: Date? = nil
+    fileprivate var otherTextString: String = String()
+    fileprivate let currentDate = Date()
+    fileprivate var appointmentAlertTimes: [Date] = []
+    fileprivate var startAndEndTimesTupleArray:[(start: Date, end: Date)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,20 +88,20 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Set the buttons borders shapes, widths and colors
         saveAppointment.layer.cornerRadius = 10
         saveAppointment.layer.borderWidth = 2
-        saveAppointment.layer.borderColor = UIColor().defaultButtonColor.CGColor
-        saveAppointment.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        saveAppointment.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
+        saveAppointment.layer.borderColor = UIColor().defaultButtonColor.cgColor
+        saveAppointment.setTitleColor(UIColor.white, for: UIControlState())
+        saveAppointment.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
         otherEnterButton.layer.cornerRadius = 10
         otherEnterButton.layer.borderWidth = 2
-        otherEnterButton.layer.borderColor = UIColor().defaultButtonColor.CGColor
-        otherEnterButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        otherEnterButton.layer.backgroundColor = UIColor().defaultButtonColor.CGColor
+        otherEnterButton.layer.borderColor = UIColor().defaultButtonColor.cgColor
+        otherEnterButton.setTitleColor(UIColor.white, for: UIControlState())
+        otherEnterButton.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
         
         // Set the maximum and minimum dates for the date pickers
         appointmentStartDate.minimumDate = currentDate
         appointmentEndDate.minimumDate = currentDate
-        appointmentStartDate.maximumDate = NSDate().calendarEndDate
-        appointmentEndDate.maximumDate = NSDate().calendarEndDate
+        appointmentStartDate.maximumDate = Date().calendarEndDate
+        appointmentEndDate.maximumDate = Date().calendarEndDate
         
         appointmentNameTextField.placeholder = "Name of Appointment"
         appointmentLocationTextBox.placeholder = "Location of Appointment"
@@ -114,25 +114,25 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
         additionalInfoTextBox.font = UIFont(name: "Helvetica", size: 18.0)
-        additionalInfoTextBox.textColor = UIColor.lightGrayColor()
+        additionalInfoTextBox.textColor = UIColor.lightGray
         otherTextField.placeholder = "Please enter the type of appointment"
     }
     
     // MARK - Picker View Methods
     // Picker View Functions for the types of appointments the user can pick from.
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return typeOfAppointments[row]
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return typeOfAppointments.count
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeOfAppointmentRightDetail.text = typeOfAppointments[row]
         // Show the other appointment cell when user highlights other.
         if  "Other" == typeOfAppointments[row] ||
@@ -167,15 +167,15 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     // MARK - Table View Methods
     // This is for the text view delegate so that the user can tell where the additional info text box is.
-    func textViewDidBeginEditing(textView: UITextView) {
-        if additionalInfoTextBox.textColor == UIColor.lightGrayColor(){
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if additionalInfoTextBox.textColor == UIColor.lightGray{
             additionalInfoTextBox.text = nil
-            additionalInfoTextBox.textColor = UIColor.blackColor()
+            additionalInfoTextBox.textColor = UIColor.black
         }
     }
     
     // Pass the information from this view to the previous view
-    @IBAction func saveButtonPressed(sender: AnyObject) {
+    @IBAction func saveButtonPressed(_ sender: AnyObject) {
         // If additional info was left untouched set it to be an empty string.
         var additionalInfoString = additionalInfoTextBox.text!
         if additionalInfoString == "Additional Information..."{
@@ -207,7 +207,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                   dateFinished:  nil,
                                                   cancelReason:  nil,
                                                   deleteReason:  nil,
-                                                  UUID: NSUUID().UUIDString)
+                                                  UUID: UUID().uuidString)
             
             db.addToAppointmentDatabase(appointmentItem)
             
@@ -216,8 +216,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             if !startAndEndTimesTupleArray.isEmpty{
             
                 for (start, end) in startAndEndTimesTupleArray{
-                    print("Start in Start and end tuple array : \(NSDateFormatter().dateWithTime.stringFromDate(start))")
-                    print("End in Start and end tuple array: \(NSDateFormatter().dateWithTime.stringFromDate(end))")
+                    print("Start in Start and end tuple array : \(DateFormatter().dateWithTime.string(from: start))")
+                    print("End in Start and end tuple array: \(DateFormatter().dateWithTime.string(from: end))")
                     
                     let appointmentItem = AppointmentItem(type: otherTextString
                                                         + typeOfAppointmentRightDetail.text!,
@@ -234,28 +234,28 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                       dateFinished:  nil,
                                                       cancelReason:  nil,
                                                       deleteReason:  nil,
-                                                      UUID: NSUUID().UUIDString)
+                                                      UUID: UUID().uuidString)
             
                     db.addToAppointmentDatabase(appointmentItem)
                 
                 }
             }
             
-            self.navigationController?.popToRootViewControllerAnimated(true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
             
         // Let the user know that some required fields are not filled in
         else{
-            let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
-            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
+            let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
+            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                     // Essentially do nothing. Unless we want to print some sort of log message.
                     //print("Action for stoping the saving of incomplete appointment form")
                 }))
-            self.presentViewController(someFieldMissing, animated: true, completion: nil)
+            self.present(someFieldMissing, animated: true, completion: nil)
         }
     }
 
-    @IBAction func otherButtonPressed(sender: AnyObject) {
+    @IBAction func otherButtonPressed(_ sender: AnyObject) {
         if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){
             otherTextField.placeholder = "Please enter the type of appointment here"
         }
@@ -267,11 +267,11 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     // Update the right detail start date when the user moves date or time.
-    @IBAction func startDatePickerAction(sender: AnyObject) {
+    @IBAction func startDatePickerAction(_ sender: AnyObject) {
         startDatePickerDidChange()
     }
     // Update the right detail of the end time when the user moves the date or time.
-    @IBAction func endDatePickerAction(sender: AnyObject) {
+    @IBAction func endDatePickerAction(_ sender: AnyObject) {
         endDatePickerDidChange()
     }
     
@@ -281,86 +281,86 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     // This method works as it should.
-    func calcNotificationTime(date:NSDate) -> NSDate{
-        let stringFromDate = dateFormat.stringFromDate(date)
+    func calcNotificationTime(_ date:Date) -> Date{
+        let stringFromDate = dateFormat.string(from: date)
 //        print("String From Date: \(stringFromDate)")
-        let dateFromString = dateFormat.dateFromString(stringFromDate)!
+        let dateFromString = dateFormat.date(from: stringFromDate)!
 //        print("Date From String: \(dateFromString)")
         return dateFromString
     }
     
     func startDatePickerDidChange(){
         startingDate = calcNotificationTime(appointmentStartDate.date)
-        startingTimeDetailLabel.text = dateFormat.stringFromDate(startingDate!)
+        startingTimeDetailLabel.text = dateFormat.string(from: startingDate!)
     }
     
     func endDatePickerDidChange(){
         endingDate = calcNotificationTime(appointmentEndDate.date)
-        endingTimeDetailLabel.text = dateFormat.stringFromDate(endingDate!)
+        endingTimeDetailLabel.text = dateFormat.string(from: endingDate!)
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
 
-        if indexPath.section == 0 && indexPath.row == 0{
+        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 0{
             appointmentNameTextField.becomeFirstResponder()
-            cell?.selectionStyle = UITableViewCellSelectionStyle.None
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
         }
-        else if indexPath.section == 3 && indexPath.row == 0{
+        else if (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 0{
             appointmentLocationTextBox.becomeFirstResponder()
-            cell?.selectionStyle = UITableViewCellSelectionStyle.None
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
         }
         // Appointment drop down
-        else if indexPath.section == 1 && indexPath.row == 0{
+        else if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 0{
             toggleAppointmentDropDown()
         }
         // Starting date picker
-        else if indexPath.section == 2 && indexPath.row == 0{
+        else if (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 0{
             toggleStartDatePicker()
         }
         // Ending date picker
-        else if indexPath.section == 2 && indexPath.row == 2{
+        else if (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 2{
             toggleEndDatePicker()
         }
-        else if indexPath.section == 5 && indexPath.row == 0{
+        else if (indexPath as NSIndexPath).section == 5 && (indexPath as NSIndexPath).row == 0{
             toggleRepeatAppointment()
         }
-        else if indexPath.section == 6 && indexPath.row == 0{
+        else if (indexPath as NSIndexPath).section == 6 && (indexPath as NSIndexPath).row == 0{
             toggleAlertAppointment()
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // This method hides the cells for the larger data collection objects
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         // Hide the cell beneath the appointment type label
-        if appointmentTypeHidden && indexPath.section == 1 && indexPath.row == 1{
+        if appointmentTypeHidden && (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
         // Hide the stating date picker
-        else if startDatePickerHidden && indexPath.section == 2 && indexPath.row == 1{
+        else if startDatePickerHidden && (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
         // Hide ending date picker
-        else if endDatePickerHidden && indexPath.section == 2 && indexPath.row == 3{
+        else if endDatePickerHidden && (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 3{
             return 0
         }
         // Hide the other tableview cell
-        else if otherIsHidden && indexPath.section == 1 && indexPath.row == 2{
+        else if otherIsHidden && (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 2{
             return 0
         }
         // Hide the repeat appointment table
-        else if repeatAppointmentTableHidden && indexPath.section == 5 && indexPath.row == 1{
+        else if repeatAppointmentTableHidden && (indexPath as NSIndexPath).section == 5 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
         // Hide the alert appointment table
-        else if alertAppointmentTableHidden && indexPath.section == 6 && indexPath.row == 1{
+        else if alertAppointmentTableHidden && (indexPath as NSIndexPath).section == 6 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
         // Return the normal height otherwise
         else{
-            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
     
@@ -393,11 +393,11 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     // Toggle repeat appointment
     func toggleRepeatAppointment(){
         repeatAppointmentTableHidden = !repeatAppointmentTableHidden
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = UserDefaults.standard
         
-        if let repeatTime = defaults.objectForKey("RepeatIdentifier"){
+        if let repeatTime = defaults.object(forKey: "RepeatIdentifier"){
             makeRecurringAppointment(repeatTime as! String, start: startingDate!, end: endingDate!)
-            repeatAppointmentRightDetail.text = String(repeatTime)
+            repeatAppointmentRightDetail.text = String(describing: repeatTime)
             
         }
         tableView.beginUpdates()
@@ -407,18 +407,18 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     // Toggle alert appointment
     func toggleAlertAppointment(){
         alertAppointmentTableHidden = !alertAppointmentTableHidden
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let alertTime = defaults.objectForKey("AlertIdentifier"){
-            alertAppointmentRightDetail.text = String(alertTime)
+        let defaults = UserDefaults.standard
+        if let alertTime = defaults.object(forKey: "AlertIdentifier"){
+            alertAppointmentRightDetail.text = String(describing: alertTime)
         }
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
-    func makeRecurringAppointment(interval:String, start: NSDate, end: NSDate){
+    func makeRecurringAppointment(_ interval:String, start: Date, end: Date){
         print("Make New Notification Interval: \(interval)")
-        let calendar = NSCalendar.currentCalendar()
-        let dateComponents = NSDateComponents()
+        let calendar = Calendar.current
+        var dateComponents = DateComponents()
         
         switch(interval){
             case "Never":
@@ -440,9 +440,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 break
         }
         // Get the time for the users appointment
-        let endDate = NSDate().calendarEndDate
-        let newStart = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
-        let newEnd = calendar.dateByAddingComponents(dateComponents, toDate: end, options: .MatchStrictly)
+        let endDate = Date().calendarEndDate
+        let newStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
+        let newEnd = (calendar as NSCalendar).date(byAdding: dateComponents, to: end, options: .matchStrictly)
         
         // Add the new start and end time to this array of tuples
         startAndEndTimesTupleArray.append((start: newStart!, end: newEnd!))

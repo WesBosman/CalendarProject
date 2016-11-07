@@ -19,12 +19,12 @@ class HomeTaskCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        homeTaskTitle.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        homeTaskTitle.lineBreakMode = NSLineBreakMode.byWordWrapping
         homeTaskTitle.numberOfLines = 0
-        homeTaskInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        homeTaskInfo.lineBreakMode = NSLineBreakMode.byWordWrapping
         homeTaskInfo.numberOfLines = 0
     }
-    func homeTaskCompleted(task: TaskItem){
+    func homeTaskCompleted(_ task: TaskItem){
         if task.completed == true{
             uncheckedTaskImage.image = UIImage(named: "checkbox")
         }

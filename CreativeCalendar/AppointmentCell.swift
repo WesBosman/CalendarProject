@@ -22,11 +22,11 @@ class AppointmentCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         // Wrap the text from the additional information section as it could easily fit on more than one line.
-        appointmentAdditionalInfo.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        appointmentAdditionalInfo.lineBreakMode = NSLineBreakMode.byWordWrapping
         appointmentAdditionalInfo.numberOfLines = 0
     }
     
-    func appointmentCompleted(appointment: AppointmentItem){
+    func appointmentCompleted(_ appointment: AppointmentItem){
         if appointment.completed == true{
             appointmentCompletedImage.image = UIImage(named: "checkbox") //"CircleTickedGreen")
         }

@@ -19,21 +19,21 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var dotWidth: CGFloat = 15.0
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
-    @IBInspectable var selectedDotColor:UIColor = UIColor.orangeColor()
-    private var fillColorForCircle: UIColor = UIColor.clearColor()
-    private var formatter = NSDateFormatter().dateWithoutTime
+    @IBInspectable var selectedDotColor:UIColor = UIColor.orange
+    fileprivate var fillColorForCircle: UIColor = UIColor.clear
+    fileprivate var formatter = DateFormatter().dateWithoutTime
     var cellState:CellState!
     var appointmentCounter = 0
     var taskCounter = 0
     var journalCounter = 0
-    private var drawAppointment:Bool = false
-    private var drawTask:Bool = false
-    private var drawJournal:Bool = false
+    fileprivate var drawAppointment:Bool = false
+    fileprivate var drawTask:Bool = false
+    fileprivate var drawJournal:Bool = false
     @IBOutlet weak var appointmentCounterLabel: UILabel!
     @IBOutlet weak var taskCounterLabel: UILabel!
     @IBOutlet weak var journalCounterLabel: UILabel!
     
-    func setUpCellBeforeDisplay(cellState: CellState){
+    func setUpCellBeforeDisplay(_ cellState: CellState){
         // Assign the cell state as a property of this class
         self.cellState = cellState
         self.appointmentCounter = 0
@@ -56,14 +56,14 @@ class CalendarCell: JTAppleDayCellView{
         self.setNeedsDisplay()
     }
     
-    func updateCell(cellState:CellState){
+    func updateCell(_ cellState:CellState){
         self.cellState = cellState
         setNeedsDisplay()
     }
     
-    func setUpCellDots(cellState: CellState){
+    func setUpCellDots(_ cellState: CellState){
         // Get all the scheduled appointments from the database.
-        let cellDate = formatter.stringFromDate(cellState.date)
+        let cellDate = formatter.string(from: cellState.date)
         
         // Use dictionaries for fast loading of the calendar
         let appointmentDictionary = GlobalAppointments.appointmentDictionary
@@ -90,27 +90,27 @@ class CalendarCell: JTAppleDayCellView{
         }
     }
     
-    func configureTextColor(cellState: CellState){
+    func configureTextColor(_ cellState: CellState){
         
-        if cellState.dateBelongsTo == .ThisMonth{
+        if cellState.dateBelongsTo == .thisMonth{
             // Change text and circle color.
-            dayLabel.textColor = UIColor.whiteColor()
+            dayLabel.textColor = UIColor.white
             
             // Allow the cell to be clicked
-            self.userInteractionEnabled = true
+            self.isUserInteractionEnabled = true
             
             // Dont hide the cell
-            self.hidden = false
+            self.isHidden = false
         }
         else{
             // Change text and circle color.
-            dayLabel.textColor = UIColor.lightGrayColor()
+            dayLabel.textColor = UIColor.lightGray
             
             // Prevent the cell from being clicked
-            self.userInteractionEnabled = false
+            self.isUserInteractionEnabled = false
             
             // Hide the cell
-            self.hidden = true
+            self.isHidden = true
         }
     }
     
@@ -125,9 +125,9 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     // Draw the view
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // Draw a circle around the day of the calendar.        
-        let path = UIBezierPath(ovalInRect: CGRect(x: 0, y: self.center.y / 1.8 , width: self.frame.size.width, height: self.frame.size.height / 2.1))
+        let path = UIBezierPath(ovalIn: CGRect(x: 0, y: self.center.y / 1.8 , width: self.frame.size.width, height: self.frame.size.height / 2.1))
         
         // If cell has been selected
         if cellState.isSelected == true{
@@ -160,7 +160,7 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawAppointmentDot(){
-        let appointmentCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width / 4 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        let appointmentCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 4 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         appointmentColor.setFill()
         appointmentCircle.fill()
     }
@@ -168,13 +168,13 @@ class CalendarCell: JTAppleDayCellView{
     func drawTaskDot(){
 //        let taskCircle = UIBezierPath(rect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         
-        let taskCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        let taskCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         taskColor.setFill()
         taskCircle.fill()
     }
     
     func drawJournalDot(){
-        let journalCircle = UIBezierPath(ovalInRect: CGRect(x: self.frame.width/1.35 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        let journalCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width/1.35 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         journalColor.setFill()
         journalCircle.fill()
     }

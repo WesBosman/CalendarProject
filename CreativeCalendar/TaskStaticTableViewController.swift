@@ -21,23 +21,23 @@ class TaskStaticTableViewController: UITableViewController {
     @IBOutlet weak var alertTaskTitle: UILabel!
     @IBOutlet weak var alertTaskRightDetail: UILabel!
     
-    private let db = DatabaseFunctions.sharedInstance
-    private var taskDatePickerIsHidden = false
-    private var taskRepeatDayIsHidden = false
-    private var taskAlertIsHidden = false
-    private let taskFormatter = NSDateFormatter().dateWithTime
-    private let currentDate = NSDate()
+    fileprivate let db = DatabaseFunctions.sharedInstance
+    fileprivate var taskDatePickerIsHidden = false
+    fileprivate var taskRepeatDayIsHidden = false
+    fileprivate var taskAlertIsHidden = false
+    fileprivate let taskFormatter = DateFormatter().dateWithTime
+    fileprivate let currentDate = Date()
     
-    var startTimesArray:[NSDate] = []
-    var alertTimesArray: [NSDate] = []
-    let defaults = NSUserDefaults.standardUserDefaults()
+    var startTimesArray:[Date] = []
+    var alertTimesArray: [Date] = []
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         taskNameTextField.placeholder = "Task Name"
         taskAdditionalInfoTextBox.placeholder = "Additional Information"
         taskFinishDateLabel.text = "Estimated Task Completion Date"
-        taskFinishDateRightDetail.text = taskFormatter.stringFromDate(currentDate)
+        taskFinishDateRightDetail.text = taskFormatter.string(from: currentDate)
         repeatingTaskTitle.text = "Schedule a repeating Task"
         alertTaskTitle.text = "Schedule an alert"
         alertTaskRightDetail.text = AlertTableViewCell().alertArray[0]
@@ -45,14 +45,14 @@ class TaskStaticTableViewController: UITableViewController {
 //        taskDatePicker.datePickerMode = UIDatePickerMode.DateAndTime
         
         // Set the boundary dates for the maximum and minimum dates of the date picker
-        taskDatePicker.minimumDate = NSDate()
-        taskDatePicker.maximumDate = NSDate().calendarEndDate
+        taskDatePicker.minimumDate = Date()
+        taskDatePicker.maximumDate = Date().calendarEndDate
         
         // Set the color and shape of the save button
         saveTask.layer.cornerRadius = 10
         saveTask.layer.borderWidth = 2
-        saveTask.layer.borderColor = UIColor().defaultButtonColor.CGColor
-        saveTask.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        saveTask.layer.borderColor = UIColor().defaultButtonColor.cgColor
+        saveTask.setTitleColor(UIColor.white, for: UIControlState())
         saveTask.backgroundColor = UIColor().defaultButtonColor
         
         // Hide the pickers from the user
@@ -61,51 +61,51 @@ class TaskStaticTableViewController: UITableViewController {
         toggleAlertTableView()
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
 
-        if indexPath.row == 0 && indexPath.section == 0{
+        if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 0{
             taskNameTextField.becomeFirstResponder()
-            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+            cell!.selectionStyle = UITableViewCellSelectionStyle.none
         }
-        else if indexPath.row == 0 && indexPath.section == 1{
+        else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 1{
             taskAdditionalInfoTextBox.becomeFirstResponder()
-            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+            cell!.selectionStyle = UITableViewCellSelectionStyle.none
         }
-        else if indexPath.row == 0 && indexPath.section == 2{
+        else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 2{
             toggleTaskDatePicker()
         }
-        else if indexPath.row == 0 && indexPath.section == 3{
+        else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 3{
             toggleRepeatDayPicker()
         }
-        else if indexPath.row == 0 && indexPath.section == 4{
+        else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 4{
             toggleAlertTableView()
         }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if taskDatePickerIsHidden && indexPath.section == 2 && indexPath.row == 1{
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if taskDatePickerIsHidden && (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
-        else if taskRepeatDayIsHidden && indexPath.section == 3 && indexPath.row == 1{
+        else if taskRepeatDayIsHidden && (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
-        else if taskAlertIsHidden && indexPath.section == 4 && indexPath.row == 1{
+        else if taskAlertIsHidden && (indexPath as NSIndexPath).section == 4 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
         else{
-            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
     
-    @IBAction func taskDatePickerChanged(sender: AnyObject) {
-        let dateAsString = taskFormatter.stringFromDate(taskDatePicker.date)
+    @IBAction func taskDatePickerChanged(_ sender: AnyObject) {
+        let dateAsString = taskFormatter.string(from: taskDatePicker.date)
         print("Task Date: \(dateAsString)")
         taskFinishDateRightDetail.text = dateAsString
     }
     
     // Save the information to pass it to the previous view
-    @IBAction func saveTaskPressed(sender: AnyObject) {
+    @IBAction func saveTaskPressed(_ sender: AnyObject) {
         // Make sure there is atleast a task title in order to let the user save the task
 //        let current = NSDate()
         var additionalInfoString = String()
@@ -116,10 +116,10 @@ class TaskStaticTableViewController: UITableViewController {
         }
         
         if (!taskNameTextField.text!.isEmpty && !taskFinishDateRightDetail.text!.isEmpty){
-            print("Task Formatter.dateFromString = \(taskFormatter.dateFromString(taskFinishDateRightDetail.text!)!)")
+            print("Task Formatter.dateFromString = \(taskFormatter.date(from: taskFinishDateRightDetail.text!)!)")
             let taskItem = TaskItem(title: taskNameTextField.text!,
                                     info: additionalInfoString,
-                                    estimatedCompletion: taskFormatter.dateFromString(taskFinishDateRightDetail.text!)!,
+                                    estimatedCompletion: taskFormatter.date(from: taskFinishDateRightDetail.text!)!,
                                     repeatTime: repeatingTaskRightDetail.text!,
                                     alertTime:  alertTaskRightDetail.text!,
                                     isComplete: false,
@@ -128,7 +128,7 @@ class TaskStaticTableViewController: UITableViewController {
                                     dateFinished: nil,
                                     cancelReason: nil,
                                     deleteReason: nil,
-                                    UUID: NSUUID().UUIDString)
+                                    UUID: UUID().uuidString)
             
             db.addToTaskDatabase(taskItem)
             
@@ -147,7 +147,7 @@ class TaskStaticTableViewController: UITableViewController {
                                             dateFinished: nil,
                                             cancelReason: nil,
                                             deleteReason: nil,
-                                            UUID: NSUUID().UUIDString)
+                                            UUID: UUID().uuidString)
                 
                     db.addToTaskDatabase(taskItem)
 
@@ -155,15 +155,15 @@ class TaskStaticTableViewController: UITableViewController {
             }
             
             
-            self.navigationController?.popToRootViewControllerAnimated(true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
         else{
             // This is similar to the code for the static appointment alert.
-            let someFieldMissing = UIAlertController(title: "Missing Task Title or Date", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .Alert)
-            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) in
+            let someFieldMissing = UIAlertController(title: "Missing Task Title or Date", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
+            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                 // Essentially do nothing. Unless we want to print some sort of log message.
             }))
-            self.presentViewController(someFieldMissing, animated: true, completion: nil)
+            self.present(someFieldMissing, animated: true, completion: nil)
         }
     }
     
@@ -175,9 +175,9 @@ class TaskStaticTableViewController: UITableViewController {
     
     func toggleRepeatDayPicker(){
         taskRepeatDayIsHidden = !taskRepeatDayIsHidden
-        if let taskRepeat = defaults.objectForKey("RepeatIdentifier"){
-            makeRecurringTask( String(taskRepeat), start: taskDatePicker.date)
-            repeatingTaskRightDetail.text = String(taskRepeat)
+        if let taskRepeat = defaults.object(forKey: "RepeatIdentifier"){
+            makeRecurringTask( String(describing: taskRepeat), start: taskDatePicker.date)
+            repeatingTaskRightDetail.text = String(describing: taskRepeat)
         }
         tableView.beginUpdates()
         tableView.endUpdates()
@@ -186,18 +186,18 @@ class TaskStaticTableViewController: UITableViewController {
     func toggleAlertTableView(){
         
         taskAlertIsHidden = !taskAlertIsHidden
-        if let taskAlert = defaults.objectForKey("AlertIdentifier"){
-            alertTaskRightDetail.text = String(taskAlert)
+        if let taskAlert = defaults.object(forKey: "AlertIdentifier"){
+            alertTaskRightDetail.text = String(describing: taskAlert)
         }
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
     // Tasks only are worried about the estiated completion time
-    func makeRecurringTask(interval: String, start: NSDate){
+    func makeRecurringTask(_ interval: String, start: Date){
         print("Make New Notification Interval: \(interval)")
-        let calendar = NSCalendar.currentCalendar()
-        let dateComponents = NSDateComponents()
+        let calendar = Calendar.current
+        var dateComponents = DateComponents()
     
         switch(interval){
         case "":
@@ -219,14 +219,14 @@ class TaskStaticTableViewController: UITableViewController {
             break
         }
         // Get the time for the users appointment
-        let endDate = NSDate().calendarEndDate
-        let newStart = calendar.dateByAddingComponents(dateComponents, toDate: start, options: .MatchStrictly)
+        let endDate = Date().calendarEndDate
+        let newStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
     
         // Add the new start and end time to this array of tuples
         startTimesArray.append(newStart!)
     
         // If the new date is still within range of the calendar boundary dates then call this method again
-        if(newStart?.isInRange(NSDate(), to: endDate) == true){
+        if(newStart?.isInRange(Date(), to: endDate) == true){
     
             makeRecurringTask(interval, start: newStart!)
         }
