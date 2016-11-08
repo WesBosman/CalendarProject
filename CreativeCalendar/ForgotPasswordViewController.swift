@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ForgotPasswordViewController: UIViewController {
     @IBOutlet weak var forgotPasswordGreetingLabel: UILabel!
@@ -14,18 +15,38 @@ class ForgotPasswordViewController: UIViewController {
     @IBOutlet weak var forgotSubmitButton: UIButton!
     @IBOutlet weak var backToLoginButton: UIButton!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func forgotPasswordSubmitButtonPressed(_ sender: AnyObject) {
+        if let auth = FIRAuth.auth(){
+            if let email = forgotPasswordEmail.text{
+                print("Forgot Password Email \(email)")
+            
+                auth.sendPasswordReset(withEmail: email, completion: {(error) in
+                
+                    if(error != nil){
+                        print("Error \(error.debugDescription)")
+                    
+                    
+                    }
+                    else{
+                        print("Email sent")
+                    }
+                
+                })
+            }
+        }
+    }
 
     /*
     // MARK: - Navigation

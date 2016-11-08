@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SignUpViewController: UIViewController {
     
@@ -16,12 +17,50 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signUpPasswordConfirm: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var backToLoginButton: UIButton!
+    let defaults = UserDefaults.standard
+    let emailKey = "Email"
+    let passKey = "Password"
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
+    }
+    
+    @IBAction func userSignedUp(_ sender: AnyObject) {
+        
+        if let email = signUpEmailAddress.text{
+            print("Email is not null \(email)")
+            // Set Email in User Defaults
+            defaults.set(email, forKey: emailKey)
+            
+            if let password  = signUpPassword.text{
+                print("Password is not null \(email)")
+                
+                if let confirmPassword = signUpPasswordConfirm.text{
+                    print("Confirm Password is not null \(confirmPassword)")
+                    
+                    if(password == confirmPassword){
+                        // Set Password in User Defaults
+                        defaults.set(password, forKey: passKey)
+                        print("Password and confirm password matches")
+                        FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
+                            print("User Created")                    
+                        })
+                    }
+                }
+                else{
+                    print("Confirm Password is null")
+                }
+            }
+            else{
+                print("Password is null")
+            }
+        }
+        else{
+            print("Email is null")
+        }
         
     }
 
