@@ -9,7 +9,6 @@
 import UIKit
 
 class JournalCell: UITableViewCell {
-    
     @IBOutlet weak var journalCellTitle: UILabel!
     @IBOutlet weak var journalCellSubtitle: UILabel!
     @IBOutlet weak var journalCellImage: UIImageView!

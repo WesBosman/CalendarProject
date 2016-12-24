@@ -100,7 +100,16 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             print("Journal Array: \(journalArray)")
             
             // Add the journal item to the Global Dictionary
-            journalArray?.append(journalItem)
+            // TODO if journal array is nil then this will fail
+            if journalArray != nil{
+                print("Journal Array is not nil \(journalArray)")
+                journalArray?.append(journalItem)
+            }
+            else{
+                journalArray = []
+                print("Journal Array was nil \(journalArray)")
+                journalArray?.append(journalItem)
+            }
             GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
             
         }

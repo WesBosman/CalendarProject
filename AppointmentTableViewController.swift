@@ -150,15 +150,15 @@ class AppointmentTableViewController: UITableViewController{
         let startFormatter = DateFormatter()
         let endFormatter = DateFormatter()
         startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
-        endFormatter.dateFormat = "'Ending Time:  ' MMM dd 'at' h:mm a"
+        endFormatter.dateFormat   = "'Ending Time:  ' MMM dd 'at' h:mm a"
         let startingTime = startFormatter.string(from: appItem.startingTime as Date)
-        let endingTime = endFormatter.string(from: appItem.endingTime as Date)
+        let endingTime   = endFormatter.string(from: appItem.endingTime as Date)
         
         cell.appointmentCompleted(appItem)
         cell.appointmentTitle.text = "Event: \(appItem.title)"
-        cell.appointmentType.text = "Type: \(appItem.type)"
+        cell.appointmentType.text  = "Type: \(appItem.type)"
         cell.appointmentStart.text = startingTime
-        cell.appointmentEnd.text = endingTime
+        cell.appointmentEnd.text   = endingTime
         cell.appointmentLocation.text = "Location: \(appItem.appLocation)"
         cell.appointmentAdditionalInfo.text = "Additional Info: \(appItem.additionalInfo)"
         cell.appointmentAlert.text = "Alert: \(appItem.alert)"

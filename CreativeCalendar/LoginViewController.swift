@@ -8,15 +8,15 @@
 
 import UIKit
 import FirebaseAuth
+import LocalAuthentication
 
 class LoginViewController: UIViewController {
     
-    @IBOutlet weak var loginGreetingLabel: UILabel!
+    @IBOutlet weak var appHeaderLabel: UILabel!
     @IBOutlet weak var loginEmail: UITextField!
     @IBOutlet weak var loginPassword: UITextField!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var loginMessage: UILabel!
+    
     let defaults = UserDefaults.standard
     let emailKey = "Email"
     let passKey  = "Password"
@@ -26,12 +26,23 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Hide the error message label
+        loginMessage.text = "This is where errors will appear"
+        loginMessage.lineBreakMode = .byWordWrapping
+        loginMessage.numberOfLines = 0
+        loginMessage.isHidden = true
+        
+        if let email = defaults.object(forKey: emailKey) as? String{
+            loginEmail.text = email
+        }
+        
         // If User is already logged in let them into the application
-        FIRAuth.auth()?.addStateDidChangeListener({ auth, user in
+        FIRAuth.auth()?.addStateDidChangeListener({
+            (auth, user) in
+            
             if let user = auth.currentUser {
                 // User is signed in.
                 print("User is Signed In")
-                //self.performSegue(withIdentifier: "Login", sender: nil)
                 
                 if let name = user.displayName{
                     print("User Name \(name)")
@@ -41,6 +52,8 @@ class LoginViewController: UIViewController {
                     print("Email \(email)")
                 }
                 
+                //self.performSegue(withIdentifier: "Login", sender: nil)
+                
             } else {
                 // No user is signed in.
                 print("User is not Signed In")
@@ -48,42 +61,147 @@ class LoginViewController: UIViewController {
             }
         })
         
+        // Testing Local Authentication
+//        locallyAuthenticateUser()
+        
     }
     
-    @IBAction func userLoginPressed(_ sender: AnyObject) {
+    @IBAction func userLoginButtonPressed(_ sender: AnyObject) {
         print("User Pressed the Login Button")
-        if let auth = FIRAuth.auth(){
             
-            if let email = loginEmail.text{
+        if let auth = FIRAuth.auth(){
                 
-                if let password = loginPassword.text{
+            if let email = loginEmail.text, let password = loginPassword.text{
                     
-                    // Is user has access to Internet
-                    auth.signIn(withEmail: email , password: password , completion: { user, error in
-                        print("User is logging in")
-                        self.performSegue(withIdentifier: "Login", sender: sender)
-                        
-                        if(error != nil){
-                            print("Error Logging in \(error.debugDescription)")
-                            // User May not have access to the Internet
-                            // Try to login using user defaults
+                // user has access to Internet
+                auth.signIn(withEmail: email , password: password , completion:
+                    { (user, error) in
                             
-                            let e = self.defaults.object(forKey: self.emailKey) as! String
+                        // Let us know which user is trying to login
+                        if let user = user{
+                            print("")
+                            print("User Email = \(user)")
+                            print("")
                             
-                            let p = self.defaults.object(forKey: self.passKey) as! String
-                            
-                            if(password == p && email == e){
-                                print("Password : \(password) Email : \(email)")
-                                self.performSegue(withIdentifier: "Login", sender: sender)
-                            }
-                            
+                            // Perform Segue
+                            self.performSegue(withIdentifier: "Login", sender: sender)
+                                
                         }
-                    })
-                }
+                            
+                        // Catch any errors
+                        if let error = error{
+                            print("")
+                            print("\(error.localizedDescription)")
+                            print("")
+                            self.loginMessage.text = error.localizedDescription
+                            self.loginMessage.isHidden = false
+                        }
+                })
             }
         }
     }
     
+    
+    
+    func showPasswordAlert(){
+        let passwordAlert: UIAlertController = UIAlertController(title: "Password", message: "Enter Password", preferredStyle: .alert)
+        
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction) -> Void in
+            passwordAlert.dismiss(animated: true, completion: nil)
+        })
+        
+        let submitAction: UIAlertAction = UIAlertAction(title: "Submit", style:.default, handler: {(action: UIAlertAction) -> Void in
+            
+        })
+        
+        passwordAlert.addTextField(configurationHandler: {(textField: UITextField) -> Void in
+            
+        })
+        
+        passwordAlert.addTextField(configurationHandler: {(textField:UITextField) -> Void in
+            
+        })
+        
+        passwordAlert.addAction(cancelAction)
+        passwordAlert.addAction(submitAction)
+        
+        self.present(passwordAlert, animated: true, completion: nil)
+    }
+    
+    func showNoTouchIDAlert(){
+        let alertController: UIAlertController = UIAlertController(title: "No Touch ID Detected", message: "Sorry, your device does not support fingerprint identification", preferredStyle: .alert)
+        let okAction: UIAlertAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // Local Authentication
+    func locallyAuthenticateUser(){
+        let context: LAContext = LAContext()
+        var authError: NSError?
+        
+        // Check to see if touch ID can be used
+        if (context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError)){
+            // If Touch ID can be used then use it
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                   localizedReason: "Please Scan Your Finger to Proceed",
+                                   reply: { //[unowned self]
+                                    (success, error) -> Void in
+            if(success){
+                print("Success logging in using touch ID")
+                }
+            else{
+                print("Error logging in using touch ID")
+                                        
+                // Catch any errors
+                print("Error = \(error!.localizedDescription)")
+                print("Auth Error = \(authError?.code)")
+                                        
+                if let err = authError{
+                    // Check the error codes and act accordingly
+                    switch(err.code){
+                        case LAError.appCancel.rawValue:
+                            print("App Cancel Error")
+                        
+                        case LAError.authenticationFailed.rawValue:
+                            print("Authentication Failed Error")
+                                                
+                        case LAError.invalidContext.rawValue:
+                            print("Invalid Context Error")
+                                                
+                        case LAError.passcodeNotSet.rawValue:
+                            print("Passcode has not been set error")
+                                                
+                        case LAError.systemCancel.rawValue:
+                            print("System Cancel")
+                                                
+                        case LAError.touchIDLockout.rawValue:
+                            print("Touch ID Lockout Error")
+                                                
+                        case LAError.touchIDNotEnrolled.rawValue:
+                            print("Touch ID Not Enrolled Error")
+                                                
+                        case LAError.touchIDNotAvailable.rawValue:
+                            print("Touch ID Not Available")
+                                                
+                        case LAError.userCancel.rawValue:
+                            print("User Cancel Error")
+                                                
+                        default:
+                            print("Default Case")
+                                                
+                        }
+                    }
+                }
+            })
+        }
+        // Touch ID Can not be used have to figure out another method...
+        else{
+            showNoTouchIDAlert()
+            return
+        }
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

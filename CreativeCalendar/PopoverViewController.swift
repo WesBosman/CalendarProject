@@ -25,6 +25,9 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     var journalList:[JournalItem] = []
     var selectedDate:Date = Date()
     var journalCellHeightArray: [CGFloat] = []
+    let appointmentIdentifier: String = "AppointmentCell"
+    let taskIdentifier: String = "TaskCell"
+    let journalIdentifier: String = "JournalCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +50,20 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         self.journalTableView.estimatedRowHeight = 85.0
         
         self.scrollView.delegate = self
+        
+        self.appointmentTableView.register(AppointmentCell.self, forCellReuseIdentifier: appointmentIdentifier)
         self.appointmentTableView.delegate = self
         self.appointmentTableView.dataSource = self
+       
+        
         self.taskTableView.delegate = self
         self.taskTableView.dataSource = self
+        self.taskTableView.register(TaskCell.self, forCellReuseIdentifier: taskIdentifier)
+        
         self.journalTableView.delegate = self
         self.journalTableView.dataSource = self
+        self.journalTableView.register(JournalCell.self, forCellReuseIdentifier: journalIdentifier)
+        
         self.view.addSubview(scrollView)
         
         for index in 0..<3 {
@@ -148,16 +159,20 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         
         if tableView == appointmentTableView{
             let appointment = appointmentList[(indexPath as NSIndexPath).row] as AppointmentItem
-            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "AppointmentPopover")
-            cell.textLabel?.text = appointment.title
-            cell.detailTextLabel?.text = "type: " + appointment.type
-                + "\nlocation: " + appointment.appLocation
-                + "\nstart: " + DateFormatter().dateWithTime.string(from: appointment.startingTime)
-                + "\nend:   " +  DateFormatter().dateWithTime.string(from: appointment.endingTime)
-                + "\nadditional info: " + appointment.additionalInfo
+//            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "AppointmentPopover")
+//            cell.textLabel?.text = appointment.title
+//            cell.detailTextLabel?.text = "type: " + appointment.type
+//                + "\nlocation: " + appointment.appLocation
+//                + "\nstart: " + DateFormatter().dateWithTime.string(from: appointment.startingTime)
+//                + "\nend:   " +  DateFormatter().dateWithTime.string(from: appointment.endingTime)
+//                + "\nadditional info: " + appointment.additionalInfo
+//            
+//            cell.detailTextLabel?.numberOfLines = 0
+//            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
             
-            cell.detailTextLabel?.numberOfLines = 0
-            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
+            let cell = appointmentTableView.dequeueReusableCell(withIdentifier: appointmentIdentifier, for: indexPath) as! AppointmentCell
+            cell.appointmentTitleLabel.text = appointment.title
+            
             return cell
         }
         else if tableView == taskTableView{
@@ -196,5 +211,10 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    // Estimated height for row at an index path must be called in order to use automatic dimensions
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 85.0
     }
 }

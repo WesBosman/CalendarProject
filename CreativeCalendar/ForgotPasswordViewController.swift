@@ -10,15 +10,33 @@ import UIKit
 import FirebaseAuth
 
 class ForgotPasswordViewController: UIViewController {
-    @IBOutlet weak var forgotPasswordGreetingLabel: UILabel!
-    @IBOutlet weak var forgotPasswordEmail: UITextField!
-    @IBOutlet weak var forgotSubmitButton: UIButton!
-    @IBOutlet weak var backToLoginButton: UIButton!
+    
+    @IBOutlet weak var forgotPasswordHeader: UILabel!
+    @IBOutlet weak var forgotPasswordMessage: UILabel!
+    @IBOutlet weak var forgotPasswordTextField: UITextField!
+    @IBOutlet weak var sendEmailButton: UIButton!
+    
+    let defaults = UserDefaults.standard
+    let emailKey = "Email"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Set up the header text.
+        forgotPasswordHeader.text = "Please enter your email address and we will send you a message allowing you to reset your password"
+        forgotPasswordHeader.lineBreakMode = .byWordWrapping
+        forgotPasswordHeader.numberOfLines = 0
+        
+        // Hide the forgot password message until there is an error
+        forgotPasswordMessage.isHidden = true
+        forgotPasswordMessage.lineBreakMode = .byWordWrapping
+        forgotPasswordMessage.numberOfLines = 0
+        
+        // If the user has an account already then give the email of that account
+        if let email = defaults.object(forKey: emailKey) as? String{
+            forgotPasswordTextField.text = email
+        }
     }
     
     
@@ -27,27 +45,28 @@ class ForgotPasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func forgotPasswordSubmitButtonPressed(_ sender: AnyObject) {
+    @IBAction func sendPasswordResetEmailButtonPressed(_ sender: AnyObject) {
+        
         if let auth = FIRAuth.auth(){
-            if let email = forgotPasswordEmail.text{
-                print("Forgot Password Email \(email)")
-            
-                auth.sendPasswordReset(withEmail: email, completion: {(error) in
-                
-                    if(error != nil){
-                        print("Error \(error.debugDescription)")
-                    
-                    
+            if let email = forgotPasswordTextField.text{
+                print("Forgoten Password Email \(email)")
+                auth.sendPasswordReset(withEmail: email, completion: {
+                (error) in
+                    // Let the user see the error
+                    if let error = error{
+                        self.forgotPasswordMessage.text = error.localizedDescription
+                        self.forgotPasswordMessage.isHidden = false
                     }
+                    // Let the user know the password reset email was sent
                     else{
-                        print("Email sent")
+                        self.forgotPasswordMessage.text = "Sent a password reset email to the following address: \(email)"
+                        self.forgotPasswordMessage.isHidden = false
                     }
-                
                 })
             }
         }
     }
-
+    
     /*
     // MARK: - Navigation
 

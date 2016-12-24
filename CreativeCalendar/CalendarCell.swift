@@ -20,6 +20,8 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
     @IBInspectable var selectedDotColor:UIColor = UIColor.orange
+
+    
     fileprivate var fillColorForCircle: UIColor = UIColor.clear
     fileprivate var formatter = DateFormatter().dateWithoutTime
     var cellState:CellState!
@@ -68,7 +70,6 @@ class CalendarCell: JTAppleDayCellView{
         // Use dictionaries for fast loading of the calendar
         let appointmentDictionary = GlobalAppointments.appointmentDictionary
         let taskDictionary = GlobalTasks.taskDictionary
-//        let journalDictionary = GlobalJournals.journalDictionary
         let journalDictionary = GlobalJournalStructures.journalDictionary
         
         if let appointmentList = appointmentDictionary[cellDate]{
@@ -124,8 +125,29 @@ class CalendarCell: JTAppleDayCellView{
         }
     }
     
+    // MARK - Initialization methods
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
+    override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
+    
+    
     // Draw the view
     override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
         // Draw a circle around the day of the calendar.        
         let path = UIBezierPath(ovalIn: CGRect(x: 0, y: self.center.y / 1.8 , width: self.frame.size.width, height: self.frame.size.height / 2.1))
         
@@ -166,8 +188,6 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawTaskDot(){
-//        let taskCircle = UIBezierPath(rect: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
-        
         let taskCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         taskColor.setFill()
         taskCircle.fill()
@@ -177,15 +197,5 @@ class CalendarCell: JTAppleDayCellView{
         let journalCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width/1.35 - 10, y: 19.0, width: dotWidth, height: dotHeight))
         journalColor.setFill()
         journalCircle.fill()
-    }
-    
-    // MARK - Initialization methods
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
 }

@@ -11,57 +11,93 @@ import FirebaseAuth
 
 class SignUpViewController: UIViewController {
     
-    @IBOutlet weak var signUpGreetingLabel: UILabel!
+    @IBOutlet weak var signUpHeaderLabel: UILabel!
+    @IBOutlet weak var signUpMessageLabel: UILabel!
     @IBOutlet weak var signUpEmailAddress: UITextField!
     @IBOutlet weak var signUpPassword: UITextField!
-    @IBOutlet weak var signUpPasswordConfirm: UITextField!
+    @IBOutlet weak var signUpConfirmPassword: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var backToLoginButton: UIButton!
+    
     let defaults = UserDefaults.standard
     let emailKey = "Email"
-    let passKey = "Password"
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Set up the header label
+        signUpHeaderLabel.text = "Please Enter a valid email address and a password that is atleast 8 characters long."
+        signUpHeaderLabel.lineBreakMode = .byWordWrapping
+        signUpHeaderLabel.numberOfLines = 0
+        
+        // Set up the message label
+        signUpMessageLabel.lineBreakMode = .byWordWrapping
+        signUpMessageLabel.numberOfLines = 0
+        signUpMessageLabel.isHidden = true
         
     }
     
-    @IBAction func userSignedUp(_ sender: AnyObject) {
-        
+    
+    @IBAction func signUpButtonPressed(_ sender: AnyObject) {
+        // Get the email address from the text box
         if let email = signUpEmailAddress.text{
-            print("Email is not null \(email)")
-            // Set Email in User Defaults
-            defaults.set(email, forKey: emailKey)
-            
-            if let password  = signUpPassword.text{
-                print("Password is not null \(email)")
+            // Get the password and confirmed password from their textboxes
+            if let password = signUpPassword.text,
+                let confirmPassword = signUpConfirmPassword.text{
                 
-                if let confirmPassword = signUpPasswordConfirm.text{
-                    print("Confirm Password is not null \(confirmPassword)")
+                // If the passwords match and they are both at least 8 chars
+                if (password == confirmPassword &&
+                    (password.characters.count >= 8 && confirmPassword.characters.count >= 8)) {
+                
+                    FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: {
+                        
+                        (user, error) in
+                        
+                        if let error = error{
+                            self.signUpMessageLabel.isHidden = false
+                            self.signUpMessageLabel.text = error.localizedDescription
+                            
+                        }
+                        
+                        if let user = user{
+                            self.signUpMessageLabel.isHidden = false
+                            
+                            // Get the users email address
+                            if let email = user.email{
+                                // Notify the user that an account has been created successfully
+                                self.signUpMessageLabel.text = "Created an account with the following email address: \(email)"
+                                // Set the fields back to nil
+                                self.signUpEmailAddress.text = nil
+                                self.signUpPassword.text = nil
+                                self.signUpConfirmPassword.text = nil
+                                
+                                // If there are no errors and an account was created store the email address in user defaults or toolchain
+                                self.defaults.set(email, forKey: self.emailKey)
+                            }
+                        }
                     
-                    if(password == confirmPassword){
-                        // Set Password in User Defaults
-                        defaults.set(password, forKey: passKey)
-                        print("Password and confirm password matches")
-                        FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
-                            print("User Created")                    
-                        })
-                    }
+                    })
                 }
                 else{
-                    print("Confirm Password is null")
+                    // If the passwords do not match
+                    if (confirmPassword != password){
+                        self.signUpMessageLabel.isHidden = false
+                        self.signUpMessageLabel.text = "Sorry, Passwords do not match. Try again"
+                    }
+                    // If the passwords are not long enough in length
+                    else if (  password.characters.count < 8 && confirmPassword.characters.count < 8){
+                        self.signUpMessageLabel.isHidden = false
+                        self.signUpMessageLabel.text = "The passwords must be at least 8 characters in length."
+                    }
+                    // Clear the password and confirm password text fields
+                    self.signUpPassword.text = nil
+                    self.signUpConfirmPassword.text = nil
+                    
                 }
+                
             }
-            else{
-                print("Password is null")
-            }
+            
         }
-        else{
-            print("Email is null")
-        }
-        
     }
 
     override func didReceiveMemoryWarning() {

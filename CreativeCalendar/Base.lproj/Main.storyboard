@@ -9,139 +9,158 @@
     </dependencies>
     <scenes>
         <!--Sign Up View Controller-->
-        <scene sceneID="OSo-Ko-c60">
+        <scene sceneID="LBJ-Qo-UF0">
             <objects>
-                <viewController id="G3N-RA-mVU" customClass="SignUpViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x6p-Lq-0w1" customClass="SignUpViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KeE-cW-zq5"/>
-                        <viewControllerLayoutGuide type="bottom" id="FPn-Hd-FbD"/>
+                        <viewControllerLayoutGuide type="top" id="KJn-oG-BsV"/>
+                        <viewControllerLayoutGuide type="bottom" id="wGU-n1-0jn"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6mP-Am-b4H">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="view" contentMode="scaleToFill" id="7zS-rX-npP">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please Enter a valid email address and a password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qyM-6p-zeU">
-                                <frame key="frameInset" minX="29" minY="295" width="719" height="158"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jOP-Zy-0ZN">
+                                <frame key="frameInset" minX="157" minY="442" width="450" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="glX-DR-NsP">
+                                <frame key="frameInset" minX="157" minY="497" width="450" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lN5-io-YOL">
+                                <frame key="frameInset" minX="157" minY="72" width="450" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bg2-64-aZk">
-                                <frame key="frameInset" minX="150" minY="497" width="467" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pxX-ZV-xQ0">
+                                <frame key="frameInset" minX="157" minY="549" width="450" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d8t-aA-pNt">
-                                <frame key="frameInset" minX="150" minY="550" width="467" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpD-xw-Vg3">
+                                <frame key="frameInset" minX="157" minY="638" width="450" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IZ4-ai-rE0">
-                                <frame key="frameInset" minX="150" minY="603" width="467" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTg-uq-gDJ">
-                                <frame key="frameInset" minX="150" minY="717" width="467" height="43"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Sign Up"/>
                                 <connections>
-                                    <action selector="userSignedUp:" destination="G3N-RA-mVU" eventType="touchUpInside" id="fro-69-gaK"/>
+                                    <action selector="signUpButtonPressed:" destination="x6p-Lq-0w1" eventType="touchUpInside" id="kpw-pA-wXU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Za6-QO-LTd">
-                                <frame key="frameInset" minX="150" minY="792" width="467" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0x-Dx-YDy">
+                                <frame key="frameInset" minX="157" minY="230" width="450" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <segue destination="52V-8z-kuT" kind="show" identifier="BackFromSignUpToLogin" id="iR5-5F-AlL"/>
-                                </connections>
-                            </button>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JD3-5k-xIn">
+                                <frame key="frameInset" minX="-2" minY="28" height="44" maxX="2"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Sign Up" id="Bkw-iR-9cm">
+                                        <barButtonItem key="backBarButtonItem" title="Back" id="4to-sQ-cTP"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Back" style="done" id="bIc-DB-jwg">
+                                            <connections>
+                                                <segue destination="52V-8z-kuT" kind="show" id="jDI-lO-dqo"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="backToLoginButton" destination="Za6-QO-LTd" id="Lf8-rW-Fg1"/>
-                        <outlet property="signUpButton" destination="hTg-uq-gDJ" id="F95-jZ-cP9"/>
-                        <outlet property="signUpEmailAddress" destination="Bg2-64-aZk" id="58w-mW-vb9"/>
-                        <outlet property="signUpGreetingLabel" destination="qyM-6p-zeU" id="JRn-Sm-ulA"/>
-                        <outlet property="signUpPassword" destination="d8t-aA-pNt" id="WJb-Fh-owz"/>
-                        <outlet property="signUpPasswordConfirm" destination="IZ4-ai-rE0" id="K63-iX-6qt"/>
+                        <outlet property="signUpButton" destination="hpD-xw-Vg3" id="5BE-T2-Db5"/>
+                        <outlet property="signUpConfirmPassword" destination="pxX-ZV-xQ0" id="F4I-Ue-pkR"/>
+                        <outlet property="signUpEmailAddress" destination="jOP-Zy-0ZN" id="k8W-Zz-1Ut"/>
+                        <outlet property="signUpHeaderLabel" destination="lN5-io-YOL" id="CgH-1w-oaf"/>
+                        <outlet property="signUpMessageLabel" destination="g0x-Dx-YDy" id="PIL-UX-KZE"/>
+                        <outlet property="signUpPassword" destination="glX-DR-NsP" id="yMF-AR-gwc"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3qy-po-eIZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KAC-Dp-9C6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-673" y="-772"/>
+            <point key="canvasLocation" x="-673.4375" y="-690.234375"/>
         </scene>
         <!--Login Controller-->
         <scene sceneID="thn-1s-jxO">
             <objects>
-                <viewController storyboardIdentifier="ConsentController" title="Consent Controller" id="52V-8z-kuT" userLabel="Login Controller" customClass="LoginViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConsentController" title="Login Controller" id="52V-8z-kuT" userLabel="Login Controller" customClass="LoginViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CPd-yo-keB"/>
                         <viewControllerLayoutGuide type="bottom" id="r0y-J4-JoW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3yW-0m-AUD">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Dr. Lageman's App Study for Parkinson's Disease Research" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hze-vx-Z5f">
-                                <frame key="frameInset" minX="20" minY="20" width="728" height="276"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2bc-HT-IdA">
+                                <frame key="frameInset" minX="155" minY="497" width="450" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Omb-1H-eFk">
+                                <frame key="frameInset" minX="153" minY="813" width="455" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Forgot Password"/>
+                                <connections>
+                                    <segue destination="p1Z-jQ-xqY" kind="show" id="erG-Y8-2rN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qo5-hj-9Vv">
+                                <frame key="frameInset" minX="155" minY="573" width="450" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="userLoginButtonPressed:" destination="52V-8z-kuT" eventType="touchUpInside" id="qSQ-c4-zWj"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b31-78-lvm">
+                                <frame key="frameInset" minX="155" minY="420" width="450" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nC3-08-lAY">
+                                <frame key="frameInset" minX="153" minY="250" width="455" height="117"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQe-iY-dmy">
+                                <frame key="frameInset" minX="153" minY="728" width="455" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Sign Up"/>
+                                <connections>
+                                    <segue destination="x6p-Lq-0w1" kind="show" id="Lch-QX-5ea"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome to Dr. Lageman's App Study for Parkinson's Disease Research" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hze-vx-Z5f">
+                                <frame key="frameInset" minX="16" minY="64" width="728" height="176"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b31-78-lvm">
-                                <frame key="frameInset" minX="153" minY="347" width="461" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2bc-HT-IdA">
-                                <frame key="frameInset" minX="153" minY="405" width="461" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQe-iY-dmy">
-                                <frame key="frameInset" minX="153" minY="602" width="461" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Sign Up"/>
-                                <connections>
-                                    <segue destination="G3N-RA-mVU" kind="show" identifier="SignUpSegue" id="bUZ-Uy-qqp"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Omb-1H-eFk">
-                                <frame key="frameInset" minX="153" minY="672" width="461" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Forgot Password"/>
-                                <connections>
-                                    <segue destination="Gd2-xx-LJ8" kind="show" identifier="ForgotPasswordSegue" id="HHQ-4c-LgB"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qo5-hj-9Vv">
-                                <frame key="frameInset" minX="153" minY="473" width="461" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Login"/>
-                                <connections>
-                                    <action selector="userLoginPressed:" destination="52V-8z-kuT" eventType="touchUpInside" id="yyC-qU-hQn"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <variation key="default">
@@ -155,77 +174,18 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="Hsq-my-etd"/>
                     <connections>
-                        <outlet property="forgotPasswordButton" destination="Omb-1H-eFk" id="fma-2Z-C7q"/>
-                        <outlet property="loginButton" destination="Qo5-hj-9Vv" id="Gsq-yx-YNO"/>
+                        <outlet property="appHeaderLabel" destination="Hze-vx-Z5f" id="yt1-Tu-Qjk"/>
                         <outlet property="loginEmail" destination="b31-78-lvm" id="AUv-uO-sKK"/>
+                        <outlet property="loginMessage" destination="nC3-08-lAY" id="S9t-H7-4LC"/>
                         <outlet property="loginPassword" destination="2bc-HT-IdA" id="iPW-pK-Fkz"/>
-                        <outlet property="signUpButton" destination="vQe-iY-dmy" id="9QQ-jv-P3Q"/>
                         <segue destination="49e-Tb-3d3" kind="show" identifier="Login" id="fGb-tX-Pqq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMT-WY-I9K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-672.65625" y="0.0"/>
-        </scene>
-        <!--Forgot Password View Controller-->
-        <scene sceneID="HjM-nd-Yw3">
-            <objects>
-                <viewController id="Gd2-xx-LJ8" customClass="ForgotPasswordViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="LfM-Ao-2XW"/>
-                        <viewControllerLayoutGuide type="bottom" id="iyy-i2-Cgu"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="SBs-3f-5LO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQs-xK-Uzi">
-                                <frame key="frameInset" minX="20" minY="186" width="728" height="138"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Please enter the email address associated with your account. After you enter your email and click submit we will send you an email to reset your password.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NKV-4k-UyM">
-                                <frame key="frameInset" minX="229" minY="428" width="311" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Submit"/>
-                                <connections>
-                                    <action selector="forgotPasswordSubmitButtonPressed:" destination="Gd2-xx-LJ8" eventType="touchUpInside" id="cCp-tw-X0m"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6K9-eX-qZM">
-                                <frame key="frameInset" minX="225" minY="497" width="315" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <segue destination="52V-8z-kuT" kind="show" identifier="BackSegueForgotToLogin" id="gJx-65-fGB"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="43A-IK-UG8">
-                                <frame key="frameInset" minX="229" minY="350" width="311" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="backToLoginButton" destination="6K9-eX-qZM" id="Llo-Hp-9l6"/>
-                        <outlet property="forgotPasswordEmail" destination="43A-IK-UG8" id="mGW-Vy-rKt"/>
-                        <outlet property="forgotPasswordGreetingLabel" destination="FQs-xK-Uzi" id="UaV-eR-gQv"/>
-                        <outlet property="forgotSubmitButton" destination="NKV-4k-UyM" id="02L-Bv-vFL"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cU3-eE-Xry" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-673" y="813"/>
+            <point key="canvasLocation" x="-673" y="0.0"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -247,22 +207,22 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="0.0" y="0.0"/>
+            <point key="canvasLocation" x="765.625" y="0.0"/>
         </scene>
         <!--AddEditAppointments-->
         <scene sceneID="X6P-2U-MSa">
             <objects>
                 <viewController title="AddEditAppointments" id="Y2i-rY-BPz" customClass="AppointmentTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" id="efG-M5-lda">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="AppointmentCells" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppointmentCells" rowHeight="110" id="UDs-BV-9W1" customClass="AppointmentCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="375" height="110"/>
+                                <rect key="frame" x="0.0" y="86" width="768" height="110"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UDs-BV-9W1" id="PMk-AC-tpv">
-                                    <frame key="frameInset" width="375" height="109"/>
+                                    <frame key="frameInset" width="768" height="109"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z8q-cA-X5N">
@@ -393,6 +353,7 @@
                                         <mask key="constraints">
                                             <exclude reference="jn0-yD-FfR"/>
                                             <exclude reference="liz-bo-9mL"/>
+                                            <exclude reference="wis-uX-Zw5"/>
                                             <exclude reference="ErM-Hf-iVZ"/>
                                             <exclude reference="JER-MT-DGx"/>
                                             <exclude reference="QHu-sT-OKX"/>
@@ -414,14 +375,13 @@
                                             <exclude reference="tc8-5A-r7K"/>
                                             <exclude reference="u1T-lV-147"/>
                                             <exclude reference="M1q-Ic-u2N"/>
-                                            <exclude reference="caf-Br-5Et"/>
-                                            <exclude reference="jtL-Jt-Kh4"/>
-                                            <exclude reference="lTI-VU-tsM"/>
-                                            <exclude reference="wis-uX-Zw5"/>
                                             <exclude reference="BBO-mO-0k0"/>
                                             <exclude reference="Qzp-z1-McD"/>
                                             <exclude reference="egp-5p-Js3"/>
                                             <exclude reference="iOm-8q-Ca6"/>
+                                            <exclude reference="caf-Br-5Et"/>
+                                            <exclude reference="jtL-Jt-Kh4"/>
+                                            <exclude reference="lTI-VU-tsM"/>
                                         </mask>
                                     </variation>
                                     <variation key="heightClass=regular-widthClass=regular">
@@ -439,6 +399,7 @@
                                         <mask key="constraints">
                                             <include reference="jn0-yD-FfR"/>
                                             <include reference="liz-bo-9mL"/>
+                                            <include reference="wis-uX-Zw5"/>
                                             <include reference="ErM-Hf-iVZ"/>
                                             <include reference="JER-MT-DGx"/>
                                             <include reference="QHu-sT-OKX"/>
@@ -460,14 +421,13 @@
                                             <include reference="tc8-5A-r7K"/>
                                             <include reference="u1T-lV-147"/>
                                             <include reference="M1q-Ic-u2N"/>
-                                            <include reference="caf-Br-5Et"/>
-                                            <include reference="jtL-Jt-Kh4"/>
-                                            <include reference="lTI-VU-tsM"/>
-                                            <include reference="wis-uX-Zw5"/>
                                             <include reference="BBO-mO-0k0"/>
                                             <include reference="Qzp-z1-McD"/>
                                             <include reference="egp-5p-Js3"/>
                                             <include reference="iOm-8q-Ca6"/>
+                                            <include reference="caf-Br-5Et"/>
+                                            <include reference="jtL-Jt-Kh4"/>
+                                            <include reference="lTI-VU-tsM"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -504,7 +464,7 @@
             <objects>
                 <tableViewController id="rqp-cc-Uvt" customClass="AppointmentStaticTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="center" alwaysBounceVertical="YES" indicatorStyle="black" dataMode="static" style="grouped" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="f2y-Z0-8g1">
-                        <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="64" width="768" height="916"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.5014498356" green="0.69720708789999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -512,10 +472,10 @@
                             <tableViewSection headerTitle="Appointment Name *" id="hfc-99-6hs">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AppTitle" editingAccessoryType="disclosureIndicator" rowHeight="55" id="XaK-Zg-hGK">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="56" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" semanticContentAttribute="spatial" tableViewCell="XaK-Zg-hGK" id="TAP-1x-JDR">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pE4-u0-XsR">
@@ -561,14 +521,14 @@
                             <tableViewSection headerTitle="Appointment Type *" id="uEs-qM-2iO">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppType" textLabel="XCp-kV-wLF" detailTextLabel="yOE-Wg-8QX" rowHeight="55" style="IBUITableViewCellStyleValue1" id="s7z-kT-vaa">
-                                        <rect key="frame" x="0.0" y="160" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="160" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s7z-kT-vaa" id="2Fy-vS-ZbN">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Type of Appointment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XCp-kV-wLF">
-                                                    <frame key="frameInset" minX="15" minY="16" width="170" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="170" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -578,7 +538,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yOE-Wg-8QX">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -591,10 +551,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppType" rowHeight="170" id="rQ5-xV-on3" userLabel="AppTypeDropDown">
-                                        <rect key="frame" x="0.0" y="215" width="375" height="170"/>
+                                        <rect key="frame" x="0.0" y="215" width="768" height="170"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rQ5-xV-on3" id="5y5-BX-xm5">
-                                            <frame key="frameInset" width="375" height="169"/>
+                                            <frame key="frameInset" width="768" height="169"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" misplaced="YES" restorationIdentifier="AppointmentPicker" translatesAutoresizingMaskIntoConstraints="NO" id="DFx-tk-AaL">
@@ -642,10 +602,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="55" id="a6i-dB-O4L">
-                                        <rect key="frame" x="0.0" y="385" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="385" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a6i-dB-O4L" id="W9b-5W-KYh">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2aA-6b-Y6h">
@@ -719,21 +679,21 @@
                             <tableViewSection headerTitle="Appointment Time *" id="J2h-Md-KJK">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppStartTitle" textLabel="9US-E2-r2q" detailTextLabel="kGR-jt-fnx" rowHeight="55" style="IBUITableViewCellStyleValue1" id="OR0-ee-M8D">
-                                        <rect key="frame" x="0.0" y="489" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="489" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OR0-ee-M8D" id="NEv-rj-bvu">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Start Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="549" id="9US-E2-r2q">
-                                                    <frame key="frameInset" minX="15" minY="16" width="85" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="85" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kGR-jt-fnx">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -743,10 +703,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppStartDate" rowHeight="200" id="NgO-IW-IuD">
-                                        <rect key="frame" x="0.0" y="544" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="544" width="768" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NgO-IW-IuD" id="4c5-aJ-LuG">
-                                            <frame key="frameInset" width="375" height="199"/>
+                                            <frame key="frameInset" width="768" height="199"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="sWl-Fx-XGg">
@@ -794,21 +754,21 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppEndTitle" textLabel="0yE-mK-ivT" detailTextLabel="k1J-9O-w75" rowHeight="55" style="IBUITableViewCellStyleValue1" id="w7o-WM-H3h">
-                                        <rect key="frame" x="0.0" y="744" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="744" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w7o-WM-H3h" id="InK-sb-ndA">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="End Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0yE-mK-ivT">
-                                                    <frame key="frameInset" minX="15" minY="16" width="76" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="76" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="k1J-9O-w75">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -818,10 +778,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppEndDate" rowHeight="200" id="N9U-Uu-qye">
-                                        <rect key="frame" x="0.0" y="799" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="799" width="768" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N9U-Uu-qye" id="nN4-84-Wid">
-                                            <frame key="frameInset" width="375" height="199"/>
+                                            <frame key="frameInset" width="768" height="199"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="rQT-jg-cqX">
@@ -873,10 +833,10 @@
                             <tableViewSection headerTitle="Appointment Location *" id="7MR-nM-KmF">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppLocation" rowHeight="55" id="eaz-VV-LaD">
-                                        <rect key="frame" x="0.0" y="1048" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="1048" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eaz-VV-LaD" id="XQ2-PR-mp6">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IaU-WB-dch">
@@ -920,10 +880,10 @@
                             <tableViewSection headerTitle="Additional Info (optional)" id="DH8-4f-yYK">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AdditionalAppInfo" rowHeight="90" id="56M-Oc-aqC">
-                                        <rect key="frame" x="0.0" y="1152" width="375" height="90"/>
+                                        <rect key="frame" x="0.0" y="1152" width="768" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56M-Oc-aqC" id="A5g-Yg-1Aq">
-                                            <frame key="frameInset" width="375" height="89"/>
+                                            <frame key="frameInset" width="768" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6CH-za-P46">
@@ -975,14 +935,14 @@
                             <tableViewSection headerTitle="Repeat Appointment (Optional)" id="C72-iX-Lzo">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppSave" textLabel="Tcu-cY-HJ7" detailTextLabel="HdK-uw-aHn" rowHeight="55" style="IBUITableViewCellStyleValue1" id="gia-2k-yec">
-                                        <rect key="frame" x="0.0" y="1291" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="1291" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gia-2k-yec" id="vW1-HF-Hph">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tcu-cY-HJ7">
-                                                    <frame key="frameInset" minX="15" minY="16" width="36" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="36" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -992,7 +952,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HdK-uw-aHn">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1005,10 +965,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RepeatAppointmentCell" rowHeight="275" id="8Qf-2T-MRH" customClass="RepeatTableViewCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1346" width="375" height="275"/>
+                                        <rect key="frame" x="0.0" y="1346" width="768" height="275"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Qf-2T-MRH" id="RXC-09-dB1">
-                                            <frame key="frameInset" width="375" height="274"/>
+                                            <frame key="frameInset" width="768" height="274"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1017,14 +977,14 @@
                             <tableViewSection headerTitle="Schedule Alert" id="nYV-r0-Mtl">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppSave" textLabel="bhg-5f-40A" detailTextLabel="nui-xr-eGU" rowHeight="55" style="IBUITableViewCellStyleValue1" id="62q-D6-1fG">
-                                        <rect key="frame" x="0.0" y="1670" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="1670" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="62q-D6-1fG" id="oPe-Dd-xQW">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bhg-5f-40A">
-                                                    <frame key="frameInset" minX="15" minY="16" width="36" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="36" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1034,7 +994,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nui-xr-eGU">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1047,10 +1007,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="275" id="cwD-Ve-kJO" customClass="AlertTableViewCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1725" width="375" height="275"/>
+                                        <rect key="frame" x="0.0" y="1725" width="768" height="275"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cwD-Ve-kJO" id="Bjn-fB-h0H">
-                                            <frame key="frameInset" width="375" height="274"/>
+                                            <frame key="frameInset" width="768" height="274"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1059,13 +1019,13 @@
                             <tableViewSection headerTitle="Save Changes" id="a6e-sN-8B8">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppSave" rowHeight="55" id="Mqk-UY-R7F">
-                                        <rect key="frame" x="0.0" y="2049" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="2049" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mqk-UY-R7F" id="1a1-Uz-zP1">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dAR-d5-P3C">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dAR-d5-P3C">
                                                     <frame key="frameInset" width="126" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="414" id="Eoe-77-t7C"/>
@@ -1153,7 +1113,7 @@
                         <viewControllerLayoutGuide type="bottom" id="9sR-Jf-YDE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Maq-Pr-o0a">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make a Journal Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyU-Nc-bpF">
@@ -1234,14 +1194,14 @@
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="JCW-qJ-EDh"/>
+                                <exclude reference="WzR-3r-1n4"/>
+                                <exclude reference="nlt-gv-pyv"/>
+                                <exclude reference="x4l-4k-XG3"/>
                                 <exclude reference="Cv4-S2-EOh"/>
                                 <exclude reference="DS7-yS-ma8"/>
                                 <exclude reference="Xtd-Vb-R4k"/>
                                 <exclude reference="eTL-AC-8UY"/>
                                 <exclude reference="jbl-56-LG0"/>
-                                <exclude reference="WzR-3r-1n4"/>
-                                <exclude reference="nlt-gv-pyv"/>
-                                <exclude reference="x4l-4k-XG3"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -1252,14 +1212,14 @@
                             </mask>
                             <mask key="constraints">
                                 <include reference="JCW-qJ-EDh"/>
+                                <include reference="WzR-3r-1n4"/>
+                                <include reference="nlt-gv-pyv"/>
+                                <include reference="x4l-4k-XG3"/>
                                 <include reference="Cv4-S2-EOh"/>
                                 <include reference="DS7-yS-ma8"/>
                                 <include reference="Xtd-Vb-R4k"/>
                                 <include reference="eTL-AC-8UY"/>
                                 <include reference="jbl-56-LG0"/>
-                                <include reference="WzR-3r-1n4"/>
-                                <include reference="nlt-gv-pyv"/>
-                                <include reference="x4l-4k-XG3"/>
                             </mask>
                         </variation>
                     </view>
@@ -1273,7 +1233,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1TF-sd-kkj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2151" y="392.25"/>
+            <point key="canvasLocation" x="2916.40625" y="391.9921875"/>
         </scene>
         <!--Popover View Controller-->
         <scene sceneID="g2j-FF-FeX">
@@ -1301,15 +1261,15 @@
             <objects>
                 <tableViewController id="Bix-Qt-TED" customClass="JournalTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="2nO-Bd-pcF">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Journal Cells" rowHeight="100" id="KEF-lW-tvd" customClass="JournalCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="92" width="768" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KEF-lW-tvd" id="Ucc-G4-fA0">
-                                    <frame key="frameInset" width="328" height="99"/>
+                                    <frame key="frameInset" width="688" height="99"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBR-ea-XGl">
@@ -1337,7 +1297,9 @@
                                                 </mask>
                                             </variation>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PSJ-tV-M4W"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PSJ-tV-M4W">
+                                            <frame key="frameInset" width="1000" height="1000"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="RY3-Sy-jlS" firstAttribute="top" secondItem="RBR-ea-XGl" secondAttribute="bottom" constant="8" symbolic="YES" id="IQq-lV-UNa"/>
@@ -1356,14 +1318,14 @@
                                             <exclude reference="PSJ-tV-M4W"/>
                                         </mask>
                                         <mask key="constraints">
+                                            <exclude reference="TXs-0g-MYi"/>
+                                            <exclude reference="yD5-W9-gjp"/>
                                             <exclude reference="IQq-lV-UNa"/>
                                             <exclude reference="NLC-Ko-9kE"/>
                                             <exclude reference="b7j-rR-jYL"/>
                                             <exclude reference="iZ3-8I-Wau"/>
                                             <exclude reference="l5X-Lu-etG"/>
                                             <exclude reference="waX-4r-OTl"/>
-                                            <exclude reference="TXs-0g-MYi"/>
-                                            <exclude reference="yD5-W9-gjp"/>
                                         </mask>
                                     </variation>
                                     <variation key="heightClass=regular-widthClass=regular">
@@ -1373,14 +1335,14 @@
                                             <include reference="PSJ-tV-M4W"/>
                                         </mask>
                                         <mask key="constraints">
+                                            <include reference="TXs-0g-MYi"/>
+                                            <include reference="yD5-W9-gjp"/>
                                             <include reference="IQq-lV-UNa"/>
                                             <include reference="NLC-Ko-9kE"/>
                                             <include reference="b7j-rR-jYL"/>
                                             <include reference="iZ3-8I-Wau"/>
                                             <include reference="l5X-Lu-etG"/>
                                             <include reference="waX-4r-OTl"/>
-                                            <include reference="TXs-0g-MYi"/>
-                                            <include reference="yD5-W9-gjp"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -1407,22 +1369,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7k-y5-2wn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1453.5" y="392.25"/>
+            <point key="canvasLocation" x="2218.75" y="391.9921875"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="mtx-fx-89k">
             <objects>
                 <viewController title="Tasks" id="wie-rr-RA5" customClass="TaskTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="99" sectionHeaderHeight="22" sectionFooterHeight="22" id="ttb-2Z-vAq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="TaskCells" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCells" rowHeight="99" id="PlF-5Z-KnX" customClass="TaskCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="375" height="99"/>
+                                <rect key="frame" x="0.0" y="86" width="768" height="99"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PlF-5Z-KnX" id="cgy-oV-t3j">
-                                    <frame key="frameInset" width="375" height="98"/>
+                                    <frame key="frameInset" width="768" height="98"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywF-hO-N8X">
@@ -1548,6 +1510,10 @@
                                             <exclude reference="eOR-5U-xsg"/>
                                             <exclude reference="r6Y-H3-BlC"/>
                                             <exclude reference="shG-LW-jcf"/>
+                                            <exclude reference="GhY-o4-JYt"/>
+                                            <exclude reference="f7T-8Y-Zuh"/>
+                                            <exclude reference="mnv-ke-rRo"/>
+                                            <exclude reference="zLl-MR-N7V"/>
                                             <exclude reference="5wT-d9-7d6"/>
                                             <exclude reference="84e-ZL-bWC"/>
                                             <exclude reference="9Kv-Cb-N3t"/>
@@ -1560,10 +1526,6 @@
                                             <exclude reference="7am-qy-inj"/>
                                             <exclude reference="DHQ-kW-vCJ"/>
                                             <exclude reference="L5v-Gw-JDE"/>
-                                            <exclude reference="GhY-o4-JYt"/>
-                                            <exclude reference="f7T-8Y-Zuh"/>
-                                            <exclude reference="mnv-ke-rRo"/>
-                                            <exclude reference="zLl-MR-N7V"/>
                                         </mask>
                                     </variation>
                                     <variation key="heightClass=regular-widthClass=regular">
@@ -1580,6 +1542,10 @@
                                             <include reference="eOR-5U-xsg"/>
                                             <include reference="r6Y-H3-BlC"/>
                                             <include reference="shG-LW-jcf"/>
+                                            <include reference="GhY-o4-JYt"/>
+                                            <include reference="f7T-8Y-Zuh"/>
+                                            <include reference="mnv-ke-rRo"/>
+                                            <include reference="zLl-MR-N7V"/>
                                             <include reference="5wT-d9-7d6"/>
                                             <include reference="84e-ZL-bWC"/>
                                             <include reference="9Kv-Cb-N3t"/>
@@ -1592,10 +1558,6 @@
                                             <include reference="7am-qy-inj"/>
                                             <include reference="DHQ-kW-vCJ"/>
                                             <include reference="L5v-Gw-JDE"/>
-                                            <include reference="GhY-o4-JYt"/>
-                                            <include reference="f7T-8Y-Zuh"/>
-                                            <include reference="mnv-ke-rRo"/>
-                                            <include reference="zLl-MR-N7V"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -1619,24 +1581,24 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T9n-9X-twW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1453.5" y="-306"/>
+            <point key="canvasLocation" x="2218.75" y="-306.4453125"/>
         </scene>
         <!--Add Task-->
         <scene sceneID="oTJ-gF-oWO">
             <objects>
                 <tableViewController id="dwg-LO-igh" customClass="TaskStaticTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="kCu-kW-IyX">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="64" width="768" height="911"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Name Of Task *" id="z5x-Yr-uNl">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" rowHeight="55" id="k0Y-3E-yqj">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="56" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="k0Y-3E-yqj" id="D98-QT-lCz">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iRE-Nj-UPE">
@@ -1679,10 +1641,10 @@
                             <tableViewSection headerTitle="Additional Information (optional)" id="uGS-NH-2Ep" userLabel="Additional Info">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" rowHeight="54" id="GEW-WR-RXW">
-                                        <rect key="frame" x="0.0" y="160" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="160" width="768" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GEW-WR-RXW" id="3Un-Cb-uil">
-                                            <frame key="frameInset" width="375" height="53"/>
+                                            <frame key="frameInset" width="768" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qQo-dT-c8m">
@@ -1725,14 +1687,14 @@
                             <tableViewSection headerTitle="Anticipated Finish Date *" footerTitle="Please enter the day you think you will have this task completed by. " id="n1M-om-5yJ" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1k7-HC-A3n" detailTextLabel="6tL-RC-Z15" rowHeight="55" style="IBUITableViewCellStyleValue1" id="Ljo-s6-2JZ">
-                                        <rect key="frame" x="0.0" y="270" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="270" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ljo-s6-2JZ" id="bgT-nR-Ypo">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1k7-HC-A3n">
-                                                    <frame key="frameInset" minX="15" minY="16" width="36" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="36" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1742,7 +1704,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6tL-RC-Z15">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1755,10 +1717,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" rowHeight="200" id="ALm-L6-elp">
-                                        <rect key="frame" x="0.0" y="325" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="325" width="768" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ALm-L6-elp" id="6HP-HJ-N6e">
-                                            <frame key="frameInset" width="375" height="199"/>
+                                            <frame key="frameInset" width="768" height="199"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="fUS-Eo-dkT">
@@ -1807,14 +1769,14 @@
                             <tableViewSection headerTitle="Repeating Task (Optional)" id="XG1-bq-010" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" textLabel="JYU-U2-Oe4" detailTextLabel="yIG-Ga-e6y" rowHeight="55" style="IBUITableViewCellStyleValue1" id="3c3-fk-kBo">
-                                        <rect key="frame" x="0.0" y="610" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="594" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3c3-fk-kBo" id="Az8-Sg-AaU">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JYU-U2-Oe4">
-                                                    <frame key="frameInset" minX="15" minY="16" width="36" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="36" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1824,7 +1786,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yIG-Ga-e6y">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1837,10 +1799,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="275" id="fbN-DK-n8Z" customClass="RepeatTableViewCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="665" width="375" height="275"/>
+                                        <rect key="frame" x="0.0" y="649" width="768" height="275"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fbN-DK-n8Z" id="ebN-uO-TZn">
-                                            <frame key="frameInset" width="375" height="274"/>
+                                            <frame key="frameInset" width="768" height="274"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1849,14 +1811,14 @@
                             <tableViewSection id="NfM-yl-2Eb" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" textLabel="iud-b2-zqg" detailTextLabel="ji4-Bn-fX7" rowHeight="55" style="IBUITableViewCellStyleValue1" id="pd7-6R-DkT">
-                                        <rect key="frame" x="0.0" y="960" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="944" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pd7-6R-DkT" id="Nld-S1-pCy">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iud-b2-zqg">
-                                                    <frame key="frameInset" minX="15" minY="16" width="36" height="22"/>
+                                                    <frame key="frameInset" minX="48" minY="16" width="36" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1866,7 +1828,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ji4-Bn-fX7">
-                                                    <frame key="frameInset" minX="313" minY="16" width="47" height="22"/>
+                                                    <frame key="frameInset" minX="673" minY="16" width="47" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1879,10 +1841,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="275" id="dgp-IW-a8L" customClass="AlertTableViewCell" customModule="CreativeCalendar" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1015" width="375" height="275"/>
+                                        <rect key="frame" x="0.0" y="999" width="768" height="275"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dgp-IW-a8L" id="4Lj-a0-SRV">
-                                            <frame key="frameInset" width="375" height="274"/>
+                                            <frame key="frameInset" width="768" height="274"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1891,10 +1853,10 @@
                             <tableViewSection id="YJ1-y7-asK" userLabel="Save">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" rowHeight="55" id="aPV-W7-N4l">
-                                        <rect key="frame" x="0.0" y="1310" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="1294" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aPV-W7-N4l" id="gkF-CH-aPx">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="768" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ana-QA-x1R">
@@ -1972,7 +1934,76 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kfc-5r-zb7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2151" y="-306"/>
+            <point key="canvasLocation" x="2916.40625" y="-306.4453125"/>
+        </scene>
+        <!--Forgot Password View Controller-->
+        <scene sceneID="m0a-Y2-Tlg">
+            <objects>
+                <viewController id="p1Z-jQ-xqY" customClass="ForgotPasswordViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oNB-Ng-1I0"/>
+                        <viewControllerLayoutGuide type="bottom" id="8d0-nd-qn8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yus-Pw-ZFP">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWa-kY-EFm">
+                                <frame key="frameInset" minX="159" minY="246" width="450" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aEh-DV-Fhf">
+                                <frame key="frameInset" minX="159" minY="497" width="450" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8s-ab-b2u">
+                                <frame key="frameInset" minX="159" minY="604" width="450" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Send Email"/>
+                                <connections>
+                                    <action selector="sendPasswordResetEmailButtonPressed:" destination="p1Z-jQ-xqY" eventType="touchUpInside" id="LXr-PZ-ShP"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OhY-7T-oPr">
+                                <frame key="frameInset" minX="159" minY="72" width="450" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HEL-rP-lle">
+                                <frame key="frameInset" minY="20" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Forgot Password" id="PqH-ag-AWn">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="XGw-wN-Kgb">
+                                            <connections>
+                                                <segue destination="52V-8z-kuT" kind="show" id="W8H-0j-R4f"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="forgotPasswordHeader" destination="OhY-7T-oPr" id="L3R-JR-2aP"/>
+                        <outlet property="forgotPasswordMessage" destination="IWa-kY-EFm" id="am0-RR-e5z"/>
+                        <outlet property="forgotPasswordTextField" destination="aEh-DV-Fhf" id="l2N-V2-sIG"/>
+                        <outlet property="sendEmailButton" destination="C8s-ab-b2u" id="aDG-4X-No2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SbP-YB-otv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-673.4375" y="699.609375"/>
         </scene>
         <!--Home-->
         <scene sceneID="Jkv-jn-SbO">
@@ -1983,7 +2014,7 @@
                         <viewControllerLayoutGuide type="bottom" id="hLN-vu-zuE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Vcy-wb-W84">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0w-pN-aJL" userLabel="Tasks">
@@ -1991,7 +2022,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qfC-RF-RYe" userLabel="TaskTable">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qfC-RF-RYe" userLabel="TaskTable">
                                 <frame key="frameInset" width="320" height="568"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
@@ -2100,28 +2131,28 @@
                                                     <exclude reference="rME-V8-bBZ"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="Ipm-AM-AFp"/>
-                                                    <exclude reference="OhH-VA-WbW"/>
-                                                    <exclude reference="Q21-FA-86a"/>
-                                                    <exclude reference="RuW-LY-YcR"/>
-                                                    <exclude reference="dEn-Sv-qnk"/>
-                                                    <exclude reference="KMc-rJ-jl6"/>
-                                                    <exclude reference="edP-b3-Hoe"/>
                                                     <exclude reference="7Q7-7E-Xqt"/>
                                                     <exclude reference="B52-4a-Q2F"/>
                                                     <exclude reference="aHs-SP-pjj"/>
                                                     <exclude reference="ceC-L8-qdc"/>
                                                     <exclude reference="pez-Jl-dYB"/>
+                                                    <exclude reference="2cR-Jt-sop"/>
+                                                    <exclude reference="BXF-1N-n7X"/>
+                                                    <exclude reference="RSp-ZS-a9K"/>
                                                     <exclude reference="8Qw-7k-jv4"/>
                                                     <exclude reference="IZY-hb-gMm"/>
                                                     <exclude reference="s3B-Qq-jJJ"/>
                                                     <exclude reference="xIt-1k-2Ki"/>
-                                                    <exclude reference="2cR-Jt-sop"/>
-                                                    <exclude reference="BXF-1N-n7X"/>
-                                                    <exclude reference="RSp-ZS-a9K"/>
+                                                    <exclude reference="Ipm-AM-AFp"/>
+                                                    <exclude reference="OhH-VA-WbW"/>
+                                                    <exclude reference="Q21-FA-86a"/>
+                                                    <exclude reference="RuW-LY-YcR"/>
+                                                    <exclude reference="dEn-Sv-qnk"/>
                                                     <exclude reference="Nom-0e-xFH"/>
                                                     <exclude reference="Uvh-dq-5Hf"/>
                                                     <exclude reference="hPq-SH-efK"/>
+                                                    <exclude reference="KMc-rJ-jl6"/>
+                                                    <exclude reference="edP-b3-Hoe"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -2134,28 +2165,28 @@
                                                     <include reference="rME-V8-bBZ"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="Ipm-AM-AFp"/>
-                                                    <include reference="OhH-VA-WbW"/>
-                                                    <include reference="Q21-FA-86a"/>
-                                                    <include reference="RuW-LY-YcR"/>
-                                                    <include reference="dEn-Sv-qnk"/>
-                                                    <include reference="KMc-rJ-jl6"/>
-                                                    <include reference="edP-b3-Hoe"/>
                                                     <include reference="7Q7-7E-Xqt"/>
                                                     <include reference="B52-4a-Q2F"/>
                                                     <include reference="aHs-SP-pjj"/>
                                                     <include reference="ceC-L8-qdc"/>
                                                     <include reference="pez-Jl-dYB"/>
+                                                    <include reference="2cR-Jt-sop"/>
+                                                    <include reference="BXF-1N-n7X"/>
+                                                    <include reference="RSp-ZS-a9K"/>
                                                     <include reference="8Qw-7k-jv4"/>
                                                     <include reference="IZY-hb-gMm"/>
                                                     <include reference="s3B-Qq-jJJ"/>
                                                     <include reference="xIt-1k-2Ki"/>
-                                                    <include reference="2cR-Jt-sop"/>
-                                                    <include reference="BXF-1N-n7X"/>
-                                                    <include reference="RSp-ZS-a9K"/>
+                                                    <include reference="Ipm-AM-AFp"/>
+                                                    <include reference="OhH-VA-WbW"/>
+                                                    <include reference="Q21-FA-86a"/>
+                                                    <include reference="RuW-LY-YcR"/>
+                                                    <include reference="dEn-Sv-qnk"/>
                                                     <include reference="Nom-0e-xFH"/>
                                                     <include reference="Uvh-dq-5Hf"/>
                                                     <include reference="hPq-SH-efK"/>
+                                                    <include reference="KMc-rJ-jl6"/>
+                                                    <include reference="edP-b3-Hoe"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -2171,7 +2202,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="160" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DJ7-tT-liZ" userLabel="AppointmentTable">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="160" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DJ7-tT-liZ" userLabel="AppointmentTable">
                                 <frame key="frameInset" width="320" height="568"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -2363,9 +2394,16 @@
                                                     <exclude reference="XbH-aS-bJr"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="hQj-dc-hyX"/>
                                                     <exclude reference="Bqk-9M-P7k"/>
                                                     <exclude reference="FyX-nT-mI3"/>
+                                                    <exclude reference="4pX-s1-T9q"/>
+                                                    <exclude reference="7J4-pU-OCL"/>
+                                                    <exclude reference="EnG-gl-heb"/>
+                                                    <exclude reference="Nfe-jA-rCr"/>
+                                                    <exclude reference="qCx-Pa-JJM"/>
+                                                    <exclude reference="sfo-pu-Dhw"/>
+                                                    <exclude reference="wbe-Xn-fZ2"/>
+                                                    <exclude reference="hQj-dc-hyX"/>
                                                     <exclude reference="B3l-nk-CTb"/>
                                                     <exclude reference="gqk-7s-E73"/>
                                                     <exclude reference="QtC-fn-Gi9"/>
@@ -2375,23 +2413,16 @@
                                                     <exclude reference="akA-y1-8JD"/>
                                                     <exclude reference="rwf-I3-9d5"/>
                                                     <exclude reference="qEQ-fz-iWi"/>
-                                                    <exclude reference="DnW-vy-6ax"/>
-                                                    <exclude reference="MbL-19-hTR"/>
-                                                    <exclude reference="vCX-2H-zKH"/>
-                                                    <exclude reference="vmd-YJ-s2h"/>
-                                                    <exclude reference="4pX-s1-T9q"/>
-                                                    <exclude reference="7J4-pU-OCL"/>
-                                                    <exclude reference="EnG-gl-heb"/>
-                                                    <exclude reference="Nfe-jA-rCr"/>
-                                                    <exclude reference="qCx-Pa-JJM"/>
-                                                    <exclude reference="sfo-pu-Dhw"/>
-                                                    <exclude reference="wbe-Xn-fZ2"/>
                                                     <exclude reference="KEx-JI-pvg"/>
                                                     <exclude reference="LPk-Ga-3sK"/>
                                                     <exclude reference="MQa-kz-1f0"/>
                                                     <exclude reference="Rxy-tf-Kyp"/>
                                                     <exclude reference="hd5-t3-t3A"/>
                                                     <exclude reference="xhv-3P-Cov"/>
+                                                    <exclude reference="DnW-vy-6ax"/>
+                                                    <exclude reference="MbL-19-hTR"/>
+                                                    <exclude reference="vCX-2H-zKH"/>
+                                                    <exclude reference="vmd-YJ-s2h"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -2407,9 +2438,16 @@
                                                     <include reference="XbH-aS-bJr"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="hQj-dc-hyX"/>
                                                     <include reference="Bqk-9M-P7k"/>
                                                     <include reference="FyX-nT-mI3"/>
+                                                    <include reference="4pX-s1-T9q"/>
+                                                    <include reference="7J4-pU-OCL"/>
+                                                    <include reference="EnG-gl-heb"/>
+                                                    <include reference="Nfe-jA-rCr"/>
+                                                    <include reference="qCx-Pa-JJM"/>
+                                                    <include reference="sfo-pu-Dhw"/>
+                                                    <include reference="wbe-Xn-fZ2"/>
+                                                    <include reference="hQj-dc-hyX"/>
                                                     <include reference="B3l-nk-CTb"/>
                                                     <include reference="gqk-7s-E73"/>
                                                     <include reference="QtC-fn-Gi9"/>
@@ -2419,23 +2457,16 @@
                                                     <include reference="akA-y1-8JD"/>
                                                     <include reference="rwf-I3-9d5"/>
                                                     <include reference="qEQ-fz-iWi"/>
-                                                    <include reference="DnW-vy-6ax"/>
-                                                    <include reference="MbL-19-hTR"/>
-                                                    <include reference="vCX-2H-zKH"/>
-                                                    <include reference="vmd-YJ-s2h"/>
-                                                    <include reference="4pX-s1-T9q"/>
-                                                    <include reference="7J4-pU-OCL"/>
-                                                    <include reference="EnG-gl-heb"/>
-                                                    <include reference="Nfe-jA-rCr"/>
-                                                    <include reference="qCx-Pa-JJM"/>
-                                                    <include reference="sfo-pu-Dhw"/>
-                                                    <include reference="wbe-Xn-fZ2"/>
                                                     <include reference="KEx-JI-pvg"/>
                                                     <include reference="LPk-Ga-3sK"/>
                                                     <include reference="MQa-kz-1f0"/>
                                                     <include reference="Rxy-tf-Kyp"/>
                                                     <include reference="hd5-t3-t3A"/>
                                                     <include reference="xhv-3P-Cov"/>
+                                                    <include reference="DnW-vy-6ax"/>
+                                                    <include reference="MbL-19-hTR"/>
+                                                    <include reference="vCX-2H-zKH"/>
+                                                    <include reference="vmd-YJ-s2h"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -2547,24 +2578,6 @@
                                 <exclude reference="isv-0R-Dfg"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="6ak-d2-urk"/>
-                                <exclude reference="OAs-pz-NTY"/>
-                                <exclude reference="Thi-bH-ZVJ"/>
-                                <exclude reference="QZr-lv-v09"/>
-                                <exclude reference="OVY-vT-iEP"/>
-                                <exclude reference="ycR-Is-b6O"/>
-                                <exclude reference="JZ9-pV-cbG"/>
-                                <exclude reference="ge8-Cb-iqf"/>
-                                <exclude reference="56k-38-teI"/>
-                                <exclude reference="8AL-3F-TqV"/>
-                                <exclude reference="SWY-Bf-MRx"/>
-                                <exclude reference="XIj-ES-65Z"/>
-                                <exclude reference="gbY-g9-k4P"/>
-                                <exclude reference="3k1-JL-Lb9"/>
-                                <exclude reference="aQV-zh-u4A"/>
-                                <exclude reference="eSO-no-Ovd"/>
-                                <exclude reference="oAQ-dL-5lS"/>
-                                <exclude reference="xOf-Ga-X8H"/>
                                 <exclude reference="9a1-Kr-4A4"/>
                                 <exclude reference="EYv-vs-RdQ"/>
                                 <exclude reference="Ysq-aO-rpG"/>
@@ -2575,6 +2588,24 @@
                                 <exclude reference="Lwk-bC-ddh"/>
                                 <exclude reference="QwZ-FQ-Hiz"/>
                                 <exclude reference="dVB-MD-wls"/>
+                                <exclude reference="QZr-lv-v09"/>
+                                <exclude reference="6ak-d2-urk"/>
+                                <exclude reference="OAs-pz-NTY"/>
+                                <exclude reference="Thi-bH-ZVJ"/>
+                                <exclude reference="aQV-zh-u4A"/>
+                                <exclude reference="eSO-no-Ovd"/>
+                                <exclude reference="oAQ-dL-5lS"/>
+                                <exclude reference="xOf-Ga-X8H"/>
+                                <exclude reference="56k-38-teI"/>
+                                <exclude reference="8AL-3F-TqV"/>
+                                <exclude reference="SWY-Bf-MRx"/>
+                                <exclude reference="XIj-ES-65Z"/>
+                                <exclude reference="gbY-g9-k4P"/>
+                                <exclude reference="OVY-vT-iEP"/>
+                                <exclude reference="ycR-Is-b6O"/>
+                                <exclude reference="JZ9-pV-cbG"/>
+                                <exclude reference="ge8-Cb-iqf"/>
+                                <exclude reference="3k1-JL-Lb9"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -2589,24 +2620,6 @@
                                 <include reference="isv-0R-Dfg"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="6ak-d2-urk"/>
-                                <include reference="OAs-pz-NTY"/>
-                                <include reference="Thi-bH-ZVJ"/>
-                                <include reference="QZr-lv-v09"/>
-                                <include reference="OVY-vT-iEP"/>
-                                <include reference="ycR-Is-b6O"/>
-                                <include reference="JZ9-pV-cbG"/>
-                                <include reference="ge8-Cb-iqf"/>
-                                <include reference="56k-38-teI"/>
-                                <include reference="8AL-3F-TqV"/>
-                                <include reference="SWY-Bf-MRx"/>
-                                <include reference="XIj-ES-65Z"/>
-                                <include reference="gbY-g9-k4P"/>
-                                <include reference="3k1-JL-Lb9"/>
-                                <include reference="aQV-zh-u4A"/>
-                                <include reference="eSO-no-Ovd"/>
-                                <include reference="oAQ-dL-5lS"/>
-                                <include reference="xOf-Ga-X8H"/>
                                 <include reference="9a1-Kr-4A4"/>
                                 <include reference="EYv-vs-RdQ"/>
                                 <include reference="Ysq-aO-rpG"/>
@@ -2617,6 +2630,24 @@
                                 <include reference="Lwk-bC-ddh"/>
                                 <include reference="QwZ-FQ-Hiz"/>
                                 <include reference="dVB-MD-wls"/>
+                                <include reference="QZr-lv-v09"/>
+                                <include reference="6ak-d2-urk"/>
+                                <include reference="OAs-pz-NTY"/>
+                                <include reference="Thi-bH-ZVJ"/>
+                                <include reference="aQV-zh-u4A"/>
+                                <include reference="eSO-no-Ovd"/>
+                                <include reference="oAQ-dL-5lS"/>
+                                <include reference="xOf-Ga-X8H"/>
+                                <include reference="56k-38-teI"/>
+                                <include reference="8AL-3F-TqV"/>
+                                <include reference="SWY-Bf-MRx"/>
+                                <include reference="XIj-ES-65Z"/>
+                                <include reference="gbY-g9-k4P"/>
+                                <include reference="OVY-vT-iEP"/>
+                                <include reference="ycR-Is-b6O"/>
+                                <include reference="JZ9-pV-cbG"/>
+                                <include reference="ge8-Cb-iqf"/>
+                                <include reference="3k1-JL-Lb9"/>
                             </mask>
                         </variation>
                     </view>
@@ -2672,7 +2703,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QhJ-Es-7IR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="777" y="-306"/>
+            <point key="canvasLocation" x="1542.1875" y="-306.4453125"/>
         </scene>
         <!--Journals-->
         <scene sceneID="Dmj-Oa-ScE">
@@ -2691,7 +2722,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TSh-uh-AVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="777" y="392.25"/>
+            <point key="canvasLocation" x="1542.1875" y="391.9921875"/>
         </scene>
         <!--Calendar-->
         <scene sceneID="e7F-fJ-qi8">
@@ -2702,7 +2733,7 @@
                         <viewControllerLayoutGuide type="bottom" id="cmn-uo-km8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cOT-II-une">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krf-j0-1qK">
@@ -2816,13 +2847,13 @@
                                         <exclude reference="uBl-Lf-5Yz"/>
                                         <exclude reference="f5i-JJ-2tq"/>
                                         <exclude reference="gaP-vf-Jix"/>
-                                        <exclude reference="TMk-Jb-3rd"/>
-                                        <exclude reference="ckD-9K-xxC"/>
                                         <exclude reference="G1z-3q-f71"/>
                                         <exclude reference="Gtc-e5-pCj"/>
                                         <exclude reference="OLQ-Aa-mnv"/>
                                         <exclude reference="ucG-K2-UPH"/>
                                         <exclude reference="zAo-Xk-JhX"/>
+                                        <exclude reference="TMk-Jb-3rd"/>
+                                        <exclude reference="ckD-9K-xxC"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
@@ -2839,13 +2870,13 @@
                                         <include reference="uBl-Lf-5Yz"/>
                                         <include reference="f5i-JJ-2tq"/>
                                         <include reference="gaP-vf-Jix"/>
-                                        <include reference="TMk-Jb-3rd"/>
-                                        <include reference="ckD-9K-xxC"/>
                                         <include reference="G1z-3q-f71"/>
                                         <include reference="Gtc-e5-pCj"/>
                                         <include reference="OLQ-Aa-mnv"/>
                                         <include reference="ucG-K2-UPH"/>
                                         <include reference="zAo-Xk-JhX"/>
+                                        <include reference="TMk-Jb-3rd"/>
+                                        <include reference="ckD-9K-xxC"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -2926,7 +2957,7 @@
         <image name="Tasks" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="jDI-lO-dqo"/>
         <segue reference="gwZ-PE-xC9"/>
-        <segue reference="gJx-65-fGB"/>
     </inferredMetricsTieBreakers>
 </document>

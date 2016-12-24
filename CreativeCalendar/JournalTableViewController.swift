@@ -103,7 +103,6 @@ class JournalTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: journalIdentifier, for: indexPath) as! JournalCell
         
-//        let tableSection = journalDayForSection[journalSections[indexPath.section]]
         let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
         let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
         

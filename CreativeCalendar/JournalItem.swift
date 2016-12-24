@@ -45,10 +45,10 @@ class GlobalJournals{
     }
 }
 
-class JournalItem{
+class JournalItem {
     var journalEntry: String = String()
-    var journalUUID: String = String()
-    var journalDate: Date = Date()
+    var journalUUID: String  = String()
+    var journalDate: Date    = Date()
     var journalDeleted: Bool
     var journalDeletedReason: String?
     let dateFormat = DateFormatter().journalFormat
@@ -67,3 +67,5 @@ class JournalItem{
         return journalStringForDate
     }
 }
+
+
