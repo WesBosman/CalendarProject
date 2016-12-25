@@ -506,11 +506,11 @@ class DatabaseFunctions{
                 let deleted = journal.bool(forColumn: "deleted")
                 let uuid = journal.object(forColumnName: "uuid") as! String
                 
-                let journalItem = JournalItem(journal: entry,
-                                              UUID: uuid,
-                                              date: date!,
+                let journalItem = JournalItem(date: date!,
+                                              journal: entry,
                                               deleted: deleted,
-                                              deleteReason: nil)
+                                              deleteReason: nil,
+                                              UUID: uuid)
                 
                 let newJournalStartTime = formatter.string(from: date!)
 //                print("Journal Date: \(date)")
@@ -668,11 +668,11 @@ class DatabaseFunctions{
                 let deleted = journal.bool(forColumn: "deleted")
                 let uuid = journal.object(forColumnName: "uuid") as! String
                 
-                let journalItem = JournalItem(journal: entry,
-                                              UUID: uuid,
-                                              date: date!,
+                let journalItem = JournalItem(date: date!,
+                                              journal: entry,
                                               deleted: deleted,
-                                              deleteReason: nil)
+                                              deleteReason: nil,
+                                              UUID: uuid)
 
                 journalArray.append(journalItem)
             }

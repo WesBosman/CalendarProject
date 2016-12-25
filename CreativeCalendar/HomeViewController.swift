@@ -13,8 +13,6 @@
 //
 
 import UIKit
-import ResearchKit
-
 
 // Dates for Calendar starting and ending dates. 
 /*

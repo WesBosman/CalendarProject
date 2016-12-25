@@ -5,6 +5,7 @@
 //  Created by Wes on 4/29/16.
 //  Copyright (c) 2016 Wes Bosman. All rights reserved.
 
+
 // Global Appointments structure for holding appointment dictionary, appointments and their dates
 struct GlobalAppointments{
     static var appointmentDictionary: Dictionary<String, [AppointmentItem]> = [:]
@@ -70,7 +71,7 @@ class Appointments{
     }
 }
 
-struct AppointmentItem {
+struct AppointmentItem: CustomStringConvertible {
     var title: String
     var startingTime: Date
     var endingTime: Date
@@ -86,6 +87,11 @@ struct AppointmentItem {
     var canceledReason: String?
     var deletedReason: String?
     var UUID: String
+    
+    public var description: String{
+        return title
+    }
+    
     
     init(type:String, startTime: Date, endTime: Date, title: String, location: String, additional: String, repeatTime: String, alertTime: String, isComplete: Bool, isCanceled: Bool, isDeleted:Bool,dateFinished:String?, cancelReason: String?, deleteReason:String?, UUID: String) {
         self.title = title

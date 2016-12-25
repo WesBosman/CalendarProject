@@ -54,6 +54,7 @@ struct TaskItem{
     var UUID: String
     
     init(title: String, info: String, estimatedCompletion: Date, repeatTime: String, alertTime: String, isComplete:Bool, isCanceled: Bool, isDeleted: Bool, dateFinished:String?, cancelReason: String?, deleteReason: String?, UUID: String){
+        
         self.dateCompleted = dateFinished
         self.taskTitle = title
         self.taskInfo = info

@@ -41,7 +41,10 @@ class CreativeCalendarUITests: XCTestCase {
         
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
-        app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
+        let passwordSecureTextField = app.secureTextFields["Password"]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("aaaaaaaa")
+        app.buttons["Login"].tap()
         app.buttons["Start"].tap()
         app.tabBars.buttons["Appointments"].tap()
         app.navigationBars["Appointments"].buttons["Add"].tap()
@@ -159,8 +162,15 @@ class CreativeCalendarUITests: XCTestCase {
         
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
-        app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
-        app.buttons["Start"].tap()
+        
+        
+        
+        let passwordSecureTextField = app.secureTextFields["Password"]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("aaaaaaaa")
+        app.buttons["Login"].tap()
+        
+        
         
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
@@ -253,8 +263,10 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
-        app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
-        app.buttons["Start"].tap()
+        let passwordSecureTextField = app.secureTextFields["Password"]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("aaaaaaaa")
+        app.buttons["Login"].tap()
         
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
@@ -335,8 +347,10 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
-        app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
-        app.buttons["Start"].tap()
+        let passwordSecureTextField = app.secureTextFields["Password"]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("aaaaaaaa")
+        app.buttons["Login"].tap()
         
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
@@ -423,8 +437,10 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         let app = XCUIApplication()
         app.staticTexts["Welcome to Dr. Lageman's App Study for Parkinson's Disease Research"].tap()
-        app.staticTexts["Thank you for completing the consent form for this study. Please press the start button to enter the application."].tap()
-        app.buttons["Start"].tap()
+        let passwordSecureTextField = app.secureTextFields["Password"]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("aaaaaaaa")
+        app.buttons["Login"].tap()
         
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
@@ -470,7 +486,10 @@ app.tables.buttons["Delete Event: UI Automated Test To Complete, Complete by: \(
         
         let app = XCUIApplication()
         
-        app.buttons["Start"].tap()
+        let passwordSecureTextField = app.secureTextFields["Password"]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("aaaaaaaa")
+        app.buttons["Login"].tap()
         app.tabBars.buttons["Calendar"].tap()
         
         let moreButton = app.buttons["More"]

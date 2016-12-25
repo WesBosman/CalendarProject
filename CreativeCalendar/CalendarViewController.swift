@@ -9,7 +9,7 @@ import UIKit
 import JTAppleCalendar
 
 
-class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource, UIPopoverPresentationControllerDelegate{
+class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate, UITableViewDataSource{
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
     let userCalendar = Calendar.current
@@ -23,6 +23,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     @IBOutlet weak var leftCalendarArrow: UIButton!
     @IBOutlet weak var rightCalendarArrow: UIButton!
     var count:Int = 1
+    let calendarSectionTitles: [String] = ["Appointments", "Tasks", "Journals"]
+    let calendarAppointmentCellId: String = "CalendarAppointmentCell"
+    let calendarTaskCellId: String = "CalendarTaskCell"
+    let calendarJournalCellId: String = "CalendarJournalCell"
+    var calendarAppointmentList: [AppointmentItem] = []
+    var calendarTaskList: [TaskItem] = []
+    var calendarJournalList: [JournalItem] = []
+    
+    @IBOutlet weak var calendarTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +41,10 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.delegate = self
         calendarView.dataSource = self
         calendarView.backgroundColor = UIColor.clear
+        
+        // Set up the table view for displaying the information from the calendar by day
+        calendarTableView.delegate = self
+        calendarTableView.dataSource = self
         
         // Make the gradient background
         let background = CAGradientLayer().makeGradientBackground()
@@ -150,6 +163,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         return parameters
     }
     
+    // Display the calendar cells
     func calendar(_ calendar: JTAppleCalendarView, willDisplayCell cell: JTAppleDayCellView, date: Date, cellState: CellState) {
 
         if let calendarCell = cell as? CalendarCell{
@@ -191,6 +205,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             selectedDate = cellState.date
             selectedCell = calendarCell
             calendarCell.updateCell(cellState)
+            
+            // Get the items at those dates
+            
         }
     }
     
@@ -239,6 +256,53 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         print("Section Header Size For Method")
         return CGSize(width: calendarView.frame.size.width, height: 100)
     }
+    
+    // MARK - Table View Methods 
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "TableCellCalendar")
+        cell.textLabel?.text = "Testing"
+        cell.detailTextLabel?.text = "Subtitle Testing"
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return calendarSectionTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return nil
+        }
+        return tableView.headerView(forSection: section)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let headerView = view as! UITableViewHeaderFooterView
+        headerView.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
+        headerView.tintColor = UIColor.white
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 85
+    }
+    
     
     // MARK - Navigation
 

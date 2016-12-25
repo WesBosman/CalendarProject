@@ -52,7 +52,6 @@ class JournalTableViewController: UITableViewController {
     // Should no longer require hitting the database
     override func viewDidAppear(_ animated: Bool) {
         previousSection = 0
-        GlobalJournalStructures.journalHeightArray = []
         tableView.reloadData()
         self.tableView.estimatedRowHeight = 100
         self.tableView.setNeedsLayout()
@@ -116,47 +115,11 @@ class JournalTableViewController: UITableViewController {
         cell.journalCellTitle.sizeToFit()
         cell.journalCellSubtitle.sizeToFit()
         
-//        let titleHeight = cell.journalCellTitle.frame.height
-//        let subtitleHeight = cell.journalCellSubtitle.frame.height
-//        let combinedHeight = titleHeight + subtitleHeight
-//        print("CELL FOR ROW AT INDEX PATH Combined Height Cell: \(combinedHeight)")
-//        
-//        let section = indexPath.section
-//        let row = indexPath.row
-        
-        // TODO fix the height of the journal cells
-//        createHeightForJournal(section, row: row,  combinedHeight: combinedHeight)
-//        
-//        print("Title Height: \(titleHeight)")
-//        print("Subtitle Height: \(subtitleHeight)")
         
         cell.detailTextLabel?.backgroundColor = UIColor.cyan
         return cell
     }
     
-    // This may need work!! TODO needs to be updated as soon as the journal gets added or edited
-//    func createHeightForJournal(section: Int, row:Int,  combinedHeight: CGFloat){
-//        // Set up the dictionary for each cell so we can adjust its height based on whats stored in the journal entry
-//        
-//        if(GlobalJournalStructures.journalHeightArray.indices.contains(row)){
-//            var oldHeight = GlobalJournalStructures.journalHeightArray[row]
-//            print("Old Combined Height value: \(oldHeight) at index: \(row)")
-//            GlobalJournalStructures.journalHeightArray.insert(Float(combinedHeight), atIndex: row)
-//            print("Combined Height: \(combinedHeight) added at index: \(row)")
-//        }
-//        else{
-//            GlobalJournalStructures.journalHeightArray.append(Float(combinedHeight))
-//            print("Combined Height added: \(combinedHeight) at index: \(row)")
-//        }
-//        
-//        for(key, value) in GlobalJournalStructures.journalHeightDictionary{
-//            print("Key in Global Height: \(key)")
-//            print("Value in Global Height: \(value)")
-//        }
-//      
-//        GlobalJournalStructures.journalHeightDictionary.updateValue(GlobalJournalStructures.journalHeightArray, forKey: section)
-//    }
-
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -188,10 +151,6 @@ class JournalTableViewController: UITableViewController {
                 journal!.journalDeleted = true
                 journal!.journalDeletedReason = deleteOptions.textFields![0].text!
                 self.db.updateJournal(journal!, option: "delete")
-                
-                // Remove the height value stored in the height dictionary
-//                var heightValues = GlobalJournalStructures.journalHeightDictionary[indexPath.section]
-//                heightValues?.removeAtIndex(indexPath.row)
 
                 })
             

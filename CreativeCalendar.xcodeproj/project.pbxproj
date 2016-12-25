@@ -18,6 +18,10 @@
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
 		DE2DCB531C652907004D3220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE2DCB511C652907004D3220 /* Main.storyboard */; };
 		DE3649EA1E05F0C000F33C8D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE3649E91E05F0C000F33C8D /* LocalAuthentication.framework */; };
+		DE3649F81E0F0BC400F33C8D /* JournalModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3649F71E0F0BC400F33C8D /* JournalModelTest.swift */; };
+		DE3649FC1E0F16EB00F33C8D /* AppointmentDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3649FB1E0F16EB00F33C8D /* AppointmentDictionary.swift */; };
+		DE3649FE1E0F5C3B00F33C8D /* TaskModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3649FD1E0F5C3B00F33C8D /* TaskModelTest.swift */; };
+		DE364A001E0F5FAD00F33C8D /* AppointmentModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3649FF1E0F5FAD00F33C8D /* AppointmentModelTest.swift */; };
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
@@ -35,8 +39,6 @@
 		DE53EF231CEA399200E629A2 /* HomeAppointmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */; };
 		DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE553AB01CE781B4006288E6 /* AppointmentCell.swift */; };
 		DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE58D3C91CECE0B30032CB9C /* JournalItem.swift */; };
-		DE5FD15B1D48E137004DA1F7 /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */; };
-		DE5FD15C1D48E137004DA1F7 /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFF81D14787E003ED54E /* FMDatabase.m */; };
 		DE62CFFD1D1479F3003ED54E /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62CFFC1D1479F3003ED54E /* FMResultSet.m */; };
 		DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0001D147AAD003ED54E /* FMDatabaseAdditions.m */; };
@@ -74,27 +76,6 @@
 			remoteGlobalIDString = 3F71159D1C5943F70071542F;
 			remoteInfo = CreativeCalendar;
 		};
-		DE5FD1571D48E0DE004DA1F7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B183A5951A8535D100C76870;
-			remoteInfo = ResearchKit;
-		};
-		DE5FD1591D48E0DE004DA1F7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 86CC8E9A1AC09332001CCD89;
-			remoteInfo = ResearchKitTests;
-		};
-		DE5FD15D1D48E138004DA1F7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B183A4731A8535D100C76870;
-			remoteInfo = ResearchKit;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -104,7 +85,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DE5FD15C1D48E137004DA1F7 /* ResearchKit.framework in Embed Frameworks */,
 				DE4CAA771D2619F800197FEF /* Pods_CreativeCalendar.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -133,6 +113,10 @@
 		DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
 		DE2DCB521C652907004D3220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE3649E91E05F0C000F33C8D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		DE3649F71E0F0BC400F33C8D /* JournalModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalModelTest.swift; sourceTree = "<group>"; };
+		DE3649FB1E0F16EB00F33C8D /* AppointmentDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDictionary.swift; path = ../AppointmentDictionary.swift; sourceTree = "<group>"; };
+		DE3649FD1E0F5C3B00F33C8D /* TaskModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskModelTest.swift; sourceTree = "<group>"; };
+		DE3649FF1E0F5FAD00F33C8D /* AppointmentModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentModelTest.swift; sourceTree = "<group>"; };
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
@@ -149,7 +133,6 @@
 		DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAppointmentCell.swift; sourceTree = "<group>"; };
 		DE553AB01CE781B4006288E6 /* AppointmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentCell.swift; sourceTree = "<group>"; };
 		DE58D3C91CECE0B30032CB9C /* JournalItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
-		DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = "../../Downloads/ResearchKit-master/ResearchKit.xcodeproj"; sourceTree = "<group>"; };
 		DE62CFF81D14787E003ED54E /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		DE62CFFA1D1478E0003ED54E /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		DE62CFFB1D14797B003ED54E /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
@@ -187,7 +170,6 @@
 				DE3649EA1E05F0C000F33C8D /* LocalAuthentication.framework in Frameworks */,
 				DE62D00A1D148627003ED54E /* libsqlite3.tbd in Frameworks */,
 				DE62D0081D14861E003ED54E /* libsqlite3.0.tbd in Frameworks */,
-				DE5FD15B1D48E137004DA1F7 /* ResearchKit.framework in Frameworks */,
 				0ACF28314FCEA69D26F551DD /* Pods_CreativeCalendar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +207,6 @@
 		3F7115951C5943F70071542F = {
 			isa = PBXGroup;
 			children = (
-				DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */,
 				DE62D0091D148627003ED54E /* libsqlite3.tbd */,
 				DE62D0071D14861E003ED54E /* libsqlite3.0.tbd */,
 				3F7115A01C5943F70071542F /* CreativeCalendar */,
@@ -280,8 +261,11 @@
 		3F7115B81C5943F70071542F /* CreativeCalendarTests */ = {
 			isa = PBXGroup;
 			children = (
+				DE3649FF1E0F5FAD00F33C8D /* AppointmentModelTest.swift */,
+				DE3649FD1E0F5C3B00F33C8D /* TaskModelTest.swift */,
 				3F7115B91C5943F70071542F /* Supporting Files */,
 				DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */,
+				DE3649F71E0F0BC400F33C8D /* JournalModelTest.swift */,
 			);
 			path = CreativeCalendarTests;
 			sourceTree = "<group>";
@@ -320,6 +304,7 @@
 		DE3649ED1E0EF73500F33C8D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DE3649FB1E0F16EB00F33C8D /* AppointmentDictionary.swift */,
 				DE53893F1CD3B6B600DAC001 /* AppointmentItem.swift */,
 				DE4D915F1CE7C57400CF89C4 /* TaskItem.swift */,
 				DE58D3C91CECE0B30032CB9C /* JournalItem.swift */,
@@ -401,15 +386,6 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		DE5FD1521D48E0DD004DA1F7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */,
-				DE5FD15A1D48E0DE004DA1F7 /* ResearchKitTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -428,7 +404,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				DE5FD15E1D48E138004DA1F7 /* PBXTargetDependency */,
 			);
 			name = CreativeCalendar;
 			productName = CreativeCalendar;
@@ -515,12 +490,6 @@
 			mainGroup = 3F7115951C5943F70071542F;
 			productRefGroup = 3F71159F1C5943F70071542F /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DE5FD1521D48E0DD004DA1F7 /* Products */;
-					ProjectRef = DE5FD1511D48E0DD004DA1F7 /* ResearchKit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				3F71159D1C5943F70071542F /* CreativeCalendar */,
@@ -529,23 +498,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		DE5FD1581D48E0DE004DA1F7 /* ResearchKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ResearchKit.framework;
-			remoteRef = DE5FD1571D48E0DE004DA1F7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DE5FD15A1D48E0DE004DA1F7 /* ResearchKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ResearchKitTests.xctest;
-			remoteRef = DE5FD1591D48E0DE004DA1F7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3F71159C1C5943F70071542F /* Resources */ = {
@@ -732,6 +684,7 @@
 				DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */,
 				DE1D2D441D4A613B0015EFF3 /* RepeatTableViewCell.swift in Sources */,
 				DE5389401CD3B6B600DAC001 /* AppointmentItem.swift in Sources */,
+				DE3649FC1E0F16EB00F33C8D /* AppointmentDictionary.swift in Sources */,
 				DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */,
 				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
@@ -745,6 +698,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE62D0121D1D8FF7003ED54E /* DatabaseFunctionsTest.swift in Sources */,
+				DE364A001E0F5FAD00F33C8D /* AppointmentModelTest.swift in Sources */,
+				DE3649F81E0F0BC400F33C8D /* JournalModelTest.swift in Sources */,
+				DE3649FE1E0F5C3B00F33C8D /* TaskModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,11 +725,6 @@
 			isa = PBXTargetDependency;
 			target = 3F71159D1C5943F70071542F /* CreativeCalendar */;
 			targetProxy = DE25D7CC1D108DE0000D657D /* PBXContainerItemProxy */;
-		};
-		DE5FD15E1D48E138004DA1F7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ResearchKit;
-			targetProxy = DE5FD15D1D48E138004DA1F7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

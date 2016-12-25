@@ -58,22 +58,22 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         journalText = textView.text
-        print("Journal Text: \(journalText)")
     }
-
     
     // When the save button is clicked pass the information to a journal item.
-    // Add the height of the text to the journal dictionary!!!
     @IBAction func saveJournalEntryIsPressed(_ sender: AnyObject) {
         
         // The date format that works with the global journal dictionary
         let newDateFormat = DateFormatter().dateWithoutTime
         
+        
         // Journal Item is already in the database just update it
         if let journalItem = journalItemToEdit{
+            print("Journal Text \(journalText)")
             print("Journal Item To Edit is not null")
+            
             journalItem.journalEntry = journalText
             db.updateJournal(journalItem, option: "edit")
             
@@ -87,10 +87,18 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             }
 //            GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
         }
+            
         // Else Add a new Journal Item
         else{
             print("Journal Item to Edit is null")
-            let journalItem = JournalItem(journal: journalText, UUID: UUID().uuidString, date: Date(), deleted: false, deleteReason: nil)
+            print("Journal Text: \(journalText)")
+            
+            let journalItem = JournalItem(date: Date(),
+                                          journal: journalText,
+                                          deleted: false,
+                                          deleteReason: nil,
+                                          UUID: UUID().uuidString)
+            
             db.addToJournalDatabase(journalItem)
             
             // Get the key and value from the dictionary
@@ -100,17 +108,18 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             print("Journal Array: \(journalArray)")
             
             // Add the journal item to the Global Dictionary
-            // TODO if journal array is nil then this will fail
-            if journalArray != nil{
-                print("Journal Array is not nil \(journalArray)")
-                journalArray?.append(journalItem)
+            // If the journal array we get from the dictionary is nil
+            // Create it
+            if journalArray == nil{
+                var journalArray:[JournalItem] = []
+                journalArray.append(journalItem)
+                GlobalJournalStructures.journalSections.append(journalDate)
+                GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: journalDate)
             }
             else{
-                journalArray = []
-                print("Journal Array was nil \(journalArray)")
                 journalArray?.append(journalItem)
+                GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
             }
-            GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
             
         }
         self.navigationController?.popViewController(animated: true)
