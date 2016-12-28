@@ -111,12 +111,12 @@ class JournalTableViewController: UITableViewController {
         
         // The background is to let me know the size of what is stored in the cell
         cell.journalCellTitle.backgroundColor = UIColor.cyan
-        cell.journalCellSubtitle.backgroundColor = UIColor.green
+//        cell.journalCellSubtitle.backgroundColor = UIColor.green
         cell.journalCellTitle.sizeToFit()
         cell.journalCellSubtitle.sizeToFit()
         
         
-        cell.detailTextLabel?.backgroundColor = UIColor.cyan
+//        cell.detailTextLabel?.backgroundColor = UIColor.cyan
         return cell
     }
     

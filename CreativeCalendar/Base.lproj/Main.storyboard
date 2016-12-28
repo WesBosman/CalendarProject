@@ -2763,35 +2763,32 @@
                                             <action selector="rightCalendarArrowPressed:" destination="dHM-vo-Fq1" eventType="touchUpInside" id="yye-Fn-vfc"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vV2-Cu-ToG">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="415" id="lqr-Ob-wyh"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="More">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="lqr-Ob-wyh"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="lqr-Ob-wyh"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <action selector="moreButtonPressed:" destination="dHM-vo-Fq1" eventType="touchUpInside" id="2ea-3Q-iY3"/>
-                                        </connections>
-                                    </button>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PxM-MV-iYg">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="30" sectionFooterHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="PxM-MV-iYg">
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="190" id="ZPf-qy-T2H"/>
+                                        </constraints>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Ffq-eY-beC">
-                                                <rect key="frame" x="0.0" y="28" width="588" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppointmentTableCell" id="Ffq-eY-beC" customClass="AppointmentTableCell" customModule="CreativeCalendar" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="30" width="588" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ffq-eY-beC" id="gIO-2z-Eue">
+                                                    <frame key="frameInset" width="588" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="dxv-C5-Oox" customClass="TaskTableCell" customModule="CreativeCalendar" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="74" width="588" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dxv-C5-Oox" id="asJ-y4-bLZ">
+                                                    <frame key="frameInset" width="588" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5ok-VK-tsg" customClass="JournalTableCell" customModule="CreativeCalendar" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="118" width="588" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5ok-VK-tsg" id="Ado-Rz-iF2">
                                                     <frame key="frameInset" width="588" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
@@ -2822,20 +2819,13 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="0.25686298076923075" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="top" secondItem="PxM-MV-iYg" secondAttribute="bottom" constant="8" symbolic="YES" id="0bG-XE-Now"/>
-                                    <constraint firstItem="E4N-TK-cZ5" firstAttribute="centerY" secondItem="krf-j0-1qK" secondAttribute="centerY" constant="-125.5" id="1UJ-W6-Q1w"/>
+                                    <constraint firstItem="E4N-TK-cZ5" firstAttribute="centerY" secondItem="krf-j0-1qK" secondAttribute="centerY" constant="-99.5" id="1UJ-W6-Q1w"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="krf-j0-1qK" secondAttribute="centerX" id="G1z-3q-f71"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="OBX-uQ-xBh" secondAttribute="trailing" constant="8" symbolic="YES" id="Gtc-e5-pCj"/>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="top" secondItem="krf-j0-1qK" secondAttribute="top" constant="282" id="LkL-Ss-jya">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="310"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="336"/>
                                     </constraint>
-                                    <constraint firstItem="TYL-uE-jje" firstAttribute="centerX" secondItem="vV2-Cu-ToG" secondAttribute="centerX" id="OLQ-Aa-mnv"/>
-                                    <constraint firstAttribute="bottom" secondItem="vV2-Cu-ToG" secondAttribute="bottom" constant="44" id="TMk-Jb-3rd">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="8"/>
-                                    </constraint>
-                                    <constraint firstItem="vV2-Cu-ToG" firstAttribute="top" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="38" id="ckD-9K-xxC">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="289"/>
-                                    </constraint>
+                                    <constraint firstItem="PxM-MV-iYg" firstAttribute="bottom" secondItem="krf-j0-1qK" secondAttribute="bottomMargin" id="V4i-Xc-DFz"/>
                                     <constraint firstItem="OBX-uQ-xBh" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leadingMargin" id="f5i-JJ-2tq"/>
                                     <constraint firstItem="PxM-MV-iYg" firstAttribute="trailing" secondItem="TYL-uE-jje" secondAttribute="trailing" id="fuD-FI-QqE"/>
                                     <constraint firstItem="OBX-uQ-xBh" firstAttribute="baseline" secondItem="E4N-TK-cZ5" secondAttribute="baseline" id="gaP-vf-Jix">
@@ -2845,22 +2835,20 @@
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="trailing" secondItem="krf-j0-1qK" secondAttribute="trailingMargin" id="pl1-Oc-sb3"/>
                                     <constraint firstItem="E4N-TK-cZ5" firstAttribute="leading" secondItem="TYL-uE-jje" secondAttribute="trailing" constant="8" symbolic="YES" id="uBl-Lf-5Yz"/>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="centerY" secondItem="krf-j0-1qK" secondAttribute="centerY" id="ucG-K2-UPH">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="-125"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="-99"/>
                                     </constraint>
                                     <constraint firstItem="TYL-uE-jje" firstAttribute="leading" secondItem="krf-j0-1qK" secondAttribute="leading" constant="90" id="zAo-Xk-JhX"/>
-                                    <constraint firstItem="PxM-MV-iYg" firstAttribute="top" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="60" id="zjW-S4-y9V"/>
+                                    <constraint firstItem="PxM-MV-iYg" firstAttribute="top" secondItem="TYL-uE-jje" secondAttribute="bottom" constant="8" id="zjW-S4-y9V"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
                                         <exclude reference="TYL-uE-jje"/>
                                         <exclude reference="E4N-TK-cZ5"/>
-                                        <exclude reference="vV2-Cu-ToG"/>
                                         <exclude reference="OBX-uQ-xBh"/>
                                     </mask>
                                     <mask key="constraints">
                                         <exclude reference="G1z-3q-f71"/>
                                         <exclude reference="Gtc-e5-pCj"/>
-                                        <exclude reference="OLQ-Aa-mnv"/>
                                         <exclude reference="ucG-K2-UPH"/>
                                         <exclude reference="zAo-Xk-JhX"/>
                                         <exclude reference="f5i-JJ-2tq"/>
@@ -2869,21 +2857,17 @@
                                         <exclude reference="LkL-Ss-jya"/>
                                         <exclude reference="pl1-Oc-sb3"/>
                                         <exclude reference="uBl-Lf-5Yz"/>
-                                        <exclude reference="TMk-Jb-3rd"/>
-                                        <exclude reference="ckD-9K-xxC"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="subviews">
                                         <include reference="TYL-uE-jje"/>
                                         <include reference="E4N-TK-cZ5"/>
-                                        <include reference="vV2-Cu-ToG"/>
                                         <include reference="OBX-uQ-xBh"/>
                                     </mask>
                                     <mask key="constraints">
                                         <include reference="G1z-3q-f71"/>
                                         <include reference="Gtc-e5-pCj"/>
-                                        <include reference="OLQ-Aa-mnv"/>
                                         <include reference="ucG-K2-UPH"/>
                                         <include reference="zAo-Xk-JhX"/>
                                         <include reference="f5i-JJ-2tq"/>
@@ -2892,8 +2876,6 @@
                                         <include reference="LkL-Ss-jya"/>
                                         <include reference="pl1-Oc-sb3"/>
                                         <include reference="uBl-Lf-5Yz"/>
-                                        <include reference="TMk-Jb-3rd"/>
-                                        <include reference="ckD-9K-xxC"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -2932,7 +2914,6 @@
                     <tabBarItem key="tabBarItem" title="Calendar" image="Calendar" id="JpI-4n-QS1"/>
                     <navigationItem key="navigationItem" title="Calendar" id="hUl-Qb-vIq"/>
                     <connections>
-                        <outlet property="calendarInfo" destination="vV2-Cu-ToG" id="NR6-Sv-tce"/>
                         <outlet property="calendarTableView" destination="PxM-MV-iYg" id="kIj-Uy-VEM"/>
                         <outlet property="calendarView" destination="TYL-uE-jje" id="p3K-CN-937"/>
                         <outlet property="leftCalendarArrow" destination="OBX-uQ-xBh" id="nLa-KU-jLz"/>

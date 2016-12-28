@@ -19,7 +19,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var numberOfRows = 6
     var selectedCell: CalendarCell = CalendarCell()
     var selectedDate: Date = Date()
-    @IBOutlet weak var calendarInfo: UIButton!
     @IBOutlet weak var leftCalendarArrow: UIButton!
     @IBOutlet weak var rightCalendarArrow: UIButton!
     var count:Int = 1
@@ -30,8 +29,10 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var calendarAppointmentList: [AppointmentItem] = []
     var calendarTaskList: [TaskItem] = []
     var calendarJournalList: [JournalItem] = []
-    
+    var selectedIndexPath: IndexPath? = nil
+    var toggleJournalHeight: Bool = false
     @IBOutlet weak var calendarTableView: UITableView!
+    let calendarDateFormatter = DateFormatter().dateWithoutTime
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,19 +57,33 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let barColor = UIColor().navigationBarColor
         nav?.barTintColor = barColor
         nav?.tintColor = UIColor.blue
-        
-        // Set up the info button on the calendar
-        calendarInfo.layer.cornerRadius = 10
-        calendarInfo.layer.borderWidth = 2
-        calendarInfo.layer.borderColor = UIColor.white.cgColor
-        calendarInfo.setTitleColor(UIColor().defaultButtonColor, for: UIControlState())
-        calendarInfo.backgroundColor = UIColor.white
                 
         // Select the current date
         calendarView.reloadData() {
             self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
-    }    
+        
+        // Register the cells for the tableView
+        
+        // Register appointment cells
+        let appointmentNib = UINib(nibName: "AppointmentTableViewCell", bundle: nil)
+        self.calendarTableView.register(appointmentNib, forCellReuseIdentifier: "AppointmentTableViewCell")
+        
+        // Register task cell
+        let taskNib = UINib(nibName: "TaskTableViewCell", bundle: nil)
+        self.calendarTableView.register(taskNib, forCellReuseIdentifier: "TaskTableViewCell")
+        
+        // Register journal cell
+        let journalNib = UINib(nibName: "JournalTableViewCell", bundle: nil)
+        self.calendarTableView.register(journalNib, forCellReuseIdentifier: "JournalTableViewCell")
+        
+        // Set up the calendar
+        self.calendarTableView.layer.cornerRadius = 10
+        self.calendarTableView.backgroundColor = UIColor.clear
+        self.calendarTableView.allowsSelection = false
+        self.calendarTableView.tableFooterView = UIView(frame: CGRect())
+        
+    }
     
     // Failable Initializer for tab bar controller
     required init?(coder aDecoder: NSCoder) {
@@ -83,25 +98,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         print("Calendar View Did Appear Animated Method")
         calendarView.reloadData(){
             self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
-        }
-    }
-    
-    @IBAction func moreButtonPressed(_ sender: AnyObject) {
-        print("More Button Pressed")
-        // If cell is in the current month then show the popover view controller.
-        if(selectedCell.cellState.dateBelongsTo == .thisMonth){
-            self.performSegue(withIdentifier: "calendarPopover", sender: self)
-        }
-        // Otherwise show an alert dialog letting the user know what went wrong.
-        else{
-            // Get the calendar date of the currently selected cell.
-            let calendarDateSelected = formatter.string(from: selectedDate)
-            print("Calendar Date Selected: \(calendarDateSelected)")
-            
-            let alert: UIAlertController = UIAlertController(title: "Calendar", message: "Sorry, the date you have currently selected: \(calendarDateSelected) is not in this month", preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-            alert.addAction(dismissAction)
-            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -121,28 +117,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
     }
     
-    // Present the popover when the more button is pressed
-    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        print("Prepare For Popover Presentation Method")
-        if selectedCell.cellState != nil{
-                if selectedCell.cellState.isSelected == true{
-                    let popoverVC = PopoverViewController()
-                    popoverPresentationController.permittedArrowDirections = [.up, .down]
-                    popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
-                    popoverPresentationController.sourceView = selectedCell
-                    popoverPresentationController.backgroundColor = UIColor.orange
-                    present(popoverVC, animated: true, completion: nil)
-                }
-                else{
-                    print("Selected Cell: \(selectedCell.cellState.date) is not selected")
-                }
-        }
-        else{
-            print("Calendar Cell has not initally been selected and is nil...")
-        }
-    }
-    
-    
     // Calendar must know the number of rows, start date, end date and calendar
     func configureCalendar(_ calendar: JTAppleCalendarView) -> (startDate: Date, endDate: Date, numberOfRows: Int, calendar: Calendar) {
         print("Old Configure Calendar Method")
@@ -157,8 +131,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
                                                  endDate: Date().calendarEndDate,
                                                  numberOfRows: numberOfRows,
                                                  calendar: userCalendar,
-                                                 //generateInDates: generateInDates,
-                                                 //generateOutDates: generateOutDates,
+//                                                 generateInDates:  ,
+//                                                 generateOutDates: ,
                                                  firstDayOfWeek: .sunday)
         return parameters
     }
@@ -200,6 +174,9 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     // Function for when the cell has been selected
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleDayCellView?, cellState: CellState) {
         print("Did Select Date Method")
+        let stringDate = DateFormatter().dateWithoutTime.string(from: cellState.date)
+        print("String Date \(stringDate)")
+        
         // Send the selected date to the popover so we know which appointments tasks and journals to retrieve from the database
         if let calendarCell = cell as? CalendarCell{
             selectedDate = cellState.date
@@ -207,7 +184,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             calendarCell.updateCell(cellState)
             
             // Get the items at those dates
-            
+            setUpTableView()
         }
     }
     
@@ -259,26 +236,78 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // MARK - Table View Methods 
     
+    func setUpTableView(){
+        // Want this function to get the dictionaries from the database 
+        // Also TODO - Want this function to not have to hit the database
+        calendarAppointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(calendarDateFormatter.string(from: selectedDate), formatter: calendarDateFormatter)
+        calendarTaskList = DatabaseFunctions.sharedInstance.getTaskByDate(calendarDateFormatter.string(from: selectedDate), formatter: calendarDateFormatter)
+        calendarJournalList = DatabaseFunctions.sharedInstance.getJournalByDate(calendarDateFormatter.string(from: selectedDate), formatter: calendarDateFormatter)
+        
+        calendarTableView.reloadData()
+        calendarTableView.beginUpdates()
+        calendarTableView.endUpdates()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if section == 0{
+            return calendarAppointmentList.count
+        }
+        else if section == 1{
+            return calendarTaskList.count
+        }
+        else if section == 2{
+            return calendarJournalList.count
+        }
+        return 0
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "TableCellCalendar")
-        cell.textLabel?.text = "Testing"
-        cell.detailTextLabel?.text = "Subtitle Testing"
-        return cell
+        let appointment = calendarAppointmentList[indexPath.row]
+        let task = calendarTaskList[indexPath.row]
+        let journal = calendarJournalList[indexPath.row]
+
+        // Appointment Cell
+        if indexPath.section == 0{
+            let appointmentCell: AppointmentTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "AppointmentTableViewCell", for: indexPath) as! AppointmentTableCell
+            appointmentCell.appointmentCompleted(appointment)
+            appointmentCell.appointmentImage.image = UIImage(named: "Appointments")
+            appointmentCell.appointmentTitle.text = appointment.title
+            appointmentCell.appointmentType.text  = appointment.type
+            appointmentCell.appointmentStart.text = DateFormatter().dateWithTime.string(from: appointment.startingTime)
+            appointmentCell.appointmentEnd.text   = DateFormatter().dateWithTime.string(from:appointment.endingTime)
+            appointmentCell.appointmentAlert.text = appointment.alert
+            appointmentCell.appointmentLocation.text = appointment.appLocation
+            return appointmentCell
+        }
+        // Task Cell
+        else if indexPath.section == 1{
+            let taskCell: TaskTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath) as! TaskTableCell
+            taskCell.taskCompleted(task)
+            taskCell.taskImage.image = UIImage(named: "Tasks")
+            taskCell.taskTitle.text  = task.taskTitle
+            taskCell.taskAlert.text  = task.alert
+            taskCell.taskEstimatedCompleteDate.text = DateFormatter().dateWithoutTime.string(from:task.estimateCompletionDate)
+            return taskCell
+            
+        }
+        // Otherwise return a journal cell
+        else {
+            let journalCell: JournalTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "JournalTableViewCell", for: indexPath) as! JournalTableCell
+            journalCell.journalImage.image = UIImage(named: "Journals")
+            journalCell.journalTitle.text  = journal.getSimplifiedDate()
+            journalCell.journalEntry.text  = journal.journalEntry
+            return journalCell
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            return nil
+        }
         return calendarSectionTitles[section]
     }
     
@@ -286,42 +315,120 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
             return nil
         }
-        return tableView.headerView(forSection: section)
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
+        let label = UILabel(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 18))
+        label.text = calendarSectionTitles[section]
+        label.textColor = UIColor.white
+        view.addSubview(label)
+        
+        // Appointment Section 
+        if section == 0{
+            view.backgroundColor = UIColor().appointmentColor
+        }
+        else if section == 1{
+            view.backgroundColor = UIColor().taskColor
+        }
+        else{
+            view.backgroundColor = UIColor().journalColor
+        }
+        
+        print("Returning View")
+        
+        return view
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let headerView = view as! UITableViewHeaderFooterView
-        headerView.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
-        headerView.tintColor = UIColor.white
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        return UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
+        return UITableViewAutomaticDimension
     }
+    
+//    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+//        print("Tapped Accessory button at \(indexPath.row) , \(indexPath.section)")
+//        let selectedCell = tableView.cellForRow(at: indexPath) as! JournalTableCell
+//        selectedIndexPath = tableView.indexPath(for: selectedCell)
+//        
+//        if(selectedIndexPath?.row == indexPath.row && selectedIndexPath?.section == indexPath.section){
+//            toggleExpandJournalCell()
+//        }
+//        
+//        
+//    }
+//    
+//    func toggleExpandJournalCell(){
+//        toggleJournalHeight = !toggleJournalHeight
+//        calendarTableView.beginUpdates()
+//        calendarTableView.endUpdates()
+//    }
+    
+    
+    
+    // MARK - This was code for a popover view controller 
+    // The table view is looking much better though
+    
+    //    @IBAction func moreButtonPressed(_ sender: AnyObject) {
+    //        print("More Button Pressed")
+    //        // If cell is in the current month then show the popover view controller.
+    //        if(selectedCell.cellState.dateBelongsTo == .thisMonth){
+    //            self.performSegue(withIdentifier: "calendarPopover", sender: self)
+    //        }
+    //        // Otherwise show an alert dialog letting the user know what went wrong.
+    //        else{
+    //            // Get the calendar date of the currently selected cell.
+    //            let calendarDateSelected = formatter.string(from: selectedDate)
+    //            print("Calendar Date Selected: \(calendarDateSelected)")
+    //
+    //            let alert: UIAlertController = UIAlertController(title: "Calendar", message: "Sorry, the date you have currently selected: \(calendarDateSelected) is not in this month", preferredStyle: .alert)
+    //            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+    //            alert.addAction(dismissAction)
+    //            self.present(alert, animated: true, completion: nil)
+    //        }
+    //    }
+    
+    // Present the popover when the more button is pressed
+    
+    //    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+    //        print("Prepare For Popover Presentation Method")
+    //        if selectedCell.cellState != nil{
+    //                if selectedCell.cellState.isSelected == true{
+    //                    let popoverVC = PopoverViewController()
+    //                    popoverPresentationController.permittedArrowDirections = [.up, .down]
+    //                    popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
+    //                    popoverPresentationController.sourceView = selectedCell
+    //                    popoverPresentationController.backgroundColor = UIColor.orange
+    //                    present(popoverVC, animated: true, completion: nil)
+    //                }
+    //                else{
+    //                    print("Selected Cell: \(selectedCell.cellState.date) is not selected")
+    //                }
+    //        }
+    //        else{
+    //            print("Calendar Cell has not initally been selected and is nil...")
+    //        }
+    //    }
     
     
     // MARK - Navigation
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("Prepare For Segue From Calendar View")
-        if segue.identifier == "calendarPopover"{
-            
-            if let vc = segue.destination as? PopoverViewController{
-            
-                vc.preferredContentSize = CGSize(width: 375.0, height: 375.0)
-                let controller = vc.popoverPresentationController
-                
-                vc.selectedDate = selectedDate
-
-                if controller != nil{
-                    controller?.delegate = self
-
-                }
-            }
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        print("Prepare For Segue From Calendar View")
+//        if segue.identifier == "calendarPopover"{
+//            
+//            if let vc = segue.destination as? PopoverViewController{
+//            
+//                vc.preferredContentSize = CGSize(width: 375.0, height: 375.0)
+//                let controller = vc.popoverPresentationController
+//                
+//                vc.selectedDate = selectedDate
+//
+//                if controller != nil{
+//                    controller?.delegate = self
+//
+//                }
+//            }
+//        }
+//    }
 }

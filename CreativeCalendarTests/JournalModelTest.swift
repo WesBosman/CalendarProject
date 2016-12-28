@@ -17,6 +17,7 @@ class JournalModelTest: XCTestCase {
     let dateComp = DateComponents()
     let dateformat = DateFormatter().dateWithoutTime
     let journalEntry = "This is a Unit test of a Journal Entry"
+    var journalOne: JournalItem? = nil
         
     override func setUp() {
         super.setUp()
@@ -28,6 +29,7 @@ class JournalModelTest: XCTestCase {
                                                 deleted: false,
                                                 deleteReason: nil,
                                                 UUID: UUID().uuidString)
+        journalOne = journalItemForTesting
         print("Journal Item -> \(journalItemForTesting)")
         sut.addJournalToGlobalDictionary(item: journalItemForTesting)
     }
@@ -40,6 +42,15 @@ class JournalModelTest: XCTestCase {
     func printJournalDictionary(){
         for (key, value) in GlobalJournalStructures.journalDictionary{
             print("Journal Key == \(key) \nJournal Item == \(value)")
+        }
+    }
+    
+    // Do I really need a get simplified date in the journal item???
+    // Probably not
+    func testJournalGetSimplifiedDate(){
+        if let journalOne = journalOne{
+            let journalDate = journalOne.getSimplifiedDate()
+            XCTAssert(journalDate == DateFormatter().journalFormat.string(from: journalOne.journalDate))
         }
     }
     
@@ -131,11 +142,42 @@ class JournalModelTest: XCTestCase {
     func testUpdateJournalFromGlobalDictionary_WhenKeyIsInDictionary(){
         print("")
         print("TEST UPDATE JOURNAL IN DICT WHEN KEY IS PRESENT")
+        let newDate = calendar.date(byAdding: .hour, value: 2, to: date)!
+        let entryBefore = "Entry before updating global dict when key is in dict"
+        let entryAfter  = "Entry after updating global dict when key is in dict"
+        let newStringDate = dateformat.string(from: newDate)
+        var journalToUpdate = JournalItem(date: newDate,
+                                          journal: entryBefore,
+                                          deleted: false,
+                                          deleteReason: nil,
+                                          UUID: UUID().uuidString)
+        // Print the journal dictionary before adding to it
+        printJournalDictionary()
+        // Add Journal to Dictionary
+        sut.addJournalToGlobalDictionary(item: journalToUpdate)
+        // Test that the journal was added
+        var journalArray = GlobalJournalStructures.journalDictionary[newStringDate]
+        XCTAssert(journalArray!.contains(where: {$0.journalUUID == journalToUpdate.journalUUID && $0.journalEntry == entryBefore}))
+        journalToUpdate.journalEntry = entryAfter
+        // Update the item in the Dictionary
+        sut.updateJournalFromGlobalDictionary(item: journalToUpdate)
+        journalArray = GlobalJournalStructures.journalDictionary[newStringDate]
+        // Print the Dictionary
+        printJournalDictionary()
+        // Test that the updated journal entry is in the dictionary with the same uuid
+        XCTAssert(journalArray!.contains(where: {$0.journalEntry == entryAfter && $0.journalUUID == journalToUpdate.journalUUID}))
         
     }
     
     func testRemoveJournalFromGlobalDictionary(){
         print("")
+        print("TESTING REMOVE JOURNAL FROM GLOBAL DICTIONARY")
+        print("Try removing the journal that was added in the setup method")
+        if let journalOne = journalOne{
+            let journalStringDate = DateFormatter().string(from: journalOne.journalDate)
+            sut.removeJournalFromGlobalDictionary(item: journalOne)
+            XCTAssert(GlobalJournalStructures.journalDictionary[journalStringDate] == nil)
+        }
         
     }
 }

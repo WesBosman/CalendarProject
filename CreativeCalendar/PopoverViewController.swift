@@ -25,7 +25,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
     var journalList:[JournalItem] = []
     var selectedDate:Date = Date()
     var journalCellHeightArray: [CGFloat] = []
-    let appointmentIdentifier: String = "AppointmentCell"
+    let appointmentIdentifier: String = "AppointmentTableCell"
     let taskIdentifier: String = "TaskCell"
     let journalIdentifier: String = "JournalCell"
     
@@ -63,6 +63,11 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         self.journalTableView.delegate = self
         self.journalTableView.dataSource = self
         self.journalTableView.register(JournalCell.self, forCellReuseIdentifier: journalIdentifier)
+        
+        // Register cell appointment
+        //self.appointmentTableView.register(AppointmentTableCell.self, forCellReuseIdentifier: appointmentIdentifier)
+//        self.appointmentTableView.register(UINib(nibName:"AppointmentTableViewCell", bundle: nil), forCellReuseIdentifier: appointmentIdentifier)
+        
         
         self.view.addSubview(scrollView)
         
@@ -159,19 +164,21 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
         
         if tableView == appointmentTableView{
             let appointment = appointmentList[(indexPath as NSIndexPath).row] as AppointmentItem
-//            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "AppointmentPopover")
-//            cell.textLabel?.text = appointment.title
-//            cell.detailTextLabel?.text = "type: " + appointment.type
-//                + "\nlocation: " + appointment.appLocation
-//                + "\nstart: " + DateFormatter().dateWithTime.string(from: appointment.startingTime)
-//                + "\nend:   " +  DateFormatter().dateWithTime.string(from: appointment.endingTime)
-//                + "\nadditional info: " + appointment.additionalInfo
-//            
-//            cell.detailTextLabel?.numberOfLines = 0
-//            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "AppointmentPopover")
+            cell.textLabel?.text = appointment.title
+            cell.detailTextLabel?.text = "type: " + appointment.type
+                + "\nlocation: " + appointment.appLocation
+                + "\nstart: " + DateFormatter().dateWithTime.string(from: appointment.startingTime)
+                + "\nend:   " +  DateFormatter().dateWithTime.string(from: appointment.endingTime)
+                + "\nadditional info: " + appointment.additionalInfo
             
-            let cell = appointmentTableView.dequeueReusableCell(withIdentifier: appointmentIdentifier, for: indexPath) as! AppointmentCell
-            cell.appointmentTitleLabel.text = appointment.title
+            cell.detailTextLabel?.numberOfLines = 0
+            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
+            
+//            let cell: AppointmentTableCell = appointmentTableView.dequeueReusableCell(withIdentifier: appointmentIdentifier, for: indexPath) as! AppointmentTableCell
+//            
+//            cell.appointmentTitle.text  = appointment.title
+//            cell.appointmentType.text   = appointment.type
             
             return cell
         }

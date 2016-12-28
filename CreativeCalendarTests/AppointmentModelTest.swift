@@ -11,11 +11,13 @@ import XCTest
 @testable import CreativeCalendar
 
 class AppointmentModelTest: XCTestCase {
+    let sut = Appointments()
     var dateComp = DateComponents()
     let calendar = Calendar.current
     let date = Date()
     var appointmentOverdue: AppointmentItem? = nil
     var appointmentNotOverdue: AppointmentItem? = nil
+    let dateformat = DateFormatter().dateWithTime
     
     override func setUp() {
         super.setUp()
@@ -86,6 +88,27 @@ class AppointmentModelTest: XCTestCase {
             XCTAssert(appointmentNotOverdue.isOverdue == false)
         }
     }
+    
+    func testPrintDescriptionOfAppointment(){
+        if let appointmentOverdue = appointmentOverdue{
+            print(appointmentOverdue)
+        }
+        if let appointmentNotOverdue = appointmentNotOverdue{
+            print(appointmentNotOverdue)
+        }
+    }
+    
+    func testAddAppointmentToGlobalDictionary(){
+        if let appointmentOverdue = appointmentOverdue{
+            sut.addAppointmentToDictionary(appointmentOverdue)
+            let appointmentStringDate = dateformat.string(from: appointmentOverdue.startingTime)
+            if let appointmentArray = GlobalAppointments.appointmentDictionary[appointmentStringDate]{
+                XCTAssert(appointmentArray.contains(where: {
+                $0.UUID == appointmentOverdue.UUID}))
+            }
+        }
+    }
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
