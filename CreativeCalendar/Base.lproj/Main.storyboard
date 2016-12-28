@@ -2768,6 +2768,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="190" id="ZPf-qy-T2H"/>
                                         </constraints>
+                                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppointmentTableCell" id="Ffq-eY-beC" customClass="AppointmentTableCell" customModule="CreativeCalendar" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="30" width="588" height="44"/>

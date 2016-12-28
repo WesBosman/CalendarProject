@@ -81,6 +81,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         self.calendarTableView.layer.cornerRadius = 10
         self.calendarTableView.backgroundColor = UIColor.clear
         self.calendarTableView.allowsSelection = false
+        // There will be no lines when there are no cells
         self.calendarTableView.tableFooterView = UIView(frame: CGRect())
         
     }
@@ -197,7 +198,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
     }
     
-    // MARK - Header Methods
+    // MARK - Calendar Header Methods
     
     // Sets up the month and year for the header view.
     func setUpHeaderView(_ startingMonth: Date) -> String {
@@ -261,8 +262,20 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         return 0
     }
     
+    // If the arrays have information in them then add to the number of sections to display
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        var count: Int = 0
+        
+        if(!calendarAppointmentList.isEmpty){
+            count += 1
+        }
+        if(!calendarTaskList.isEmpty){
+            count += 1
+        }
+        if(!calendarJournalList.isEmpty){
+            count += 1
+        }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -305,14 +318,18 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        // Return nil if there are no rows in a section
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            print("Title for header is returning nil")
             return nil
         }
         return calendarSectionTitles[section]
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // If there are no rows in a section return nil
         if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+            print("View for header is returning nil")
             return nil
         }
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
@@ -343,7 +360,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return 100
     }
     
 //    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
