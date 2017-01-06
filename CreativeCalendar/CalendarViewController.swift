@@ -100,6 +100,13 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarView.reloadData(){
             self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
+        
+        // Estimate the height of the cells in the table view
+        calendarTableView.reloadData()
+        self.calendarTableView.estimatedRowHeight = 100
+        self.calendarTableView.setNeedsLayout()
+        self.calendarTableView.layoutIfNeeded()
+        
     }
     
     @IBAction func rightCalendarArrowPressed(_ sender: AnyObject) {
@@ -132,8 +139,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
                                                  endDate: Date().calendarEndDate,
                                                  numberOfRows: numberOfRows,
                                                  calendar: userCalendar,
-//                                                 generateInDates:  ,
-//                                                 generateOutDates: ,
                                                  firstDayOfWeek: .sunday)
         return parameters
     }
@@ -238,11 +243,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     // MARK - Table View Methods 
     
     func setUpTableView(){
-        // Want this function to get the dictionaries from the database 
-        // Also TODO - Want this function to not have to hit the database
-        calendarAppointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(calendarDateFormatter.string(from: selectedDate), formatter: calendarDateFormatter)
-        calendarTaskList = DatabaseFunctions.sharedInstance.getTaskByDate(calendarDateFormatter.string(from: selectedDate), formatter: calendarDateFormatter)
-        calendarJournalList = DatabaseFunctions.sharedInstance.getJournalByDate(calendarDateFormatter.string(from: selectedDate), formatter: calendarDateFormatter)
+        // TODO - Want this function to not have to hit the database
+        let stringDate = calendarDateFormatter.string(from: selectedDate)
+        print("String for selected date \(stringDate)")
+        
+        calendarAppointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: calendarDateFormatter)
+        
+        calendarTaskList = DatabaseFunctions.sharedInstance.getTaskByDate(stringDate, formatter: calendarDateFormatter)
+        
+        calendarJournalList = DatabaseFunctions.sharedInstance.getJournalByDate(stringDate, formatter: calendarDateFormatter)
         
         calendarTableView.reloadData()
         calendarTableView.beginUpdates()
@@ -251,12 +260,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0{
+            print("Appointments in Section \(calendarAppointmentList.count)")
             return calendarAppointmentList.count
         }
         else if section == 1{
+            print("Tasks in Section \(calendarTaskList.count)")
             return calendarTaskList.count
         }
         else if section == 2{
+            print("Journals in Section \(calendarJournalList.count)")
             return calendarJournalList.count
         }
         return 0
@@ -268,54 +280,92 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         
         if(!calendarAppointmentList.isEmpty){
             count += 1
+            print("Appointment Count")
         }
         if(!calendarTaskList.isEmpty){
             count += 1
+            print("Task Count")
         }
         if(!calendarJournalList.isEmpty){
             count += 1
+            print("Journal Count")
         }
+        print("Number of Sections in Table == \(count)")
         return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let appointment = calendarAppointmentList[indexPath.row]
-        let task = calendarTaskList[indexPath.row]
-        let journal = calendarJournalList[indexPath.row]
-
-        // Appointment Cell
-        if indexPath.section == 0{
-            let appointmentCell: AppointmentTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "AppointmentTableViewCell", for: indexPath) as! AppointmentTableCell
-            appointmentCell.appointmentCompleted(appointment)
-            appointmentCell.appointmentImage.image = UIImage(named: "Appointments")
-            appointmentCell.appointmentTitle.text = appointment.title
-            appointmentCell.appointmentType.text  = appointment.type
-            appointmentCell.appointmentStart.text = DateFormatter().dateWithTime.string(from: appointment.startingTime)
-            appointmentCell.appointmentEnd.text   = DateFormatter().dateWithTime.string(from:appointment.endingTime)
-            appointmentCell.appointmentAlert.text = appointment.alert
-            appointmentCell.appointmentLocation.text = appointment.appLocation
-            return appointmentCell
+        var appointment: AppointmentItem
+        var task: TaskItem
+        var journal: JournalItem
+        
+        print("Number of Appointments \(calendarAppointmentList.count)")
+        print("Number of Tasks \(calendarTaskList.count)")
+        print("Number of Journals \(calendarJournalList.count)")
+        print("IndexPath.section \(indexPath.section)")
+        print("IndexPath.row \(indexPath.row)")
+        
+        // Selected Date
+        let stringDate = calendarDateFormatter.string(from: selectedDate)
+        print("Selected String Date \(stringDate)")
+        
+        // TODO Make sure these do not fail
+        if calendarAppointmentList.isEmpty == false && indexPath.row < calendarAppointmentList.count{
+            appointment = calendarAppointmentList[indexPath.row]
+            
+            if indexPath.section == 0{
+                let appointmentCell: AppointmentTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "AppointmentTableViewCell", for: indexPath) as! AppointmentTableCell
+                appointmentCell.appointmentCompleted(appointment)
+                appointmentCell.appointmentImage.image = UIImage(named: "Appointments")
+                appointmentCell.appointmentTitle.text = appointment.title
+                appointmentCell.appointmentType.text  = appointment.type
+                appointmentCell.appointmentStart.text = DateFormatter().dateWithTime.string(from: appointment.startingTime)
+                appointmentCell.appointmentEnd.text   = DateFormatter().dateWithTime.string(from:appointment.endingTime)
+                appointmentCell.appointmentAlert.text = appointment.alert
+                appointmentCell.appointmentLocation.text = appointment.appLocation
+                appointmentCell.appointmentAdditionalInfo.text = appointment.additionalInfo
+                
+                // Additional info size to fit
+                appointmentCell.appointmentAdditionalInfo.sizeToFit()
+                return appointmentCell
+            }
         }
-        // Task Cell
-        else if indexPath.section == 1{
+        
+        if calendarTaskList.isEmpty == false && indexPath.row < calendarTaskList.count{
+            task = calendarTaskList[indexPath.row]
+            
             let taskCell: TaskTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath) as! TaskTableCell
             taskCell.taskCompleted(task)
             taskCell.taskImage.image = UIImage(named: "Tasks")
             taskCell.taskTitle.text  = task.taskTitle
             taskCell.taskAlert.text  = task.alert
             taskCell.taskEstimatedCompleteDate.text = DateFormatter().dateWithoutTime.string(from:task.estimateCompletionDate)
-            return taskCell
+            taskCell.taskAdditionalInfo.text = task.taskInfo
             
+            // Size to fit for additional information
+            taskCell.taskAdditionalInfo.sizeToFit()
+            return taskCell
         }
-        // Otherwise return a journal cell
-        else {
+        
+        if calendarJournalList.isEmpty == false && indexPath.row < calendarJournalList.count{
+            journal = calendarJournalList[indexPath.row]
+            
             let journalCell: JournalTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "JournalTableViewCell", for: indexPath) as! JournalTableCell
             journalCell.journalImage.image = UIImage(named: "Journals")
             journalCell.journalTitle.text  = journal.getSimplifiedDate()
             journalCell.journalEntry.text  = journal.journalEntry
+            journalCell.journalEntry.lineBreakMode = .byWordWrapping
+            journalCell.journalEntry.numberOfLines = 0
+            
+            // Size to fit for journal entry
+            journalCell.journalEntry.sizeToFit()
             return journalCell
         }
+
+        // Otherwise return an empty table view cell
+        return UITableViewCell()
     }
+
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Return nil if there are no rows in a section
@@ -325,6 +375,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
         return calendarSectionTitles[section]
     }
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // If there are no rows in a section return nil
@@ -359,93 +410,8 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         return UITableViewAutomaticDimension
     }
     
+    
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
-//    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-//        print("Tapped Accessory button at \(indexPath.row) , \(indexPath.section)")
-//        let selectedCell = tableView.cellForRow(at: indexPath) as! JournalTableCell
-//        selectedIndexPath = tableView.indexPath(for: selectedCell)
-//        
-//        if(selectedIndexPath?.row == indexPath.row && selectedIndexPath?.section == indexPath.section){
-//            toggleExpandJournalCell()
-//        }
-//        
-//        
-//    }
-//    
-//    func toggleExpandJournalCell(){
-//        toggleJournalHeight = !toggleJournalHeight
-//        calendarTableView.beginUpdates()
-//        calendarTableView.endUpdates()
-//    }
-    
-    
-    
-    // MARK - This was code for a popover view controller 
-    // The table view is looking much better though
-    
-    //    @IBAction func moreButtonPressed(_ sender: AnyObject) {
-    //        print("More Button Pressed")
-    //        // If cell is in the current month then show the popover view controller.
-    //        if(selectedCell.cellState.dateBelongsTo == .thisMonth){
-    //            self.performSegue(withIdentifier: "calendarPopover", sender: self)
-    //        }
-    //        // Otherwise show an alert dialog letting the user know what went wrong.
-    //        else{
-    //            // Get the calendar date of the currently selected cell.
-    //            let calendarDateSelected = formatter.string(from: selectedDate)
-    //            print("Calendar Date Selected: \(calendarDateSelected)")
-    //
-    //            let alert: UIAlertController = UIAlertController(title: "Calendar", message: "Sorry, the date you have currently selected: \(calendarDateSelected) is not in this month", preferredStyle: .alert)
-    //            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-    //            alert.addAction(dismissAction)
-    //            self.present(alert, animated: true, completion: nil)
-    //        }
-    //    }
-    
-    // Present the popover when the more button is pressed
-    
-    //    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-    //        print("Prepare For Popover Presentation Method")
-    //        if selectedCell.cellState != nil{
-    //                if selectedCell.cellState.isSelected == true{
-    //                    let popoverVC = PopoverViewController()
-    //                    popoverPresentationController.permittedArrowDirections = [.up, .down]
-    //                    popoverPresentationController.sourceRect = CGRect(x: 0.0, y: 0.0, width: selectedCell.frame.size.width, height: selectedCell.frame.size.height)
-    //                    popoverPresentationController.sourceView = selectedCell
-    //                    popoverPresentationController.backgroundColor = UIColor.orange
-    //                    present(popoverVC, animated: true, completion: nil)
-    //                }
-    //                else{
-    //                    print("Selected Cell: \(selectedCell.cellState.date) is not selected")
-    //                }
-    //        }
-    //        else{
-    //            print("Calendar Cell has not initally been selected and is nil...")
-    //        }
-    //    }
-    
-    
-    // MARK - Navigation
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        print("Prepare For Segue From Calendar View")
-//        if segue.identifier == "calendarPopover"{
-//            
-//            if let vc = segue.destination as? PopoverViewController{
-//            
-//                vc.preferredContentSize = CGSize(width: 375.0, height: 375.0)
-//                let controller = vc.popoverPresentationController
-//                
-//                vc.selectedDate = selectedDate
-//
-//                if controller != nil{
-//                    controller?.delegate = self
-//
-//                }
-//            }
-//        }
-//    }
 }

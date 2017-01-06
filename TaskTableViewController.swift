@@ -123,14 +123,14 @@ class TaskTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor().defaultButtonColor
+        header.contentView.backgroundColor = UIColor().taskColor
         header.textLabel?.textColor = UIColor.white
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: taskId, for: indexPath) as! TaskCell
-//        let taskItem = taskList[indexPath.row] as TaskItem
+
         let tableSection = taskDayForSections[taskSections[(indexPath as NSIndexPath).section]]
         let taskItem = tableSection![(indexPath as NSIndexPath).row]
         

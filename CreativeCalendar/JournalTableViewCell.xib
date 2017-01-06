@@ -8,11 +8,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="JournalTableViewCell" rowHeight="80" id="kee-rm-LzX" customClass="JournalTableCell" customModule="CreativeCalendar" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="JournalTableViewCell" rowHeight="80" id="kee-rm-LzX" customClass="JournalTableCell" customModule="CreativeCalendar" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="525" height="80"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kee-rm-LzX" id="zBZ-yy-DG6">
-                <frame key="frameInset" width="478" height="79"/>
+                <frame key="frameInset" width="525" height="79"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Journals" translatesAutoresizingMaskIntoConstraints="NO" id="EbZ-5e-OG5">
@@ -23,10 +23,9 @@
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="48" id="fYI-Q6-60Q"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eal-cw-PVU">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eal-cw-PVU">
                         <constraints>
-                            <constraint firstAttribute="height" constant="34" id="27T-k5-NtG"/>
-                            <constraint firstAttribute="width" constant="413" id="MVF-hS-bC3"/>
+                            <constraint firstAttribute="height" constant="42" id="fHh-gy-sWr"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
@@ -39,17 +38,17 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Eal-cw-PVU" firstAttribute="trailing" secondItem="zBZ-yy-DG6" secondAttribute="trailingMargin" constant="8" id="0JR-vx-kPc"/>
-                    <constraint firstItem="Eal-cw-PVU" firstAttribute="trailing" secondItem="IzH-pL-qcn" secondAttribute="trailing" id="0SI-y4-kPN"/>
                     <constraint firstItem="EbZ-5e-OG5" firstAttribute="top" secondItem="zBZ-yy-DG6" secondAttribute="topMargin" constant="7" id="1Lg-g2-6PI"/>
-                    <constraint firstItem="Eal-cw-PVU" firstAttribute="leading" secondItem="IzH-pL-qcn" secondAttribute="leading" id="Dv2-V2-3b3"/>
+                    <constraint firstItem="IzH-pL-qcn" firstAttribute="leading" secondItem="EbZ-5e-OG5" secondAttribute="trailing" constant="9" id="3cV-EF-3DW"/>
+                    <constraint firstItem="IzH-pL-qcn" firstAttribute="top" secondItem="zBZ-yy-DG6" secondAttribute="topMargin" constant="7" id="84U-cg-iwl"/>
                     <constraint firstItem="EbZ-5e-OG5" firstAttribute="leading" secondItem="zBZ-yy-DG6" secondAttribute="leadingMargin" id="E6S-nV-Z3X"/>
-                    <constraint firstItem="Eal-cw-PVU" firstAttribute="top" secondItem="IzH-pL-qcn" secondAttribute="bottom" constant="8" symbolic="YES" id="EcC-1g-1ux"/>
                     <constraint firstAttribute="bottomMargin" secondItem="EbZ-5e-OG5" secondAttribute="bottom" constant="8" id="NHh-oZ-WP2"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="Eal-cw-PVU" secondAttribute="bottom" id="Nh9-fE-V3G"/>
-                    <constraint firstItem="Eal-cw-PVU" firstAttribute="leading" secondItem="EbZ-5e-OG5" secondAttribute="trailing" constant="9" id="PQh-JO-whu"/>
-                    <constraint firstItem="Eal-cw-PVU" firstAttribute="leading" secondItem="EbZ-5e-OG5" secondAttribute="trailing" constant="9" id="h0l-4f-aOc"/>
-                    <constraint firstItem="EbZ-5e-OG5" firstAttribute="top" secondItem="IzH-pL-qcn" secondAttribute="top" constant="6.5" id="ljh-YO-eV4"/>
+                    <constraint firstItem="IzH-pL-qcn" firstAttribute="trailing" secondItem="zBZ-yy-DG6" secondAttribute="trailingMargin" id="edh-mR-5Q2"/>
+                    <constraint firstItem="Eal-cw-PVU" firstAttribute="top" secondItem="IzH-pL-qcn" secondAttribute="bottom" constant="7" id="iK2-bl-XsE"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Eal-cw-PVU" secondAttribute="trailing" id="kAm-zj-1Cz"/>
+                    <constraint firstItem="Eal-cw-PVU" firstAttribute="leading" secondItem="EbZ-5e-OG5" secondAttribute="trailing" constant="9" id="wKi-5c-vvv"/>
+                    <constraint firstItem="Eal-cw-PVU" firstAttribute="bottom" secondItem="zBZ-yy-DG6" secondAttribute="bottomMargin" constant="8" id="wLr-BC-L5g"/>
+                    <constraint firstItem="Eal-cw-PVU" firstAttribute="top" secondItem="IzH-pL-qcn" secondAttribute="bottom" constant="7" id="yHu-AN-tWO"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

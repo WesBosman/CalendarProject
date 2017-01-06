@@ -95,7 +95,7 @@ class JournalTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor().defaultButtonColor
+        header.contentView.backgroundColor = UIColor().journalColor
         header.textLabel?.textColor = UIColor.white
     }
 
@@ -110,13 +110,12 @@ class JournalTableViewController: UITableViewController {
         cell.journalCellSubtitle.text = journalItem.journalEntry
         
         // The background is to let me know the size of what is stored in the cell
-        cell.journalCellTitle.backgroundColor = UIColor.cyan
+//        cell.journalCellTitle.backgroundColor = UIColor.cyan
 //        cell.journalCellSubtitle.backgroundColor = UIColor.green
+        
         cell.journalCellTitle.sizeToFit()
         cell.journalCellSubtitle.sizeToFit()
         
-        
-//        cell.detailTextLabel?.backgroundColor = UIColor.cyan
         return cell
     }
     
@@ -197,16 +196,10 @@ class JournalTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         
         if segue.identifier == "editJournalSegue"{
-//            let source = segue.sourceViewController as! JournalTableViewController
             let destination = segue.destination as! JournalViewController
-            
             let indexPath = tableView.indexPathForSelectedRow!
-//            let tableSection = journalDayForSection[journalSections[indexPath.section]]
-            
             let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
             let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
             

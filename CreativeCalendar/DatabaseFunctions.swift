@@ -411,6 +411,7 @@ class DatabaseFunctions{
                 let newAppointmentStartTime = formatter.string(from: appointmentStart!)
                 
                 if (newAppointmentStartTime == date && !appointmentArray.contains{ $0.UUID == appointmentItem.UUID}){
+                    print("New Appointment Start Date: \(newAppointmentStartTime) == Date passed in: \(date)")
                     appointmentArray.append(appointmentItem)
                 }
             }
@@ -467,11 +468,9 @@ class DatabaseFunctions{
                                         UUID: taskUUID)
                 
                 let newTaskStartTime = formatter.string(from: estimatedDateCompleted!)
-//                print("New Task Start Time: \(newTaskStartTime) == \(date)")
                 
                 if (newTaskStartTime == date && !taskArray.contains{ $0.UUID == taskItem.UUID}){
-//                    print("Array Date: \(date)")
-//                    print("Array Contains Task item with name: \(taskItem.taskTitle)")
+                    print("New Task Start Date: \(newTaskStartTime) == Date passed in: \(date)")
                     taskArray.append(taskItem)
                 }
             }
@@ -513,12 +512,9 @@ class DatabaseFunctions{
                                               UUID: uuid)
                 
                 let newJournalStartTime = formatter.string(from: date!)
-//                print("Journal Date: \(date)")
-//                print("New Journal Start Time: \(newJournalStartTime)")
                 
                 if (newJournalStartTime == journalDate && !journalArray.contains{ $0.journalUUID == journalItem.journalUUID}){
-//                    print("Array Date: \(date)")
-//                    print("Array Contains Journal item with name: \(journalItem.journalEntry)")
+                    print("New Journal Start Date: \(newJournalStartTime) == date passed in: \(journalDate)")
                     journalArray.append(journalItem)
                 }
             }

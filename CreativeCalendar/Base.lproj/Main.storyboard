@@ -191,8 +191,8 @@
         <scene sceneID="yl2-sM-qoP">
             <objects>
                 <tabBarController storyboardIdentifier="tabBarController" id="49e-Tb-3d3" sceneMemberID="viewController">
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" restorationIdentifier="tabBar" id="W28-zg-YXA">
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" restorationIdentifier="tabBar" translucent="NO" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -457,7 +457,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dhx-yn-8xg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1453.5" y="-1008"/>
+            <point key="canvasLocation" x="2219" y="-1008"/>
         </scene>
         <!--Add Appointment-->
         <scene sceneID="4lv-xe-DYv">
@@ -1102,7 +1102,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XDb-xW-Gnf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2151" y="-1008"/>
+            <point key="canvasLocation" x="2916" y="-1008"/>
         </scene>
         <!--Add Journal-->
         <scene sceneID="KBQ-ok-L9h">
@@ -1113,7 +1113,7 @@
                         <viewControllerLayoutGuide type="bottom" id="9sR-Jf-YDE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Maq-Pr-o0a">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="975"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make a Journal Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyU-Nc-bpF">
@@ -1233,35 +1233,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1TF-sd-kkj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2916.40625" y="391.9921875"/>
-        </scene>
-        <!--Popover View Controller-->
-        <scene sceneID="g2j-FF-FeX">
-            <objects>
-                <viewController storyboardIdentifier="PopoverViewController" id="DJT-83-vnD" customClass="PopoverViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="S5y-qU-Acl"/>
-                        <viewControllerLayoutGuide type="bottom" id="lgp-kM-ouG"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="alR-OE-iei">
-                        <rect key="frame" x="0.0" y="0.0" width="460" height="420"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="300" height="300"/>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="460" height="420"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0Jq-Jq-ZUn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1422" y="898"/>
+            <point key="canvasLocation" x="2916" y="367"/>
         </scene>
         <!--Journals-->
         <scene sceneID="H8X-ez-rym">
             <objects>
                 <tableViewController id="Bix-Qt-TED" customClass="JournalTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="2nO-Bd-pcF">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="975"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -1369,14 +1348,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7k-y5-2wn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2218.75" y="391.9921875"/>
+            <point key="canvasLocation" x="2219" y="367"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="mtx-fx-89k">
             <objects>
                 <viewController title="Tasks" id="wie-rr-RA5" customClass="TaskTableViewController" customModule="CreativeCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="99" sectionHeaderHeight="22" sectionFooterHeight="22" id="ttb-2Z-vAq">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="975"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -1979,7 +1958,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HEL-rP-lle">
-                                <frame key="frameInset" minX="-0.5" minY="20" height="44"/>
+                                <frame key="frameInset" minX="-1" minY="20" height="44" maxX="0.5"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Forgot Password" id="PqH-ag-AWn">
@@ -2014,7 +1993,7 @@
                         <viewControllerLayoutGuide type="bottom" id="hLN-vu-zuE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Vcy-wb-W84">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="975"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0w-pN-aJL" userLabel="Tasks">
@@ -2578,17 +2557,6 @@
                                 <exclude reference="isv-0R-Dfg"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="9a1-Kr-4A4"/>
-                                <exclude reference="EYv-vs-RdQ"/>
-                                <exclude reference="Ysq-aO-rpG"/>
-                                <exclude reference="ZcH-lT-Gnd"/>
-                                <exclude reference="2Hs-DA-CzA"/>
-                                <exclude reference="3BY-mD-5h2"/>
-                                <exclude reference="JBl-a3-Oj8"/>
-                                <exclude reference="Lwk-bC-ddh"/>
-                                <exclude reference="QwZ-FQ-Hiz"/>
-                                <exclude reference="dVB-MD-wls"/>
-                                <exclude reference="QZr-lv-v09"/>
                                 <exclude reference="6ak-d2-urk"/>
                                 <exclude reference="OAs-pz-NTY"/>
                                 <exclude reference="Thi-bH-ZVJ"/>
@@ -2605,6 +2573,17 @@
                                 <exclude reference="ycR-Is-b6O"/>
                                 <exclude reference="JZ9-pV-cbG"/>
                                 <exclude reference="ge8-Cb-iqf"/>
+                                <exclude reference="9a1-Kr-4A4"/>
+                                <exclude reference="EYv-vs-RdQ"/>
+                                <exclude reference="Ysq-aO-rpG"/>
+                                <exclude reference="ZcH-lT-Gnd"/>
+                                <exclude reference="2Hs-DA-CzA"/>
+                                <exclude reference="3BY-mD-5h2"/>
+                                <exclude reference="JBl-a3-Oj8"/>
+                                <exclude reference="Lwk-bC-ddh"/>
+                                <exclude reference="QwZ-FQ-Hiz"/>
+                                <exclude reference="dVB-MD-wls"/>
+                                <exclude reference="QZr-lv-v09"/>
                                 <exclude reference="3k1-JL-Lb9"/>
                             </mask>
                         </variation>
@@ -2620,17 +2599,6 @@
                                 <include reference="isv-0R-Dfg"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="9a1-Kr-4A4"/>
-                                <include reference="EYv-vs-RdQ"/>
-                                <include reference="Ysq-aO-rpG"/>
-                                <include reference="ZcH-lT-Gnd"/>
-                                <include reference="2Hs-DA-CzA"/>
-                                <include reference="3BY-mD-5h2"/>
-                                <include reference="JBl-a3-Oj8"/>
-                                <include reference="Lwk-bC-ddh"/>
-                                <include reference="QwZ-FQ-Hiz"/>
-                                <include reference="dVB-MD-wls"/>
-                                <include reference="QZr-lv-v09"/>
                                 <include reference="6ak-d2-urk"/>
                                 <include reference="OAs-pz-NTY"/>
                                 <include reference="Thi-bH-ZVJ"/>
@@ -2647,6 +2615,17 @@
                                 <include reference="ycR-Is-b6O"/>
                                 <include reference="JZ9-pV-cbG"/>
                                 <include reference="ge8-Cb-iqf"/>
+                                <include reference="9a1-Kr-4A4"/>
+                                <include reference="EYv-vs-RdQ"/>
+                                <include reference="Ysq-aO-rpG"/>
+                                <include reference="ZcH-lT-Gnd"/>
+                                <include reference="2Hs-DA-CzA"/>
+                                <include reference="3BY-mD-5h2"/>
+                                <include reference="JBl-a3-Oj8"/>
+                                <include reference="Lwk-bC-ddh"/>
+                                <include reference="QwZ-FQ-Hiz"/>
+                                <include reference="dVB-MD-wls"/>
+                                <include reference="QZr-lv-v09"/>
                                 <include reference="3k1-JL-Lb9"/>
                             </mask>
                         </variation>
@@ -2665,7 +2644,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fib-m2-4gj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9" y="1088.25"/>
+            <point key="canvasLocation" x="1541" y="-1727"/>
         </scene>
         <!--Appointments-->
         <scene sceneID="87G-OL-Q3K">
@@ -2684,7 +2663,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mzq-bs-yZw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="777" y="-1008"/>
+            <point key="canvasLocation" x="1542" y="-1008"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="FtV-Ge-PGy">
@@ -2722,7 +2701,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TSh-uh-AVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1542.1875" y="391.9921875"/>
+            <point key="canvasLocation" x="1542" y="367"/>
         </scene>
         <!--Calendar-->
         <scene sceneID="e7F-fJ-qi8">
@@ -2733,7 +2712,7 @@
                         <viewControllerLayoutGuide type="bottom" id="cmn-uo-km8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cOT-II-une">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="975"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krf-j0-1qK">
@@ -2848,16 +2827,16 @@
                                         <exclude reference="OBX-uQ-xBh"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="G1z-3q-f71"/>
-                                        <exclude reference="Gtc-e5-pCj"/>
-                                        <exclude reference="ucG-K2-UPH"/>
-                                        <exclude reference="zAo-Xk-JhX"/>
-                                        <exclude reference="f5i-JJ-2tq"/>
-                                        <exclude reference="gaP-vf-Jix"/>
                                         <exclude reference="1UJ-W6-Q1w"/>
                                         <exclude reference="LkL-Ss-jya"/>
                                         <exclude reference="pl1-Oc-sb3"/>
                                         <exclude reference="uBl-Lf-5Yz"/>
+                                        <exclude reference="f5i-JJ-2tq"/>
+                                        <exclude reference="gaP-vf-Jix"/>
+                                        <exclude reference="G1z-3q-f71"/>
+                                        <exclude reference="Gtc-e5-pCj"/>
+                                        <exclude reference="ucG-K2-UPH"/>
+                                        <exclude reference="zAo-Xk-JhX"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
@@ -2867,16 +2846,16 @@
                                         <include reference="OBX-uQ-xBh"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="G1z-3q-f71"/>
-                                        <include reference="Gtc-e5-pCj"/>
-                                        <include reference="ucG-K2-UPH"/>
-                                        <include reference="zAo-Xk-JhX"/>
-                                        <include reference="f5i-JJ-2tq"/>
-                                        <include reference="gaP-vf-Jix"/>
                                         <include reference="1UJ-W6-Q1w"/>
                                         <include reference="LkL-Ss-jya"/>
                                         <include reference="pl1-Oc-sb3"/>
                                         <include reference="uBl-Lf-5Yz"/>
+                                        <include reference="f5i-JJ-2tq"/>
+                                        <include reference="gaP-vf-Jix"/>
+                                        <include reference="G1z-3q-f71"/>
+                                        <include reference="Gtc-e5-pCj"/>
+                                        <include reference="ucG-K2-UPH"/>
+                                        <include reference="zAo-Xk-JhX"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -2919,14 +2898,11 @@
                         <outlet property="calendarView" destination="TYL-uE-jje" id="p3K-CN-937"/>
                         <outlet property="leftCalendarArrow" destination="OBX-uQ-xBh" id="nLa-KU-jLz"/>
                         <outlet property="rightCalendarArrow" destination="E4N-TK-cZ5" id="LZ0-Q6-trn"/>
-                        <segue destination="DJT-83-vnD" kind="popoverPresentation" identifier="calendarPopover" popoverAnchorView="TYL-uE-jje" id="S8y-wM-jFX">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kij-pg-Dis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="776.5625" y="1074.609375"/>
+            <point key="canvasLocation" x="1541" y="1117"/>
         </scene>
     </scenes>
     <resources>

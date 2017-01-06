@@ -13,6 +13,7 @@
 //
 
 import UIKit
+import ChameleonFramework
 
 // Dates for Calendar starting and ending dates. 
 /*
@@ -121,9 +122,9 @@ extension DateFormatter{
 extension UIColor{
     var defaultButtonColor: UIColor { return UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)}
     var navigationBarColor: UIColor { return UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)}
-    var appointmentColor: UIColor   { return UIColor.red}
-    var taskColor: UIColor          { return UIColor.green}
-    var journalColor: UIColor       { return UIColor.yellow}
+    var appointmentColor: UIColor   { return UIColor.flatRed}
+    var taskColor: UIColor          { return UIColor.flatGreen}
+    var journalColor: UIColor       { return UIColor.flatYellow}
 }
 
 // This extension is for making a background gradient

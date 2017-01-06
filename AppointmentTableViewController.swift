@@ -127,7 +127,7 @@ class AppointmentTableViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor().defaultButtonColor
+        header.contentView.backgroundColor = UIColor().appointmentColor
         header.textLabel?.textColor = UIColor.white
     }
     
