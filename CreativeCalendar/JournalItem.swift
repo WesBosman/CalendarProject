@@ -26,7 +26,9 @@ class GlobalJournals{
         GlobalJournalStructures.journalItems = db.getAllJournals()
         
         // Sort the journals based on their dates
-        GlobalJournalStructures.journalItems = GlobalJournalStructures.journalItems.sorted(by: {$0.journalDate.compare($1.journalDate) == ComparisonResult.orderedAscending})
+        GlobalJournalStructures.journalItems = GlobalJournalStructures.journalItems.sorted(by: {
+            $0.journalDate.compare($1.journalDate) == ComparisonResult.orderedAscending
+        })
     
         for journal in GlobalJournalStructures.journalItems{
             let journalDate = journalDateFormatter.string(from: journal.journalDate)

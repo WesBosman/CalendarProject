@@ -21,18 +21,19 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var selectedDate: Date = Date()
     @IBOutlet weak var leftCalendarArrow: UIButton!
     @IBOutlet weak var rightCalendarArrow: UIButton!
-    var count:Int = 1
-    let calendarSectionTitles: [String] = ["Appointments", "Tasks", "Journals"]
-    let calendarAppointmentCellId: String = "CalendarAppointmentCell"
-    let calendarTaskCellId: String = "CalendarTaskCell"
-    let calendarJournalCellId: String = "CalendarJournalCell"
+    
+    var calendarSectionTitles: [String] = ["Appointments", "Tasks", "Journals"]
     var calendarAppointmentList: [AppointmentItem] = []
     var calendarTaskList: [TaskItem] = []
     var calendarJournalList: [JournalItem] = []
+    
     var selectedIndexPath: IndexPath? = nil
-    var toggleJournalHeight: Bool = false
     @IBOutlet weak var calendarTableView: UITableView!
     let calendarDateFormatter = DateFormatter().dateWithoutTime
+    
+    fileprivate let appointmentCellID = "AppointmentTableViewCell"
+    fileprivate let taskCellID =        "TaskTableViewCell"
+    fileprivate let journalCellID =     "JournalTableViewCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,21 +67,22 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         // Register the cells for the tableView
         
         // Register appointment cells
-        let appointmentNib = UINib(nibName: "AppointmentTableViewCell", bundle: nil)
+        let appointmentNib = UINib(nibName: appointmentCellID, bundle: nil)
         self.calendarTableView.register(appointmentNib, forCellReuseIdentifier: "AppointmentTableViewCell")
         
         // Register task cell
-        let taskNib = UINib(nibName: "TaskTableViewCell", bundle: nil)
+        let taskNib = UINib(nibName: taskCellID, bundle: nil)
         self.calendarTableView.register(taskNib, forCellReuseIdentifier: "TaskTableViewCell")
         
         // Register journal cell
-        let journalNib = UINib(nibName: "JournalTableViewCell", bundle: nil)
+        let journalNib = UINib(nibName: journalCellID, bundle: nil)
         self.calendarTableView.register(journalNib, forCellReuseIdentifier: "JournalTableViewCell")
         
         // Set up the calendar
         self.calendarTableView.layer.cornerRadius = 10
         self.calendarTableView.backgroundColor = UIColor.clear
         self.calendarTableView.allowsSelection = false
+        
         // There will be no lines when there are no cells
         self.calendarTableView.tableFooterView = UIView(frame: CGRect())
         
@@ -125,20 +127,13 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         }
     }
     
-    // Calendar must know the number of rows, start date, end date and calendar
-    func configureCalendar(_ calendar: JTAppleCalendarView) -> (startDate: Date, endDate: Date, numberOfRows: Int, calendar: Calendar) {
-        print("Old Configure Calendar Method")
-        // Use the NSDate Extensions for the start and end date
-        return(startDate: Date().calendarStartDate as Date, endDate: Date().calendarEndDate as Date, numberOfRows: numberOfRows, calendar: userCalendar)
-    }
-    
     // Configure the calendar
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
         print("Congifure Calendar Method")
         let parameters = ConfigurationParameters(startDate: Date().calendarStartDate,
-                                                 endDate: Date().calendarEndDate,
+                                                 endDate:   Date().calendarEndDate,
                                                  numberOfRows: numberOfRows,
-                                                 calendar: userCalendar,
+                                                 calendar:     userCalendar,
                                                  firstDayOfWeek: .sunday)
         return parameters
     }
@@ -148,6 +143,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
 
         if let calendarCell = cell as? CalendarCell{
             calendarCell.setUpCellBeforeDisplay(cellState)
+            // If the appointment counter is larger than zero do not hide it
             if calendarCell.appointmentCounter > 0{
                 calendarCell.appointmentCounterLabel.isHidden = false
                 calendarCell.appointmentCounterLabel.text = String(calendarCell.appointmentCounter)
@@ -155,7 +151,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             else{
                 calendarCell.appointmentCounterLabel.isHidden = true
             }
-            
+            // If the task counter is larger than zero do not hide it
             if calendarCell.taskCounter > 0{
                 calendarCell.taskCounterLabel.isHidden = false
                 calendarCell.taskCounterLabel.text = String(calendarCell.taskCounter)
@@ -163,7 +159,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             else{
                 calendarCell.taskCounterLabel.isHidden = true
             }
-            
+            // If the journal counter is larger than zero do not hide it
             if calendarCell.journalCounter > 0{
                 calendarCell.journalCounterLabel.isHidden = false
                 calendarCell.journalCounterLabel.text = String(calendarCell.journalCounter)
@@ -179,8 +175,10 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Function for when the cell has been selected
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleDayCellView?, cellState: CellState) {
-        print("Did Select Date Method")
+        print("Did Select Date (Cell) Method")
+        
         let stringDate = DateFormatter().dateWithoutTime.string(from: cellState.date)
+        
         print("String Date \(stringDate)")
         
         // Send the selected date to the popover so we know which appointments tasks and journals to retrieve from the database
@@ -189,14 +187,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             selectedCell = calendarCell
             calendarCell.updateCell(cellState)
             
-            // Get the items at those dates
+            // Get the items at the selected date
             setUpTableView()
         }
     }
     
     // Function for when the cell has been deselected
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleDayCellView?, cellState: CellState) {
-        print("Did De-Select Date Method")
+        print("Did De-Select (Cell) Date Method")
+        
         // Update the cell state to deselect it
         if let calendarCell = cell as? CalendarCell{
             calendarCell.updateCell(cellState)
@@ -240,11 +239,16 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         return CGSize(width: calendarView.frame.size.width, height: 100)
     }
     
+    //
     // MARK - Table View Methods 
+    //
     
     func setUpTableView(){
         // TODO - Want this function to not have to hit the database
+        print("Set up Table View Method")
+        
         let stringDate = calendarDateFormatter.string(from: selectedDate)
+        
         print("String for selected date \(stringDate)")
         
         calendarAppointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(stringDate, formatter: calendarDateFormatter)
@@ -258,99 +262,88 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         calendarTableView.endUpdates()
     }
     
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0{
-            print("Appointments in Section \(calendarAppointmentList.count)")
+        
+        switch(section){
+        // Appointments
+        case 0:
             return calendarAppointmentList.count
-        }
-        else if section == 1{
-            print("Tasks in Section \(calendarTaskList.count)")
+        // Tasks
+        case 1:
+            print("Tasks in Calendar \(calendarTaskList.count)")
             return calendarTaskList.count
-        }
-        else if section == 2{
-            print("Journals in Section \(calendarJournalList.count)")
+        // Journals
+        case 2:
+            print("Journals in Calendar \(calendarJournalList.count)")
             return calendarJournalList.count
+        // Default
+        default:
+            return 0
         }
-        return 0
     }
     
     // If the arrays have information in them then add to the number of sections to display
     func numberOfSections(in tableView: UITableView) -> Int {
-        var count: Int = 0
-        
-        if(!calendarAppointmentList.isEmpty){
-            count += 1
-            print("Appointment Count")
-        }
-        if(!calendarTaskList.isEmpty){
-            count += 1
-            print("Task Count")
-        }
-        if(!calendarJournalList.isEmpty){
-            count += 1
-            print("Journal Count")
-        }
-        print("Number of Sections in Table == \(count)")
-        return count
+        // There will always be three sections in the table view
+        // Appointments first
+        // Tasks second
+        // Journals third
+        return 3
     }
     
+    // Returns either an appointment, task or journal cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var appointment: AppointmentItem
-        var task: TaskItem
-        var journal: JournalItem
         
-        print("Number of Appointments \(calendarAppointmentList.count)")
-        print("Number of Tasks \(calendarTaskList.count)")
-        print("Number of Journals \(calendarJournalList.count)")
-        print("IndexPath.section \(indexPath.section)")
-        print("IndexPath.row \(indexPath.row)")
-        
-        // Selected Date
-        let stringDate = calendarDateFormatter.string(from: selectedDate)
-        print("Selected String Date \(stringDate)")
-        
-        // TODO Make sure these do not fail
-        if calendarAppointmentList.isEmpty == false && indexPath.row < calendarAppointmentList.count{
-            appointment = calendarAppointmentList[indexPath.row]
+        switch(indexPath.section){
+        // Appointments
+        case 0:
+            print("Cell for row at index path case 0 return appointment cell")
+            let appointment = calendarAppointmentList[indexPath.row]
+            print("Appointment Cell Title \(appointment.title)")
             
-            if indexPath.section == 0{
-                let appointmentCell: AppointmentTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "AppointmentTableViewCell", for: indexPath) as! AppointmentTableCell
-                appointmentCell.appointmentCompleted(appointment)
-                appointmentCell.appointmentImage.image = UIImage(named: "Appointments")
-                appointmentCell.appointmentTitle.text = appointment.title
-                appointmentCell.appointmentType.text  = appointment.type
-                appointmentCell.appointmentStart.text = DateFormatter().dateWithTime.string(from: appointment.startingTime)
-                appointmentCell.appointmentEnd.text   = DateFormatter().dateWithTime.string(from:appointment.endingTime)
-                appointmentCell.appointmentAlert.text = appointment.alert
-                appointmentCell.appointmentLocation.text = appointment.appLocation
-                appointmentCell.appointmentAdditionalInfo.text = appointment.additionalInfo
-                
-                // Additional info size to fit
-                appointmentCell.appointmentAdditionalInfo.sizeToFit()
-                return appointmentCell
-            }
-        }
-        
-        if calendarTaskList.isEmpty == false && indexPath.row < calendarTaskList.count{
-            task = calendarTaskList[indexPath.row]
             
-            let taskCell: TaskTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath) as! TaskTableCell
+            let appointmentCell: AppointmentTableCell = calendarTableView.dequeueReusableCell(withIdentifier: appointmentCellID, for: indexPath) as! AppointmentTableCell
+            appointmentCell.appointmentCompleted(appointment)
+            appointmentCell.appointmentImage.image = UIImage(named: "Appointments")
+            appointmentCell.appointmentTitle.text = appointment.title
+            appointmentCell.appointmentType.text  = appointment.type
+            appointmentCell.appointmentStart.text = DateFormatter().dateWithTime.string(from: appointment.startingTime)
+            appointmentCell.appointmentEnd.text   = DateFormatter().dateWithTime.string(from:appointment.endingTime)
+            appointmentCell.appointmentAlert.text = appointment.alert
+            appointmentCell.appointmentLocation.text = appointment.appLocation
+            appointmentCell.appointmentAdditionalInfo.text = appointment.additionalInfo
+            
+            // Additional info size to fit
+            appointmentCell.appointmentAdditionalInfo.sizeToFit()
+            return appointmentCell
+            
+        // Tasks
+        case 1:
+            print("Cell for row at index path case 1 return task cell")
+            let task = calendarTaskList[indexPath.row]
+            print("Task Cell Title \(task.taskTitle)")
+            
+            let taskCell: TaskTableCell = calendarTableView.dequeueReusableCell(withIdentifier: taskCellID, for: indexPath) as! TaskTableCell
             taskCell.taskCompleted(task)
             taskCell.taskImage.image = UIImage(named: "Tasks")
             taskCell.taskTitle.text  = task.taskTitle
             taskCell.taskAlert.text  = task.alert
             taskCell.taskEstimatedCompleteDate.text = DateFormatter().dateWithoutTime.string(from:task.estimateCompletionDate)
             taskCell.taskAdditionalInfo.text = task.taskInfo
-            
+                
             // Size to fit for additional information
             taskCell.taskAdditionalInfo.sizeToFit()
             return taskCell
-        }
         
-        if calendarJournalList.isEmpty == false && indexPath.row < calendarJournalList.count{
-            journal = calendarJournalList[indexPath.row]
+        // Journals
+        case 2:
+            print("Cell for row at index path case 2 return journal cell")
+            let journal = calendarJournalList[indexPath.row]
+            print("Journal Cell title \(journal.journalDate)")
             
-            let journalCell: JournalTableCell = calendarTableView.dequeueReusableCell(withIdentifier: "JournalTableViewCell", for: indexPath) as! JournalTableCell
+            
+            let journalCell: JournalTableCell = calendarTableView.dequeueReusableCell(withIdentifier: journalCellID, for: indexPath) as! JournalTableCell
             journalCell.journalImage.image = UIImage(named: "Journals")
             journalCell.journalTitle.text  = journal.getSimplifiedDate()
             journalCell.journalEntry.text  = journal.journalEntry
@@ -360,57 +353,84 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             // Size to fit for journal entry
             journalCell.journalEntry.sizeToFit()
             return journalCell
-        }
 
-        // Otherwise return an empty table view cell
-        return UITableViewCell()
+        // Default
+        default:
+            print("Cell for row at index path default case return empty cell")
+            let cell = UITableViewCell()
+            cell.backgroundColor = UIColor.clear
+            return cell
+        }
     }
 
-    
+    // Return the title for each section header unless the section is empty
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Return nil if there are no rows in a section
-        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
-            print("Title for header is returning nil")
+        if tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: section) == 0{
+            print("Title for header is returning nil for section \(section)")
             return nil
         }
-        return calendarSectionTitles[section]
+        // Otherwise we will return a section title
+        else{
+            return calendarSectionTitles[section]
+        }
     }
     
-    
+    // Return the view for each section header
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // If there are no rows in a section return nil
-        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
-            print("View for header is returning nil")
+        if tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: section) == 0{
+            print("View for header is returning nil for section \(section)")
             return nil
         }
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
-        let label = UILabel(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 18))
-        label.text = calendarSectionTitles[section]
-        label.textColor = UIColor.white
-        view.addSubview(label)
+        // Otherwise configure the header's view and return it
+        else{
+            // Configure the view
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
+            let label = UILabel(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 18))
+            label.text = calendarSectionTitles[section]
+            label.textColor = UIColor.white
+            view.addSubview(label)
         
-        // Appointment Section 
-        if section == 0{
-            view.backgroundColor = UIColor().appointmentColor
+            // Color the headers of the sections in the table
+            if section == 0{
+                view.backgroundColor = UIColor().appointmentColor
+            }
+            else if section == 1{
+                view.backgroundColor = UIColor().taskColor
+            }
+            else{
+                view.backgroundColor = UIColor().journalColor
+            }
+        
+            return view
         }
-        else if section == 1{
-            view.backgroundColor = UIColor().taskColor
+    }
+    
+    // This method makes the cells dissapear when there is no content
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if(tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: section) == 0){
+            print("Height for the header in section \(section) is zero")
+            return 0
         }
         else{
-            view.backgroundColor = UIColor().journalColor
+            return 30
         }
-        
-        print("Returning View")
-        
-        return view
     }
     
-    
+    // Height for row should return zero when there is no content
+    // Working on Automatic Dimensions
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        if(tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: indexPath.section) == 0){
+            print("Returning zero for the height of the cells")
+            return 0
+        }
+        else{
+            return UITableViewAutomaticDimension
+        }
     }
     
-    
+    // Estimated row height should be used for automatic dimensions of cells
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }

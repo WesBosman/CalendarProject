@@ -175,11 +175,6 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             cell.detailTextLabel?.numberOfLines = 0
             cell.detailTextLabel?.lineBreakMode = .byWordWrapping
             
-//            let cell: AppointmentTableCell = appointmentTableView.dequeueReusableCell(withIdentifier: appointmentIdentifier, for: indexPath) as! AppointmentTableCell
-//            
-//            cell.appointmentTitle.text  = appointment.title
-//            cell.appointmentType.text   = appointment.type
-            
             return cell
         }
         else if tableView == taskTableView{
@@ -189,6 +184,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             cell.detailTextLabel?.text = DateFormatter().dateWithTime.string(from: task.estimateCompletionDate) + "\n" + task.taskInfo
             cell.detailTextLabel?.numberOfLines = 0
             cell.detailTextLabel?.lineBreakMode = .byWordWrapping
+            
             return cell
         }
         else{
@@ -212,6 +208,7 @@ class PopoverViewController: UIViewController , UIScrollViewDelegate, UITableVie
             
             journalCellHeightArray.append(combinedHeight)
             cell.sizeToFit()
+            
             return cell
         }
     }
