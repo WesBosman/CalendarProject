@@ -241,7 +241,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                 }
             }
             
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
             
         // Let the user know that some required fields are not filled in

@@ -86,6 +86,10 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         // There will be no lines when there are no cells
         self.calendarTableView.tableFooterView = UIView(frame: CGRect())
         
+        // Try to set up the automatic dimensioning of the table view
+        self.calendarTableView.rowHeight = UITableViewAutomaticDimension
+        self.calendarTableView.estimatedRowHeight = 100
+        
     }
     
     // Failable Initializer for tab bar controller
@@ -420,18 +424,18 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Height for row should return zero when there is no content
     // Working on Automatic Dimensions
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if(tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: indexPath.section) == 0){
-            print("Returning zero for the height of the cells")
-            return 0
-        }
-        else{
-            return UITableViewAutomaticDimension
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if(tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: indexPath.section) == 0){
+//            print("Returning zero for the height of the cells")
+//            return 0
+//        }
+//        else{
+//            return UITableViewAutomaticDimension
+//        }
+//    }
     
     // Estimated row height should be used for automatic dimensions of cells
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 100
+//    }
 }

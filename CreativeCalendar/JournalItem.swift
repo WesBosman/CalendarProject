@@ -99,7 +99,7 @@ class GlobalJournals{
     // Remove the journal from the Dictionary
     func removeJournalFromGlobalDictionary(item: JournalItem){
         let dictionaryKey = DateFormatter().journalFormat.string(from: item.journalDate)
-        var journalArray = GlobalJournalStructures.journalDictionary[dictionaryKey]
+        let journalArray = GlobalJournalStructures.journalDictionary[dictionaryKey]
         
         // If a journal array exists for a given key then remove it
         if var journalArray = journalArray{

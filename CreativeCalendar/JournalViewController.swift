@@ -122,7 +122,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             }
             
         }
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     /*

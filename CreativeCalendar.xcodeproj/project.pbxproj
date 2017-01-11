@@ -62,7 +62,6 @@
 		DEBE205C1DD12312009933C7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBE205B1DD12312009933C7 /* SignUpViewController.swift */; };
 		DEBE205E1DD1232C009933C7 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBE205D1DD1232C009933C7 /* ForgotPasswordViewController.swift */; };
 		DEDB07821D5A2B4F00E32208 /* homeTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB07811D5A2B4F00E32208 /* homeTaskTests.swift */; };
-		DEE276E21D4012DC005F74B7 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */; };
 		E759A587BCEE558A4B683337 /* Pods_CreativeCalendarTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE431EAD256831BC6909CC4 /* Pods_CreativeCalendarTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -165,7 +164,6 @@
 		DEBE205B1DD12312009933C7 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		DEBE205D1DD1232C009933C7 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		DEDB07811D5A2B4F00E32208 /* homeTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = homeTaskTests.swift; sourceTree = "<group>"; };
-		DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		E5179464284A4CF33184FC2A /* Pods-CreativeCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendar/Pods-CreativeCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		E840C89384C96C8567B9F6A7 /* Pods-CreativeCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendar/Pods-CreativeCalendar.debug.xcconfig"; sourceTree = "<group>"; };
 		F631488F30927850A79E0F93 /* Pods-CreativeCalendarUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendarUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendarUITests/Pods-CreativeCalendarUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -347,7 +345,6 @@
 				DE4CAA701D243A9900197FEF /* CalendarHeaderView.swift */,
 				DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */,
 				DE4CAA721D24679400197FEF /* CalendarViewController.swift */,
-				DEE276E11D4012DC005F74B7 /* PopoverViewController.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -687,7 +684,6 @@
 				DE8E7D561D77E67B00C69B71 /* JournalCell.swift in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
 				DE977CB51D5B507200A571A4 /* AlertTableViewCell.swift in Sources */,
-				DEE276E21D4012DC005F74B7 /* PopoverViewController.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
 				DE364A081E12F5AE00F33C8D /* AppointmentTableCell.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,

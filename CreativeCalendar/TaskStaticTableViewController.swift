@@ -155,7 +155,7 @@ class TaskStaticTableViewController: UITableViewController {
             }
             
             
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
         else{
             // This is similar to the code for the static appointment alert.
