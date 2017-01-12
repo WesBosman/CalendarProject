@@ -141,40 +141,30 @@ extension CAGradientLayer{
 }
 
 class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
-    
-    @IBOutlet weak var taskAlertLabel: UILabel!
-    @IBOutlet weak var appointmentLabel: UILabel!
-    @IBOutlet weak var taskLabel: UILabel!
+
     @IBOutlet weak var daysOfTheWeekText: UILabel!
     @IBOutlet weak var homeDateLabel: UILabel!
-    @IBOutlet weak var journalLabel: UILabel!
     @IBOutlet weak var appointmentViewTable: UITableView!
     @IBOutlet weak var taskViewTable: UITableView!
-    @IBOutlet weak var journalViewBox: UITextView!
+    @IBOutlet weak var journalViewTable: UITableView!
+    
     weak var actionToEnable : UIAlertAction?
     let db = DatabaseFunctions.sharedInstance
     let appointmentCellID = "AppointmentHomeCell"
-    let taskCellID = "TaskHomeCell"
-    fileprivate var taskCell: HomeTaskCell = HomeTaskCell()
-    fileprivate var appointmentCell: HomeAppointmentCell = HomeAppointmentCell()
+    let taskCellID        = "TaskHomeCell"
+    let journalCellID     = "JournalHomeCell"
+    
     var appointmentArray: [AppointmentItem] = []
     var taskArray: [TaskItem] = []
     var journalArray: [JournalItem] = []
+    
     var todaysDate: String = String()
-    var consentGiven = false
-    let dateFormat = DateFormatter()
-    let currentDate = Date()
+    var consentGiven       = false
+    let dateFormat         = DateFormatter()
+    let currentDate        = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Set color and text of the text labels
-        //clearAllUserDefaults()
-        appointmentLabel.text = "Appointments"
-        appointmentLabel.textColor = UIColor.white
-        taskLabel.text = "To-Do List"
-        taskLabel.textColor = UIColor.white
-        journalLabel.text = "Journal"
-        journalLabel.textColor = UIColor.white
         
         // Current Date
         dateFormat.dateStyle = DateFormatter.Style.full
@@ -186,15 +176,24 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, at: 0)
         
-        // Set this class up to be the delegate for the two different table views
-        self.taskViewTable.delegate = self
-        self.taskViewTable.dataSource = self
+        // Set this class up to be the delegate for the different table views
         self.appointmentViewTable.delegate = self
         self.appointmentViewTable.dataSource = self
+        self.taskViewTable.delegate = self
+        self.taskViewTable.dataSource = self
+        self.journalViewTable.delegate = self
+        self.journalViewTable.dataSource = self
         
-        // Make it so the journal is uneditable from the home screen.
-        journalViewBox.isEditable = false
-        journalViewBox.scrollRangeToVisible(NSRange(location: 0, length: 0))
+        // Round out the table views
+        appointmentViewTable.layer.cornerRadius = 5
+        taskViewTable.layer.cornerRadius = 5
+        journalViewTable.layer.cornerRadius = 5
+        
+//        appointmentViewTable.estimatedRowHeight = 100
+//        taskViewTable.estimatedRowHeight = 100
+        
+        journalViewTable.rowHeight = UITableViewAutomaticDimension
+        journalViewTable.estimatedRowHeight = 100
         
         // Make the day label with the checkmark.
         daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
@@ -226,38 +225,18 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
 //    }
     
     
-    // When the home screen appears we set the appointment and task arrays based on the data stored there
-    // We then reload the tables so that the changes from the other tabs are reflected here.
+    // Set up the table views when the view appears
     override func viewWillAppear(_ animated: Bool) {
         let currentDateAsString = DateFormatter().dateWithoutTime.string(from: currentDate)
         appointmentArray = db.getAppointmentByDate(currentDateAsString, formatter: DateFormatter().dateWithoutTime)
         taskArray = db.getTaskByDate(currentDateAsString, formatter: DateFormatter().dateWithoutTime)
+        journalArray = db.getJournalByDate(currentDateAsString, formatter: DateFormatter().dateWithoutTime)
+        
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
-        printJournals()
+        journalViewTable.reloadData()
+        
     }
-
-    
-    // This function is used for printing journals to the home screen
-    func printJournals(){
-        //print("Journal code for view will appear method.")
-        var journalText: String = ""
-        var journalCount: Int = 0
-        let today = DateFormatter().dateWithoutTime.string(from: currentDate)
-        journalArray = DatabaseFunctions.sharedInstance.getJournalByDate(today, formatter: DateFormatter().dateWithoutTime)
-        for journal in journalArray{
-            if !journalArray.isEmpty{
-                print("Journal Entry: \(journal.journalEntry)")
-                journalCount += 1
-                print("Number of journals \(journalCount)")
-                journalText += journal.journalEntry + "\n"
-            }
-        }
-        let firstString = "You have (\(journalCount)) journal entries for today.\n"
-        journalViewBox.text = firstString + journalText
-        journalViewBox.scrollRangeToVisible(NSRange(location: 0, length: 0))
-    }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -268,11 +247,112 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         if tableView == appointmentViewTable{
             return appointmentArray.count
         }
-        else{
+        else if tableView == taskViewTable{
             return taskArray.count
+        }
+        else{
+            return journalArray.count
         }
     }
     
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Appointment Table View
+        if tableView == appointmentViewTable{
+            let appointment = appointmentArray[(indexPath as NSIndexPath).row] as AppointmentItem
+            let appointmentCell = appointmentViewTable.dequeueReusableCell(withIdentifier: appointmentCellID, for: indexPath) as! HomeAppointmentCell
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM dd ',' h:mm a"
+            
+            // If the appointment is overdue then the starting date text color is red
+            if appointment.isOverdue == true{
+                appointmentCell.homeAppointmentStart.textColor = UIColor.red
+            }
+            else{
+                appointmentCell.homeAppointmentStart.textColor = UIColor.black
+            }
+            
+            // If the appointment has been completed then we need to mark it with a check
+            appointmentCell.homeAppointmentCompleted(appointment)
+            
+            // Set the other images and labels.
+            appointmentCell.homeAppointmentImage.image = UIImage(named: "Appointments")
+            appointmentCell.setTitle(title: appointment.title)
+            appointmentCell.setType(type: appointment.type)
+            appointmentCell.setStart(start: formatter.string(from: appointment.startingTime))
+            appointmentCell.setEnd(end: formatter.string(from: appointment.endingTime))
+            appointmentCell.setLocation(location: appointment.appLocation)
+            appointmentCell.setAlert(alert: appointment.alert)
+            appointmentCell.setRepeat(repeating: appointment.repeating)
+            appointmentCell.setAdditional(additional: appointment.additionalInfo)
+            
+            return appointmentCell
+        }
+            // Task Table View
+        else if tableView == taskViewTable{
+            let task = taskArray[(indexPath as NSIndexPath).row] as TaskItem
+            let taskCell = taskViewTable.dequeueReusableCell(withIdentifier: taskCellID, for: indexPath) as! HomeTaskCell
+            
+            // If the task is completed it should have a green checkbox
+            taskCell.homeTaskCompleted(task)
+            taskCell.setTitle(title: task.taskTitle)
+            taskCell.setAlert(alert: task.alert)
+            taskCell.setInfo(info: task.taskInfo)
+            taskCell.setCompletionDate(date: DateFormatter().dateWithTime.string(from: task.estimateCompletionDate))
+            taskCell.setRepeating(repeating: task.repeating)
+            taskCell.homeTaskTypeImage.image = UIImage(named: "Tasks")
+            
+            // Task has past its due date
+            if task.isOverdue{
+                taskCell.homeTaskCompletionDate.textColor = UIColor.red
+            }
+            return taskCell
+        }
+            // Journal Table View
+        else{
+            let journal = journalArray[(indexPath as NSIndexPath).row] as JournalItem
+            let journalCell = journalViewTable.dequeueReusableCell(withIdentifier: journalCellID, for: indexPath) as! HomeJournalCell
+            
+            let journalImage = UIImage(named: "Journals")!
+            journalCell.setTitle(title: journal.journalTitle)
+            journalCell.setEntry(entry: journal.journalEntry)
+            journalCell.setJournalImage(image: journalImage)
+            return journalCell
+        }
+    }
+    
+    // MARK - Table View Header Methods
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        print("Will display header view")
+        if let headerView = view as? UITableViewHeaderFooterView{
+            if tableView == appointmentViewTable{
+                headerView.textLabel?.text = "Appointments (\(appointmentArray.count))"
+                headerView.textLabel?.textColor = UIColor.white
+                headerView.backgroundView?.backgroundColor = UIColor().appointmentColor
+            }
+            else if tableView == taskViewTable{
+                headerView.textLabel?.text = "Tasks (\(taskArray.count))"
+                headerView.textLabel?.textColor = UIColor.white
+                headerView.backgroundView?.backgroundColor = UIColor().taskColor
+            }
+            else if tableView == journalViewTable{
+                headerView.textLabel?.text = "Journals (\(journalArray.count))"
+                headerView.textLabel?.textColor = UIColor.white
+                headerView.backgroundView?.backgroundColor = UIColor().journalColor
+            }
+        }
+    }
+    
+    // MARK - Table View Menu Controllers
+    
+    // Appointments and Tasks can be completed, canceled and delted from the 
+    // Home view controller
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Need an alert dialog box so the user can specify that they have completed the task.
         // When you select a task and mark it as complete on the home screen change the picture to a green checkbox
@@ -299,7 +379,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                     taskCell.homeTaskCompleted(task)
                     self.db.updateTask(task)
                 })
-//                let exitMenu = UIAlertAction(title: "Exit Menu", style: .Default, handler: nil)
                 
                 completeTask.addAction(complete)
                 completeTask.addAction(exitMenu)
@@ -361,7 +440,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
                     self.db.updateAppointment(appointment)
                     
                 }))
-//                let exitMenu = (UIAlertAction(title: "Exit Menu", style: .Default, handler: nil))
                 
                 completeAppointment.addAction(complete)
                 completeAppointment.addAction(exitMenu)
@@ -420,7 +498,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             let appointmentCell = appointmentViewTable.cellForRow(at: indexPath) as! HomeAppointmentCell
             
         
-            let alert = UIAlertController(title: "Confirmation", message: "Are you sure you want to \(typeOfAction) the appointment: \n\(appointment.title)?", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Confirmation",
+                                          message: "Are you sure you want to \(typeOfAction) the appointment: \n\(appointment.title)?",
+                preferredStyle: UIAlertControllerStyle.alert)
             
                 let action = (UIAlertAction(title: "\(typeOfAction)", style: .destructive, handler: {(action: UIAlertAction) in
                     
@@ -510,61 +590,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     // them cancel or delete the item
     func textChanged(_ sender:UITextField) {
         self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // fill the appointment table view cell and return it
-        if tableView == appointmentViewTable{
-            let appointment = appointmentArray[(indexPath as NSIndexPath).row] as AppointmentItem
-            let appointmentCell = appointmentViewTable.dequeueReusableCell(withIdentifier: appointmentCellID, for: indexPath) as! HomeAppointmentCell
-            let startFormatter = DateFormatter()
-            let endFormatter = DateFormatter()
-            startFormatter.dateFormat = "MMM dd ',' h:mm a"
-            endFormatter.dateFormat = " MMM dd ',' h:mm a"
-            
-            // If the appointment is overdue then the starting date text color is red
-            if appointment.isOverdue == true{
-                appointmentCell.homeAppointmentStart.textColor = UIColor.red
-            }
-            else{
-                appointmentCell.homeAppointmentStart.textColor = UIColor.black
-            }
-            
-            // If the appointment has been completed then we need to mark it with a check
-            appointmentCell.homeAppointmentCompleted(appointment)
-            
-            // Set the other images and labels.
-            appointmentCell.homeAppointmentImage.image = UIImage(named: "Appointments")
-            appointmentCell.homeAppointmentTitle.text = appointment.title
-            appointmentCell.homeAppointmentType.text = "type: \(appointment.type)"
-            appointmentCell.homeAppointmentStart.text = "start: \(startFormatter.string(from: appointment.startingTime as Date))"
-            appointmentCell.homeAppointmentEnd.text = "end: \(endFormatter.string(from: appointment.endingTime as Date))"
-            appointmentCell.homeAppointmentLocation.text = "location: \(appointment.appLocation)"
-            appointmentCell.homeAppointmentAdditional.text = "info: \(appointment.additionalInfo)"
-            appointmentCell.homeAppointmentAlert.text = "alert: \(appointment.alert)"
-            
-            return appointmentCell
-        }
-        // Otherwise fill the task table cell and return it
-        else{
-            let task = taskArray[(indexPath as NSIndexPath).row] as TaskItem
-            taskCell = taskViewTable.dequeueReusableCell(withIdentifier: taskCellID, for: indexPath) as! HomeTaskCell
-
-            // If the task is completed it should have a green checkbox
-            taskCell.homeTaskCompleted(task)
-            taskCell.homeTaskCompletionDate.text = DateFormatter().dateWithTime.string(from: task.estimateCompletionDate as Date)
-            taskCell.homeTaskTitle.text = task.taskTitle
-            taskCell.homeTaskInfo.text = task.taskInfo
-            taskCell.homeTaskAlertLabel.text = "Alert: " + task.alert
-            taskCell.homeTaskTypeImage.image = UIImage(named: "Tasks")
-            
-            // Task has past its due date
-            if task.isOverdue{
-                taskCell.homeTaskCompletionDate.textColor = UIColor.red
-            }
-            return taskCell
-        }
     }
     
     /*

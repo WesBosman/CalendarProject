@@ -18,6 +18,7 @@ class HomeAppointmentCell: UITableViewCell {
     @IBOutlet weak var homeAppointmentAdditional: UILabel!
     @IBOutlet weak var homeAppointmentCompletedImage: UIImageView!
     @IBOutlet weak var homeAppointmentType: UILabel!
+    @IBOutlet weak var homeRepeatLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,5 +39,39 @@ class HomeAppointmentCell: UITableViewCell {
         else{
             homeAppointmentCompletedImage.image = UIImage(named: "uncheckbox") //"CircleUntickedRed")
         }
+    }
+    
+    func setTitle(title: String){
+        homeAppointmentTitle.text = "Appointment: \(title)"
+    }
+    
+    func setType(type: String){
+        homeAppointmentType.text = "Type: \(type)"
+    }
+    
+    func setStart(start: String){
+        homeAppointmentStart.text = "Start: \(start)"
+    }
+    
+    func setEnd(end: String){
+        homeAppointmentEnd.text = "End: \(end)"
+    }
+    
+    func setLocation(location: String){
+        homeAppointmentLocation.text = "Location: \(location)"
+    }
+    
+    func setAdditional(additional: String){
+        homeAppointmentAdditional.numberOfLines = 0
+        homeAppointmentAdditional.lineBreakMode = .byWordWrapping
+        homeAppointmentAdditional.text = "Additional info: \(additional)"
+    }
+    
+    func setAlert(alert: String){
+        homeAppointmentAlert.text = "Alert: \(alert)"
+    }
+    
+    func setRepeat(repeating: String){
+        homeRepeatLabel.text = "Repeat: \(repeating)"
     }
 }

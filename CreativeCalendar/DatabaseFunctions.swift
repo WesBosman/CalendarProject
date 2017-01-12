@@ -48,7 +48,7 @@ class DatabaseFunctions{
             
             try db?.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text ,repeat_time, alert_time, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)
             
-            try db?.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date text, journal text, deleted bool, date_deleted, delete_reason, uuid text)", values: nil)
+            try db?.executeUpdate("create table if not exists Journals(id integer primary key autoincrement, date_created text, title text, journal text, deleted bool, date_deleted, delete_reason, uuid text)", values: nil)
             
             // Get DatabasePath
             print("Database File Path: \(fileURL.path)")
@@ -143,13 +143,13 @@ class DatabaseFunctions{
         
         
         do{
-            let rs = try db.executeQuery("SELECT date, journal FROM Journals", values: nil)
+            let rs = try db.executeQuery("SELECT date_created, journal FROM Journals", values: nil)
             var count:Int = 1
             while rs.next(){
                 count += 1
             }
             print("Number of items in Journal Table database: \(count)")
-            try db.executeUpdate("INSERT into Journals(date, journal, deleted, uuid) values(?, ?,?, ?)", values:[ journalDateAsString, journal.journalEntry, journal.journalDeleted, journal.journalUUID])
+            try db.executeUpdate("INSERT into Journals(date_created, title, journal, deleted, uuid) values(?, ?, ?, ?, ?)", values:[ journalDateAsString, journal.journalTitle, journal.journalEntry, journal.journalDeleted, journal.journalUUID])
             
         } catch let err as NSError{
             print("Add journal to Database ERROR: \(err.localizedDescription)")
@@ -316,7 +316,7 @@ class DatabaseFunctions{
         
         do{
             // Get the value of the completed column for the task with the given uuid
-            let selectStatement = "SELECT journal, deleted, date_deleted, delete_reason, uuid FROM Journals WHERE uuid=?"
+            let selectStatement = "SELECT title, journal, deleted, date_deleted, delete_reason, uuid FROM Journals WHERE uuid=?"
             let selectResult = try db.executeQuery(selectStatement, values: [item.journalUUID])
             
             while selectResult.next(){
@@ -332,14 +332,16 @@ class DatabaseFunctions{
                     }
                     case "edit":
                         print("Edit Journal")
+                        print("Journal Title: \(item.journalTitle)")
                         print("Journal Entry: \(item.journalEntry)")
-                        print("Journal UUID: \(item.journalUUID)")
+                        print("Journal UUID:  \(item.journalUUID)" )
+                        
                         let journalUUID = selectResult.object(forColumnName: "uuid") as! String
                         
                         if journalUUID == item.journalUUID{
                             print("Edit Statement")
-                            let editStatement = "UPDATE Journals SET journal=? WHERE uuid=?"
-                            try db.executeUpdate(editStatement, values: [item.journalEntry, item.journalUUID])
+                            let editStatement = "UPDATE Journals SET title=?, journal=? WHERE uuid=?"
+                            try db.executeUpdate(editStatement, values: [item.journalTitle, item.journalEntry, item.journalUUID])
                     }
                     
                     default:
@@ -496,16 +498,18 @@ class DatabaseFunctions{
         var journalArray:[JournalItem] = []
         
         do{
-            let fetchJournalByDateStatement = "SELECT date, journal, deleted, uuid FROM Journals WHERE deleted=?"
+            let fetchJournalByDateStatement = "SELECT date_created, title, journal, deleted, uuid FROM Journals WHERE deleted=?"
             let journal = try db.executeQuery(fetchJournalByDateStatement, values: [false])
             
             while journal.next(){
-                let date = dateFormat.date(from: journal.object(forColumnName: "date") as! String)
+                let date = dateFormat.date(from: journal.object(forColumnName: "date_created") as! String)
+                let title = journal.object(forColumnName: "title") as! String
                 let entry = journal.object(forColumnName: "journal") as! String
                 let deleted = journal.bool(forColumn: "deleted")
                 let uuid = journal.object(forColumnName: "uuid") as! String
                 
-                let journalItem = JournalItem(date: date!,
+                let journalItem = JournalItem(dateCreated: date!,
+                                              journalTitle: title,
                                               journal: entry,
                                               deleted: deleted,
                                               deleteReason: nil,
@@ -657,18 +661,20 @@ class DatabaseFunctions{
         let dateFormat = DateFormatter().universalFormatter
         
         do{
-            let journal:FMResultSet = try db.executeQuery("SELECT date, journal, deleted, uuid FROM Journals WHERE deleted=?", values: [false])
+            let journal:FMResultSet = try db.executeQuery("SELECT date_created, title, journal, deleted, uuid FROM Journals WHERE deleted=?", values: [false])
             while journal.next(){
-                let date = dateFormat.date(from: journal.object(forColumnName: "date") as! String)
-                let entry = journal.object(forColumnName: "journal") as! String
+                let date = dateFormat.date(from: journal.object(forColumnName: "date_created") as! String)
+                let title = journal.string(forColumn: "title")!
+                let entry = journal.string(forColumn: "journal")!
                 let deleted = journal.bool(forColumn: "deleted")
-                let uuid = journal.object(forColumnName: "uuid") as! String
+                let uuid = journal.string(forColumn:  "uuid")!
                 
-                let journalItem = JournalItem(date: date!,
-                                              journal: entry,
-                                              deleted: deleted,
+                let journalItem = JournalItem(dateCreated:  date!,
+                                              journalTitle: title,
+                                              journal:      entry,
+                                              deleted:      deleted,
                                               deleteReason: nil,
-                                              UUID: uuid)
+                                              UUID:         uuid)
 
                 journalArray.append(journalItem)
             }

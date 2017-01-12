@@ -39,9 +39,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var otherTextField: UITextField!
     @IBOutlet weak var repeatAppointmentTitle: UILabel!
     @IBOutlet weak var repeatAppointmentRightDetail: UILabel!
-    @IBOutlet weak var repeatDaysTableView: UITableView!
-    @IBOutlet weak var repeatDaysDone: UIButton!
-    @IBOutlet weak var saveAppointment: UIButton!
+//    @IBOutlet weak var repeatDaysTableView: UITableView!
+//    @IBOutlet weak var repeatDaysDone: UIButton!
+//    @IBOutlet weak var saveAppointment: UIButton!
     @IBOutlet weak var otherEnterButton: UIButton!
     @IBOutlet weak var alertAppointmentRightDetail: UILabel!
     @IBOutlet weak var alertAppointmentTitle: UILabel!
@@ -53,11 +53,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     fileprivate var otherIsHidden = false
     fileprivate var repeatAppointmentTableHidden = false
     fileprivate var alertAppointmentTableHidden = false
-    fileprivate let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" ,
-                                      "Medication Times" , "Social Event" , "Leisure" ,
-                                      "Household", "Work", "Physical Therapy",
-                                      "Occupational Therapy", "Speech Therapy", "Class",
-                                      "Self Care", "Other"]
+    
+    fileprivate let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy",
+        "Occupational Therapy", "Speech Therapy", "Class","Self Care", "Other"]
     fileprivate let cellID: String = "AppointmentCells"
     fileprivate let dateFormat:DateFormatter = DateFormatter().dateWithTime
     fileprivate let db = DatabaseFunctions.sharedInstance
@@ -86,11 +84,12 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         additionalInfoTextBox.delegate = self
         
         // Set the buttons borders shapes, widths and colors
-        saveAppointment.layer.cornerRadius = 10
-        saveAppointment.layer.borderWidth = 2
-        saveAppointment.layer.borderColor = UIColor().defaultButtonColor.cgColor
-        saveAppointment.setTitleColor(UIColor.white, for: UIControlState())
-        saveAppointment.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
+//        saveAppointment.layer.cornerRadius = 10
+//        saveAppointment.layer.borderWidth = 2
+//        saveAppointment.layer.borderColor = UIColor().defaultButtonColor.cgColor
+//        saveAppointment.setTitleColor(UIColor.white, for: UIControlState())
+//        saveAppointment.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
+        
         otherEnterButton.layer.cornerRadius = 10
         otherEnterButton.layer.borderWidth = 2
         otherEnterButton.layer.borderColor = UIColor().defaultButtonColor.cgColor
@@ -146,6 +145,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             // A switch statement for the type of appointment Other, Class, Self Care.
             // The other text string goes in front of the appointment as a label for the 
             // three categories where a user can enter their own appointment type.
+            
             let value = typeOfAppointments[row]
             
             switch value {
@@ -174,15 +174,15 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
-    // Pass the information from this view to the previous view
-    @IBAction func saveButtonPressed(_ sender: AnyObject) {
+    @IBAction func saveInNavBarPressed(_ sender: AnyObject) {
+        print("Save Button in Nav Bar Pressed")
         // If additional info was left untouched set it to be an empty string.
         var additionalInfoString = additionalInfoTextBox.text!
         if additionalInfoString == "Additional Information..."{
             additionalInfoString = String()
         }
         print("Additional Info String: \(additionalInfoString)")
-
+        
         
         // If all the required fields are filled in then save the appointment otherwise show an alert
         if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
@@ -214,46 +214,128 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             // If the user has scheduled a repeat appointment then this code will execute.
             print("Start and end tuple array is empty: \(startAndEndTimesTupleArray.isEmpty)")
             if !startAndEndTimesTupleArray.isEmpty{
-            
+                
                 for (start, end) in startAndEndTimesTupleArray{
                     print("Start in Start and end tuple array : \(DateFormatter().dateWithTime.string(from: start))")
                     print("End in Start and end tuple array: \(DateFormatter().dateWithTime.string(from: end))")
                     
                     let appointmentItem = AppointmentItem(type: otherTextString
-                                                        + typeOfAppointmentRightDetail.text!,
-                                                      startTime: start,
-                                                      endTime: end,
-                                                      title: appointmentNameTextField.text!,
-                                                      location: appointmentLocationTextBox.text!,
-                                                      additional: additionalInfoString,
-                                                      repeatTime: repeatAppointmentRightDetail.text!,
-                                                      alertTime: alertAppointmentRightDetail.text!,
-                                                      isComplete:  false,
-                                                      isCanceled:  false,
-                                                      isDeleted:   false,
-                                                      dateFinished:  nil,
-                                                      cancelReason:  nil,
-                                                      deleteReason:  nil,
-                                                      UUID: UUID().uuidString)
-            
+                        + typeOfAppointmentRightDetail.text!,
+                                                          startTime: start,
+                                                          endTime: end,
+                                                          title: appointmentNameTextField.text!,
+                                                          location: appointmentLocationTextBox.text!,
+                                                          additional: additionalInfoString,
+                                                          repeatTime: repeatAppointmentRightDetail.text!,
+                                                          alertTime: alertAppointmentRightDetail.text!,
+                                                          isComplete:  false,
+                                                          isCanceled:  false,
+                                                          isDeleted:   false,
+                                                          dateFinished:  nil,
+                                                          cancelReason:  nil,
+                                                          deleteReason:  nil,
+                                                          UUID: UUID().uuidString)
+                    
                     db.addToAppointmentDatabase(appointmentItem)
-                
+                    
                 }
             }
             
             _ = self.navigationController?.popToRootViewController(animated: true)
         }
             
-        // Let the user know that some required fields are not filled in
+            // Let the user know that some required fields are not filled in
         else{
             let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
             someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
-                    // Essentially do nothing. Unless we want to print some sort of log message.
-                    //print("Action for stoping the saving of incomplete appointment form")
-                }))
+                // Essentially do nothing. Unless we want to print some sort of log message.
+                //print("Action for stoping the saving of incomplete appointment form")
+            }))
             self.present(someFieldMissing, animated: true, completion: nil)
         }
     }
+    
+    
+    // Pass the information from this view to the previous view
+//    @IBAction func saveButtonPressed(_ sender: AnyObject) {
+//        // If additional info was left untouched set it to be an empty string.
+//        var additionalInfoString = additionalInfoTextBox.text!
+//        if additionalInfoString == "Additional Information..."{
+//            additionalInfoString = String()
+//        }
+//        print("Additional Info String: \(additionalInfoString)")
+//
+//        
+//        // If all the required fields are filled in then save the appointment otherwise show an alert
+//        if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
+//            (!startingTimeDetailLabel.text!.isEmpty) &&
+//            (!endingTimeDetailLabel.text!.isEmpty) &&
+//            (!appointmentLocationTextBox.text!.isEmpty) &&
+//            (!repeatAppointmentRightDetail.text!.isEmpty)){
+//            
+//            // Add the original appointment that the user entered into the database.
+//            let appointmentItem = AppointmentItem(type: otherTextString
+//                + typeOfAppointmentRightDetail.text!,
+//                                                  startTime:  startingDate!,
+//                                                  endTime:    endingDate!,
+//                                                  title:      appointmentNameTextField.text!,
+//                                                  location:   appointmentLocationTextBox.text!,
+//                                                  additional: additionalInfoString,
+//                                                  repeatTime: repeatAppointmentRightDetail.text!,
+//                                                  alertTime:  alertAppointmentRightDetail.text!,
+//                                                  isComplete:  false,
+//                                                  isCanceled:  false,
+//                                                  isDeleted:   false,
+//                                                  dateFinished:  nil,
+//                                                  cancelReason:  nil,
+//                                                  deleteReason:  nil,
+//                                                  UUID: UUID().uuidString)
+//            
+//            db.addToAppointmentDatabase(appointmentItem)
+//            
+//            // If the user has scheduled a repeat appointment then this code will execute.
+//            print("Start and end tuple array is empty: \(startAndEndTimesTupleArray.isEmpty)")
+//            if !startAndEndTimesTupleArray.isEmpty{
+//            
+//                for (start, end) in startAndEndTimesTupleArray{
+//                    print("Start in Start and end tuple array : \(DateFormatter().dateWithTime.string(from: start))")
+//                    print("End in Start and end tuple array: \(DateFormatter().dateWithTime.string(from: end))")
+//                    
+//                    let appointmentItem = AppointmentItem(type: otherTextString
+//                                                        + typeOfAppointmentRightDetail.text!,
+//                                                      startTime: start,
+//                                                      endTime: end,
+//                                                      title: appointmentNameTextField.text!,
+//                                                      location: appointmentLocationTextBox.text!,
+//                                                      additional: additionalInfoString,
+//                                                      repeatTime: repeatAppointmentRightDetail.text!,
+//                                                      alertTime: alertAppointmentRightDetail.text!,
+//                                                      isComplete:  false,
+//                                                      isCanceled:  false,
+//                                                      isDeleted:   false,
+//                                                      dateFinished:  nil,
+//                                                      cancelReason:  nil,
+//                                                      deleteReason:  nil,
+//                                                      UUID: UUID().uuidString)
+//            
+//                    db.addToAppointmentDatabase(appointmentItem)
+//                
+//                }
+//            }
+//            
+//            _ = self.navigationController?.popToRootViewController(animated: true)
+//        }
+//            
+//        // Let the user know that some required fields are not filled in
+//        else{
+//            let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
+//            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+//                    // Essentially do nothing. Unless we want to print some sort of log message.
+//                    //print("Action for stoping the saving of incomplete appointment form")
+//                }))
+//            self.present(someFieldMissing, animated: true, completion: nil)
+//        }
+//    }
 
     @IBAction func otherButtonPressed(_ sender: AnyObject) {
         if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){

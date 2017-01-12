@@ -113,22 +113,29 @@ class GlobalJournals{
 
 class JournalItem:CustomStringConvertible {
     var journalDate: Date    = Date()
+    var journalTitle: String = String()
     var journalEntry: String = String()
     var journalDeleted: Bool
-    var journalDeletedReason: String?
+    var journalDeletedReason:  String?
     var journalUUID: String  = String()
     let dateFormat = DateFormatter().journalFormat
     
-    init(date: Date, journal: String, deleted: Bool, deleteReason:String?, UUID: String){
-        self.journalDate = date
-        self.journalEntry = journal
+    init(dateCreated: Date,
+         journalTitle: String,
+         journal: String,
+         deleted: Bool,
+         deleteReason:String?,
+         UUID: String){
+        self.journalDate    = dateCreated
+        self.journalTitle   = journalTitle
+        self.journalEntry   = journal
         self.journalDeleted = deleted
         self.journalDeletedReason = deleteReason
-        self.journalUUID = UUID
+        self.journalUUID    = UUID
     }
     
     var description: String {
-        return "\nDate = \(self.journalDate)\nJournal = \(self.journalEntry)\nDeleted = \(self.journalDeleted)\nDeleted Reason = \(self.journalDeletedReason)\nUUID = \(self.journalUUID)\n"
+        return "\nCreated Date = \(self.journalDate)\nJournal Title = \(self.journalTitle)\nJournal = \(self.journalEntry)\nDeleted = \(self.journalDeleted)\nDeleted Reason = \(self.journalDeletedReason)\nUUID = \(self.journalUUID)\n"
     }
     
     // Get a simplified date that does not contain the hours and seconds

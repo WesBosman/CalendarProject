@@ -15,10 +15,13 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var journalLabel: UILabel!
     fileprivate var date = Date()
     fileprivate let dateFormat = DateFormatter().journalFormat
+    let newDateFormat = DateFormatter().dateWithoutTime
+    var journalTitle: String = String()
     var journalText:String = String()
     var journalItemToEdit:JournalItem? = nil
     let db = DatabaseFunctions.sharedInstance
-    @IBOutlet weak var saveJournal: UIButton!
+    @IBOutlet weak var journalTitleTextField: UITextField!
+    @IBOutlet weak var saveJournalNavBarButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,53 +30,29 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         journalLabel.textColor = UIColor.white
         
         if journalItemToEdit != nil{
+            journalTitleTextField.text = journalItemToEdit?.journalTitle
             journalTextBox.text = journalItemToEdit?.journalEntry
         }
         else{
-            let currentDateAsString = dateFormat.string(from: date)
-            journalTextBox.text = "\(currentDateAsString) : "
+            journalTextBox.text = "Journal Entry : "
+            journalTextBox.textColor = UIColor.lightGray
         }
-        
-        // Navigation bar
-        let nav = self.navigationController?.navigationBar
-        let barColor = UIColor().navigationBarColor
-        nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blue
-        
+                
         // Set up background gradient
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, at: 0)
-        
-        // Set up the Save Journal Button colors and border
-        saveJournal.layer.cornerRadius = 10
-        saveJournal.layer.borderWidth = 2
-        saveJournal.layer.borderColor = UIColor.white.cgColor
-        saveJournal.setTitleColor(UIColor().defaultButtonColor, for: UIControlState())
-        saveJournal.backgroundColor = UIColor.white
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        journalText = textView.text
-    }
-    
-    // When the save button is clicked pass the information to a journal item.
-    @IBAction func saveJournalEntryIsPressed(_ sender: AnyObject) {
-        
-        // The date format that works with the global journal dictionary
-        let newDateFormat = DateFormatter().dateWithoutTime
-        
+    @IBAction func saveButtonInNavBarPressed(_ sender: AnyObject) {
+        print("Save button pressed in navigation bar")
         
         // Journal Item is already in the database just update it
         if let journalItem = journalItemToEdit{
             print("Journal Text \(journalText)")
-            print("Journal Item To Edit is not null")
             
+            // Should I also update the time when I update the journal entry?
+            journalItem.journalTitle = journalTitleTextField.text!
             journalItem.journalEntry = journalText
             db.updateJournal(journalItem, option: "edit")
             
@@ -85,54 +64,78 @@ class JournalViewController: UIViewController, UITextViewDelegate {
                 print("Found: \(found)")
                 journalArray?.insert(journalItem, at: found)
             }
-//            GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
+            
+            // Pop to previous view controller
+            _ = self.navigationController?.popViewController(animated: true)
         }
             
-        // Else Add a new Journal Item
+            // Else Add a new Journal Item
         else{
             print("Journal Item to Edit is null")
             print("Journal Text: \(journalText)")
             
-            let journalItem = JournalItem(date: Date(),
-                                          journal: journalText,
-                                          deleted: false,
-                                          deleteReason: nil,
-                                          UUID: UUID().uuidString)
-            
-            db.addToJournalDatabase(journalItem)
-            
-            // Get the key and value from the dictionary
-            let journalDate = newDateFormat.string(from: journalItem.journalDate)
-            var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
-            print("Journal Date: \(journalDate)")
-            print("Journal Array: \(journalArray)")
-            
-            // Add the journal item to the Global Dictionary
-            // If the journal array we get from the dictionary is nil
-            // Create it
-            if journalArray == nil{
-                var journalArray:[JournalItem] = []
-                journalArray.append(journalItem)
-                GlobalJournalStructures.journalSections.append(journalDate)
-                GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: journalDate)
+            if journalTitleTextField.text?.isEmpty == false &&
+                journalTextBox.text != "Journal Entry : "   &&
+                journalTextBox.text != nil {
+                let journalTitle = journalTitleTextField.text!
+                
+                let journalItem = JournalItem(dateCreated: Date(),
+                                              journalTitle: journalTitle,
+                                              journal: journalText,
+                                              deleted: false,
+                                              deleteReason: nil,
+                                              UUID: UUID().uuidString)
+                
+                db.addToJournalDatabase(journalItem)
+                
+                // Get the key and value from the dictionary
+                let journalDate = newDateFormat.string(from: journalItem.journalDate)
+                var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
+                print("Journal Date: \(journalDate)")
+                print("Journal Array: \(journalArray)")
+                
+                // Add the journal item to the Global Dictionary
+                // If the journal array we get from the dictionary is nil
+                // Create it
+                if journalArray == nil{
+                    var journalArray:[JournalItem] = []
+                    journalArray.append(journalItem)
+                    GlobalJournalStructures.journalSections.append(journalDate)
+                    GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: journalDate)
+                }
+                else{
+                    journalArray?.append(journalItem)
+                    GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
+                }
+                // Only pop to the previous view controller in the case that
+                // The text fields are correctly filled
+                _ = self.navigationController?.popViewController(animated: true)
+                
             }
             else{
-                journalArray?.append(journalItem)
-                GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
+                print("Journal Text Field Should be empty")
+                let alertController = UIAlertController(title: "Alert", message: "A Journal must have a Title and a Journal Entry in order to be saved", preferredStyle: .alert)
+                let dismissAction   = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+                alertController.addAction(dismissAction)
+                self.present(alertController, animated: true, completion: nil)
             }
-            
         }
-        _ = self.navigationController?.popViewController(animated: true)
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    */
-
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if journalTextBox.text == "Journal Entry : "{
+            journalTextBox.text = nil
+        }
+        // The color of the journal entry should always be black easier to see
+        journalTextBox.textColor = UIColor.black
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        journalText = textView.text
+    }
 }

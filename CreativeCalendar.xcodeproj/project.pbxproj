@@ -27,6 +27,7 @@
 		DE364A0C1E13214900F33C8D /* TaskTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE364A0B1E13214900F33C8D /* TaskTableCell.swift */; };
 		DE364A0E1E13216C00F33C8D /* JournalTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE364A0D1E13216C00F33C8D /* JournalTableViewCell.xib */; };
 		DE364A101E1321DB00F33C8D /* JournalTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE364A0F1E1321DB00F33C8D /* JournalTableCell.swift */; };
+		DE364A171E27EF8400F33C8D /* HomeJournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE364A161E27EF8400F33C8D /* HomeJournalCell.swift */; };
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
 		DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */; };
@@ -126,6 +127,7 @@
 		DE364A0B1E13214900F33C8D /* TaskTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableCell.swift; sourceTree = "<group>"; };
 		DE364A0D1E13216C00F33C8D /* JournalTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JournalTableViewCell.xib; sourceTree = "<group>"; };
 		DE364A0F1E1321DB00F33C8D /* JournalTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalTableCell.swift; sourceTree = "<group>"; };
+		DE364A161E27EF8400F33C8D /* HomeJournalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeJournalCell.swift; sourceTree = "<group>"; };
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
 		DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentTableViewController.swift; path = ../AppointmentTableViewController.swift; sourceTree = "<group>"; };
 		DE4C567A1C6E81A000D3DE8E /* TaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewController.swift; path = ../TaskTableViewController.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				DE364A0F1E1321DB00F33C8D /* JournalTableCell.swift */,
 				DE53EF221CEA399200E629A2 /* HomeAppointmentCell.swift */,
 				DE53EF201CEA385C00E629A2 /* HomeTaskCell.swift */,
+				DE364A161E27EF8400F33C8D /* HomeJournalCell.swift */,
 				DE977CB41D5B507200A571A4 /* AlertTableViewCell.swift */,
 				DE1D2D431D4A613B0015EFF3 /* RepeatTableViewCell.swift */,
 			);
@@ -705,6 +708,7 @@
 				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
 				DE4CAA711D243A9900197FEF /* CalendarHeaderView.swift in Sources */,
+				DE364A171E27EF8400F33C8D /* HomeJournalCell.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

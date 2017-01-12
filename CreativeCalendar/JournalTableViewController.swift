@@ -105,11 +105,11 @@ class JournalTableViewController: UITableViewController {
         let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
         let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
         
-        cell.journalCellTitle.text = journalItem.getSimplifiedDate()
+        cell.journalCellTitle.text = journalItem.journalTitle
         cell.journalCellImage.image = UIImage(named: "Journals")
         cell.journalCellSubtitle.text = journalItem.journalEntry
         
-        // The background is to let me know the size of what is stored in the cell
+//         The background is to let me know the size of what is stored in the cell
 //        cell.journalCellTitle.backgroundColor = UIColor.cyan
 //        cell.journalCellSubtitle.backgroundColor = UIColor.green
         

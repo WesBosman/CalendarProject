@@ -78,7 +78,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let journalNib = UINib(nibName: journalCellID, bundle: nil)
         self.calendarTableView.register(journalNib, forCellReuseIdentifier: "JournalTableViewCell")
         
-        // Set up the calendar
+        // Set up the calendar table view
         self.calendarTableView.layer.cornerRadius = 10
         self.calendarTableView.backgroundColor = UIColor.clear
         self.calendarTableView.allowsSelection = false
@@ -310,13 +310,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             let appointmentCell: AppointmentTableCell = calendarTableView.dequeueReusableCell(withIdentifier: appointmentCellID, for: indexPath) as! AppointmentTableCell
             appointmentCell.appointmentCompleted(appointment)
             appointmentCell.appointmentImage.image = UIImage(named: "Appointments")
-            appointmentCell.appointmentTitle.text = appointment.title
-            appointmentCell.appointmentType.text  = appointment.type
-            appointmentCell.appointmentStart.text = DateFormatter().dateWithTime.string(from: appointment.startingTime)
-            appointmentCell.appointmentEnd.text   = DateFormatter().dateWithTime.string(from:appointment.endingTime)
-            appointmentCell.appointmentAlert.text = appointment.alert
-            appointmentCell.appointmentLocation.text = appointment.appLocation
-            appointmentCell.appointmentAdditionalInfo.text = appointment.additionalInfo
+            
+            appointmentCell.setTitle(title: appointment.title)
+            appointmentCell.setType(type: appointment.type)
+            appointmentCell.setStart(start: DateFormatter().dateWithTime.string(from: appointment.startingTime))
+            appointmentCell.setEnd(end: DateFormatter().dateWithTime.string(from: appointment.endingTime))
+            appointmentCell.setLocation(location: appointment.appLocation)
+            appointmentCell.setAlert(alert: appointment.alert)
+            appointmentCell.setRepeat(rep: appointment.repeating)
+            appointmentCell.setAdditional(additional: appointment.additionalInfo)
             
             // Additional info size to fit
             appointmentCell.appointmentAdditionalInfo.sizeToFit()
@@ -331,10 +333,11 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             let taskCell: TaskTableCell = calendarTableView.dequeueReusableCell(withIdentifier: taskCellID, for: indexPath) as! TaskTableCell
             taskCell.taskCompleted(task)
             taskCell.taskImage.image = UIImage(named: "Tasks")
-            taskCell.taskTitle.text  = task.taskTitle
-            taskCell.taskAlert.text  = task.alert
-            taskCell.taskEstimatedCompleteDate.text = DateFormatter().dateWithoutTime.string(from:task.estimateCompletionDate)
-            taskCell.taskAdditionalInfo.text = task.taskInfo
+            taskCell.setTitle(title: task.taskTitle)
+            taskCell.setEstimatedCompletedDate(date: DateFormatter().dateWithoutTime.string(from:task.estimateCompletionDate))
+            taskCell.setAlert(alert: task.alert)
+            taskCell.setRepeating(rep: task.repeating)
+            taskCell.setAdditional(additional: task.taskInfo)
                 
             // Size to fit for additional information
             taskCell.taskAdditionalInfo.sizeToFit()
@@ -421,21 +424,4 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             return 30
         }
     }
-    
-    // Height for row should return zero when there is no content
-    // Working on Automatic Dimensions
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if(tableView.dataSource?.tableView(calendarTableView, numberOfRowsInSection: indexPath.section) == 0){
-//            print("Returning zero for the height of the cells")
-//            return 0
-//        }
-//        else{
-//            return UITableViewAutomaticDimension
-//        }
-//    }
-    
-    // Estimated row height should be used for automatic dimensions of cells
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 100
-//    }
 }

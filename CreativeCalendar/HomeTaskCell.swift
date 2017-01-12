@@ -14,6 +14,7 @@ class HomeTaskCell: UITableViewCell {
     @IBOutlet weak var homeTaskInfo: UILabel!
     @IBOutlet weak var homeTaskCompletionDate: UILabel!
     @IBOutlet weak var homeTaskAlertLabel: UILabel!
+    @IBOutlet weak var homeTaskRepeatLabel: UILabel!
     @IBOutlet weak var homeTaskTypeImage: UIImageView!
     
     override func awakeFromNib() {
@@ -34,5 +35,27 @@ class HomeTaskCell: UITableViewCell {
         else{
             uncheckedTaskImage.image = UIImage(named: "uncheckbox")
         }
+    }
+    
+    func setTitle(title: String){
+        homeTaskTitle.text = "Task: \(title)"
+    }
+    
+    func setInfo(info: String){
+        homeTaskInfo.numberOfLines = 0
+        homeTaskInfo.lineBreakMode = .byWordWrapping
+        homeTaskInfo.text  = "Info: \(info)"
+    }
+    
+    func setCompletionDate(date: String){
+        homeTaskCompletionDate.text = "Complete by: \(date)"
+    }
+    
+    func setAlert(alert: String){
+        homeTaskAlertLabel.text = "Alert: \(alert)"
+    }
+    
+    func setRepeating(repeating: String){
+        homeTaskRepeatLabel.text = "Repeat: \(repeating)"
     }
 }
