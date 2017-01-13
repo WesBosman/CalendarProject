@@ -25,18 +25,13 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
         
         // Navigation Bar
         self.navigationItem.leftBarButtonItem = self.editButtonItem
-        let nav = self.navigationController?.navigationBar
-        let barColor = UIColor().navigationBarColor
-        nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blue
-        
+        // Only allow the table view to be selectable during editing
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.allowsSelection = false
-        
+        // Set the empty datasource and delegate methods
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
-
     }
     
     // Failable Initializer for tab bar controller
@@ -82,6 +77,7 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
 
 
     // MARK: - Section Methods
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return GlobalJournalStructures.journalSections.count
     }

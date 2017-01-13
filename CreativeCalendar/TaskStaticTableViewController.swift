@@ -17,7 +17,6 @@ class TaskStaticTableViewController: UITableViewController {
     @IBOutlet weak var taskDatePicker: UIDatePicker!
     @IBOutlet weak var repeatingTaskRightDetail: UILabel!
     @IBOutlet weak var repeatingTaskTitle: UILabel!
-//    @IBOutlet weak var saveTask: UIButton!
     @IBOutlet weak var alertTaskTitle: UILabel!
     @IBOutlet weak var alertTaskRightDetail: UILabel!
     
@@ -47,13 +46,6 @@ class TaskStaticTableViewController: UITableViewController {
         taskDatePicker.minimumDate = Date()
         taskDatePicker.maximumDate = Date().calendarEndDate
         
-        // Set the color and shape of the save button
-//        saveTask.layer.cornerRadius = 10
-//        saveTask.layer.borderWidth = 2
-//        saveTask.layer.borderColor = UIColor().defaultButtonColor.cgColor
-//        saveTask.setTitleColor(UIColor.white, for: UIControlState())
-//        saveTask.backgroundColor = UIColor().defaultButtonColor
-        
         // Hide the pickers from the user
         toggleTaskDatePicker()
         toggleRepeatDayPicker()
@@ -80,6 +72,8 @@ class TaskStaticTableViewController: UITableViewController {
         else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 4{
             toggleAlertTableView()
         }
+        // Deselect the table view cell after selecting it
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -165,75 +159,14 @@ class TaskStaticTableViewController: UITableViewController {
             self.present(someFieldMissing, animated: true, completion: nil)
         }
     }
-    
-    // Save the information to pass it to the previous view
-//    @IBAction func saveTaskPressed(_ sender: AnyObject) {
-//        // Make sure there is atleast a task title in order to let the user save the task
-////        let current = NSDate()
-//        var additionalInfoString = String()
-//        
-//        if !(taskAdditionalInfoTextBox.text! == "Additional Information") || !((taskAdditionalInfoTextBox.text?.isEmpty)!){
-//            print("Task additional Information is not empty && does not equal additional information")
-//            additionalInfoString = taskAdditionalInfoTextBox.text!
-//        }
-//        
-//        if (!taskNameTextField.text!.isEmpty && !taskFinishDateRightDetail.text!.isEmpty){
-//            print("Task Formatter.dateFromString = \(taskFormatter.date(from: taskFinishDateRightDetail.text!)!)")
-//            let taskItem = TaskItem(title: taskNameTextField.text!,
-//                                    info: additionalInfoString,
-//                                    estimatedCompletion: taskFormatter.date(from: taskFinishDateRightDetail.text!)!,
-//                                    repeatTime: repeatingTaskRightDetail.text!,
-//                                    alertTime:  alertTaskRightDetail.text!,
-//                                    isComplete: false,
-//                                    isCanceled: false,
-//                                    isDeleted: false,
-//                                    dateFinished: nil,
-//                                    cancelReason: nil,
-//                                    deleteReason: nil,
-//                                    UUID: UUID().uuidString)
-//            
-//            db.addToTaskDatabase(taskItem)
-//            
-//            if startTimesArray.isEmpty == false{
-//                print("Start Times Array is not empty!")
-//                
-//                for task in startTimesArray{
-//                    let taskItem = TaskItem(title: taskNameTextField.text!,
-//                                            info: additionalInfoString,
-//                                            estimatedCompletion: task,
-//                                            repeatTime: repeatingTaskRightDetail.text!,
-//                                            alertTime: alertTaskRightDetail.text!,
-//                                            isComplete: false,
-//                                            isCanceled: false,
-//                                            isDeleted: false,
-//                                            dateFinished: nil,
-//                                            cancelReason: nil,
-//                                            deleteReason: nil,
-//                                            UUID: UUID().uuidString)
-//                
-//                    db.addToTaskDatabase(taskItem)
-//
-//                }
-//            }
-//            
-//            
-//            _ = self.navigationController?.popToRootViewController(animated: true)
-//        }
-//        else{
-//            // This is similar to the code for the static appointment alert.
-//            let someFieldMissing = UIAlertController(title: "Missing Task Title or Date", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
-//            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
-//                // Essentially do nothing. Unless we want to print some sort of log message.
-//            }))
-//            self.present(someFieldMissing, animated: true, completion: nil)
-//        }
-//    }
+
     
     func toggleTaskDatePicker(){
         taskDatePickerIsHidden = !taskDatePickerIsHidden
         tableView.beginUpdates()
         tableView.endUpdates()
     }
+    
     
     func toggleRepeatDayPicker(){
         taskRepeatDayIsHidden = !taskRepeatDayIsHidden
@@ -245,6 +178,7 @@ class TaskStaticTableViewController: UITableViewController {
         tableView.endUpdates()
     }
     
+    
     func toggleAlertTableView(){
         
         taskAlertIsHidden = !taskAlertIsHidden
@@ -254,6 +188,7 @@ class TaskStaticTableViewController: UITableViewController {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
+    
     
     // Tasks only are worried about the estiated completion time
     func makeRecurringTask(_ interval: String, start: Date){

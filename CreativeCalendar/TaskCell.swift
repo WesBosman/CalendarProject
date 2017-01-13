@@ -11,8 +11,10 @@ import UIKit
 class TaskCell: UITableViewCell {
     @IBOutlet weak var taskImage: UIImageView!
     @IBOutlet weak var taskTitle: UILabel!
-    @IBOutlet weak var taskSubtitle: UILabel!
     @IBOutlet weak var taskCompletionDate: UILabel!
+    @IBOutlet weak var taskAdditional: UILabel!
+    @IBOutlet weak var taskRepeating: UILabel!
+    
     
     @IBOutlet weak var taskAlert: UILabel!
     override func awakeFromNib() {
@@ -30,5 +32,25 @@ class TaskCell: UITableViewCell {
         else{
             taskImage.image = UIImage(named: "uncheckbox")
         }
+    }
+    
+    func setTitle(title: String){
+        taskTitle.text = "Task: \(title)"
+    }
+    
+    func setEstimatedCompletedDate(date: String){
+        taskCompletionDate.text = "Complete by: \(date)"
+    }
+    
+    func setAlert(alert: String){
+        taskAlert.text = "Alert: \(alert)"
+    }
+    
+    func setRepeating(rep: String){
+        taskRepeating.text = "Repeat: \(rep)"
+    }
+    
+    func setAdditional(additional: String){
+        taskAdditional.text = "Additional Info: \(additional)"
     }
 }

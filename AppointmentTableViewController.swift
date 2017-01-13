@@ -23,11 +23,9 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set the left bar button to be an edit button
         navigationItem.leftBarButtonItem = editButtonItem
-        let nav = self.navigationController?.navigationBar
-        let barColor = UIColor().navigationBarColor
-        nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blue
+        // This call with refresh the table view when a notification arrives
         NotificationCenter.default
             .addObserver(self, selector: #selector(AppointmentTableViewController.refreshList), name: NSNotification.Name(rawValue: "AppointmentListShouldRefresh"), object: nil)
         tableView.allowsSelection = false
@@ -101,7 +99,6 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
             // Set the global dictionary up
             GlobalAppointments.appointmentDictionary = appointmentDaySections
             
-//            defaults.setObject(appointmentList as? AnyObject, forKey: str)
         }
         
         // If there are more than 64 appointments today do not let the user add more appointments
@@ -161,10 +158,10 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
         // The cell is a custom appointment cell that we have created.
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! AppointmentCell
         let tableSection = appointmentDaySections[appointmentSections[(indexPath as NSIndexPath).section]]
-        let appItem = tableSection![(indexPath as NSIndexPath).row]
+        let appointment = tableSection![(indexPath as NSIndexPath).row]
         
         // If the current time is later than the starting time of the appointment then the color is set to red.
-        if (appItem.isOverdue) {
+        if (appointment.isOverdue) {
             cell.appointmentStart.textColor = UIColor.red
         }
         // If its not true that the event has happened the text should be black
@@ -172,21 +169,15 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
             cell.appointmentStart.textColor = UIColor.black
         }
         
-        let startFormatter = DateFormatter()
-        let endFormatter = DateFormatter()
-        startFormatter.dateFormat = "'Starting Time: ' MMM dd 'at' h:mm a"
-        endFormatter.dateFormat   = "'Ending Time:  ' MMM dd 'at' h:mm a"
-        let startingTime = startFormatter.string(from: appItem.startingTime as Date)
-        let endingTime   = endFormatter.string(from: appItem.endingTime as Date)
-        
-        cell.appointmentCompleted(appItem)
-        cell.appointmentTitle.text = "Event: \(appItem.title)"
-        cell.appointmentType.text  = "Type: \(appItem.type)"
-        cell.appointmentStart.text = startingTime
-        cell.appointmentEnd.text   = endingTime
-        cell.appointmentLocation.text = "Location: \(appItem.appLocation)"
-        cell.appointmentAdditionalInfo.text = "Additional Info: \(appItem.additionalInfo)"
-        cell.appointmentAlert.text = "Alert: \(appItem.alert)"
+        cell.appointmentCompleted(appointment)
+        cell.setTitle(title: appointment.title)
+        cell.setType(type: appointment.type)
+        cell.setStart(start: DateFormatter().dateWithTime.string(from: appointment.startingTime))
+        cell.setEnd(end: DateFormatter().dateWithTime.string(from:appointment.endingTime))
+        cell.setAlert(alert: appointment.alert)
+        cell.setRepeat(rep: appointment.repeating)
+        cell.setLocation(location: appointment.appLocation)
+        cell.setAdditional(additional: appointment.additionalInfo)
         
         return cell
     }

@@ -24,10 +24,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
         super.viewDidLoad()
         // Set the left navigation button to be the edit button.
         self.navigationItem.leftBarButtonItem = self.editButtonItem
-        let nav = self.navigationController?.navigationBar
-        let barColor = UIColor().navigationBarColor
-        nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blue
+        // This will refresh the table view when a notification arrives
         NotificationCenter.default
             .addObserver(self, selector: #selector(TaskTableViewController.refreshList), name: NSNotification.Name(rawValue: "TaskListShouldRefresh"), object: nil)
         
@@ -162,11 +159,11 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
         
         // Configure the cell...
         cell.taskCompleted(taskItem)
-        cell.taskTitle.text = "Event: \(taskItem.taskTitle)"
-        cell.taskCompletionDate.text = "Complete by: \(DateFormatter().dateWithTime.string(from: taskItem.estimateCompletionDate))"
-        cell.taskSubtitle.text = "Additional Info: \(taskItem.taskInfo)"
-        cell.taskAlert.text = "Alert: \(taskItem.alert)"
-        
+        cell.setTitle(title: taskItem.taskTitle)
+        cell.setAdditional(additional: taskItem.taskInfo)
+        cell.setAlert(alert: taskItem.alert)
+        cell.setRepeating(rep: taskItem.repeating)
+        cell.setEstimatedCompletedDate(date: DateFormatter().dateWithTime.string(from: taskItem.estimateCompletionDate))
         // If the task item is past due color it red
         if taskItem.isOverdue{
             cell.taskCompletionDate.textColor = UIColor.red
@@ -257,6 +254,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
                         taskForAction.completed = false
                         taskForAction.canceled = false
                         taskForAction.deleted = true
+                        
                         taskForAction.deletedReason = deleteOptions.textFields![0].text ?? ""
                         self.db.updateTask(taskForAction)
 
@@ -273,8 +271,8 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
                 
                 let exitAction = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
                 
-                deleteAllTasksController.addAction(deleteAllAction)
                 deleteAllTasksController.addAction(deleteOneAction)
+                deleteAllTasksController.addAction(deleteAllAction)
                 deleteAllTasksController.addAction(exitAction)
                 self.present(deleteAllTasksController, animated: true, completion: nil)
                 

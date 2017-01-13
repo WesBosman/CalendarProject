@@ -48,7 +48,7 @@ class HomeTaskCell: UITableViewCell {
     }
     
     func setCompletionDate(date: String){
-        homeTaskCompletionDate.text = "Complete by: \(date)"
+        homeTaskCompletionDate.text = "Complete by: Today at \(date)"
     }
     
     func setAlert(alert: String){

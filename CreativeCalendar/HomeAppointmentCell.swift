@@ -50,7 +50,7 @@ class HomeAppointmentCell: UITableViewCell {
     }
     
     func setStart(start: String){
-        homeAppointmentStart.text = "Start: \(start)"
+        homeAppointmentStart.text = "Start: Today at \(start)"
     }
     
     func setEnd(end: String){

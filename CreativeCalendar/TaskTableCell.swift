@@ -61,5 +61,4 @@ class TaskTableCell: UITableViewCell {
         taskAdditionalInfo.text = "Additional Info: \(additional)"
     }
 
-
 }

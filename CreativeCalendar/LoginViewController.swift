@@ -32,8 +32,14 @@ class LoginViewController: UIViewController {
         loginMessage.numberOfLines = 0
         loginMessage.isHidden = true
         
+        // If the user's email is stored in user defaults
         if let email = defaults.object(forKey: emailKey) as? String{
             loginEmail.text = email
+        }
+        
+        // If the user's email is stored by firebase
+        if let userEmail = FIRAuth.auth()?.currentUser?.email{
+            loginEmail.text = userEmail
         }
         
         // If User is already logged in let them into the application
@@ -80,7 +86,7 @@ class LoginViewController: UIViewController {
                         // Let us know which user is trying to login
                         if let user = user{
                             print("")
-                            print("User Email = \(user)")
+                            print("User Email = \(user.email!)")
                             print("")
                             
                             // Perform Segue
@@ -95,6 +101,10 @@ class LoginViewController: UIViewController {
                             print("")
                             self.loginMessage.text = error.localizedDescription
                             self.loginMessage.isHidden = false
+                            
+                            // Try to locally authenticate the user 
+                            // If there is an error logging in
+                            // self.locallyAuthenticateUser()
                         }
                 })
             }
@@ -148,7 +158,8 @@ class LoginViewController: UIViewController {
                                    reply: { //[unowned self]
                                     (success, error) -> Void in
             if(success){
-                print("Success logging in using touch ID")
+                 print("Success logging in using touch ID")
+                 self.performSegue(withIdentifier: "Login", sender: self)
                 }
             else{
                 print("Error logging in using touch ID")

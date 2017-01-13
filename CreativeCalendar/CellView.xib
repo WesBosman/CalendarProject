@@ -34,14 +34,14 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="6GZ-Z7-gYD"/>
+                <constraint firstItem="fGt-2g-edl" firstAttribute="leading" secondItem="Pcp-YY-nEG" secondAttribute="trailing" constant="10.5" id="0Px-vB-b14"/>
+                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="1.5" id="6GZ-Z7-gYD"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="top" secondItem="Pcp-YY-nEG" secondAttribute="bottom" constant="8.5" id="CgR-aN-DgY"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Is1-Hl-1ky"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="YrO-Ky-FUo"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="top" secondItem="fGt-2g-edl" secondAttribute="bottom" constant="8.5" id="b0u-wJ-fgh"/>
-                <constraint firstItem="CbL-M3-mfT" firstAttribute="leading" secondItem="fGt-2g-edl" secondAttribute="trailing" constant="13" id="eAv-Uu-VgR"/>
-                <constraint firstItem="fGt-2g-edl" firstAttribute="leading" secondItem="Pcp-YY-nEG" secondAttribute="trailing" constant="13" id="qyN-Bv-eSF"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="top" secondItem="CbL-M3-mfT" secondAttribute="bottom" constant="8.5" id="rxj-Gs-MAX"/>
+                <constraint firstItem="CbL-M3-mfT" firstAttribute="leading" secondItem="fGt-2g-edl" secondAttribute="trailing" constant="9.5" id="sZZ-oB-MZ7"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

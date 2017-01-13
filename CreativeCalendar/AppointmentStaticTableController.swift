@@ -26,7 +26,7 @@ extension Date
     }
 }
 
-class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
+class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate, UITextFieldDelegate{
     
     @IBOutlet weak var appointmentNameTextField: UITextField!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
@@ -39,9 +39,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     @IBOutlet weak var otherTextField: UITextField!
     @IBOutlet weak var repeatAppointmentTitle: UILabel!
     @IBOutlet weak var repeatAppointmentRightDetail: UILabel!
-//    @IBOutlet weak var repeatDaysTableView: UITableView!
-//    @IBOutlet weak var repeatDaysDone: UIButton!
-//    @IBOutlet weak var saveAppointment: UIButton!
     @IBOutlet weak var otherEnterButton: UIButton!
     @IBOutlet weak var alertAppointmentRightDetail: UILabel!
     @IBOutlet weak var alertAppointmentTitle: UILabel!
@@ -82,13 +79,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
         additionalInfoTextBox.delegate = self
-        
-        // Set the buttons borders shapes, widths and colors
-//        saveAppointment.layer.cornerRadius = 10
-//        saveAppointment.layer.borderWidth = 2
-//        saveAppointment.layer.borderColor = UIColor().defaultButtonColor.cgColor
-//        saveAppointment.setTitleColor(UIColor.white, for: UIControlState())
-//        saveAppointment.layer.backgroundColor = UIColor().defaultButtonColor.cgColor
         
         otherEnterButton.layer.cornerRadius = 10
         otherEnterButton.layer.borderWidth = 2
@@ -165,7 +155,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
-    // MARK - Table View Methods
+    @available(iOS 10.0, *)
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        if textField == otherTextField{
+            print("Other Text Field has ended editing")
+            textField.resignFirstResponder()
+        }
+    }
+    
     // This is for the text view delegate so that the user can tell where the additional info text box is.
     func textViewDidBeginEditing(_ textView: UITextView) {
         if additionalInfoTextBox.textColor == UIColor.lightGray{
@@ -256,87 +253,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     
-    // Pass the information from this view to the previous view
-//    @IBAction func saveButtonPressed(_ sender: AnyObject) {
-//        // If additional info was left untouched set it to be an empty string.
-//        var additionalInfoString = additionalInfoTextBox.text!
-//        if additionalInfoString == "Additional Information..."{
-//            additionalInfoString = String()
-//        }
-//        print("Additional Info String: \(additionalInfoString)")
-//
-//        
-//        // If all the required fields are filled in then save the appointment otherwise show an alert
-//        if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
-//            (!startingTimeDetailLabel.text!.isEmpty) &&
-//            (!endingTimeDetailLabel.text!.isEmpty) &&
-//            (!appointmentLocationTextBox.text!.isEmpty) &&
-//            (!repeatAppointmentRightDetail.text!.isEmpty)){
-//            
-//            // Add the original appointment that the user entered into the database.
-//            let appointmentItem = AppointmentItem(type: otherTextString
-//                + typeOfAppointmentRightDetail.text!,
-//                                                  startTime:  startingDate!,
-//                                                  endTime:    endingDate!,
-//                                                  title:      appointmentNameTextField.text!,
-//                                                  location:   appointmentLocationTextBox.text!,
-//                                                  additional: additionalInfoString,
-//                                                  repeatTime: repeatAppointmentRightDetail.text!,
-//                                                  alertTime:  alertAppointmentRightDetail.text!,
-//                                                  isComplete:  false,
-//                                                  isCanceled:  false,
-//                                                  isDeleted:   false,
-//                                                  dateFinished:  nil,
-//                                                  cancelReason:  nil,
-//                                                  deleteReason:  nil,
-//                                                  UUID: UUID().uuidString)
-//            
-//            db.addToAppointmentDatabase(appointmentItem)
-//            
-//            // If the user has scheduled a repeat appointment then this code will execute.
-//            print("Start and end tuple array is empty: \(startAndEndTimesTupleArray.isEmpty)")
-//            if !startAndEndTimesTupleArray.isEmpty{
-//            
-//                for (start, end) in startAndEndTimesTupleArray{
-//                    print("Start in Start and end tuple array : \(DateFormatter().dateWithTime.string(from: start))")
-//                    print("End in Start and end tuple array: \(DateFormatter().dateWithTime.string(from: end))")
-//                    
-//                    let appointmentItem = AppointmentItem(type: otherTextString
-//                                                        + typeOfAppointmentRightDetail.text!,
-//                                                      startTime: start,
-//                                                      endTime: end,
-//                                                      title: appointmentNameTextField.text!,
-//                                                      location: appointmentLocationTextBox.text!,
-//                                                      additional: additionalInfoString,
-//                                                      repeatTime: repeatAppointmentRightDetail.text!,
-//                                                      alertTime: alertAppointmentRightDetail.text!,
-//                                                      isComplete:  false,
-//                                                      isCanceled:  false,
-//                                                      isDeleted:   false,
-//                                                      dateFinished:  nil,
-//                                                      cancelReason:  nil,
-//                                                      deleteReason:  nil,
-//                                                      UUID: UUID().uuidString)
-//            
-//                    db.addToAppointmentDatabase(appointmentItem)
-//                
-//                }
-//            }
-//            
-//            _ = self.navigationController?.popToRootViewController(animated: true)
-//        }
-//            
-//        // Let the user know that some required fields are not filled in
-//        else{
-//            let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
-//            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
-//                    // Essentially do nothing. Unless we want to print some sort of log message.
-//                    //print("Action for stoping the saving of incomplete appointment form")
-//                }))
-//            self.present(someFieldMissing, animated: true, completion: nil)
-//        }
-//    }
-
+    
     @IBAction func otherButtonPressed(_ sender: AnyObject) {
         if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){
             otherTextField.placeholder = "Please enter the type of appointment here"

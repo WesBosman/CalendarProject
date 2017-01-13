@@ -86,6 +86,12 @@ extension DateFormatter{
             dateFormatter.dateFormat = "M/dd/yyyy"
             return dateFormatter
         }()
+        
+        fileprivate static let homeDateFormat: DateFormatter = {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
+            return dateFormatter
+        }()
     }
     
     var universalFormatter: DateFormatter {
@@ -116,6 +122,12 @@ extension DateFormatter{
             return Formatters.fullDateFormat
         }
     }
+    
+    var homeFormat: DateFormatter{
+        get{
+            return Formatters.homeDateFormat
+        }
+    }
 }
 
 // The color of the buttons set to the default text color of ios buttons
@@ -135,7 +147,6 @@ extension CAGradientLayer{
         let darkBottomColor = UIColor(red: (0/255.0), green: (128/255.0), blue: (200/255.0), alpha: 1.0).cgColor
         gradientBackground.colors = [lightTopColor, darkBottomColor]
         gradientBackground.locations = [0.0, 1.0]
-//        gradientBackground.zPosition = -1
         return gradientBackground
     }
 }
@@ -162,9 +173,14 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     var consentGiven       = false
     let dateFormat         = DateFormatter()
     let currentDate        = Date()
+    let homeDateFormat     = DateFormatter().homeFormat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Notification Center updates the text in appointment and task table views
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(HomeViewController.viewWillAppear(_:)), name: NSNotification.Name(rawValue: "HomeTablesShouldRefresh"), object: nil)
         
         // Current Date
         dateFormat.dateStyle = DateFormatter.Style.full
@@ -330,9 +346,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             let appointment = appointmentArray[(indexPath as NSIndexPath).row] as AppointmentItem
             let appointmentCell = appointmentViewTable.dequeueReusableCell(withIdentifier: appointmentCellID, for: indexPath) as! HomeAppointmentCell
             
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM dd ',' h:mm a"
-            
             // If the appointment is overdue then the starting date text color is red
             if appointment.isOverdue == true{
                 appointmentCell.homeAppointmentStart.textColor = UIColor.red
@@ -348,8 +361,8 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.homeAppointmentImage.image = UIImage(named: "Appointments")
             appointmentCell.setTitle(title: appointment.title)
             appointmentCell.setType(type: appointment.type)
-            appointmentCell.setStart(start: formatter.string(from: appointment.startingTime))
-            appointmentCell.setEnd(end: formatter.string(from: appointment.endingTime))
+            appointmentCell.setStart(start: homeDateFormat.string(from: appointment.startingTime))
+            appointmentCell.setEnd(end: DateFormatter().dateWithTime.string(from: appointment.endingTime))
             appointmentCell.setLocation(location: appointment.appLocation)
             appointmentCell.setAlert(alert: appointment.alert)
             appointmentCell.setRepeat(repeating: appointment.repeating)
@@ -367,7 +380,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             taskCell.setTitle(title: task.taskTitle)
             taskCell.setAlert(alert: task.alert)
             taskCell.setInfo(info: task.taskInfo)
-            taskCell.setCompletionDate(date: DateFormatter().dateWithTime.string(from: task.estimateCompletionDate))
+            taskCell.setCompletionDate(date: homeDateFormat.string(from: task.estimateCompletionDate))
             taskCell.setRepeating(repeating: task.repeating)
             taskCell.homeTaskTypeImage.image = UIImage(named: "Tasks")
             
@@ -375,6 +388,10 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             if task.isOverdue{
                 taskCell.homeTaskCompletionDate.textColor = UIColor.red
             }
+            else{
+                taskCell.homeTaskCompletionDate.textColor = UIColor.black
+            }
+            
             return taskCell
         }
             // Journal Table View

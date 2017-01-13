@@ -52,12 +52,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, at: 0)
-        
-        // Navigation bar
-        let nav = self.navigationController?.navigationBar
-        let barColor = UIColor().navigationBarColor
-        nav?.barTintColor = barColor
-        nav?.tintColor = UIColor.blue
                 
         // Select the current date
         calendarView.reloadData() {
