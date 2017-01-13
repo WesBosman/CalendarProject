@@ -199,7 +199,7 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawJournalDot(){
-        let journalCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width/1.3 - 8, y: 11.0, width: dotWidth, height: dotHeight))
+        let journalCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width/1.3 - 9, y: 11.0, width: dotWidth, height: dotHeight))
         journalColor.setFill()
         journalCircle.fill()
     }

@@ -133,7 +133,6 @@ extension DateFormatter{
 // The color of the buttons set to the default text color of ios buttons
 extension UIColor{
     var defaultButtonColor: UIColor { return UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)}
-    var navigationBarColor: UIColor { return UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)}
     var appointmentColor: UIColor   { return UIColor.flatRedDark}
     var taskColor: UIColor          { return UIColor.flatGreenDark}
     var journalColor: UIColor       { return UIColor.flatYellowDark}

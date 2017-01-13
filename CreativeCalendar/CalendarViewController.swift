@@ -83,7 +83,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         // Try to set up the automatic dimensioning of the table view
         self.calendarTableView.rowHeight = UITableViewAutomaticDimension
         self.calendarTableView.estimatedRowHeight = 100
-        
     }
     
     // Failable Initializer for tab bar controller
