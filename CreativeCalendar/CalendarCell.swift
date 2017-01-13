@@ -45,6 +45,14 @@ class CalendarCell: JTAppleDayCellView{
         self.drawTask = false
         self.drawJournal = false
         
+        appointmentCounterLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        taskCounterLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        journalCounterLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        appointmentCounterLabel.textColor = UIColor.white
+        taskCounterLabel.textColor = UIColor.white
+        journalCounterLabel.textColor = UIColor.white
+        
         // Set the label for the date of the cell
         dayLabel.text = cellState.text
         
@@ -73,19 +81,16 @@ class CalendarCell: JTAppleDayCellView{
         let journalDictionary = GlobalJournalStructures.journalDictionary
         
         if let appointmentList = appointmentDictionary[cellDate]{
-//            print("Appointment List: \(appointmentList)")
             self.appointmentCounter = appointmentList.count
             self.drawAppointment = true
         }
         
         if let taskList = taskDictionary[cellDate]{
-//            print("Task List: \(taskList)")
             self.taskCounter = taskList.count
             self.drawTask = true
         }
         
         if let journalList = journalDictionary[cellDate]{
-//            print("Journal List: \(journalList)")
             self.journalCounter = journalList.count
             self.drawJournal = true
         }
@@ -182,19 +187,19 @@ class CalendarCell: JTAppleDayCellView{
     }
     
     func drawAppointmentDot(){
-        let appointmentCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 4 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        let appointmentCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 4 - 7, y: 11.0, width: dotWidth, height: dotHeight))
         appointmentColor.setFill()
         appointmentCircle.fill()
     }
     
     func drawTaskDot(){
-        let taskCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 2 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        let taskCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 2 - 8, y: 11.0, width: dotWidth, height: dotHeight))
         taskColor.setFill()
         taskCircle.fill()
     }
     
     func drawJournalDot(){
-        let journalCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width/1.35 - 10, y: 19.0, width: dotWidth, height: dotHeight))
+        let journalCircle = UIBezierPath(ovalIn: CGRect(x: self.frame.width/1.3 - 8, y: 11.0, width: dotWidth, height: dotHeight))
         journalColor.setFill()
         journalCircle.fill()
     }

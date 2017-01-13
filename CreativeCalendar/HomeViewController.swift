@@ -122,9 +122,9 @@ extension DateFormatter{
 extension UIColor{
     var defaultButtonColor: UIColor { return UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)}
     var navigationBarColor: UIColor { return UIColor(red:0.90, green:0.93, blue:0.98, alpha:1.00)}
-    var appointmentColor: UIColor   { return UIColor.flatRed}
-    var taskColor: UIColor          { return UIColor.flatGreen}
-    var journalColor: UIColor       { return UIColor.flatYellow}
+    var appointmentColor: UIColor   { return UIColor.flatRedDark}
+    var taskColor: UIColor          { return UIColor.flatGreenDark}
+    var journalColor: UIColor       { return UIColor.flatYellowDark}
 }
 
 // This extension is for making a background gradient
@@ -140,7 +140,7 @@ extension CAGradientLayer{
     }
 }
 
-class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
+class HomeViewController: UIViewController , UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate{
 
     @IBOutlet weak var daysOfTheWeekText: UILabel!
     @IBOutlet weak var homeDateLabel: UILabel!
@@ -188,6 +188,19 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         appointmentViewTable.layer.cornerRadius = 5
         taskViewTable.layer.cornerRadius = 5
         journalViewTable.layer.cornerRadius = 5
+        
+        // Set the empty data sources 
+        appointmentViewTable.emptyDataSetSource = self
+        appointmentViewTable.emptyDataSetDelegate = self
+        taskViewTable.emptyDataSetSource = self
+        taskViewTable.emptyDataSetDelegate = self
+        journalViewTable.emptyDataSetSource = self
+        journalViewTable.emptyDataSetDelegate = self
+        
+        // Set empty footer to get rid of the lines in empty tables
+        appointmentViewTable.tableFooterView = UIView()
+        taskViewTable.tableFooterView = UIView()
+        journalViewTable.tableFooterView = UIView()
         
 //        appointmentViewTable.estimatedRowHeight = 100
 //        taskViewTable.estimatedRowHeight = 100
@@ -237,11 +250,66 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         journalViewTable.reloadData()
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    
+    // MARK - Empty Data Source Methods
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        if scrollView == appointmentViewTable{
+            let str = "No Appointments scheduled for today"
+            let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
+            return NSAttributedString(string: str, attributes: attributes)
+        }
+        else if scrollView == taskViewTable{
+            let str = "No Tasks scheduled for today"
+            let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
+            return NSAttributedString(string: str, attributes: attributes)
+        }
+        else if scrollView == journalViewTable{
+            let str = "No Journals for today"
+            let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
+            return NSAttributedString(string: str, attributes: attributes)
+        }
+        return nil
     }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        if scrollView == appointmentViewTable{
+            let str = "Please go to the Appointment Tab if you would like to schedule an appointment for today"
+            let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)]
+            return NSAttributedString(string: str, attributes: attributes)
+        }
+        else if scrollView == taskViewTable{
+            let str = "Please go to the Task Tab if you would like to schedule a task for today"
+            let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)]
+            return NSAttributedString(string: str, attributes: attributes)
+        }
+        else if scrollView == journalViewTable{
+            let str = "Please go to the Journal Tab if you would like to write a journal for today"
+            let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)]
+            return NSAttributedString(string: str, attributes: attributes)
+        }
+        return nil
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        if scrollView == appointmentViewTable{
+            let image = UIImage(named: "Appointments")
+            return image
+        }
+        else if scrollView == taskViewTable{
+            let image = UIImage(named: "Tasks")
+            return image
+        }
+        else if scrollView == journalViewTable{
+            let image = UIImage(named: "Journals")
+            return image
+        }
+        return nil
+    }
+
+
+    // MARK - Table View Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == appointmentViewTable{
@@ -592,14 +660,5 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

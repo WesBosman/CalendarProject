@@ -9,7 +9,7 @@
 import UIKit
 
 
-class TaskTableViewController: UITableViewController {
+class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     fileprivate let taskId = "TaskCells"
     fileprivate var taskList:[TaskItem] = []
     fileprivate var selectedIndexPath = IndexPath?.self
@@ -30,6 +30,10 @@ class TaskTableViewController: UITableViewController {
         nav?.tintColor = UIColor.blue
         NotificationCenter.default
             .addObserver(self, selector: #selector(TaskTableViewController.refreshList), name: NSNotification.Name(rawValue: "TaskListShouldRefresh"), object: nil)
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
     }
     
     // Failable Initializer for tab bar controller
@@ -86,8 +90,30 @@ class TaskTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // MARK - Empty Table View Methods
+    
+    // MARK - Empty Table View Methods
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let str = "No Tasks scheduled"
+        let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
+        return NSAttributedString(string: str, attributes: attributes)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let str = "Please click the add button to schedule Tasks"
+        let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)]
+        return NSAttributedString(string: str, attributes: attributes)
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        let image = UIImage(named: "Tasks")
+        return image
+    }
 
     // MARK: - Section Methods
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return taskDayForSections.keys.count
     }

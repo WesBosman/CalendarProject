@@ -42,6 +42,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, at: 0)
+        
     }
     
     @IBAction func saveButtonInNavBarPressed(_ sender: AnyObject) {

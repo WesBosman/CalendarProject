@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppointmentTableViewController: UITableViewController{
+class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate{
     
     fileprivate let cellID = "AppointmentCells"
     fileprivate var appointmentList:[AppointmentItem] = GlobalAppointments.appointmentItems
@@ -32,6 +32,11 @@ class AppointmentTableViewController: UITableViewController{
             .addObserver(self, selector: #selector(AppointmentTableViewController.refreshList), name: NSNotification.Name(rawValue: "AppointmentListShouldRefresh"), object: nil)
         tableView.allowsSelection = false
         
+        // Set the Empty DataSource and Delegate
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
+        
     }
     
     // Failable Initializer for tab bar controller
@@ -46,6 +51,26 @@ class AppointmentTableViewController: UITableViewController{
         super.viewWillAppear(animated)
         refreshList()
     }
+    
+    // MARK - Empty Table View Methods
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let str = "No Appointments scheduled"
+        let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
+        return NSAttributedString(string: str, attributes: attributes)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let str = "Please click the add button to schedule Appointments"
+        let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)]
+        return NSAttributedString(string: str, attributes: attributes)
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        let image = UIImage(named: "Appointments")
+        return image
+    }
+
     
     // Refresh the list do not let more than 64 notifications on screen at any one time.
     func refreshList(){

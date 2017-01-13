@@ -9,7 +9,7 @@
 import UIKit
 
 
-class JournalTableViewController: UITableViewController {
+class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     fileprivate let journalIdentifier = "Journal Cells"
     fileprivate let db = DatabaseFunctions.sharedInstance
     fileprivate let journalDateFormatter = DateFormatter().dateWithoutTime
@@ -32,6 +32,10 @@ class JournalTableViewController: UITableViewController {
         
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.allowsSelection = false
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
 
     }
     
@@ -57,6 +61,25 @@ class JournalTableViewController: UITableViewController {
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
     }
+    
+    // MARK - Empty Table View Methods
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let str = "No Journals written"
+        let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
+        return NSAttributedString(string: str, attributes: attributes)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let str = "Please click the add button to write a new Journal"
+        let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)]
+        return NSAttributedString(string: str, attributes: attributes)
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        let image = UIImage(named: "Journals")
+        return image
+    }
+
 
     // MARK: - Section Methods
     override func numberOfSections(in tableView: UITableView) -> Int {

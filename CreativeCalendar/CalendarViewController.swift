@@ -352,7 +352,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             
             let journalCell: JournalTableCell = calendarTableView.dequeueReusableCell(withIdentifier: journalCellID, for: indexPath) as! JournalTableCell
             journalCell.journalImage.image = UIImage(named: "Journals")
-            journalCell.journalTitle.text  = journal.getSimplifiedDate()
+            journalCell.journalTitle.text  = journal.journalTitle
             journalCell.journalEntry.text  = journal.journalEntry
             journalCell.journalEntry.lineBreakMode = .byWordWrapping
             journalCell.journalEntry.numberOfLines = 0
@@ -365,7 +365,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         default:
             print("Cell for row at index path default case return empty cell")
             let cell = UITableViewCell()
-            cell.backgroundColor = UIColor.clear
+//            cell.backgroundColor = UIColor.clear
             return cell
         }
     }

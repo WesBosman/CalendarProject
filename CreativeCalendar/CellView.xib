@@ -12,17 +12,12 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGt-2g-edl">
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcp-YY-nEG">
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbL-M3-mfT">
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -30,18 +25,23 @@
                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbL-M3-mfT">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fGt-2g-edl" firstAttribute="leading" secondItem="Pcp-YY-nEG" secondAttribute="trailing" constant="10" id="8fQ-tE-hG4"/>
-                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="-6.25" id="Fzf-ik-gb6"/>
-                <constraint firstItem="fGt-2g-edl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="HRl-kD-agY"/>
+                <constraint firstItem="fGt-2g-edl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="6GZ-Z7-gYD"/>
+                <constraint firstItem="98W-Ry-PHC" firstAttribute="top" secondItem="Pcp-YY-nEG" secondAttribute="bottom" constant="8.5" id="CgR-aN-DgY"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Is1-Hl-1ky"/>
-                <constraint firstItem="Pcp-YY-nEG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="W2I-bB-Mox"/>
-                <constraint firstItem="CbL-M3-mfT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="XRa-MC-F6X"/>
                 <constraint firstItem="98W-Ry-PHC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="YrO-Ky-FUo"/>
-                <constraint firstItem="CbL-M3-mfT" firstAttribute="leading" secondItem="fGt-2g-edl" secondAttribute="trailing" constant="10" id="fxz-pn-o3a"/>
+                <constraint firstItem="98W-Ry-PHC" firstAttribute="top" secondItem="fGt-2g-edl" secondAttribute="bottom" constant="8.5" id="b0u-wJ-fgh"/>
+                <constraint firstItem="CbL-M3-mfT" firstAttribute="leading" secondItem="fGt-2g-edl" secondAttribute="trailing" constant="13" id="eAv-Uu-VgR"/>
+                <constraint firstItem="fGt-2g-edl" firstAttribute="leading" secondItem="Pcp-YY-nEG" secondAttribute="trailing" constant="13" id="qyN-Bv-eSF"/>
+                <constraint firstItem="98W-Ry-PHC" firstAttribute="top" secondItem="CbL-M3-mfT" secondAttribute="bottom" constant="8.5" id="rxj-Gs-MAX"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -56,6 +56,12 @@
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="backColor">
                     <color key="value" red="0.81844949720000004" green="0.1758799808" blue="0.19584927069999999" alpha="1" colorSpace="calibratedRGB"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="dotHeight">
+                    <real key="value" value="18"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="dotWidth">
+                    <real key="value" value="18"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
