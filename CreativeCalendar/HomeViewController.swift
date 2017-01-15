@@ -217,11 +217,12 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskViewTable.tableFooterView = UIView()
         journalViewTable.tableFooterView = UIView()
         
-//        appointmentViewTable.estimatedRowHeight = 100
-//        taskViewTable.estimatedRowHeight = 100
-        
+//        appointmentViewTable.rowHeight = UITableViewAutomaticDimension
+//        taskViewTable.rowHeight = UITableViewAutomaticDimension
         journalViewTable.rowHeight = UITableViewAutomaticDimension
         journalViewTable.estimatedRowHeight = 100
+        //        appointmentViewTable.estimatedRowHeight = 100
+        //        taskViewTable.estimatedRowHeight = 100
         
         // Make the day label with the checkmark.
         daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
@@ -361,7 +362,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.setTitle(title: appointment.title)
             appointmentCell.setType(type: appointment.type)
             appointmentCell.setStart(start: homeDateFormat.string(from: appointment.startingTime))
-            appointmentCell.setEnd(end: DateFormatter().dateWithTime.string(from: appointment.endingTime))
+            appointmentCell.setEnd(end: homeDateFormat.string(from: appointment.endingTime))
             appointmentCell.setLocation(location: appointment.appLocation)
             appointmentCell.setAlert(alert: appointment.alert)
             appointmentCell.setRepeat(repeating: appointment.repeating)

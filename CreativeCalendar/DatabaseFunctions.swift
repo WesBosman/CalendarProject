@@ -782,7 +782,11 @@ class DatabaseFunctions{
     
     // Set the notification time for an appointment based on the uuid
     func setAppointmentNotification(_ item: AppointmentItem){
-        print("Appointment Notification: \(item.startingTime)")
+        let newDateFormatter = DateFormatter()
+        newDateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+        print("Set Appointment Notification")
+        let startString = newDateFormatter.string(from: item.startingTime)
+        print("Appointment Notification Time -> \(startString)")
         
         let alertTime = item.alert
         
@@ -823,7 +827,7 @@ class DatabaseFunctions{
             }
         
             let newTime = (calendar as NSCalendar).date(byAdding: timeComponents, to: item.startingTime as Date, options: .matchStrictly)
-//            print("New Appointment Alert Notification Time: \(NSDateFormatter().dateWithTime.stringFromDate(newTime!))")
+//            print("New Appointment Alert Notification Time: \())")
             
             let notification =  UILocalNotification()
             notification.alertBody = "Alert For Appointment \"\(item.title)\""
@@ -840,7 +844,7 @@ class DatabaseFunctions{
     // Remove an appointment notification using its unique identifier or title
     func removeAppointmentNotification(_ item:AppointmentItem){
         for notification in UIApplication.shared.scheduledLocalNotifications! {
-            print("Remove Appointment")
+            print("Remove Appointment Notification")
             print("\(notification)")
             let identifier = notification.userInfo!["UUID"] as! String
             print("Appointment Notification Identifier \(String(identifier))")

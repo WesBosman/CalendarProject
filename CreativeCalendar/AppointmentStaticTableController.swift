@@ -57,11 +57,13 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     fileprivate let dateFormat:DateFormatter = DateFormatter().dateWithTime
     fileprivate let db = DatabaseFunctions.sharedInstance
     fileprivate var startingDate:Date? = nil
-    fileprivate var endingDate: Date? = nil
+    fileprivate var endingDate:  Date? = nil
     fileprivate var otherTextString: String = String()
     fileprivate let currentDate = Date()
     fileprivate var appointmentAlertTimes: [Date] = []
     fileprivate var startAndEndTimesTupleArray:[(start: Date, end: Date)] = []
+    fileprivate var calendar = Calendar.current
+    fileprivate let universalFormat: DateFormatter = DateFormatter().universalFormatter
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,7 +110,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     // MARK - Picker View Methods
-    // Picker View Functions for the types of appointments the user can pick from.
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return typeOfAppointments[row]
     }
@@ -154,15 +156,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             }
         }
     }
-    
-    @available(iOS 10.0, *)
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
-        if textField == otherTextField{
-            print("Other Text Field has ended editing")
-            textField.resignFirstResponder()
-        }
-    }
-    
+
     // This is for the text view delegate so that the user can tell where the additional info text box is.
     func textViewDidBeginEditing(_ textView: UITextView) {
         if additionalInfoTextBox.textColor == UIColor.lightGray{
@@ -183,10 +177,20 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         
         // If all the required fields are filled in then save the appointment otherwise show an alert
         if ((!typeOfAppointmentRightDetail.text!.isEmpty) &&
-            (!startingTimeDetailLabel.text!.isEmpty) &&
-            (!endingTimeDetailLabel.text!.isEmpty) &&
-            (!appointmentLocationTextBox.text!.isEmpty) &&
+            (!startingTimeDetailLabel.text!.isEmpty)      &&
+            (!endingTimeDetailLabel.text!.isEmpty)        &&
+            (!appointmentLocationTextBox.text!.isEmpty)   &&
             (!repeatAppointmentRightDetail.text!.isEmpty)){
+            
+            let start = universalFormat.string(from: appointmentStartDate.date)
+            let end   = universalFormat.string(from: appointmentEndDate.date)
+            let fullStart = universalFormat.string(from: appointmentStartDate.date)
+            let fullEnd   = universalFormat.string(from: appointmentEndDate.date)
+            
+            print("Appointment Start -> \(start)")
+            print("Appointment End   -> \(end)")
+            print("Full Appointment Start -> \(fullStart)")
+            print("Full Appointment End   -> \(fullEnd)")
             
             // Add the original appointment that the user entered into the database.
             let appointmentItem = AppointmentItem(type: otherTextString
@@ -246,7 +250,6 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             let someFieldMissing = UIAlertController(title: "Missing Required Fields", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
             someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                 // Essentially do nothing. Unless we want to print some sort of log message.
-                //print("Action for stoping the saving of incomplete appointment form")
             }))
             self.present(someFieldMissing, animated: true, completion: nil)
         }
@@ -255,7 +258,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     
     
     @IBAction func otherButtonPressed(_ sender: AnyObject) {
-        if ((otherTextField.text!.isEmpty) || (otherTextField.placeholder == "Please enter the type of appointment")){
+        if ((otherTextField.text!.isEmpty) ||
+            (otherTextField.placeholder == "Please enter the type of appointment")){
             otherTextField.placeholder = "Please enter the type of appointment here"
         }
         else{
@@ -279,22 +283,54 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Dispose of any resources that can be recreated.
     }
     
-    // This method works as it should.
-    func calcNotificationTime(_ date:Date) -> Date{
-        let stringFromDate = dateFormat.string(from: date)
-//        print("String From Date: \(stringFromDate)")
-        let dateFromString = dateFormat.date(from: stringFromDate)!
-//        print("Date From String: \(dateFromString)")
-        return dateFromString
+    // Want to make a method for calculating the 11:59 of the current start date that has been indicated by the start date picker
+    func calcMaxEndDate(start: Date) -> Date{
+        let todaysStringDate = universalFormat.string(from: start)
+        print("Todays String Date \(todaysStringDate)")
+        
+        // Return the 11:59:59 PM for the current start date
+        let tonight = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: start)
+        print("Tonight \(dateFormat.string(from: tonight!))")
+        
+        return tonight!
+    }
+    
+    func zeroSecondsForDate(date: Date) -> Date{
+        let newDate  = calendar.date(bySetting: .second, value: 0, of: date)
+        let strDate  = universalFormat.string(from: newDate!)
+        print("Zeroing the seconds for the date \(date) ==> \(strDate)")
+        return newDate!
     }
     
     func startDatePickerDidChange(){
-        startingDate = calcNotificationTime(appointmentStartDate.date)
+        print("Changing the start date picker")
+        startingDate = appointmentStartDate.date
+        
+        // Zero out the seconds for the start date
+        startingDate = zeroSecondsForDate(date: startingDate!)
+        
+        // Set the detail label
         startingTimeDetailLabel.text = dateFormat.string(from: startingDate!)
+        
+        // Prevent the end date from being before the start date
+        appointmentEndDate.minimumDate = startingDate!
+        
+        // Set the appointment ending date
+        appointmentEndDate.date = startingDate!
+        
+        endingDate = startingDate!
+        
+        // Update the detail label
+        endingTimeDetailLabel.text = dateFormat.string(from: startingDate!)
+        
+        // Prevent the end date from being outside the given day
+        appointmentEndDate.maximumDate = calcMaxEndDate(start: startingDate!)
     }
     
     func endDatePickerDidChange(){
-        endingDate = calcNotificationTime(appointmentEndDate.date)
+        print("Changing the end date picker")
+        endingDate = appointmentEndDate.date
+        endingDate = zeroSecondsForDate(date: endingDate!)
         endingTimeDetailLabel.text = dateFormat.string(from: endingDate!)
     }
     

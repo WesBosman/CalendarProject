@@ -54,7 +54,7 @@ class HomeAppointmentCell: UITableViewCell {
     }
     
     func setEnd(end: String){
-        homeAppointmentEnd.text = "End: \(end)"
+        homeAppointmentEnd.text = "End: Today at \(end)"
     }
     
     func setLocation(location: String){
