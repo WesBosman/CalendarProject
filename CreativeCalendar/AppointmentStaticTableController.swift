@@ -48,8 +48,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     fileprivate var endDatePickerHidden = false
     fileprivate var appointmentTypeHidden = false
     fileprivate var otherIsHidden = false
-    fileprivate var repeatAppointmentTableHidden = false
-    fileprivate var alertAppointmentTableHidden = false
+//    fileprivate var repeatAppointmentTableHidden = false
+//    var alertAppointmentTableHidden = false
     
     fileprivate let typeOfAppointments = ["Family" , "Medical" , "Recreational" , "Exercise" , "Medication Times" , "Social Event" , "Leisure" , "Household", "Work", "Physical Therapy",
         "Occupational Therapy", "Speech Therapy", "Class","Self Care", "Other"]
@@ -64,6 +64,16 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     fileprivate var startAndEndTimesTupleArray:[(start: Date, end: Date)] = []
     fileprivate var calendar = Calendar.current
     fileprivate let universalFormat: DateFormatter = DateFormatter().universalFormatter
+    var selectedRepeat:String?{
+        didSet{
+            repeatAppointmentRightDetail.text = selectedRepeat
+        }
+    }
+    var selectedAlert:String?{
+        didSet{
+            alertAppointmentRightDetail.text = selectedAlert
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,8 +84,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         toggleStartDatePicker()
         toggleEndDatePicker()
         toggleOther()
-        toggleRepeatAppointment()
-        toggleAlertAppointment()
+//        toggleRepeatAppointment()
+//        toggleAlertAppointment()
         
         // Set the data source and delegate for the appointment picker
         appointmentPicker.dataSource = self
@@ -98,9 +108,11 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         appointmentLocationTextBox.placeholder = "Location of Appointment"
         typeOfAppointmentRightDetail.text = typeOfAppointments[0]
         repeatAppointmentTitle.text = "Schedule a repeating Appointment"
-        repeatAppointmentRightDetail.text = RepeatTableViewCell().repeatDays[0]
+        repeatAppointmentRightDetail.text = RepeatTableViewController()
+                                                        .repeatArray[0]
         alertAppointmentTitle.text = "Schedule an Alert"
-        alertAppointmentRightDetail.text = AlertTableViewCell().alertArray[0]
+        alertAppointmentRightDetail.text = AlertTableViewController()
+                                                        .alertArray[0]
         
         // Set some initial default text for the TextView so the user knows where to type.
         additionalInfoTextBox.text = "Additional Information..."
@@ -278,10 +290,33 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         endDatePickerDidChange()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func unwindWithAppointmentRepeat(segue: UIStoryboardSegue){
+        print("Unwind with appointment repeat segue")
+        if let repeatVC = segue.source as? RepeatTableViewController{
+            if let selectedR = repeatVC.repeatToPass{
+                print("Selected Repeat => \(selectedR)")
+                selectedRepeat = selectedR
+            }
+        }
+//        if let alertVC = segue.source as? AlertTableViewController{
+//            print("Unwind with appointment alert segue")
+//            if let selectedA = alertVC.alertToPass{
+//                print("Selected Alert => \(selectedA)")
+//                selectedAlert = selectedA
+//            }
+//        }
     }
+    
+    @IBAction func unwindWithAppointmentAlert(segue:UIStoryboardSegue){
+        if let alertVC = segue.source as? AlertTableViewController{
+            print("Unwind with appointment alert segue")
+            if let selectedA = alertVC.alertToPass{
+                print("Selected Alert => \(selectedA)")
+                selectedAlert = selectedA
+            }
+        }
+    }
+    
     
     // Want to make a method for calculating the 11:59 of the current start date that has been indicated by the start date picker
     func calcMaxEndDate(start: Date) -> Date{
@@ -357,12 +392,12 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         else if (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 2{
             toggleEndDatePicker()
         }
-        else if (indexPath as NSIndexPath).section == 5 && (indexPath as NSIndexPath).row == 0{
-            toggleRepeatAppointment()
-        }
-        else if (indexPath as NSIndexPath).section == 6 && (indexPath as NSIndexPath).row == 0{
-            toggleAlertAppointment()
-        }
+//        else if (indexPath as NSIndexPath).section == 5 && (indexPath as NSIndexPath).row == 0{
+//            toggleRepeatAppointment()
+//        }
+//        else if (indexPath as NSIndexPath).section == 6 && (indexPath as NSIndexPath).row == 0{
+//            toggleAlertAppointment()
+//        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -385,14 +420,14 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         else if otherIsHidden && (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 2{
             return 0
         }
-        // Hide the repeat appointment table
-        else if repeatAppointmentTableHidden && (indexPath as NSIndexPath).section == 5 && (indexPath as NSIndexPath).row == 1{
-            return 0
-        }
-        // Hide the alert appointment table
-        else if alertAppointmentTableHidden && (indexPath as NSIndexPath).section == 6 && (indexPath as NSIndexPath).row == 1{
-            return 0
-        }
+//        // Hide the repeat appointment table
+//        else if repeatAppointmentTableHidden && (indexPath as NSIndexPath).section == 5 && (indexPath as NSIndexPath).row == 1{
+//            return 0
+//        }
+//        // Hide the alert appointment table
+//        else if alertAppointmentTableHidden && (indexPath as NSIndexPath).section == 6 && (indexPath as NSIndexPath).row == 1{
+//            return 0
+//        }
         // Return the normal height otherwise
         else{
             return super.tableView(tableView, heightForRowAt: indexPath)
@@ -426,29 +461,29 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     }
     
     // Toggle repeat appointment
-    func toggleRepeatAppointment(){
-        repeatAppointmentTableHidden = !repeatAppointmentTableHidden
-        let defaults = UserDefaults.standard
-        
-        if let repeatTime = defaults.object(forKey: "RepeatIdentifier"){
-            makeRecurringAppointment(repeatTime as! String, start: startingDate!, end: endingDate!)
-            repeatAppointmentRightDetail.text = String(describing: repeatTime)
-            
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
+//    func toggleRepeatAppointment(){
+//        repeatAppointmentTableHidden = !repeatAppointmentTableHidden
+//        let defaults = UserDefaults.standard
+//        
+//        if let repeatTime = defaults.object(forKey: "RepeatIdentifier"){
+//            makeRecurringAppointment(repeatTime as! String, start: startingDate!, end: endingDate!)
+//            repeatAppointmentRightDetail.text = String(describing: repeatTime)
+//            
+//        }
+//        tableView.beginUpdates()
+//        tableView.endUpdates()
+//    }
     
     // Toggle alert appointment
-    func toggleAlertAppointment(){
-        alertAppointmentTableHidden = !alertAppointmentTableHidden
-        let defaults = UserDefaults.standard
-        if let alertTime = defaults.object(forKey: "AlertIdentifier"){
-            alertAppointmentRightDetail.text = String(describing: alertTime)
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
+//    func toggleAlertAppointment(){
+//        alertAppointmentTableHidden = !alertAppointmentTableHidden
+//        let defaults = UserDefaults.standard
+//        if let alertTime = defaults.object(forKey: "AlertIdentifier"){
+//            alertAppointmentRightDetail.text = String(describing: alertTime)
+//        }
+//        tableView.beginUpdates()
+//        tableView.endUpdates()
+//    }
     
     func makeRecurringAppointment(_ interval:String, start: Date, end: Date){
         print("Make New Notification Interval: \(interval)")

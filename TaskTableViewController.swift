@@ -89,9 +89,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     }
     
     // MARK - Empty Table View Methods
-    
-    // MARK - Empty Table View Methods
-    
+        
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         let str = "No Tasks scheduled"
         let attributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)]
@@ -341,24 +339,4 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     func textChanged(_ sender:UITextField) {
         self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }
-
-
-    // MARK: - Navigation
-    /*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-
-        print("\nSegue Identifier: \(segue.identifier)\n")
- 
-        if segue.identifier == "TabBarController"{
-            var tabBarC: UITabBarController = segue.destinationViewController as! UITabBarController
-            var destination: HomeViewController = tabBarC.viewControllers?.first as! HomeViewController
-            destination.taskArray = self.taskTestList
-            print("Destination task array: \(destination.taskArray)")
-        }
-
-    }
-    */
 }

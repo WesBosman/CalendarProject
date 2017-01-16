@@ -99,6 +99,7 @@ class LoginViewController: UIViewController {
                             print("")
                             print("\(error.localizedDescription)")
                             print("")
+                            
                             self.loginMessage.text = error.localizedDescription
                             self.loginMessage.isHidden = false
                             

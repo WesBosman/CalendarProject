@@ -22,34 +22,45 @@ class TaskStaticTableViewController: UITableViewController {
     
     fileprivate let db = DatabaseFunctions.sharedInstance
     fileprivate var taskDatePickerIsHidden = false
-    fileprivate var taskRepeatDayIsHidden = false
-    fileprivate var taskAlertIsHidden = false
     fileprivate let taskFormatter = DateFormatter().dateWithTime
     fileprivate let currentDate = Date()
     
     var startTimesArray:[Date] = []
     var alertTimesArray: [Date] = []
     let defaults = UserDefaults.standard
+    
+    var selectedRepeat:String?{
+        didSet{
+            repeatingTaskRightDetail.text = selectedRepeat
+        }
+    }
+    
+    var selectedAlert:String?{
+        didSet{
+            alertTaskRightDetail.text = selectedAlert
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         taskNameTextField.placeholder = "Task Name"
         taskAdditionalInfoTextBox.placeholder = "Additional Information"
         taskFinishDateLabel.text = "Estimated Task Completion Date"
-        taskFinishDateRightDetail.text = taskFormatter.string(from: currentDate)
+        taskFinishDateRightDetail.text = taskFormatter
+                            .string(from: currentDate)
         repeatingTaskTitle.text = "Schedule a repeating Task"
-        alertTaskTitle.text = "Schedule an alert"
-        alertTaskRightDetail.text = AlertTableViewCell().alertArray[0]
-        repeatingTaskRightDetail.text = RepeatTableViewCell().repeatDays[0]
+        alertTaskTitle.text     = "Schedule an alert"
+        alertTaskRightDetail.text = AlertTableViewController()
+                                                .alertArray[0]
+        repeatingTaskRightDetail.text = RepeatTableViewController()
+                                                    .repeatArray[0]
         
         // Set the boundary dates for the maximum and minimum dates of the date picker
         taskDatePicker.minimumDate = Date()
         taskDatePicker.maximumDate = Date().calendarEndDate
         
-        // Hide the pickers from the user
+        // Hide the date picker
         toggleTaskDatePicker()
-        toggleRepeatDayPicker()
-        toggleAlertTableView()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -66,12 +77,6 @@ class TaskStaticTableViewController: UITableViewController {
         else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 2{
             toggleTaskDatePicker()
         }
-        else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 3{
-            toggleRepeatDayPicker()
-        }
-        else if (indexPath as NSIndexPath).row == 0 && (indexPath as NSIndexPath).section == 4{
-            toggleAlertTableView()
-        }
         // Deselect the table view cell after selecting it
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -80,14 +85,27 @@ class TaskStaticTableViewController: UITableViewController {
         if taskDatePickerIsHidden && (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 1{
             return 0
         }
-        else if taskRepeatDayIsHidden && (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 1{
-            return 0
-        }
-        else if taskAlertIsHidden && (indexPath as NSIndexPath).section == 4 && (indexPath as NSIndexPath).row == 1{
-            return 0
-        }
         else{
             return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+    }
+    
+    @IBAction func unwindWithSelectedRepeat(segue: UIStoryboardSegue){
+        print("Unwind segue with task repeat")
+        let repeatVC = segue.source as! RepeatTableViewController
+        if let selectedR = repeatVC.repeatToPass{
+            print("Selected Repeat => \(selectedR)")
+            selectedRepeat = selectedR
+        }
+    }
+    
+    @IBAction func unwindWithSelectedAlert(segue: UIStoryboardSegue){
+        print("Unwind segue with task alert")
+        let alertVC = segue.source as! AlertTableViewController
+        
+        if let selectedA = alertVC.alertToPass{
+            print("Selected Alert => \(selectedA)")
+            selectedAlert = selectedA
         }
     }
     
@@ -168,28 +186,6 @@ class TaskStaticTableViewController: UITableViewController {
     }
     
     
-    func toggleRepeatDayPicker(){
-        taskRepeatDayIsHidden = !taskRepeatDayIsHidden
-        if let taskRepeat = defaults.object(forKey: "RepeatIdentifier"){
-            makeRecurringTask( String(describing: taskRepeat), start: taskDatePicker.date)
-            repeatingTaskRightDetail.text = String(describing: taskRepeat)
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
-    
-    func toggleAlertTableView(){
-        
-        taskAlertIsHidden = !taskAlertIsHidden
-        if let taskAlert = defaults.object(forKey: "AlertIdentifier"){
-            alertTaskRightDetail.text = String(describing: taskAlert)
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
-    
     // Tasks only are worried about the estiated completion time
     func makeRecurringTask(_ interval: String, start: Date){
         print("Make New Notification Interval: \(interval)")
@@ -228,20 +224,4 @@ class TaskStaticTableViewController: UITableViewController {
             makeRecurringTask(interval, start: newStart!)
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
