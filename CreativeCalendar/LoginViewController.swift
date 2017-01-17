@@ -42,6 +42,9 @@ class LoginViewController: UIViewController {
             loginEmail.text = userEmail
         }
         
+        // Testing Local Authentication
+        locallyAuthenticateUser()
+        
         // If User is already logged in let them into the application
         FIRAuth.auth()?.addStateDidChangeListener({
             (auth, user) in
@@ -67,8 +70,7 @@ class LoginViewController: UIViewController {
             }
         })
         
-        // Testing Local Authentication
-//        locallyAuthenticateUser()
+
         
     }
     
@@ -156,7 +158,8 @@ class LoginViewController: UIViewController {
             // If Touch ID can be used then use it
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
                                    localizedReason: "Please Scan Your Finger to Proceed",
-                                   reply: { //[unowned self]
+                                   reply: {
+                                    [unowned self]
                                     (success, error) -> Void in
             if(success){
                  print("Success logging in using touch ID")
@@ -198,7 +201,11 @@ class LoginViewController: UIViewController {
                                                 
                         case LAError.userCancel.rawValue:
                             print("User Cancel Error")
-                                                
+                        
+                        case LAError.userFallback.rawValue:
+                            print("User FallBack authorization mechanism")
+                            self.userFallBack()
+                        
                         default:
                             print("Default Case")
                                                 
@@ -213,6 +220,24 @@ class LoginViewController: UIViewController {
             return
         }
         
+    }
+    
+    func userFallBack(){
+        let context: LAContext = LAContext()
+        var authError: NSError?
+        
+        if(context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError)){
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "No Touch ID being used", reply: {
+                [unowned self]
+                (success, error) in Void()
+                if (success){
+                    print("Successfully authenticated user using device lock code")
+                }
+                else{
+                    print("Error while trying to get user device lock code")
+                }
+            })
+        }
     }
 
     override func didReceiveMemoryWarning() {

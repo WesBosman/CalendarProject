@@ -771,29 +771,32 @@ class DatabaseFunctions{
     // Set the notification time for an appointment based on the uuid
     func setAppointmentNotification(_ item: AppointmentItem){
         let newDateFormatter = DateFormatter()
-        newDateFormatter.dateFormat = "EEEE MM/dd/yyyy hh:mm:ss a"
+        newDateFormatter.dateFormat = "EEEE MM/dd/yyyy h:mm:ss a"
         print("Set Appointment Notification")
         let startString = newDateFormatter.string(from: item.startingTime)
         print("Appointment Notification Time -> \(startString)")
+        print("Item.StartingTime \(item.startingTime)")
         
         let alertTime = item.alert
+//        if alertTime == "At Time of Event"{
+            print("Alert == at time of event")
+            // Create a local notification always
+            let appointmentNotification =  UILocalNotification()
+            appointmentNotification.alertTitle = "Appointment"
+            appointmentNotification.alertBody = "Appointment \"\(item.title)\" Has Started"
+            appointmentNotification.alertAction = "open"
+            appointmentNotification.fireDate = item.startingTime as Date
+            appointmentNotification.timeZone = TimeZone.current
+            appointmentNotification.soundName = UILocalNotificationDefaultSoundName
+            appointmentNotification.userInfo = ["UUID": item.UUID]
+            appointmentNotification.category = "APPOINTMENT_CATEGORY"
+            UIApplication.shared.scheduleLocalNotification(appointmentNotification)
+            print("Appointment Notification \n\(appointmentNotification)")
+//        }
         
-        if alertTime == "At Time of Event"{
-            // create a corresponding local notification
-            let notification =  UILocalNotification()
-            notification.alertTitle = "Appointment"
-            notification.alertBody = "Appointment \"\(item.title)\" Has Started"
-            notification.alertAction = "open"
-            notification.fireDate = item.startingTime as Date
-            notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["UUID": item.UUID, ]
-            notification.category = "APPOINTMENT_CATEGORY"
-            UIApplication.shared.scheduleLocalNotification(notification)
-            print("Notification for appointment \(notification)")
-        }
-        
-        // If there is an alert create another notification
-        else if alertTime != "At Time of Event"{
+        // If there is an alert create an additional notification
+        if alertTime != "At Time of Event"{
+            print("Alert != at time of event")
             let calendar = Calendar.current
             var timeComponents = DateComponents()
             print("Make Alert Notification For Time : \(alertTime)")
@@ -816,16 +819,19 @@ class DatabaseFunctions{
             }
         
             let newTime = (calendar as NSCalendar).date(byAdding: timeComponents, to: item.startingTime as Date, options: .matchStrictly)
+            print("New Appointment Notification Time \(DateFormatter().universalFormatter.string(from: newTime!))")
             
-            let notification =  UILocalNotification()
-            notification.alertTitle = "Appointment Alert"
-            notification.alertBody = "Alert For Appointment \"\(item.title)\""
-            notification.alertAction = "open"
-            notification.fireDate = newTime!
-            notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["UUID": "\(item.UUID)ALERT"]
-            notification.category = "APPOINTMENT_CATEGORY"
-            UIApplication.shared.scheduleLocalNotification(notification)
+            let appointmentAlertNotification =  UILocalNotification()
+            appointmentAlertNotification.alertTitle = "Appointment Alert"
+            appointmentAlertNotification.alertBody = "Alert For Appointment \"\(item.title)\""
+            appointmentAlertNotification.alertAction = "open"
+            appointmentAlertNotification.fireDate = newTime!
+            appointmentAlertNotification.timeZone = TimeZone.current
+            appointmentAlertNotification.soundName = UILocalNotificationDefaultSoundName
+            appointmentAlertNotification.userInfo = ["UUID": "\(item.UUID)ALERT"]
+            appointmentAlertNotification.category = "APPOINTMENT_CATEGORY"
+            UIApplication.shared.scheduleLocalNotification(appointmentAlertNotification)
+            print("Appointment Alert Notification \n\(appointmentAlertNotification)")
         }
     }
     
@@ -849,24 +855,32 @@ class DatabaseFunctions{
     
     // Set a notification for a task based on uuid
     func setTaskNotification(_ item: TaskItem){
-        print("Task Notification: \(item.estimateCompletionDate)")
+        print("Task Notification Estimated Complete Date: \(item.estimateCompletionDate)")
+        let itemDateString = DateFormatter().universalFormatter.string(from: item.estimateCompletionDate)
+        let formattedDate = DateFormatter().universalFormatter.date(from: itemDateString)
+        print("Task Notification Estimated Complete Date as string -> \(itemDateString)")
+        print("Task Notification Estimated Complete Date as Date -> \(formattedDate)")
         let alert = item.alert
         
-        if alert == "At Time of Event"{
-            // create local notification
-            let notification = UILocalNotification()
-            notification.alertTitle = "Task"
-            notification.alertBody = "Task \"\(item.taskTitle)\" Has Started"
-            notification.alertAction = "open"
-            notification.fireDate = item.estimateCompletionDate as Date
-            notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["UUID": item.UUID]
-            notification.category = "TASK_CATEGORY"
-            UIApplication.shared.scheduleLocalNotification(notification)
-        }
+        // So Far This Works
+        print("Alert == at time of event")
+        // Create a notification at the set time always
+        let taskNotification = UILocalNotification()
+        taskNotification.alertTitle = "Task"
+        taskNotification.alertBody = "Task \"\(item.taskTitle)\" Has Started"
+        taskNotification.alertAction = "open"
+        taskNotification.fireDate = item.estimateCompletionDate as Date
+        taskNotification.timeZone = TimeZone.current
+        taskNotification.soundName = UILocalNotificationDefaultSoundName
+        taskNotification.userInfo = ["UUID": item.UUID]
+        taskNotification.category = "TASK_CATEGORY"
+        UIApplication.shared.scheduleLocalNotification(taskNotification)
+        print("Task Notification \n\(taskNotification)")
         
-        // If the event has an alert create another notification
-        else if alert != "At Time of Event"{
+        // This has issues
+        // Create an additional notification if there is an alert
+        if alert != "At Time of Event"{
+            print("Alert != at time of event")
             let calendar = Calendar.current
             var timeComponents = DateComponents()
             print("Make Alert For Notification time : \(alert)")
@@ -890,17 +904,22 @@ class DatabaseFunctions{
             
             // Calculate the time for the users task by adding time components
             let newStart = (calendar as NSCalendar).date(byAdding: timeComponents, to: item.estimateCompletionDate as Date, options: .matchStrictly)
+            let newStartString = DateFormatter().universalFormatter.string(from: newStart!)
+            print("New Task Notification Time \(newStartString)")
+            let newStartAsDate = DateFormatter().universalFormatter.date(from: newStartString)
+            print("New Task Notification Time as String \(newStartAsDate)")
             
-            let notification = UILocalNotification()
-            notification.alertTitle = "Task Alert"
-            notification.alertBody = "Alert For Task \"\(item.taskTitle)\""
-            notification.alertAction = "open"
-            notification.fireDate = newStart!
-            notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["UUID": "\(item.UUID)ALERT"]
-            notification.category = "TASK_CATEGORY"
-            UIApplication.shared.scheduleLocalNotification(notification)
-
+            let taskAlertNotification = UILocalNotification()
+            taskAlertNotification.alertTitle = "Task Alert"
+            taskAlertNotification.alertBody = "Alert For Task \"\(item.taskTitle)\""
+            taskAlertNotification.alertAction = "open"
+            taskAlertNotification.fireDate = newStart!
+            taskAlertNotification.timeZone = TimeZone.current
+            taskAlertNotification.soundName = UILocalNotificationDefaultSoundName
+            taskAlertNotification.userInfo = ["UUID": "\(item.UUID)ALERT"]
+            taskAlertNotification.category = "TASK_CATEGORY"
+            UIApplication.shared.scheduleLocalNotification(taskAlertNotification)
+            print("Task Alert Notification \n\(taskAlertNotification)")
         }
     }
     

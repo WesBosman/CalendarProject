@@ -224,6 +224,10 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             
             db.addToAppointmentDatabase(appointmentItem)
             
+            if repeatAppointmentRightDetail.text != RepeatTableViewController().repeatArray[0]{
+                self.makeRecurringAppointment(appointmentItem.repeating, start: Date().calendarStartDate, end: Date().calendarEndDate)
+            }
+            
             // If the user has scheduled a repeat appointment then this code will execute.
             print("Start and end tuple array is empty: \(startAndEndTimesTupleArray.isEmpty)")
             if !startAndEndTimesTupleArray.isEmpty{
