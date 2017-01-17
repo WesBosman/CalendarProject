@@ -106,9 +106,6 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
-        // This sets the bage number back to zero when the view loads.
-        self.tabBarController!.tabBar.items?[1].badgeValue = nil
-        
         tableView.reloadData()
     }
 

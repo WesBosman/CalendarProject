@@ -184,7 +184,6 @@ class DatabaseFunctions{
                 let updateCompleteStatement = "UPDATE Appointments SET completed=?, date_completed=? WHERE uuid=?"
                 let updateCancelStatement = "UPDATE Appointments SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
                 let updateDeleteStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
-//                print("Appointment Name \(item.title) completed: \(item.completed)")
                 
                 // Appointment Completed
                 if isComplete == true{
@@ -264,7 +263,6 @@ class DatabaseFunctions{
                 let completedStatement = "UPDATE Tasks SET completed=?, date_completed=? WHERE uuid=?"
                 let canceledStatement = "UPDATE Tasks SET canceled=?, date_canceled=?, cancel_reason=? WHERE uuid=?"
                 let deletedStatement = "UPDATE Tasks SET deleted=?, date_deleted=?, delete_reason=? WHERE uuid=?"
-//                print("Task Name: \(item.taskTitle) Completed: \(item.completed)")
 
                 // Complete the Task
                 if isComplete == true{
@@ -413,7 +411,7 @@ class DatabaseFunctions{
                 let newAppointmentStartTime = formatter.string(from: appointmentStart!)
                 
                 if (newAppointmentStartTime == date && !appointmentArray.contains{ $0.UUID == appointmentItem.UUID}){
-                    print("New Appointment Start Date: \(newAppointmentStartTime) == Date passed in: \(date)")
+//                    print("New Appointment Start Date: \(newAppointmentStartTime) == Date passed in: \(date)")
                     appointmentArray.append(appointmentItem)
                 }
             }
@@ -472,7 +470,7 @@ class DatabaseFunctions{
                 let newTaskStartTime = formatter.string(from: estimatedDateCompleted!)
                 
                 if (newTaskStartTime == date && !taskArray.contains{ $0.UUID == taskItem.UUID}){
-                    print("New Task Start Date: \(newTaskStartTime) == Date passed in: \(date)")
+//                    print("New Task Start Date: \(newTaskStartTime) == Date passed in: \(date)")
                     taskArray.append(taskItem)
                 }
             }
@@ -518,7 +516,7 @@ class DatabaseFunctions{
                 let newJournalStartTime = formatter.string(from: date!)
                 
                 if (newJournalStartTime == journalDate && !journalArray.contains{ $0.journalUUID == journalItem.journalUUID}){
-                    print("New Journal Start Date: \(newJournalStartTime) == date passed in: \(journalDate)")
+//                    print("New Journal Start Date: \(newJournalStartTime) == date passed in: \(journalDate)")
                     journalArray.append(journalItem)
                 }
             }
@@ -544,7 +542,6 @@ class DatabaseFunctions{
         }
 
         var appointmentArray:[AppointmentItem] = []
-//        let dateFormat = NSDateFormatter().universalFormatter()
         
         do{
             let appointment:FMResultSet = try db.executeQuery("SELECT title, type, start_date, end_date, location, additional, repeat_time, alert_time, completed, canceled, deleted, date_completed, cancel_reason, delete_reason, uuid FROM Appointments WHERE deleted=?", values: [false])
@@ -699,9 +696,6 @@ class DatabaseFunctions{
         }
         
         let currentDateAsString = dateFormat.string(from: Date())
-//        let startDateString = dateFormat.stringFromDate(item.startingTime)
-//        let endDateString = dateFormat.stringFromDate(item.endingTime)
-
         
         do{
             let selectAppointment = "SELECT title, type, canceled, date_canceled, cancel_reason, deleted, date_deleted, delete_reason FROM Appointments WHERE title=? AND type=? AND deleted=?"
@@ -712,12 +706,6 @@ class DatabaseFunctions{
             let deletedStatement = "UPDATE Appointments SET deleted=?, date_deleted=?, delete_reason=? WHERE title=? AND type=?"
             
             while (appointment.next()){
-//                print("Appointments gathered")
-//                let title = appointment.stringForColumn("title")
-//                let type = appointment.stringForColumn("type")
-//                
-//                print("Appointment Title: \(title)")
-//                print("Appointment Type: \(type)")
                 
                 switch(option){
                     case "cancel":
@@ -793,6 +781,7 @@ class DatabaseFunctions{
         if alertTime == "At Time of Event"{
             // create a corresponding local notification
             let notification =  UILocalNotification()
+            notification.alertTitle = "Appointment"
             notification.alertBody = "Appointment \"\(item.title)\" Has Started"
             notification.alertAction = "open"
             notification.fireDate = item.startingTime as Date
@@ -827,17 +816,16 @@ class DatabaseFunctions{
             }
         
             let newTime = (calendar as NSCalendar).date(byAdding: timeComponents, to: item.startingTime as Date, options: .matchStrictly)
-//            print("New Appointment Alert Notification Time: \())")
             
             let notification =  UILocalNotification()
+            notification.alertTitle = "Appointment Alert"
             notification.alertBody = "Alert For Appointment \"\(item.title)\""
             notification.alertAction = "open"
             notification.fireDate = newTime!
             notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["UUID": item.UUID]
+            notification.userInfo = ["UUID": "\(item.UUID)ALERT"]
             notification.category = "APPOINTMENT_CATEGORY"
             UIApplication.shared.scheduleLocalNotification(notification)
-//            print("Notification for new appointment alert \(notification)")
         }
     }
     
@@ -852,6 +840,10 @@ class DatabaseFunctions{
             if (identifier == item.UUID){
                 UIApplication.shared.cancelLocalNotification(notification)
             }
+            else if(identifier == item.UUID + "ALERT"){
+                print("Removing Alert for appointment \(item.title)")
+                UIApplication.shared.cancelLocalNotification(notification)
+            }
         }
     }
     
@@ -863,6 +855,7 @@ class DatabaseFunctions{
         if alert == "At Time of Event"{
             // create local notification
             let notification = UILocalNotification()
+            notification.alertTitle = "Task"
             notification.alertBody = "Task \"\(item.taskTitle)\" Has Started"
             notification.alertAction = "open"
             notification.fireDate = item.estimateCompletionDate as Date
@@ -897,14 +890,14 @@ class DatabaseFunctions{
             
             // Calculate the time for the users task by adding time components
             let newStart = (calendar as NSCalendar).date(byAdding: timeComponents, to: item.estimateCompletionDate as Date, options: .matchStrictly)
-//            print("New Task Alert Notification Time: \(newStart!)")
             
             let notification = UILocalNotification()
+            notification.alertTitle = "Task Alert"
             notification.alertBody = "Alert For Task \"\(item.taskTitle)\""
             notification.alertAction = "open"
             notification.fireDate = newStart!
             notification.soundName = UILocalNotificationDefaultSoundName
-            notification.userInfo = ["UUID": item.UUID]
+            notification.userInfo = ["UUID": "\(item.UUID)ALERT"]
             notification.category = "TASK_CATEGORY"
             UIApplication.shared.scheduleLocalNotification(notification)
 
@@ -918,7 +911,12 @@ class DatabaseFunctions{
             print("\(notification)")
             let identifier = notification.userInfo!["UUID"] as! String
             print("\(identifier)")
+            
             if (identifier == item.UUID){
+                UIApplication.shared.cancelLocalNotification(notification)
+            }
+            else if(identifier == item.UUID + "ALERT"){
+                print("Removing Alert for Task \(item.taskTitle) with info \(item.taskInfo)")
                 UIApplication.shared.cancelLocalNotification(notification)
             }
         }

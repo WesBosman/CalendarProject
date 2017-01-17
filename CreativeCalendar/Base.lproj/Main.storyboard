@@ -64,7 +64,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JD3-5k-xIn">
-                                <frame key="frameInset" minX="-2.5" minY="28" height="44" maxX="2"/>
+                                <frame key="frameInset" minX="-2.5" minY="28" height="44" maxX="2.5"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Sign Up" id="Bkw-iR-9cm">
@@ -799,7 +799,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="q0m-yU-Ngl" kind="show" id="ijd-CG-CAW"/>
+                                            <segue destination="q0m-yU-Ngl" kind="show" identifier="toRepeatAppointment" id="ijd-CG-CAW"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -836,7 +836,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="R1a-vD-Gcr" kind="show" id="MxJ-8w-ZpP"/>
+                                            <segue destination="R1a-vD-Gcr" kind="show" identifier="toAlertAppointment" id="MxJ-8w-ZpP"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1551,7 +1551,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="IAM-Lc-vzh" kind="show" id="Frw-WU-vEf"/>
+                                            <segue destination="IAM-Lc-vzh" kind="show" identifier="toRepeatTask" id="Frw-WU-vEf"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1588,7 +1588,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="2mF-UF-2Wa" kind="show" id="LlQ-JP-ss7"/>
+                                            <segue destination="2mF-UF-2Wa" kind="show" identifier="toAlertTask" id="LlQ-JP-ss7"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>

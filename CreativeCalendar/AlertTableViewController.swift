@@ -29,9 +29,8 @@ class AlertTableViewController: UITableViewController {
 
         // Select the first item in the alert array this is the default
         self.tableView.allowsMultipleSelection = false
-        
-//        let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(AlertTableViewController.goBack))
-//        self.navigationItem.rightBarButtonItem = saveButton
+        self.tableView.rowHeight = 60
+        self.tableView.tableFooterView = UIView()
 
     }
 

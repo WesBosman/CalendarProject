@@ -166,6 +166,9 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
         if taskItem.isOverdue{
             cell.taskCompletionDate.textColor = UIColor.red
         }
+        else{
+            cell.taskCompletionDate.textColor = UIColor.black
+        }
         return cell
     }
     

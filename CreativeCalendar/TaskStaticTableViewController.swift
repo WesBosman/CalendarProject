@@ -27,7 +27,6 @@ class TaskStaticTableViewController: UITableViewController {
     
     var startTimesArray:[Date] = []
     var alertTimesArray: [Date] = []
-    let defaults = UserDefaults.standard
     
     var selectedRepeat:String?{
         didSet{
@@ -54,6 +53,10 @@ class TaskStaticTableViewController: UITableViewController {
                                                 .alertArray[0]
         repeatingTaskRightDetail.text = RepeatTableViewController()
                                                     .repeatArray[0]
+        
+        // Set the selected repeat and alert to the first value of the array
+        selectedRepeat = RepeatTableViewController().repeatArray[0]
+        selectedAlert  = AlertTableViewController().alertArray[0]
         
         // Set the boundary dates for the maximum and minimum dates of the date picker
         taskDatePicker.minimumDate = Date()
@@ -109,10 +112,21 @@ class TaskStaticTableViewController: UITableViewController {
         }
     }
     
+    func zeroOutTaskEstimatedCompletedDate(date: Date) -> Date{
+        let calendar = Calendar(identifier: .gregorian)
+        var dateComp = DateComponents()
+        dateComp.hour = calendar.component(.hour, from: date)
+        dateComp.minute  = calendar.component(.minute, from: date)
+        let newDate = calendar.date(bySettingHour: dateComp.hour!, minute: dateComp.minute!, second: 0, of: date)
+        let newDateAsString = DateFormatter().universalFormatter.string(from: newDate!)
+        print("New Zero'd task date -> \(newDateAsString)")
+        return newDate!
+    }
+    
     @IBAction func taskDatePickerChanged(_ sender: AnyObject) {
-        let dateAsString = taskFormatter.string(from: taskDatePicker.date)
-        print("Task Date: \(dateAsString)")
-        taskFinishDateRightDetail.text = dateAsString
+        let newTaskDate = zeroOutTaskEstimatedCompletedDate(date: taskDatePicker.date)
+        let newTaskDateString = taskFormatter.string(from:newTaskDate)
+        taskFinishDateRightDetail.text = newTaskDateString
     }
     
     
@@ -121,13 +135,17 @@ class TaskStaticTableViewController: UITableViewController {
         
         var additionalInfoString = String()
         
+        // If the task additional info textbox is not empty or not equal to the original text set it
         if !(taskAdditionalInfoTextBox.text! == "Additional Information") || !((taskAdditionalInfoTextBox.text?.isEmpty)!){
-            print("Task additional Information is not empty && does not equal additional information")
             additionalInfoString = taskAdditionalInfoTextBox.text!
         }
         
-        if (!taskNameTextField.text!.isEmpty && !taskFinishDateRightDetail.text!.isEmpty){
-            print("Task Formatter.dateFromString = \(taskFormatter.date(from: taskFinishDateRightDetail.text!)!)")
+        if (!taskNameTextField.text!.isEmpty &&
+            !taskFinishDateRightDetail.text!.isEmpty){
+            
+            let taskDateAsString = DateFormatter().universalFormatter.string(from: taskDatePicker.date)
+            print("Task Date As String -> \(taskDateAsString)")
+            
             let taskItem = TaskItem(title: taskNameTextField.text!,
                                     info: additionalInfoString,
                                     estimatedCompletion: taskFormatter.date(from: taskFinishDateRightDetail.text!)!,
@@ -141,15 +159,24 @@ class TaskStaticTableViewController: UITableViewController {
                                     deleteReason: nil,
                                     UUID: UUID().uuidString)
             
+            // If the alert is not equal to "Never" Then repeat appointments
+            if repeatingTaskRightDetail.text != RepeatTableViewController()
+                .repeatArray[0]{
+                // Make a task recursively if need be
+                self.makeRecurringTask(repeatingTaskRightDetail.text!, start: taskFormatter.date(from:taskFinishDateRightDetail.text!)!)
+            }
+            
+            // Add the task to the database
             db.addToTaskDatabase(taskItem)
             
+            // This is for adding a recurring task to the database
             if startTimesArray.isEmpty == false{
                 print("Start Times Array is not empty!")
                 
-                for task in startTimesArray{
+                for time in startTimesArray{
                     let taskItem = TaskItem(title: taskNameTextField.text!,
                                             info: additionalInfoString,
-                                            estimatedCompletion: task,
+                                            estimatedCompletion: time,
                                             repeatTime: repeatingTaskRightDetail.text!,
                                             alertTime: alertTaskRightDetail.text!,
                                             isComplete: false,
@@ -171,9 +198,9 @@ class TaskStaticTableViewController: UITableViewController {
         else{
             // This is similar to the code for the static appointment alert.
             let someFieldMissing = UIAlertController(title: "Missing Task Title or Date", message: "One or more of the reqired fields marked with an asterisk has not been filled in", preferredStyle: .alert)
-            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
-                // Essentially do nothing. Unless we want to print some sort of log message.
-            }))
+            
+            someFieldMissing.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
             self.present(someFieldMissing, animated: true, completion: nil)
         }
     }
@@ -191,37 +218,62 @@ class TaskStaticTableViewController: UITableViewController {
         print("Make New Notification Interval: \(interval)")
         let calendar = Calendar.current
         var dateComponents = DateComponents()
+        var newStart = Date()
     
         switch(interval){
-        case "":
+        case "Never":
+            print("Should never enter this empty case")
             dateComponents.day = 0
+            newStart = calendar.date(byAdding: .day, value: 0, to: start)!
             break
         case "Every Day":
             dateComponents.day = 1
+            newStart = calendar.date(byAdding: .day, value: 1, to: start)!
             break
         case "Every Week":
             dateComponents.day = 7
+            newStart = calendar.date(byAdding: .day, value: 7, to: start)!
             break
         case "Every Two Weeks":
             dateComponents.day = 14
+            newStart = calendar.date(byAdding: .day, value: 14, to: start)!
             break
         case "Every Month":
             dateComponents.day = 28
+            newStart = calendar.date(byAdding: .month, value: 1, to: start)!
             break
         default:
             break
         }
         // Get the time for the users appointment
         let endDate = Date().calendarEndDate
-        let newStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
+        let otherNewStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
+        print("New Start == \(DateFormatter().universalFormatter.string(from:newStart))")
+        print("Other New Start == \(DateFormatter().universalFormatter.string(from:newStart))")
     
         // Add the new start and end time to this array of tuples
-        startTimesArray.append(newStart!)
+        startTimesArray.append(newStart)
     
         // If the new date is still within range of the calendar boundary dates then call this method again
-        if(newStart?.isInRange(Date(), to: endDate) == true){
+        if(newStart.isInRange(Date(), to: endDate) == true){
     
-            makeRecurringTask(interval, start: newStart!)
+            makeRecurringTask(interval, start: newStart)
+        }
+    }
+    
+    // MARK - NAvigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Segue to repeating a task
+        if segue.identifier == "toRepeatTask"{
+            let destinationVC = segue.destination as! RepeatTableViewController
+            print("Select Repeat \(selectedRepeat) to Repeat Task Segue")
+            destinationVC.repeatToPass = selectedRepeat
+        }
+        // Segue to setting a task alert
+        else if segue.identifier == "toAlertTask"{
+            let destinationVC = segue.destination as! AlertTableViewController
+            print("Selected Alert \(selectedAlert) to Alert Task Segue")
+            destinationVC.alertToPass = selectedAlert
         }
     }
 }

@@ -28,6 +28,8 @@ class RepeatTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.tableView.allowsMultipleSelection = false
+        self.tableView.rowHeight = 60
+        self.tableView.tableFooterView = UIView()
     }
 
     // MARK: - Table view data source

@@ -44,9 +44,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notificationFireDate = dateformatter.string(from: notification.fireDate!)
         print("Todays Date -> \(todaysDate)")
         print("Notification Date -> \(notificationFireDate)")
+        print("Alert Title for notification -> \(notification.alertTitle)")
+        print("Alert Body for notification -> \(notification.alertBody)")
         
         // do not fire up a banner unless the notification should fire
         if let alertBody = notification.alertBody{
+            // Appointment Notification
             if alertBody.hasPrefix("Appointment"){
                 // Only fire the notification if the date matches todays date and time
                 if todaysDate == notificationFireDate{
@@ -56,13 +59,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     banner.show(duration: 3)
                 }
             }
+            // Appointment Alert Notification
+            else if alertBody.hasPrefix("Alert For Appointment"){
+                if todaysDate == notificationFireDate{
+                    print("This is an alert for an appointment")
+                    print("Creating a Banner for the appointment Alert")
+                    let banner = Banner(title: notification.alertTitle, subtitle: alertBody, image: UIImage(named: "Appointments"), backgroundColor: UIColor().appointmentColor, didTapBlock: nil)
+                    banner.show(duration: 3)
+                }
+            }
+
+            // Task Notification
             else if alertBody.hasPrefix("Task"){
                 // If the app receives the notification because the app fire date was reached then display the banner
                 if todaysDate == notificationFireDate{
                     print("This Alert is for a Task")
                     print("Creating a banner for a Task")
                     let banner = Banner(title: notification.alertTitle, subtitle: alertBody, image: UIImage(named: "Tasks"), backgroundColor: UIColor().taskColor, didTapBlock: nil)
-                    banner.animationDuration = 3
+                    banner.show(duration: 3)
+                }
+            }
+            // Task Alert Notifcation
+            else if alertBody.hasPrefix("Alert For Task"){
+                if todaysDate == notificationFireDate{
+                    print("This is an alert for a Task")
+                    print("Creating a Banner for the task Alert")
+                    let banner = Banner(title: notification.alertTitle, subtitle: notification.alertBody, image: UIImage(named:"Tasks"), backgroundColor: UIColor().taskColor, didTapBlock: nil)
                     banner.show(duration: 3)
                 }
             }
