@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import BRYXBanner
+import Locksmith
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let db = DatabaseFunctions.sharedInstance
     var auth: FIRAuth? = FIRAuth.auth()
+    let firstLaunchKey = "firstLaunchKey"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -26,6 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Asks the user if they would like to recieve notifications for alerts badges and sounds.
         application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
+        
+        let notFirstLaunch = UserDefaults.standard.bool(forKey: firstLaunchKey)
+        if(notFirstLaunch){
+            print("Is Not First Launch")
+        }
+        else{
+            print("Is First Launch")
+        }
         
         return true
     }

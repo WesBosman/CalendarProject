@@ -22,6 +22,7 @@ class HomeTaskCell: UITableViewCell {
         // Initialization code
         homeTaskTitle.lineBreakMode = NSLineBreakMode.byWordWrapping
         homeTaskTitle.numberOfLines = 0
+        
         homeTaskInfo.lineBreakMode = NSLineBreakMode.byWordWrapping
         homeTaskInfo.numberOfLines = 0
     }

@@ -33,6 +33,11 @@ class ForgotPasswordViewController: UIViewController {
         forgotPasswordMessage.lineBreakMode = .byWordWrapping
         forgotPasswordMessage.numberOfLines = 0
         
+        // Set the send email button attributes
+        sendEmailButton.backgroundColor = UIColor.flatSkyBlue
+        sendEmailButton.setTitleColor(UIColor.white, for: .normal)
+        sendEmailButton.layer.cornerRadius = 5
+        
         // If the user has an account already then give the email of that account
         if let email = defaults.object(forKey: emailKey) as? String{
             forgotPasswordTextField.text = email

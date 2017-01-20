@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import LocalAuthentication
+import Locksmith
 
 class LoginViewController: UIViewController {
     
@@ -16,11 +17,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginEmail: UITextField!
     @IBOutlet weak var loginPassword: UITextField!
     @IBOutlet weak var loginMessage: UILabel!
+    @IBOutlet weak var signupButton: UIButton!
+    @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
     
-    let defaults = UserDefaults.standard
-    let emailKey = "Email"
-    let passKey  = "Password"
-    
+
+    var userEmail: String = String()
     // What if they don't have WIFI Access?!
     
     override func viewDidLoad() {
@@ -32,18 +34,54 @@ class LoginViewController: UIViewController {
         loginMessage.numberOfLines = 0
         loginMessage.isHidden = true
         
-        // If the user's email is stored in user defaults
-        if let email = defaults.object(forKey: emailKey) as? String{
-            loginEmail.text = email
-        }
+        loginButton.backgroundColor = UIColor.flatSkyBlue
+        loginButton.setTitleColor(UIColor.white, for: .normal)
+        loginButton.layer.cornerRadius = 5
         
-        // If the user's email is stored by firebase
-        if let userEmail = FIRAuth.auth()?.currentUser?.email{
+        forgotPasswordButton.backgroundColor = UIColor.flatSkyBlue
+        forgotPasswordButton.setTitleColor(UIColor.white, for: .normal)
+        forgotPasswordButton.layer.cornerRadius = 5
+        
+        signupButton.backgroundColor = UIColor.flatSkyBlue
+        signupButton.setTitleColor(UIColor.white, for: .normal)
+        signupButton.layer.cornerRadius = 5
+        
+        let notFirstRun  = UserDefaults.standard.bool(forKey: "firstLaunchKey")
+        let userSignedUp = UserDefaults.standard.bool(forKey: "signedUp")
+        
+        // If the application has been run for the first time then delete what is in the keychain
+        if(notFirstRun == false){
+            if let userEmail = FIRAuth.auth()?.currentUser?.email{
+                do{
+                    print("Deleting Data for User Account \(userEmail)")
+                    try Locksmith.deleteDataForUserAccount(userAccount: userEmail)
+                }
+                catch let error {
+                    print("Error deleting keychain data for user \(userEmail)")
+                    print("Error \(error.localizedDescription)")
+                }
+            }
+            else{
+                    print("Could not get user email")
+            }
+            // Set the user defaults to true since the app has launched before
+            UserDefaults.standard.set(true, forKey: "firstLaunchKey")
+        }
+
+        
+        // If the user's email is stored in firebase then fill in the email text field for them
+        if (userSignedUp){
             loginEmail.text = userEmail
+            signupButton.isEnabled = false
+            signupButton.isHidden  = true
+        }
+        else{
+            signupButton.isEnabled = true
+            signupButton.isHidden = false
         }
         
         // Testing Local Authentication
-        locallyAuthenticateUser()
+//        locallyAuthenticateUser()
         
         // If User is already logged in let them into the application
         FIRAuth.auth()?.addStateDidChangeListener({
@@ -53,15 +91,10 @@ class LoginViewController: UIViewController {
                 // User is signed in.
                 print("User is Signed In")
                 
-                if let name = user.displayName{
-                    print("User Name \(name)")
-                }
-                
                 if let email = user.email{
                     print("Email \(email)")
+                    self.userEmail = email
                 }
-                
-                //self.performSegue(withIdentifier: "Login", sender: nil)
                 
             } else {
                 // No user is signed in.
@@ -69,9 +102,6 @@ class LoginViewController: UIViewController {
                 
             }
         })
-        
-
-        
     }
     
     @IBAction func userLoginButtonPressed(_ sender: AnyObject) {
@@ -105,9 +135,16 @@ class LoginViewController: UIViewController {
                             self.loginMessage.text = error.localizedDescription
                             self.loginMessage.isHidden = false
                             
-                            // Try to locally authenticate the user 
-                            // If there is an error logging in
-                            // self.locallyAuthenticateUser()
+                            // Try to compare the login info to what is in the keychain
+                            let dictionary = Locksmith.loadDataForUserAccount(userAccount: email)
+                            
+                            if(self.userEmail == email){
+                                let userPassword = dictionary?[email] as! String
+                                
+                                if(userPassword == password){
+                                    self.performSegue(withIdentifier: "Login", sender: sender)
+                                }
+                            }
                         }
                 })
             }
@@ -117,6 +154,7 @@ class LoginViewController: UIViewController {
     
     
     func showPasswordAlert(){
+        
         let passwordAlert: UIAlertController = UIAlertController(title: "Password", message: "Enter Password", preferredStyle: .alert)
         
         let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction) -> Void in

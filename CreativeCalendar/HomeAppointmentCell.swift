@@ -24,9 +24,10 @@ class HomeAppointmentCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         homeAppointmentTitle.lineBreakMode = NSLineBreakMode.byWordWrapping
-        homeAppointmentTitle.numberOfLines = 0
         homeAppointmentAdditional.lineBreakMode = NSLineBreakMode.byWordWrapping
+        
         homeAppointmentAdditional.numberOfLines = 0
+        homeAppointmentTitle.numberOfLines = 0
     }
     
     func homeAppointmentCompleted(_ appointment:AppointmentItem){

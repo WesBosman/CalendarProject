@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="680" height="170"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kIS-0h-6Vv" id="7g4-JR-mgv">
-                <frame key="frameInset" width="680" height="169"/>
+                <frame key="frameInset" width="680" height="169.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Appointments" translatesAutoresizingMaskIntoConstraints="NO" id="qO7-Tg-BWX">
@@ -26,7 +26,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIu-mS-o8c">
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="9Hn-N0-Etj"/>
-                            <constraint firstAttribute="width" constant="250" id="EtG-uR-jto"/>
+                            <constraint firstAttribute="width" constant="270" id="EtG-uR-jto"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
@@ -34,7 +34,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ti-uL-PKx">
                         <constraints>
-                            <constraint firstAttribute="width" constant="250" id="3HW-Fc-qch"/>
+                            <constraint firstAttribute="width" constant="270" id="3HW-Fc-qch"/>
                             <constraint firstAttribute="height" constant="18" id="7Y1-ZX-5Uc"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -44,7 +44,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SgG-If-MbB">
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Jbl-rG-VcF"/>
-                            <constraint firstAttribute="width" constant="350" id="iRl-od-WPu"/>
+                            <constraint firstAttribute="width" constant="330" id="iRl-od-WPu"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
@@ -65,7 +65,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IkV-5q-VfY">
                         <constraints>
-                            <constraint firstAttribute="width" constant="350" id="32t-B6-sdS"/>
+                            <constraint firstAttribute="width" constant="330" id="32t-B6-sdS"/>
                             <constraint firstAttribute="height" constant="18" id="l5X-QY-fQn"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -75,7 +75,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJB-gE-YsS">
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="CZu-YY-xhl"/>
-                            <constraint firstAttribute="width" constant="250" id="NLe-hE-SBi"/>
+                            <constraint firstAttribute="width" constant="270" id="NLe-hE-SBi"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
@@ -84,7 +84,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFo-eq-Xtc">
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="C9o-fu-Tgg"/>
-                            <constraint firstAttribute="width" constant="350" id="PFm-LG-vTR"/>
+                            <constraint firstAttribute="width" constant="330" id="PFm-LG-vTR"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>

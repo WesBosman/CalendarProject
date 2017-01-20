@@ -31,8 +31,17 @@ class DatabaseFunctions{
         
         let db = FMDatabase(path: fileURL.path)
         
-        // Set encryption key
-//        db.setKey("SarahLEncrypt")
+        // Try to set file attributes to make the database encrypted when the device is off or locked
+        let attributes = [FileAttributeKey.protectionKey : FileProtectionType.complete]
+        do{
+            try FileManager.default.setAttributes(attributes, ofItemAtPath: fileURL.path)
+            let str = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+            print("Is Database file protected -> \(str)")
+        }
+        catch{
+            print("Error Encrypting database file: \(error)")
+        }
+
         
         // If the database is not open for editing then make it editable
         if(!(db?.open())!){
@@ -42,8 +51,6 @@ class DatabaseFunctions{
         do{
             print("Application ID: \(db?.applicationID())")
             
-//            try db.executeUpdate("ATTACH database ? AS encrypted KEY ?", values: [db, "SarahLEncrypt"])
-
             try db?.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
             
             try db?.executeUpdate("create table if not exists Tasks(id integer primary key autoincrement, date_created text, task text, additional text ,repeat_time, alert_time, completed bool, canceled bool, deleted bool, estimated_completed_date text, date_completed text, date_canceled text, date_deleted text, cancel_reason, delete_reason, uuid text)", values: nil)

@@ -159,15 +159,15 @@ class TaskStaticTableViewController: UITableViewController {
                                     deleteReason: nil,
                                     UUID: UUID().uuidString)
             
-            // If the alert is not equal to "Never" Then repeat appointments
+            // Add the task to the database
+            db.addToTaskDatabase(taskItem)
+            
+            // If repeat is not equal to "Never" Then repeat tasks
             if repeatingTaskRightDetail.text != RepeatTableViewController()
                 .repeatArray[0]{
                 // Make a task recursively if need be
                 self.makeRecurringTask(repeatingTaskRightDetail.text!, start: taskFormatter.date(from:taskFinishDateRightDetail.text!)!)
             }
-            
-            // Add the task to the database
-            db.addToTaskDatabase(taskItem)
             
             // This is for adding a recurring task to the database
             if startTimesArray.isEmpty == false{
@@ -187,6 +187,7 @@ class TaskStaticTableViewController: UITableViewController {
                                             deleteReason: nil,
                                             UUID: UUID().uuidString)
                     
+                    // Add the task to the database
                     db.addToTaskDatabase(taskItem)
                     
                 }
@@ -217,29 +218,29 @@ class TaskStaticTableViewController: UITableViewController {
     func makeRecurringTask(_ interval: String, start: Date){
         print("Make New Notification Interval: \(interval)")
         let calendar = Calendar.current
-        var dateComponents = DateComponents()
+//        var dateComponents = DateComponents()
         var newStart = Date()
     
         switch(interval){
         case "Never":
             print("Should never enter this empty case")
-            dateComponents.day = 0
+//            dateComponents.day = 0
             newStart = calendar.date(byAdding: .day, value: 0, to: start)!
             break
         case "Every Day":
-            dateComponents.day = 1
+//            dateComponents.day = 1
             newStart = calendar.date(byAdding: .day, value: 1, to: start)!
             break
         case "Every Week":
-            dateComponents.day = 7
+//            dateComponents.day = 7
             newStart = calendar.date(byAdding: .day, value: 7, to: start)!
             break
         case "Every Two Weeks":
-            dateComponents.day = 14
+//            dateComponents.day = 14
             newStart = calendar.date(byAdding: .day, value: 14, to: start)!
             break
         case "Every Month":
-            dateComponents.day = 28
+//            dateComponents.day = 28
             newStart = calendar.date(byAdding: .month, value: 1, to: start)!
             break
         default:
@@ -247,16 +248,15 @@ class TaskStaticTableViewController: UITableViewController {
         }
         // Get the time for the users appointment
         let endDate = Date().calendarEndDate
-        let otherNewStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
+//        let otherNewStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
         print("New Start == \(DateFormatter().universalFormatter.string(from:newStart))")
-        print("Other New Start == \(DateFormatter().universalFormatter.string(from:newStart))")
+//        print("Other New Start == \(DateFormatter().universalFormatter.string(from:newStart))")
     
         // Add the new start and end time to this array of tuples
         startTimesArray.append(newStart)
     
         // If the new date is still within range of the calendar boundary dates then call this method again
         if(newStart.isInRange(Date(), to: endDate) == true){
-    
             makeRecurringTask(interval, start: newStart)
         }
     }

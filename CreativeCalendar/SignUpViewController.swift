@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import Locksmith
 
 class SignUpViewController: UIViewController {
     
@@ -17,10 +18,6 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signUpPassword: UITextField!
     @IBOutlet weak var signUpConfirmPassword: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
-    
-    let defaults = UserDefaults.standard
-    let emailKey = "Email"
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +32,11 @@ class SignUpViewController: UIViewController {
         signUpMessageLabel.numberOfLines = 0
         signUpMessageLabel.isHidden = true
         
+        // Set sign up button attributes
+        signUpButton.backgroundColor = UIColor.flatSkyBlue
+        signUpButton.setTitleColor(UIColor.white, for: .normal)
+        signUpButton.layer.cornerRadius = 5
+        
     }
     
     
@@ -47,7 +49,8 @@ class SignUpViewController: UIViewController {
                 
                 // If the passwords match and they are both at least 8 chars
                 if (password == confirmPassword &&
-                    (password.characters.count >= 8 && confirmPassword.characters.count >= 8)) {
+                    (password.characters.count >= 8 &&
+                        confirmPassword.characters.count >= 8)) {
                 
                     FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: {
                         
@@ -56,7 +59,6 @@ class SignUpViewController: UIViewController {
                         if let error = error{
                             self.signUpMessageLabel.isHidden = false
                             self.signUpMessageLabel.text = error.localizedDescription
-                            
                         }
                         
                         if let user = user{
@@ -66,13 +68,21 @@ class SignUpViewController: UIViewController {
                             if let email = user.email{
                                 // Notify the user that an account has been created successfully
                                 self.signUpMessageLabel.text = "Created an account with the following email address: \(email)"
+                                UserDefaults.standard.set(true, forKey: "signedUp")
+                                
                                 // Set the fields back to nil
                                 self.signUpEmailAddress.text = nil
                                 self.signUpPassword.text = nil
                                 self.signUpConfirmPassword.text = nil
                                 
-                                // If there are no errors and an account was created store the email address in user defaults or toolchain
-                                self.defaults.set(email, forKey: self.emailKey)
+                                // Try to store the user data in the keychain using locksmith
+                                do{
+                                    try Locksmith.saveData(data: [user.email! : password], forUserAccount: user.email!)
+                                    print("Saved data to locksmith")
+                                }
+                                catch{
+                                    print("Error saving data to Locksmith: \(error.localizedDescription)")
+                                }
                             }
                         }
                     
@@ -92,11 +102,8 @@ class SignUpViewController: UIViewController {
                     // Clear the password and confirm password text fields
                     self.signUpPassword.text = nil
                     self.signUpConfirmPassword.text = nil
-                    
                 }
-                
             }
-            
         }
     }
 

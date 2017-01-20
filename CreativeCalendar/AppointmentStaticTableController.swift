@@ -194,21 +194,16 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
             (!appointmentLocationTextBox.text!.isEmpty)   &&
             (!repeatAppointmentRightDetail.text!.isEmpty)){
             
-            let start = universalFormat.string(from: appointmentStartDate.date)
-            let end   = universalFormat.string(from: appointmentEndDate.date)
-            let fullStart = universalFormat.string(from: appointmentStartDate.date)
-            let fullEnd   = universalFormat.string(from: appointmentEndDate.date)
+            let start = universalFormat.string(from: startingDate!)
+            let end   = universalFormat.string(from: endingDate!)
             
             print("Appointment Start -> \(start)")
             print("Appointment End   -> \(end)")
-            print("Full Appointment Start -> \(fullStart)")
-            print("Full Appointment End   -> \(fullEnd)")
             
-            // Add the original appointment that the user entered into the database.
             let appointmentItem = AppointmentItem(type: otherTextString
                 + typeOfAppointmentRightDetail.text!,
-                                                  startTime:  startingDate!,
-                                                  endTime:    endingDate!,
+                                                  startTime:startingDate!,
+                                                  endTime: endingDate!,
                                                   title:      appointmentNameTextField.text!,
                                                   location:   appointmentLocationTextBox.text!,
                                                   additional: additionalInfoString,
@@ -222,10 +217,12 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
                                                   deleteReason:  nil,
                                                   UUID: UUID().uuidString)
             
+            // Add appointment to database
             db.addToAppointmentDatabase(appointmentItem)
             
+            // If repeat is not equal to never Then repeat appointment
             if repeatAppointmentRightDetail.text != RepeatTableViewController().repeatArray[0]{
-                self.makeRecurringAppointment(appointmentItem.repeating, start: Date().calendarStartDate, end: Date().calendarEndDate)
+                self.makeRecurringAppointment(appointmentItem.repeating, start: startingDate!, end: endingDate!)
             }
             
             // If the user has scheduled a repeat appointment then this code will execute.
@@ -285,15 +282,17 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
-    // Update the right detail start date when the user moves date or time.
+    // Update start date picker
     @IBAction func startDatePickerAction(_ sender: AnyObject) {
         startDatePickerDidChange()
     }
-    // Update the right detail of the end time when the user moves the date or time.
+    
+    // Update end date picker.
     @IBAction func endDatePickerAction(_ sender: AnyObject) {
         endDatePickerDidChange()
     }
     
+    // Unwind from repeat table view
     @IBAction func unwindWithAppointmentRepeat(segue: UIStoryboardSegue){
         print("Unwind with appointment repeat segue")
         if let repeatVC = segue.source as? RepeatTableViewController{
@@ -304,6 +303,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         }
     }
     
+    // Unwind from alert table view
     @IBAction func unwindWithAppointmentAlert(segue:UIStoryboardSegue){
         if let alertVC = segue.source as? AlertTableViewController{
             print("Unwind with appointment alert segue")
@@ -447,11 +447,13 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         tableView.endUpdates()
     }
     
-    
+    // Make a repeating appointment
     func makeRecurringAppointment(_ interval:String, start: Date, end: Date){
         print("Make New Notification Interval: \(interval)")
         let calendar = Calendar.current
         var dateComponents = DateComponents()
+        print("Original Start \(DateFormatter().universalFormatter.string(from: start))")
+        print("Original End   \(DateFormatter().universalFormatter.string(from: end))")
         
         switch(interval){
             case "Never":
@@ -476,6 +478,9 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         let endDate = Date().calendarEndDate
         let newStart = (calendar as NSCalendar).date(byAdding: dateComponents, to: start, options: .matchStrictly)
         let newEnd = (calendar as NSCalendar).date(byAdding: dateComponents, to: end, options: .matchStrictly)
+//        print("New Start \(DateFormatter().universalFormatter.string(from: newStart!))")
+//        print("New End \(DateFormatter().universalFormatter.string(from: newEnd!))")
+//        print("End Date \(DateFormatter().universalFormatter.string(from: endDate))")
         
         // Add the new start and end time to this array of tuples
         startAndEndTimesTupleArray.append((start: newStart!, end: newEnd!))
@@ -483,8 +488,8 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // If the new date is still within range of the calendar boundary dates then call this method again
         if((newStart?.isInRange(startingDate!, to: endDate) == true)
             && newEnd?.isInRange(startingDate!, to: endDate) == true){
-            
-            makeRecurringAppointment(interval, start: newStart!, end: newEnd!)
+            print("We are recursing for appointments")
+            self.makeRecurringAppointment(interval, start: newStart!, end: newEnd!)
         }
     }
     

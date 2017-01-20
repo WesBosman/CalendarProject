@@ -327,7 +327,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             taskCell.taskCompleted(task)
             taskCell.taskImage.image = UIImage(named: "Tasks")
             taskCell.setTitle(title: task.taskTitle)
-            taskCell.setEstimatedCompletedDate(date: DateFormatter().dateWithoutTime.string(from:task.estimateCompletionDate))
+            taskCell.setEstimatedCompletedDate(date: DateFormatter().dateWithTime.string(from:task.estimateCompletionDate))
             taskCell.setAlert(alert: task.alert)
             taskCell.setRepeating(rep: task.repeating)
             taskCell.setAdditional(additional: task.taskInfo)

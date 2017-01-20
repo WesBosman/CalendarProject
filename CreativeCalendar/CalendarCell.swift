@@ -20,7 +20,12 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var weekendDotColor:UIColor = UIColor(red: 132/255.0, green: 143/255.0, blue: 235/255.0, alpha: 1.0)
     @IBInspectable var weekdayDotColor:UIColor = UIColor(red: 32/255.0, green: 143/255.0, blue: 250/255.0, alpha: 1.0)
     @IBInspectable var selectedDotColor:UIColor = UIColor.orange
-
+    
+    @IBInspectable var backGroundViewColor = UIColor.orange
+    @IBInspectable var backgroundHeight = 10.0
+    @IBInspectable var backgroundWidth = 10.0
+//    @IBInspectable var cornerRadius = 10.0
+    @IBOutlet weak var backgroundView: UIView!
     
     fileprivate var fillColorForCircle: UIColor = UIColor.clear
     fileprivate var formatter = DateFormatter().dateWithoutTime

@@ -20,6 +20,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
     var journalText:String = String()
     var journalItemToEdit:JournalItem? = nil
     let db = DatabaseFunctions.sharedInstance
+    
     @IBOutlet weak var journalTitleTextField: UITextField!
     @IBOutlet weak var saveJournalNavBarButton: UIBarButtonItem!
     

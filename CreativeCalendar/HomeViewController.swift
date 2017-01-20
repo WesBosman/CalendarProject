@@ -24,7 +24,7 @@ import ChameleonFramework
 extension Date{
     fileprivate struct CalendarDates{
         fileprivate static let calendarStartDate:Date = {
-            let startDate = DateFormatter().calendarFormat.date(from: "12/01/2016")
+            let startDate = DateFormatter().calendarFormat.date(from: "1/01/2017")
             print("Calendar Dates StartDate: \(startDate!)")
             return startDate!
         }()
@@ -217,12 +217,13 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskViewTable.tableFooterView = UIView()
         journalViewTable.tableFooterView = UIView()
         
-//        appointmentViewTable.rowHeight = UITableViewAutomaticDimension
-//        taskViewTable.rowHeight = UITableViewAutomaticDimension
+        appointmentViewTable.rowHeight = UITableViewAutomaticDimension
+        taskViewTable.rowHeight = UITableViewAutomaticDimension
         journalViewTable.rowHeight = UITableViewAutomaticDimension
+        
+        appointmentViewTable.estimatedRowHeight = 100
+        taskViewTable.estimatedRowHeight = 100
         journalViewTable.estimatedRowHeight = 100
-        //        appointmentViewTable.estimatedRowHeight = 100
-        //        taskViewTable.estimatedRowHeight = 100
         
         // Make the day label with the checkmark.
         daysOfTheWeekText.text = setUpDaysOfTheWeekLabel()
@@ -246,14 +247,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         return newText! as String
     }
     
-    // Clear all NSUser Defaults
-//    func clearAllUserDefaults(){
-//        //The below two lines of code can clear out NSUser Defaults
-//        let appDomain = NSBundle.mainBundle().bundleIdentifier!
-//        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
-//    }
-    
-    
     // Set up the table views when the view appears
     override func viewWillAppear(_ animated: Bool) {
         let currentDateAsString = DateFormatter().dateWithoutTime.string(from: currentDate)
@@ -264,7 +257,6 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
         taskViewTable.reloadData()
         appointmentViewTable.reloadData()
         journalViewTable.reloadData()
-        
     }
     
     

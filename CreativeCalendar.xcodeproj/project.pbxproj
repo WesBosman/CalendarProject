@@ -12,6 +12,7 @@
 		3F7115AD1C5943F70071542F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AC1C5943F70071542F /* Images.xcassets */; };
 		3F7115B01C5943F70071542F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7115AE1C5943F70071542F /* LaunchScreen.xib */; };
 		DE06631F1C6D321600DE42CA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06631E1C6D321600DE42CA /* HomeViewController.swift */; };
+		DE0B2A7F1E3004B400DD2266 /* CalendarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0B2A7E1E3004B400DD2266 /* CalendarCellView.swift */; };
 		DE25D7CA1D108DE0000D657D /* CreativeCalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */; };
 		DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2736251D05CF26000583A7 /* JournalTableViewController.swift */; };
 		DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DCB4F1C6526EB004D3220 /* JournalViewController.swift */; };
@@ -27,7 +28,6 @@
 		DE364A0E1E13216C00F33C8D /* JournalTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE364A0D1E13216C00F33C8D /* JournalTableViewCell.xib */; };
 		DE364A101E1321DB00F33C8D /* JournalTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE364A0F1E1321DB00F33C8D /* JournalTableCell.swift */; };
 		DE364A171E27EF8400F33C8D /* HomeJournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE364A161E27EF8400F33C8D /* HomeJournalCell.swift */; };
-		DE41E91D1E280366001468D4 /* PasscodeLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE41E91C1E280366001468D4 /* PasscodeLockViewController.swift */; };
 		DE41E9211E283C51001468D4 /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DE41E9201E283C51001468D4 /* UIScrollView+EmptyDataSet.m */; };
 		DE4C0C261CC6D261000866DF /* AppointmentStaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */; };
 		DE4C56791C6E817400D3DE8E /* AppointmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C56781C6E817400D3DE8E /* AppointmentTableViewController.swift */; };
@@ -112,6 +112,7 @@
 		871144C1698231A7DF2CBE20 /* Pods_CreativeCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CreativeCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEC58869E415966FF0DA8DD0 /* Pods-CreativeCalendarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreativeCalendarTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CreativeCalendarTests/Pods-CreativeCalendarTests.release.xcconfig"; sourceTree = "<group>"; };
 		DE06631E1C6D321600DE42CA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		DE0B2A7E1E3004B400DD2266 /* CalendarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCellView.swift; sourceTree = "<group>"; };
 		DE25D7C71D108DE0000D657D /* CreativeCalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CreativeCalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE25D7C91D108DE0000D657D /* CreativeCalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreativeCalendarUITests.swift; sourceTree = "<group>"; };
 		DE25D7CB1D108DE0000D657D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -129,7 +130,6 @@
 		DE364A0D1E13216C00F33C8D /* JournalTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JournalTableViewCell.xib; sourceTree = "<group>"; };
 		DE364A0F1E1321DB00F33C8D /* JournalTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalTableCell.swift; sourceTree = "<group>"; };
 		DE364A161E27EF8400F33C8D /* HomeJournalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeJournalCell.swift; sourceTree = "<group>"; };
-		DE41E91C1E280366001468D4 /* PasscodeLockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasscodeLockViewController.swift; sourceTree = "<group>"; };
 		DE41E91F1E283C51001468D4 /* UIScrollView+EmptyDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+EmptyDataSet.h"; path = "../../../Downloads/DZNEmptyDataSet-master/Source/UIScrollView+EmptyDataSet.h"; sourceTree = "<group>"; };
 		DE41E9201E283C51001468D4 /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+EmptyDataSet.m"; path = "../../../Downloads/DZNEmptyDataSet-master/Source/UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
 		DE4C0C251CC6D261000866DF /* AppointmentStaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentStaticTableController.swift; sourceTree = "<group>"; };
@@ -354,6 +354,7 @@
 				DE4CAA701D243A9900197FEF /* CalendarHeaderView.swift */,
 				DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */,
 				DE4CAA721D24679400197FEF /* CalendarViewController.swift */,
+				DE0B2A7E1E3004B400DD2266 /* CalendarCellView.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -364,7 +365,6 @@
 				DEBE20571DD11F09009933C7 /* LoginViewController.swift */,
 				DEBE205D1DD1232C009933C7 /* ForgotPasswordViewController.swift */,
 				DEBE205B1DD12312009933C7 /* SignUpViewController.swift */,
-				DE41E91C1E280366001468D4 /* PasscodeLockViewController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -706,12 +706,12 @@
 				DE62CFF91D14787E003ED54E /* FMDatabase.m in Sources */,
 				DE53EF211CEA385C00E629A2 /* HomeTaskCell.swift in Sources */,
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
-				DE41E91D1E280366001468D4 /* PasscodeLockViewController.swift in Sources */,
 				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
 				DE8E7D561D77E67B00C69B71 /* JournalCell.swift in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,
 				DE364A081E12F5AE00F33C8D /* AppointmentTableCell.swift in Sources */,
+				DE0B2A7F1E3004B400DD2266 /* CalendarCellView.swift in Sources */,
 				DE539DA71CAEDFB0000615CD /* AppDelegate.swift in Sources */,
 				DE4C567B1C6E81A000D3DE8E /* TaskTableViewController.swift in Sources */,
 				DE364A0C1E13214900F33C8D /* TaskTableCell.swift in Sources */,
