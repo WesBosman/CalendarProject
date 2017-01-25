@@ -11,12 +11,9 @@ import UIKit
 
 class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     fileprivate let taskId = "TaskCells"
-    fileprivate var taskList:[TaskItem] = []
     fileprivate var selectedIndexPath = IndexPath?.self
     fileprivate let db = DatabaseFunctions.sharedInstance
-    fileprivate var taskSections: [String] = []
     fileprivate let taskDateFormatter = DateFormatter().dateWithoutTime
-    var taskDayForSections: Dictionary<String, [TaskItem]> = [:]
     weak var actionToEnable: UIAlertAction?
     fileprivate let defaults = UserDefaults.standard
 
@@ -38,7 +35,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
         super.init(coder: aDecoder)
         
         // Initialize Tab Bar Item
-        tabBarItem = UITabBarItem(title: "Tasks", image: UIImage(named: "Tasks"), tag: 3)
+//        tabBarItem = UITabBarItem(title: "Tasks", image: UIImage(named: "Tasks"), tag: 3)
     }
 
     
@@ -49,30 +46,29 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     }
     
     // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
-    func refreshList(){
-        taskList = db.getAllTasks()
+    func refreshList(){        
+        var taskList = db.getAllTasks()
         // Sort the task list based on the estimated completion date
         taskList = taskList.sorted(by: {$0.estimateCompletionDate.compare($1.estimateCompletionDate as Date) == ComparisonResult.orderedAscending})
         
         for task in taskList{
             let dateForSectionAsString = taskDateFormatter.string(from: task.estimateCompletionDate)
             
-            if !(taskSections.contains(dateForSectionAsString)){
-                taskSections.append(dateForSectionAsString)
-//                print("Task Section Date: \(dateForSectionAsString)")
+            if !(Tasks.taskSections.contains(dateForSectionAsString)){
+                Tasks.taskSections.append(dateForSectionAsString)
             }
         }
         
-        for section in taskSections{
+        for section in Tasks.taskSections{
             
             // Get tasks from database based on date
             taskList = db.getTaskByDate(section, formatter: taskDateFormatter)
             
             // Set the task dictionary up
-            taskDayForSections.updateValue(taskList, forKey: section)
+            Tasks.taskDictionary.updateValue(taskList, forKey: section)
             
             // Set up the global dictionary
-            GlobalTasks.taskDictionary = taskDayForSections
+            Tasks.taskDictionary = Tasks.taskDictionary
         }
         
         // Dont let the user add more than 64 tasks in one day
@@ -110,16 +106,16 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     // MARK: - Section Methods
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return taskDayForSections.keys.count
+        return Tasks.taskDictionary.keys.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return taskDayForSections[taskSections[section]]!.count
+        return Tasks.taskDictionary[Tasks.taskSections[section]]!.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if !taskSections[section].isEmpty{
-            return taskSections[section]
+        if !(Tasks.taskSections[section].isEmpty){
+            return Tasks.taskSections[section]
         }
         return nil
     }
@@ -152,7 +148,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: taskId, for: indexPath) as! TaskCell
 
-        let tableSection = taskDayForSections[taskSections[(indexPath as NSIndexPath).section]]
+        let tableSection = Tasks.taskDictionary[Tasks.taskSections[(indexPath as NSIndexPath).section]]
         let taskItem = tableSection![(indexPath as NSIndexPath).row]
         
         // Configure the cell...
@@ -173,7 +169,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let tableSection = taskDayForSections[taskSections[(indexPath as NSIndexPath).section]]
+        let tableSection = Tasks.taskDictionary[Tasks.taskSections[(indexPath as NSIndexPath).section]]
         var taskForAction = tableSection![(indexPath as NSIndexPath).row] as TaskItem
         let taskCellForAction = tableView.cellForRow(at: indexPath) as! TaskCell
         let exitMenu = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
@@ -201,19 +197,18 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
                         
                         // Delete the row from the data source
                         // Get all elements with the same title and type
-                        for key in self.taskDayForSections.keys{
+                        for key in Tasks.taskDictionary.keys{
                             // Get the section key
-                            if let k = self.taskDayForSections[key]{
+                            if let k = Tasks.taskDictionary[key]{
                                 // Get the appointment based on the key
                                 for task in k{
-                                    // If the appointment title is equal to the one we are deleting
+                                    // If the task title is equal to the one we are deleting
                                     // Then remove it
                                     if task.taskTitle == taskForAction.taskTitle
                                         && task.taskInfo == taskForAction.taskInfo{
                                         
                                         if let index = k.index(where: {$0.taskTitle == taskForAction.taskTitle}){
-                                            self.taskDayForSections[key]?.remove(at: index)
-                                            
+                                            print("Removing Task \(Tasks.taskDictionary[key]?.remove(at: index))")
                                         }
                                     }
                                 }
@@ -246,9 +241,9 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
                     let yesConfirmation = UIAlertAction(title: "Yes", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                         
                         // Delete the row from the data source
-                        let key = self.taskSections[indexPath.section]
+                        let key = Tasks.taskSections[indexPath.section]
                         print("Key for removal: \(key)")
-                        self.taskDayForSections[key]?.remove(at: indexPath.row)
+                        Tasks.taskDictionary[key]?.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         
                         //Delete from database
@@ -339,6 +334,7 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
         
     }
     
+    // For Canceling and Deleting Task Menus
     func textChanged(_ sender:UITextField) {
         self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }

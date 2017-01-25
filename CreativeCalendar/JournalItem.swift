@@ -8,14 +8,17 @@
 
 
 // Want to make global structures instead of pulling info from database all the time
-struct GlobalJournalStructures{
+struct JournalStructures{
     static var journalDictionary: Dictionary<String, [JournalItem]> = [:]
     static var journalSections: [String] = []
     static var journalItems: [JournalItem] = []
 }
 
 // Class for manipulating global structs
-class GlobalJournals{
+class Journals{
+//    static var journalDictionary: Dictionary<String, [JournalItem]> = [:]
+//    static var journalSections: [String] = []
+//    fileprivate var journalItems: [JournalItem] = []
     fileprivate let db = DatabaseFunctions.sharedInstance
     fileprivate let journalDateFormatter = DateFormatter().dateWithoutTime
     
@@ -23,28 +26,28 @@ class GlobalJournals{
     // Get the Journals from the database and store them in a dictionary
     func setUpJournalDictionary(){
         // This is an expensive task to constantly hit the database
-        GlobalJournalStructures.journalItems = db.getAllJournals()
+        JournalStructures.journalItems = db.getAllJournals()
         
         // Sort the journals based on their dates
-        GlobalJournalStructures.journalItems = GlobalJournalStructures.journalItems.sorted(by: {
+        JournalStructures.journalItems = JournalStructures.journalItems.sorted(by: {
             $0.journalDate.compare($1.journalDate) == ComparisonResult.orderedAscending
         })
     
-        for journal in GlobalJournalStructures.journalItems{
+        for journal in JournalStructures.journalItems{
             let journalDate = journalDateFormatter.string(from: journal.journalDate)
     
             // If the journal sections array does not contain the date then add it
-            if(!GlobalJournalStructures.journalSections.contains(journalDate)){
-                GlobalJournalStructures.journalSections.append(journalDate)
+            if(!JournalStructures.journalSections.contains(journalDate)){
+                JournalStructures.journalSections.append(journalDate)
             }
         }
     
-        for section in GlobalJournalStructures.journalSections{
+        for section in JournalStructures.journalSections{
             // Get journal items based on the date
-            GlobalJournalStructures.journalItems = db.getJournalByDate(section, formatter: journalDateFormatter)
+            JournalStructures.journalItems = db.getJournalByDate(section, formatter: journalDateFormatter)
     
             // Set the table view controllers dictionary
-            GlobalJournalStructures.journalDictionary.updateValue(GlobalJournalStructures.journalItems, forKey: section)
+            JournalStructures.journalDictionary.updateValue(JournalStructures.journalItems, forKey: section)
         }
     }
     
@@ -55,25 +58,24 @@ class GlobalJournals{
         print("Journal String Date -> \(journalStringDate)")
         
         // If there is not already a section in the dictionary for that date create one
-        if !(GlobalJournalStructures.journalSections.contains(journalStringDate)){
+        if !(JournalStructures.journalSections.contains(journalStringDate)){
             print("Journal date IS NOT already in the dictionary")
             
-            GlobalJournalStructures.journalSections.append(journalStringDate)
+            JournalStructures.journalSections.append(journalStringDate)
+            
             var journalArray: [JournalItem] = []
             journalArray.append(item)
             
-            
-            
-            GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: journalStringDate)
+            JournalStructures.journalDictionary.updateValue(journalArray, forKey: journalStringDate)
             
         }
         // Otherwise update an existing array
         else{
             print("Journal date IS already in the dictionary")
             
-            var journalArray: [JournalItem] = GlobalJournalStructures.journalDictionary[journalStringDate]!
+            var journalArray: [JournalItem] = JournalStructures.journalDictionary[journalStringDate]!
             journalArray.append(item)
-            GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: journalStringDate)
+            JournalStructures.journalDictionary.updateValue(journalArray, forKey: journalStringDate)
             
         }
     }
@@ -83,7 +85,7 @@ class GlobalJournals{
     func updateJournalFromGlobalDictionary(item: JournalItem){
         let journalStringDate = journalDateFormatter.string(from: item.journalDate)
         print("Journal String Date -> \(journalStringDate)")
-        var journalArray = GlobalJournalStructures.journalDictionary[journalStringDate]
+        var journalArray = JournalStructures.journalDictionary[journalStringDate]
         
         // Find the index of the journal in the dictionary 
         if let found = journalArray?.index(where: {$0.journalUUID == item.journalUUID}){
@@ -92,20 +94,20 @@ class GlobalJournals{
         }
         
         // Update the dictionary
-        GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalStringDate)
+        JournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalStringDate)
     }
     
     
     // Remove the journal from the Dictionary
     func removeJournalFromGlobalDictionary(item: JournalItem){
         let dictionaryKey = DateFormatter().journalFormat.string(from: item.journalDate)
-        let journalArray = GlobalJournalStructures.journalDictionary[dictionaryKey]
+        let journalArray = JournalStructures.journalDictionary[dictionaryKey]
         
         // If a journal array exists for a given key then remove it
         if var journalArray = journalArray{
             if let found = journalArray.index(where: {$0.journalUUID == item.journalUUID}){
                 journalArray.remove(at: found)
-                GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: dictionaryKey)
+                JournalStructures.journalDictionary.updateValue(journalArray, forKey: dictionaryKey)
             }
         }
     }
@@ -139,10 +141,10 @@ class JournalItem:CustomStringConvertible {
     }
     
     // Get a simplified date that does not contain the hours and seconds
-    func getSimplifiedDate() -> String{
-        let journalStringForDate = dateFormat.string(from: journalDate)
-        return journalStringForDate
-    }
+//    func getSimplifiedDate() -> String{
+//        let journalStringForDate = dateFormat.string(from: journalDate)
+//        return journalStringForDate
+//    }
 }
 
 

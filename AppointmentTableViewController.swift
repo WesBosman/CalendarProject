@@ -11,12 +11,9 @@ import UIKit
 class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate{
     
     fileprivate let cellID = "AppointmentCells"
-    fileprivate var appointmentList:[AppointmentItem] = GlobalAppointments.appointmentItems
     fileprivate var selectedIndexPath: IndexPath?
     fileprivate let db = DatabaseFunctions.sharedInstance
-    fileprivate var appointmentDaySections: Dictionary<String, [AppointmentItem]> = GlobalAppointments.appointmentDictionary
     fileprivate let appointmentDateFormatter = DateFormatter().dateWithoutTime
-    fileprivate var appointmentSections: [String] = GlobalAppointments.appointmentSections
     fileprivate let defaults = UserDefaults.standard
     weak var actionToEnable:UIAlertAction?
     
@@ -42,7 +39,7 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
         super.init(coder: aDecoder)
         
         // Initialize Tab Bar Item
-        tabBarItem = UITabBarItem(title: "Appointments", image: UIImage(named: "Appointment"), tag: 2)
+//        tabBarItem = UITabBarItem(title: "Appointments", image: UIImage(named: "Appointment"), tag: 2)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,38 +68,37 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
 
     
     // Refresh the list do not let more than 64 notifications on screen at any one time.
-    func refreshList(){
-        
+    func refreshList(){        
         // Get all appointments that are not marked as deleted.
-        appointmentList = db.getAllAppointments()
+        Appointments.appointmentItems = db.getAllAppointments()
         
         // Order the appointments based on their starting times.
-        appointmentList = appointmentList.sorted(by: {$0.startingTime.compare($1.startingTime as Date) == ComparisonResult.orderedAscending})
+        Appointments.appointmentItems = Appointments.appointmentItems.sorted(by: {$0.startingTime.compare($1.startingTime as Date) == ComparisonResult.orderedAscending})
         
-        for app in appointmentList{
+        for app in Appointments.appointmentItems{
             // Get the date from the appointment
             let appointmentDateForSectionAsString = appointmentDateFormatter.string(from: app.startingTime)
             
             // If the appointment Date is not already in the appointment sections array add it
-            if !appointmentSections.contains(appointmentDateForSectionAsString){
-                appointmentSections.append(appointmentDateForSectionAsString)
+            if !Appointments.appointmentSections.contains(appointmentDateForSectionAsString){
+                Appointments.appointmentSections.append(appointmentDateForSectionAsString)
             }
         }
         
         // Use the appointment sections array to get items from the database
-        for str in appointmentSections{
-            appointmentList = db.getAppointmentByDate(str, formatter: appointmentDateFormatter)
+        for str in Appointments.appointmentSections{
+            Appointments.appointmentItems = db.getAppointmentByDate(str, formatter: appointmentDateFormatter)
             
             // Add those items to the dictionary that the table view relies on
-            appointmentDaySections.updateValue(appointmentList, forKey: str)
+            Appointments.appointmentDictionary.updateValue(Appointments.appointmentItems, forKey: str)
             
             // Set the global dictionary up
-            GlobalAppointments.appointmentDictionary = appointmentDaySections
+            Appointments.appointmentDictionary = Appointments.appointmentDictionary
             
         }
         
         // If there are more than 64 appointments today do not let the user add more appointments
-        if appointmentList.count > 64{
+        if Appointments.appointmentItems.count > 64{
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
@@ -111,23 +107,23 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
 
     // MARK Section Header Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appointmentDaySections[appointmentSections[section]]!.count
+        return Appointments.appointmentDictionary[Appointments.appointmentSections[section]]!.count
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return appointmentDaySections.keys.count
+        return Appointments.appointmentDictionary.keys.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Return the section title as a date
-        if !appointmentSections[section].isEmpty{
-            return appointmentSections[section]
+        if !(Appointments.appointmentSections[section].isEmpty){
+            return Appointments.appointmentSections[section]
         }
         return nil
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+        if(tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0){
             return 0.0
         }
         else{
@@ -136,7 +132,7 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0{
+        if(tableView.dataSource?.tableView(tableView, numberOfRowsInSection: section) == 0){
             return nil
         }
         else{
@@ -154,7 +150,7 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // The cell is a custom appointment cell that we have created.
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! AppointmentCell
-        let tableSection = appointmentDaySections[appointmentSections[(indexPath as NSIndexPath).section]]
+        let tableSection = Appointments.appointmentDictionary[Appointments.appointmentSections[(indexPath as NSIndexPath).section]]
         let appointment = tableSection![(indexPath as NSIndexPath).row]
         
         // If the current time is later than the starting time of the appointment then the color is set to red.
@@ -193,7 +189,7 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let appointmentCellForAction = tableView.cellForRow(at: indexPath) as! AppointmentCell
-        let tableSection = appointmentDaySections[appointmentSections[(indexPath as NSIndexPath).section]]
+        let tableSection = Appointments.appointmentDictionary[Appointments.appointmentSections[(indexPath as NSIndexPath).section]]
         var appointmentForAction = tableSection![(indexPath as NSIndexPath).row] as AppointmentItem
         let exitMenu = UIAlertAction(title: "Exit Menu", style: .cancel, handler: nil)
         
@@ -218,9 +214,9 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
                     let confirmationController = UIAlertController(title: "Delete Confirmation", message: "Are you sure you want to delete this appointment?", preferredStyle: .alert)
                     let yesConfirmation = UIAlertAction(title: "Yes", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                         // Get all elements with the same title and type
-                        for key in self.appointmentDaySections.keys{
+                        for key in Appointments.appointmentDictionary.keys{
                             // Get the section key
-                            if let k = self.appointmentDaySections[key]{
+                            if let k = Appointments.appointmentDictionary[key]{
                                 // Get the appointment based on the key
                                 for app in k{
                                     // If the appointment title is equal to the one we are deleting
@@ -231,8 +227,7 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
                                         && app.additionalInfo == appointmentForAction.additionalInfo{
                                         
                                         if let index = k.index(where: {$0.title == appointmentForAction.title}){
-                                            self.appointmentDaySections[key]?.remove(at: index)
-                                            
+                                            Appointments.appointmentDictionary[key]?.remove(at: index)
                                         }
                                     }
                                 }
@@ -257,9 +252,9 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
                     let yesConfirmation = UIAlertAction(title: "Yes", style: .destructive, handler: {(action: UIAlertAction) -> Void in
                         
                         // Delete the row from the data source
-                        let key = self.appointmentSections[indexPath.section]
+                        let key = Appointments.appointmentSections[indexPath.section]
                         print("Key for removal: \(key)")
-                        self.appointmentDaySections[key]?.remove(at: indexPath.row)
+                        Appointments.appointmentDictionary[key]?.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         
                         //Delete from database
@@ -290,7 +285,6 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
             self.actionToEnable = deleteAppointment
             deleteAppointment.isEnabled = false
             deleteOptions.addAction(deleteAppointment)
-//            deleteOptions.addAction(deleteAllAppointments)
             deleteOptions.addAction(exitMenu)
             
             self.present(deleteOptions, animated: true, completion: nil)
@@ -356,22 +350,8 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
     
     }
     
+    // This is for the selector for the confirmation on delete and cancel alert controller menus
     func textChanged(_ sender:UITextField) {
         self.actionToEnable?.isEnabled = (sender.text!.isEmpty == false)
     }
-
-    
-    // MARK: - Navigation
-    /*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the Home View.
-        
-        if segue.identifier == "Home"{
-            let view = segue.destinationViewController as! HomeViewController
-            let indexPath = sender as! NSIndexPath
-        }
-    }
-    */
 }

@@ -52,7 +52,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let background = CAGradientLayer().makeGradientBackground()
         background.frame = self.view.bounds
         self.view.layer.insertSublayer(background, at: 0)
-                
+        
         // Select the current date
         calendarView.reloadData() {
             self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
@@ -90,7 +90,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         super.init(coder: aDecoder)
         print("Calendar Init Coder Method")
         // Initialize Tab Bar Item
-        tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
+//        tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -358,7 +358,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         default:
             print("Cell for row at index path default case return empty cell")
             let cell = UITableViewCell()
-//            cell.backgroundColor = UIColor.clear
             return cell
         }
     }
@@ -388,7 +387,19 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             // Configure the view
             let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
             let label = UILabel(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 18))
-            label.text = calendarSectionTitles[section]
+            
+            // Appointments
+            if(calendarSectionTitles[section] == "Appointments"){
+                label.text = calendarSectionTitles[section] + " (\(calendarAppointmentList.count))"
+            }
+            // Tasks
+            else if(calendarSectionTitles[section] == "Tasks"){
+                label.text = calendarSectionTitles[section] + " (\(calendarTaskList.count))"
+            }
+            // Journals
+            else if(calendarSectionTitles[section] == "Journals"){
+                label.text = calendarSectionTitles[section] + " (\(calendarJournalList.count))"
+            }
             label.textColor = UIColor.white
             view.addSubview(label)
         

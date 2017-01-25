@@ -60,7 +60,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
             
             // Add the item to the global dictionary
             let journalDate = newDateFormat.string(from: journalItem.journalDate)
-            var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
+            var journalArray = JournalStructures.journalDictionary[journalDate]
             
             if let found = journalArray?.index(where: {$0.journalUUID == journalItem.journalUUID}){
                 print("Found: \(found)")
@@ -92,7 +92,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
                 
                 // Get the key and value from the dictionary
                 let journalDate = newDateFormat.string(from: journalItem.journalDate)
-                var journalArray = GlobalJournalStructures.journalDictionary[journalDate]
+                var journalArray = JournalStructures.journalDictionary[journalDate]
                 print("Journal Date: \(journalDate)")
                 print("Journal Array: \(journalArray)")
                 
@@ -102,12 +102,12 @@ class JournalViewController: UIViewController, UITextViewDelegate {
                 if journalArray == nil{
                     var journalArray:[JournalItem] = []
                     journalArray.append(journalItem)
-                    GlobalJournalStructures.journalSections.append(journalDate)
-                    GlobalJournalStructures.journalDictionary.updateValue(journalArray, forKey: journalDate)
+                    JournalStructures.journalSections.append(journalDate)
+                    JournalStructures.journalDictionary.updateValue(journalArray, forKey: journalDate)
                 }
                 else{
                     journalArray?.append(journalItem)
-                    GlobalJournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
+                    JournalStructures.journalDictionary.updateValue(journalArray!, forKey: journalDate)
                 }
                 // Only pop to the previous view controller in the case that
                 // The text fields are correctly filled

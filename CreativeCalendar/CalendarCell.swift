@@ -24,7 +24,6 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var backGroundViewColor = UIColor.orange
     @IBInspectable var backgroundHeight = 10.0
     @IBInspectable var backgroundWidth = 10.0
-//    @IBInspectable var cornerRadius = 10.0
     @IBOutlet weak var backgroundView: UIView!
     
     fileprivate var fillColorForCircle: UIColor = UIColor.clear
@@ -51,12 +50,12 @@ class CalendarCell: JTAppleDayCellView{
         self.drawJournal = false
         
         appointmentCounterLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        taskCounterLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        journalCounterLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        taskCounterLabel.font        = UIFont.boldSystemFont(ofSize: 16)
+        journalCounterLabel.font     = UIFont.boldSystemFont(ofSize: 16)
         
         appointmentCounterLabel.textColor = UIColor.white
-        taskCounterLabel.textColor = UIColor.white
-        journalCounterLabel.textColor = UIColor.white
+        taskCounterLabel.textColor        = UIColor.white
+        journalCounterLabel.textColor     = UIColor.white
         
         // Set the label for the date of the cell
         dayLabel.text = cellState.text
@@ -81,24 +80,49 @@ class CalendarCell: JTAppleDayCellView{
         let cellDate = formatter.string(from: cellState.date)
         
         // Use dictionaries for fast loading of the calendar
-        let appointmentDictionary = GlobalAppointments.appointmentDictionary
-        let taskDictionary = GlobalTasks.taskDictionary
-        let journalDictionary = GlobalJournalStructures.journalDictionary
+        let appointmentDict = Appointments.appointmentDictionary
+        let taskDict        = Tasks.taskDictionary
+        let journalDict     = JournalStructures.journalDictionary
         
-        if let appointmentList = appointmentDictionary[cellDate]{
-            self.appointmentCounter = appointmentList.count
-            self.drawAppointment = true
+        if let appointmentList = appointmentDict[cellDate]{
+            if appointmentList.count != 0{
+                self.appointmentCounter = appointmentList.count
+                self.drawAppointment = true
+            }
         }
         
-        if let taskList = taskDictionary[cellDate]{
-            self.taskCounter = taskList.count
-            self.drawTask = true
+        if let taskList = taskDict[cellDate]{
+            if taskList.count != 0{
+                self.taskCounter = taskList.count
+                self.drawTask = true
+            }
         }
         
-        if let journalList = journalDictionary[cellDate]{
-            self.journalCounter = journalList.count
-            self.drawJournal = true
+        if let journalList = journalDict[cellDate]{
+            if journalList.count != 0{
+                self.journalCounter = journalList.count
+                self.drawJournal = true
+            }
         }
+        
+//        let appointmentList = DatabaseFunctions.sharedInstance.getAppointmentByDate(cellDate, formatter: formatter)
+//        let taskList        = DatabaseFunctions.sharedInstance.getTaskByDate(cellDate, formatter: formatter)
+//        let journalList     = DatabaseFunctions.sharedInstance.getJournalByDate(cellDate, formatter: formatter)
+//        
+//        if appointmentList.count != 0{
+//            self.appointmentCounter = appointmentList.count
+//            self.drawAppointment = true
+//        }
+//        
+//        if taskList.count != 0{
+//            self.taskCounter = taskList.count
+//            self.drawTask = true
+//        }
+//        
+//        if journalList.count != 0{
+//            self.journalCounter = journalList.count
+//            self.drawJournal = true
+//        }
     }
     
     func configureTextColor(_ cellState: CellState){

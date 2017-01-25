@@ -10,14 +10,13 @@ import UIKit
 
 
 class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
     fileprivate let journalIdentifier = "Journal Cells"
     fileprivate let db = DatabaseFunctions.sharedInstance
     fileprivate let journalDateFormatter = DateFormatter().dateWithoutTime
     weak var actionToEnable: UIAlertAction?
     fileprivate var selectedIndexPath: IndexPath?
     fileprivate var isExpanded: Bool = false
-    fileprivate var cellHeightDictionary: Dictionary<Int, [CGFloat]> = [:]
-    fileprivate var cellHeightArray: [CGFloat] = []
     fileprivate var previousSection = 0
     
     override func viewDidLoad() {
@@ -25,9 +24,11 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
         
         // Navigation Bar
         self.navigationItem.leftBarButtonItem = self.editButtonItem
+        
         // Only allow the table view to be selectable during editing
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.allowsSelection = false
+        
         // Set the empty datasource and delegate methods
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
@@ -39,7 +40,7 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
         super.init(coder: aDecoder)
         
         // Initialize Tab Bar Item
-        tabBarItem = UITabBarItem(title: "Journals", image: UIImage(named: "Journals"), tag: 4)
+//        tabBarItem = UITabBarItem(title: "Journals", image: UIImage(named: "Journals"), tag: 4)
     }
 
 
@@ -79,17 +80,17 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
     // MARK: - Section Methods
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return GlobalJournalStructures.journalSections.count
+        return JournalStructures.journalSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[section]]!.count
+        return JournalStructures.journalDictionary[JournalStructures.journalSections[section]]!.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
-        if(!GlobalJournalStructures.journalSections[section].isEmpty){
-            return GlobalJournalStructures.journalSections[section]
+        if(!JournalStructures.journalSections[section].isEmpty){
+            return JournalStructures.journalSections[section]
         }
         return nil
     }
@@ -121,7 +122,7 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: journalIdentifier, for: indexPath) as! JournalCell
         
-        let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
+        let tableSection = JournalStructures.journalDictionary[JournalStructures.journalSections[(indexPath as NSIndexPath).section]]
         let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
         
         cell.journalCellTitle.text = journalItem.journalTitle
@@ -151,7 +152,7 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
         if editingStyle == .delete {
             
             // Delete the row from the data source
-            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
+            let tableSection = JournalStructures.journalDictionary[JournalStructures.journalSections[(indexPath as NSIndexPath).section]]
             let journalItemToDelete = tableSection![(indexPath as NSIndexPath).row] as JournalItem
             
             let deleteOptions = UIAlertController(title: "Delete Journal", message: "Are you sure you want to delete the following journal? : \n\(journalItemToDelete.journalEntry)", preferredStyle: .alert)
@@ -163,8 +164,8 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
             
             let deleteJournal = UIAlertAction(title: "Delete Journal", style: .destructive, handler: {(action: UIAlertAction) -> Void in
 
-                let key = GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]
-                let journal = GlobalJournalStructures.journalDictionary[key]?.remove(at: (indexPath as NSIndexPath).row)
+                let key = JournalStructures.journalSections[(indexPath as NSIndexPath).section]
+                let journal = JournalStructures.journalDictionary[key]?.remove(at: (indexPath as NSIndexPath).row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 journal!.journalDeleted = true
                 journal!.journalDeletedReason = deleteOptions.textFields![0].text!
@@ -219,7 +220,7 @@ class JournalTableViewController: UITableViewController, DZNEmptyDataSetSource, 
         if segue.identifier == "editJournalSegue"{
             let destination = segue.destination as! JournalViewController
             let indexPath = tableView.indexPathForSelectedRow!
-            let tableSection = GlobalJournalStructures.journalDictionary[GlobalJournalStructures.journalSections[(indexPath as NSIndexPath).section]]
+            let tableSection = JournalStructures.journalDictionary[JournalStructures.journalSections[(indexPath as NSIndexPath).section]]
             let journalItem = tableSection![(indexPath as NSIndexPath).row] as JournalItem
             
             destination.journalItemToEdit = journalItem

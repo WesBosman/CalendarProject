@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="52V-8z-kuT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="52V-8z-kuT">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -189,10 +189,10 @@
             </objects>
             <point key="canvasLocation" x="-673" y="0.0"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Animated Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController storyboardIdentifier="tabBarController" id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabBarController" id="49e-Tb-3d3" customClass="RAMAnimatedTabBarController" customModule="RAMAnimatedTabBarController" sceneMemberID="viewController">
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" restorationIdentifier="tabBar" translucent="NO" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
@@ -398,7 +398,7 @@
                             <tableViewSection headerTitle="Appointment Name *" id="hfc-99-6hs">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AppTitle" editingAccessoryType="disclosureIndicator" rowHeight="55" id="XaK-Zg-hGK">
-                                        <rect key="frame" x="0.0" y="55.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="56" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" semanticContentAttribute="spatial" tableViewCell="XaK-Zg-hGK" id="TAP-1x-JDR">
                                             <frame key="frameInset" width="768" height="54"/>
@@ -447,7 +447,7 @@
                             <tableViewSection headerTitle="Appointment Type *" id="uEs-qM-2iO">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppType" textLabel="XCp-kV-wLF" detailTextLabel="yOE-Wg-8QX" rowHeight="55" style="IBUITableViewCellStyleValue1" id="s7z-kT-vaa">
-                                        <rect key="frame" x="0.0" y="158.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="160" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s7z-kT-vaa" id="2Fy-vS-ZbN">
                                             <frame key="frameInset" width="768" height="54"/>
@@ -477,7 +477,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppType" rowHeight="170" id="rQ5-xV-on3" userLabel="AppTypeDropDown">
-                                        <rect key="frame" x="0.0" y="213.5" width="768" height="170"/>
+                                        <rect key="frame" x="0.0" y="215" width="768" height="170"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rQ5-xV-on3" id="5y5-BX-xm5">
                                             <frame key="frameInset" width="768" height="169"/>
@@ -494,7 +494,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="55" id="a6i-dB-O4L">
-                                        <rect key="frame" x="0.0" y="383.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="385" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a6i-dB-O4L" id="W9b-5W-KYh">
                                             <frame key="frameInset" width="768" height="54"/>
@@ -571,7 +571,7 @@
                             <tableViewSection headerTitle="Appointment Time *" id="J2h-Md-KJK">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppStartTitle" textLabel="9US-E2-r2q" detailTextLabel="kGR-jt-fnx" rowHeight="55" style="IBUITableViewCellStyleValue1" id="OR0-ee-M8D">
-                                        <rect key="frame" x="0.0" y="486.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="489" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OR0-ee-M8D" id="NEv-rj-bvu">
                                             <frame key="frameInset" width="768" height="54"/>
@@ -595,7 +595,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppStartDate" rowHeight="200" id="NgO-IW-IuD">
-                                        <rect key="frame" x="0.0" y="541.5" width="768" height="200"/>
+                                        <rect key="frame" x="0.0" y="544" width="768" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NgO-IW-IuD" id="4c5-aJ-LuG">
                                             <frame key="frameInset" width="768" height="199"/>
@@ -619,7 +619,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppEndTitle" textLabel="0yE-mK-ivT" detailTextLabel="k1J-9O-w75" rowHeight="55" style="IBUITableViewCellStyleValue1" id="w7o-WM-H3h">
-                                        <rect key="frame" x="0.0" y="741.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="744" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w7o-WM-H3h" id="InK-sb-ndA">
                                             <frame key="frameInset" width="768" height="54"/>
@@ -643,7 +643,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AppEndDate" rowHeight="200" id="N9U-Uu-qye">
-                                        <rect key="frame" x="0.0" y="796.5" width="768" height="200"/>
+                                        <rect key="frame" x="0.0" y="799" width="768" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N9U-Uu-qye" id="nN4-84-Wid">
                                             <frame key="frameInset" width="768" height="199"/>
@@ -671,7 +671,7 @@
                             <tableViewSection headerTitle="Appointment Location *" id="7MR-nM-KmF">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AppLocation" rowHeight="55" id="eaz-VV-LaD">
-                                        <rect key="frame" x="0.0" y="1044.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="1048" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eaz-VV-LaD" id="XQ2-PR-mp6">
                                             <frame key="frameInset" width="768" height="54"/>
@@ -718,7 +718,7 @@
                             <tableViewSection headerTitle="Additional Info (optional)" id="DH8-4f-yYK">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AdditionalAppInfo" rowHeight="90" id="56M-Oc-aqC">
-                                        <rect key="frame" x="0.0" y="1147.5" width="768" height="90"/>
+                                        <rect key="frame" x="0.0" y="1152" width="768" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56M-Oc-aqC" id="A5g-Yg-1Aq">
                                             <frame key="frameInset" width="768" height="89"/>
@@ -773,7 +773,7 @@
                             <tableViewSection headerTitle="Repeat Appointment (Optional)" id="C72-iX-Lzo">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AppSave" textLabel="Tcu-cY-HJ7" detailTextLabel="HdK-uw-aHn" rowHeight="55" style="IBUITableViewCellStyleValue1" id="gia-2k-yec" userLabel="RepeatAppointmentCell">
-                                        <rect key="frame" x="0.0" y="1285.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="1291" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gia-2k-yec" id="vW1-HF-Hph">
                                             <frame key="frameInset" width="702" height="54"/>
@@ -810,7 +810,7 @@
                             <tableViewSection headerTitle="Schedule Alert" id="nYV-r0-Mtl">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AppSave" textLabel="bhg-5f-40A" detailTextLabel="nui-xr-eGU" rowHeight="55" style="IBUITableViewCellStyleValue1" id="62q-D6-1fG" userLabel="AlertAppointmentCell">
-                                        <rect key="frame" x="0.0" y="1388.5" width="768" height="55"/>
+                                        <rect key="frame" x="0.0" y="1395" width="768" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="62q-D6-1fG" id="oPe-Dd-xQW">
                                             <frame key="frameInset" width="702" height="54"/>
@@ -1719,14 +1719,12 @@
                                             <frame key="frameInset" width="347" height="109"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pau-g4-tBF">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pau-g4-tBF">
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nu4-5b-mkm">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Nu4-5b-mkm">
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="BPC-6L-vdi"/>
                                                         <constraint firstAttribute="width" constant="41" id="FUF-n7-S8P"/>
@@ -1743,14 +1741,12 @@
                                                         </mask>
                                                     </variation>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oI6-dT-cYf">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oI6-dT-cYf">
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rME-V8-bBZ">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rME-V8-bBZ">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="5yF-aL-5dh"/>
                                                         <constraint firstAttribute="height" constant="40" id="KL4-Ep-xER"/>
@@ -1765,8 +1761,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvn-c8-dvf">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvn-c8-dvf">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="dU9-jj-JRj"/>
                                                     </constraints>
@@ -1774,8 +1769,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLL-8Y-4u2">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLL-8Y-4u2">
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1793,9 +1787,6 @@
                                                 <constraint firstItem="Nu4-5b-mkm" firstAttribute="leading" secondItem="fEu-40-zlA" secondAttribute="leadingMargin" id="BXF-1N-n7X"/>
                                                 <constraint firstItem="oI6-dT-cYf" firstAttribute="leading" secondItem="Nu4-5b-mkm" secondAttribute="trailing" constant="8" id="McM-oK-aON"/>
                                                 <constraint firstItem="oI6-dT-cYf" firstAttribute="trailing" secondItem="fEu-40-zlA" secondAttribute="trailingMargin" id="QvD-mS-YxA"/>
-                                                <constraint firstItem="Nu4-5b-mkm" firstAttribute="centerY" secondItem="fEu-40-zlA" secondAttribute="centerY" id="RSp-ZS-a9K">
-                                                    <variation key="heightClass=regular-widthClass=regular" constant="-27"/>
-                                                </constraint>
                                                 <constraint firstItem="g9f-qh-gRu" firstAttribute="leading" secondItem="fEu-40-zlA" secondAttribute="leadingMargin" constant="49" id="Rxo-VG-CeT"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="g9f-qh-gRu" secondAttribute="trailing" constant="150" id="a5s-3v-kCE"/>
                                                 <constraint firstItem="uLL-8Y-4u2" firstAttribute="top" secondItem="g9f-qh-gRu" secondAttribute="bottom" constant="7.5" id="bKj-0o-a1C"/>
@@ -1822,7 +1813,6 @@
                                                 <mask key="constraints">
                                                     <exclude reference="2cR-Jt-sop"/>
                                                     <exclude reference="BXF-1N-n7X"/>
-                                                    <exclude reference="RSp-ZS-a9K"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -1837,7 +1827,6 @@
                                                 <mask key="constraints">
                                                     <include reference="2cR-Jt-sop"/>
                                                     <include reference="BXF-1N-n7X"/>
-                                                    <include reference="RSp-ZS-a9K"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -2117,7 +2106,11 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" image="Home" id="7TF-jq-Bxg"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="Home" id="7TF-jq-Bxg" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <connections>
+                            <outlet property="animation" destination="tLG-8k-lQe" id="qhT-xo-5je"/>
+                        </connections>
+                    </tabBarItem>
                     <connections>
                         <outlet property="appointmentViewTable" destination="DJ7-tT-liZ" id="nda-xS-5tf"/>
                         <outlet property="daysOfTheWeekText" destination="cXh-bw-oJP" id="mXr-us-BFB"/>
@@ -2127,6 +2120,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fib-m2-4gj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="tLG-8k-lQe" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController"/>
             </objects>
             <point key="canvasLocation" x="1540.625" y="-1727.34375"/>
         </scene>
@@ -2134,7 +2128,11 @@
         <scene sceneID="87G-OL-Q3K">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SO2-1b-2ll" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Appointments" image="Appointments" id="70H-Pl-wcm"/>
+                    <tabBarItem key="tabBarItem" title="Appointments" image="Appointments" id="70H-Pl-wcm" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <connections>
+                            <outlet property="animation" destination="yVH-aF-r8M" id="s2U-hl-np9"/>
+                        </connections>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="amO-Bg-9XU">
@@ -2147,6 +2145,7 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mzq-bs-yZw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="yVH-aF-r8M" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController"/>
             </objects>
             <point key="canvasLocation" x="1542" y="-1008"/>
         </scene>
@@ -2154,7 +2153,11 @@
         <scene sceneID="FtV-Ge-PGy">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d6C-2V-t5a" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="Tasks" id="GFX-7b-su1"/>
+                    <tabBarItem key="tabBarItem" title="Tasks" image="Tasks" id="GFX-7b-su1" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <connections>
+                            <outlet property="animation" destination="YeO-j0-H1x" id="SEn-8H-nb4"/>
+                        </connections>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="zHl-yP-dDu">
@@ -2167,6 +2170,7 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QhJ-Es-7IR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="YeO-j0-H1x" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController"/>
             </objects>
             <point key="canvasLocation" x="1542.1875" y="-306.4453125"/>
         </scene>
@@ -2174,7 +2178,11 @@
         <scene sceneID="Dmj-Oa-ScE">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5ML-Zw-jj0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Journals" image="Journals" selectedImage="Journals" id="h5e-mY-Pnf"/>
+                    <tabBarItem key="tabBarItem" title="Journals" image="Journals" selectedImage="Journals" id="h5e-mY-Pnf" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <connections>
+                            <outlet property="animation" destination="qY5-Gd-NRg" id="m1Q-vu-cAZ"/>
+                        </connections>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Am8-o6-bnF">
@@ -2187,6 +2195,7 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TSh-uh-AVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="qY5-Gd-NRg" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController"/>
             </objects>
             <point key="canvasLocation" x="1542" y="367"/>
         </scene>
@@ -2378,7 +2387,11 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Calendar" image="Calendar" id="JpI-4n-QS1"/>
+                    <tabBarItem key="tabBarItem" title="Calendar" image="Calendar" id="JpI-4n-QS1" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <connections>
+                            <outlet property="animation" destination="ECE-R6-JLO" id="kUm-zF-snh"/>
+                        </connections>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" title="Calendar" id="hUl-Qb-vIq"/>
                     <connections>
                         <outlet property="calendarTableView" destination="PxM-MV-iYg" id="kIj-Uy-VEM"/>
@@ -2388,6 +2401,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kij-pg-Dis" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="ECE-R6-JLO" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController"/>
             </objects>
             <point key="canvasLocation" x="1540.625" y="1116.796875"/>
         </scene>

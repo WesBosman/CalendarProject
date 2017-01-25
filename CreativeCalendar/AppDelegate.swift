@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else{
             print("Is First Launch")
+            // If its the first launch and the app got redownloaded cancel all previous notifications
         }
         
         return true
@@ -57,6 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Alert Title for notification -> \(notification.alertTitle)")
         print("Alert Body for notification -> \(notification.alertBody)")
         
+        // Look into date compare method
+        Date().compare(notification.fireDate!)
+        
         // do not fire up a banner unless the notification should fire
         if let alertTitle = notification.alertTitle{
             // Appointment Notification
@@ -70,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         image: UIImage(named: "Appointments"),
                                         backgroundColor: UIColor().appointmentColor,
                                         didTapBlock: nil)
-                    banner.show(duration: 3)
+                    banner.show(duration: 5)
                 }
             }
             // Task Notification
@@ -84,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         image: UIImage(named: "Tasks"),
                                         backgroundColor: UIColor().taskColor,
                                         didTapBlock: nil)
-                    banner.show(duration: 3)
+                    banner.show(duration: 5)
                 }
             }
         }
@@ -125,8 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initially get the appointments, tasks and journals from the database and put them
         // Into globally accessible dictionaries
         Appointments().setUpAppointmentDictionary()
-        GlobalTasks().setUpTaskDictionary()
-        GlobalJournals().setUpJournalDictionary()
+        Tasks().setUpTaskDictionary()
+        Journals().setUpJournalDictionary()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

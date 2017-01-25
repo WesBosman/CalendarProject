@@ -7,35 +7,43 @@
 //  This structure is similar to the appointment item structure 
 
 
-class GlobalTasks{
+class Tasks{
     static var taskDictionary:Dictionary<String, [TaskItem]> = [:]
-    fileprivate var taskItems: [TaskItem] = []
-    fileprivate var taskSections: [String] = []
+    static var taskItems: [TaskItem] = []
+    static var taskSections: [String] = []
     fileprivate let db = DatabaseFunctions.sharedInstance
     fileprivate var formatter = DateFormatter().dateWithoutTime
     
     func setUpTaskDictionary(){
-        taskItems = db.getAllTasks()
+        Tasks.taskItems = db.getAllTasks()
         
         // Sort the tasks based on estimated completion date
-        taskItems = taskItems.sorted(by: {$0.estimateCompletionDate.compare($1.estimateCompletionDate) == ComparisonResult.orderedAscending})
+        Tasks.taskItems = Tasks.taskItems.sorted(by: {$0.estimateCompletionDate.compare($1.estimateCompletionDate) == ComparisonResult.orderedAscending})
         
-        for task in taskItems{
+        for task in Tasks.taskItems{
             let taskDate = formatter.string(from: task.estimateCompletionDate)
             
             // If task sections does not contain the date add it
-            if(!taskSections.contains(taskDate)){
-                taskSections.append(taskDate)
+            if(!Tasks.taskSections.contains(taskDate)){
+                Tasks.taskSections.append(taskDate)
             }
         }
         
-        for section in taskSections{
+        for section in Tasks.taskSections{
             // Get the tasks based on their date
-            taskItems = db.getTaskByDate(section, formatter: formatter)
+            Tasks.taskItems = db.getTaskByDate(section, formatter: formatter)
             
             // Set the global task dictionary
-            GlobalTasks.taskDictionary.updateValue(taskItems, forKey: section)
+            Tasks.taskDictionary.updateValue(Tasks.taskItems, forKey: section)
         }
+    }
+    
+    func addTaskToDictionary(){
+        
+    }
+    
+    func removeTaskFromDictionary(){
+        
     }
 }
 

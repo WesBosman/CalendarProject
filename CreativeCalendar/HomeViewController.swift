@@ -234,7 +234,7 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         // Initialize Tab Bar Item
-        tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "Home"), tag: 1)
+//        tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "Home"), tag: 1)
     }
     
     func setUpDaysOfTheWeekLabel() -> String{
@@ -359,6 +359,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             appointmentCell.setAlert(alert: appointment.alert)
             appointmentCell.setRepeat(repeating: appointment.repeating)
             appointmentCell.setAdditional(additional: appointment.additionalInfo)
+            appointmentCell.preservesSuperviewLayoutMargins = false
+            appointmentCell.separatorInset = .zero
+            appointmentCell.layoutMargins = .zero
             
             return appointmentCell
         }
@@ -375,6 +378,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             taskCell.setCompletionDate(date: homeDateFormat.string(from: task.estimateCompletionDate))
             taskCell.setRepeating(repeating: task.repeating)
             taskCell.homeTaskTypeImage.image = UIImage(named: "Tasks")
+            taskCell.preservesSuperviewLayoutMargins = false
+            taskCell.separatorInset = .zero
+            taskCell.layoutMargins = .zero
             
             // Task has past its due date
             if task.isOverdue{
@@ -395,6 +401,9 @@ class HomeViewController: UIViewController , UITableViewDataSource, UITableViewD
             journalCell.setTitle(title: journal.journalTitle)
             journalCell.setEntry(entry: journal.journalEntry)
             journalCell.setJournalImage(image: journalImage)
+            journalCell.preservesSuperviewLayoutMargins = false
+            journalCell.separatorInset = .zero
+            journalCell.layoutMargins = .zero
             return journalCell
         }
     }
