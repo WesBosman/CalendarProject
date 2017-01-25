@@ -59,6 +59,12 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
             }
         }
         
+        // Sort the keys of the dictionary that contain string dates
+        Tasks.taskSections = Tasks.taskSections.sorted(by: {
+            (left: String, right: String) -> Bool in
+            return taskDateFormatter.date(from: left)?.compare(taskDateFormatter.date(from: right)!) == ComparisonResult.orderedAscending
+        })
+        
         for section in Tasks.taskSections{
             
             // Get tasks from database based on date

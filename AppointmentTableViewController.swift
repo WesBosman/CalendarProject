@@ -85,6 +85,12 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
             }
         }
         
+        // Sort the keys of the section headers as dates
+        Appointments.appointmentSections = Appointments.appointmentSections.sorted(by: {
+            (left: String, right: String) -> Bool in
+            return appointmentDateFormatter.date(from: left)?.compare(appointmentDateFormatter.date(from: right)!) == ComparisonResult.orderedAscending
+        })
+        
         // Use the appointment sections array to get items from the database
         for str in Appointments.appointmentSections{
             Appointments.appointmentItems = db.getAppointmentByDate(str, formatter: appointmentDateFormatter)
