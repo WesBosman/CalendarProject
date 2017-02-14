@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="680" height="170"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kIS-0h-6Vv" id="7g4-JR-mgv">
-                <frame key="frameInset" width="680" height="169.5"/>
+                <frame key="frameInset" width="680" height="169"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Appointments" translatesAutoresizingMaskIntoConstraints="NO" id="qO7-Tg-BWX">
@@ -55,7 +55,9 @@
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="48" id="3oW-H1-eSi"/>
                             <constraint firstAttribute="height" constant="48" id="9rV-i0-vFi"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="SnA-Ob-NBe"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="48" id="saP-Q2-hCd"/>
                             <constraint firstAttribute="width" constant="48" id="tKs-ht-qqC"/>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="48" id="xPC-7w-giB"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIf-MK-3SO">
@@ -101,6 +103,7 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="IkV-5q-VfY" firstAttribute="trailing" secondItem="7g4-JR-mgv" secondAttribute="trailingMargin" id="0LT-B3-Gr8"/>
                     <constraint firstItem="x7s-c2-ZbO" firstAttribute="top" secondItem="7g4-JR-mgv" secondAttribute="topMargin" constant="11" id="0uW-Of-3iJ"/>
                     <constraint firstAttribute="trailingMargin" secondItem="x7s-c2-ZbO" secondAttribute="trailing" id="1Ax-aR-Dhp"/>
                     <constraint firstItem="3ti-uL-PKx" firstAttribute="top" secondItem="YIu-mS-o8c" secondAttribute="bottom" constant="8" id="440-68-pQb"/>
@@ -138,6 +141,7 @@
                     <constraint firstItem="YIu-mS-o8c" firstAttribute="leading" secondItem="Z2m-wB-4KF" secondAttribute="trailing" constant="8" id="pP9-ib-Psc"/>
                     <constraint firstItem="SgG-If-MbB" firstAttribute="leading" secondItem="3ti-uL-PKx" secondAttribute="trailing" constant="8" id="qYu-Kk-iUn"/>
                     <constraint firstItem="IkV-5q-VfY" firstAttribute="leading" secondItem="YIu-mS-o8c" secondAttribute="trailing" constant="8" id="rxt-vL-pfX"/>
+                    <constraint firstItem="qJB-gE-YsS" firstAttribute="leading" secondItem="3ti-uL-PKx" secondAttribute="leading" id="xaf-c9-VtY"/>
                     <constraint firstItem="nIf-MK-3SO" firstAttribute="trailing" secondItem="7g4-JR-mgv" secondAttribute="trailingMargin" id="xwf-wC-2bp"/>
                 </constraints>
             </tableViewCellContentView>

@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else{
             print("Is First Launch")
             // If its the first launch and the app got redownloaded cancel all previous notifications
+            UIApplication.shared.cancelAllLocalNotifications()
         }
         
         return true
@@ -58,8 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Alert Title for notification -> \(notification.alertTitle)")
         print("Alert Body for notification -> \(notification.alertBody)")
         
-        // Look into date compare method
-        Date().compare(notification.fireDate!)
+        // Compare the current date with the notification fire date
+        let dateIsEqual = Date().compare(notification.fireDate!) == ComparisonResult.orderedSame
+        print(dateIsEqual)
         
         // do not fire up a banner unless the notification should fire
         if let alertTitle = notification.alertTitle{

@@ -46,39 +46,12 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     }
     
     // Refresh the list of tasks so that the new one gets properly sorted in ascending order.
-    func refreshList(){        
-        var taskList = db.getAllTasks()
-        // Sort the task list based on the estimated completion date
-        taskList = taskList.sorted(by: {$0.estimateCompletionDate.compare($1.estimateCompletionDate as Date) == ComparisonResult.orderedAscending})
-        
-        for task in taskList{
-            let dateForSectionAsString = taskDateFormatter.string(from: task.estimateCompletionDate)
-            
-            if !(Tasks.taskSections.contains(dateForSectionAsString)){
-                Tasks.taskSections.append(dateForSectionAsString)
-            }
-        }
-        
-        // Sort the keys of the dictionary that contain string dates
-        Tasks.taskSections = Tasks.taskSections.sorted(by: {
-            (left: String, right: String) -> Bool in
-            return taskDateFormatter.date(from: left)?.compare(taskDateFormatter.date(from: right)!) == ComparisonResult.orderedAscending
-        })
-        
-        for section in Tasks.taskSections{
-            
-            // Get tasks from database based on date
-            taskList = db.getTaskByDate(section, formatter: taskDateFormatter)
-            
-            // Set the task dictionary up
-            Tasks.taskDictionary.updateValue(taskList, forKey: section)
-            
-            // Set up the global dictionary
-            Tasks.taskDictionary = Tasks.taskDictionary
-        }
+    func refreshList(){
+        // Refresh the dictionary
+        Tasks().setUpTaskDictionary()
         
         // Dont let the user add more than 64 tasks in one day
-        if taskList.count > 64{
+        if Tasks.taskItems.count > 64{
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         

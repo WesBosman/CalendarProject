@@ -266,7 +266,6 @@ class LoginViewController: UIViewController {
         
         if(context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError)){
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "No Touch ID being used", reply: {
-                [unowned self]
                 (success, error) in Void()
                 if (success){
                     print("Successfully authenticated user using device lock code")

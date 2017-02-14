@@ -138,7 +138,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     // Display the calendar cells
     func calendar(_ calendar: JTAppleCalendarView, willDisplayCell cell: JTAppleDayCellView, date: Date, cellState: CellState) {
 
-        if let calendarCell = cell as? CalendarCell{
+        if let calendarCell = cell as? CalendarCell{            
             calendarCell.setUpCellBeforeDisplay(cellState)
             // If the appointment counter is larger than zero do not hide it
             if calendarCell.appointmentCounter > 0{

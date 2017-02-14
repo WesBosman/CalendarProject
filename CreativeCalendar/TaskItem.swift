@@ -29,6 +29,13 @@ class Tasks{
             }
         }
         
+        // Sort the keys of the dictionary that contain string dates
+        Tasks.taskSections = Tasks.taskSections.sorted(by: {
+            (left: String, right: String) -> Bool in
+            return formatter.date(from: left)?.compare(formatter.date(from: right)!) == ComparisonResult.orderedAscending
+        })
+
+        
         for section in Tasks.taskSections{
             // Get the tasks based on their date
             Tasks.taskItems = db.getTaskByDate(section, formatter: formatter)

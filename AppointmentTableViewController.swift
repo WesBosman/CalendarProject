@@ -68,43 +68,12 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
 
     
     // Refresh the list do not let more than 64 notifications on screen at any one time.
-    func refreshList(){        
-        // Get all appointments that are not marked as deleted.
-        Appointments.appointmentItems = db.getAllAppointments()
-        
-        // Order the appointments based on their starting times.
-        Appointments.appointmentItems = Appointments.appointmentItems.sorted(by: {$0.startingTime.compare($1.startingTime as Date) == ComparisonResult.orderedAscending})
-        
-        for app in Appointments.appointmentItems{
-            // Get the date from the appointment
-            let appointmentDateForSectionAsString = appointmentDateFormatter.string(from: app.startingTime)
-            
-            // If the appointment Date is not already in the appointment sections array add it
-            if !Appointments.appointmentSections.contains(appointmentDateForSectionAsString){
-                Appointments.appointmentSections.append(appointmentDateForSectionAsString)
-            }
-        }
-        
-        // Sort the keys of the section headers as dates
-        Appointments.appointmentSections = Appointments.appointmentSections.sorted(by: {
-            (left: String, right: String) -> Bool in
-            return appointmentDateFormatter.date(from: left)?.compare(appointmentDateFormatter.date(from: right)!) == ComparisonResult.orderedAscending
-        })
-        
-        // Use the appointment sections array to get items from the database
-        for str in Appointments.appointmentSections{
-            Appointments.appointmentItems = db.getAppointmentByDate(str, formatter: appointmentDateFormatter)
-            
-            // Add those items to the dictionary that the table view relies on
-            Appointments.appointmentDictionary.updateValue(Appointments.appointmentItems, forKey: str)
-            
-            // Set the global dictionary up
-            Appointments.appointmentDictionary = Appointments.appointmentDictionary
-            
-        }
+    func refreshList(){
+        // Refresh the appointment list
+        Appointments().setUpAppointmentDictionary()
         
         // If there are more than 64 appointments today do not let the user add more appointments
-        if Appointments.appointmentItems.count > 64{
+        if(Appointments.appointmentItems.count > 64){
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
@@ -112,6 +81,7 @@ class AppointmentTableViewController: UITableViewController, DZNEmptyDataSetSour
     }
 
     // MARK Section Header Methods
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Appointments.appointmentDictionary[Appointments.appointmentSections[section]]!.count
     }

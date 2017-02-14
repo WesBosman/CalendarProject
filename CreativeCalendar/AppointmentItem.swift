@@ -36,6 +36,12 @@ class Appointments{
             }
         }
         
+        // Sort the keys of the section headers as dates
+        Appointments.appointmentSections = Appointments.appointmentSections.sorted(by: {
+            (left: String, right: String) -> Bool in
+            return formatter.date(from: left)?.compare(formatter.date(from: right)!) == ComparisonResult.orderedAscending
+        })
+        
         for section in Appointments.appointmentSections{
             // Get appointments based on their date
             Appointments.appointmentItems = db.getAppointmentByDate(section, formatter: formatter)

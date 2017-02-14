@@ -86,6 +86,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         // Set the data source and delegate for the appointment picker
         appointmentPicker.dataSource = self
         appointmentPicker.delegate = self
+        otherTextField.delegate = self
         additionalInfoTextBox.delegate = self
         
         otherEnterButton.layer.cornerRadius = 10
@@ -119,6 +120,24 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         additionalInfoTextBox.font = UIFont(name: "Helvetica", size: 18.0)
         additionalInfoTextBox.textColor = UIColor.lightGray
         otherTextField.placeholder = "Please enter the type of appointment"
+    }
+    
+    // MARK - Text View Methods
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == otherTextField{
+            print("Other Text Field did end editing")
+//            textField.resignFirstResponder()
+            
+        }
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField == otherTextField{
+            print("Other Text Field Should end editing")
+            textField.resignFirstResponder()
+        }
+        return true
     }
     
     // MARK - Picker View Methods
