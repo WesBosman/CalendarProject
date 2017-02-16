@@ -9,7 +9,7 @@ import UIKit
 import JTAppleCalendar
 import ChameleonFramework
 
-//@IBDesignable
+@IBDesignable
 class CalendarCell: JTAppleDayCellView{
 
     @IBOutlet weak var dayLabel: UILabel!
@@ -23,7 +23,7 @@ class CalendarCell: JTAppleDayCellView{
     @IBInspectable var selectedDotColor:UIColor = UIColor.orange
     @IBInspectable var backGroundViewColor = UIColor.orange
     @IBInspectable var backgroundHeight = 10.0
-    @IBInspectable var backgroundWidth = 10.0
+    @IBInspectable var backgroundWidth  = 10.0
     @IBOutlet weak var backgroundView: UIView!
     fileprivate var fillColorForCircle: UIColor = UIColor.clear
     fileprivate var formatter = DateFormatter().dateWithoutTime
