@@ -12,6 +12,7 @@ import FirebaseAuth
 import BRYXBanner
 import Locksmith
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -25,6 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Configure Firebase for application
         FIRApp.configure()
+        
+        // Get the remote config values from firebase
+        let _ = RemoteConfigValues.sharedInstance
+        
         
         // Asks the user if they would like to recieve notifications for alerts badges and sounds.
         application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))

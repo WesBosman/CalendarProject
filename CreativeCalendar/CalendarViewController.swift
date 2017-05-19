@@ -9,7 +9,13 @@ import UIKit
 import JTAppleCalendar
 
 
-class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate, UITableViewDataSource{
+class CalendarViewController:
+    UIViewController,
+    JTAppleCalendarViewDelegate,
+    JTAppleCalendarViewDataSource,
+    UIPopoverPresentationControllerDelegate,
+    UITableViewDelegate,
+    UITableViewDataSource{
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
     let userCalendar = Calendar.current
@@ -21,16 +27,13 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     var selectedDate: Date = Date()
     @IBOutlet weak var leftCalendarArrow: UIButton!
     @IBOutlet weak var rightCalendarArrow: UIButton!
-    
     var calendarSectionTitles: [String] = ["Appointments", "Tasks", "Journals"]
     var calendarAppointmentList: [AppointmentItem] = []
     var calendarTaskList: [TaskItem] = []
     var calendarJournalList: [JournalItem] = []
-    
     var selectedIndexPath: IndexPath? = nil
     @IBOutlet weak var calendarTableView: UITableView!
     let calendarDateFormatter = DateFormatter().dateWithoutTime
-    
     fileprivate let appointmentCellID = "AppointmentTableViewCell"
     fileprivate let taskCellID =        "TaskTableViewCell"
     fileprivate let journalCellID =     "JournalTableViewCell"
@@ -89,8 +92,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         print("Calendar Init Coder Method")
-        // Initialize Tab Bar Item
-//        tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "Calendar"), tag: 5)
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -137,7 +139,7 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // Display the calendar cells
     func calendar(_ calendar: JTAppleCalendarView, willDisplayCell cell: JTAppleDayCellView, date: Date, cellState: CellState) {
-
+        
         if let calendarCell = cell as? CalendarCell{            
             calendarCell.setUpCellBeforeDisplay(cellState)
             // If the appointment counter is larger than zero do not hide it
@@ -201,6 +203,30 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
     
     // MARK - Calendar Header Methods
     
+    // Hide left and right arrows if the start or end month
+    func isStartOrEndMonth(month: String){
+        print("Month in is start or end month: \(month)")
+        let startMonth = (userCalendar as NSCalendar).component([.month], from: Date().calendarStartDate)
+        let endMonth = (userCalendar as NSCalendar).component([.month], from: Date().calendarEndDate)
+        let startM = formatter.monthSymbols[(startMonth - 1) % 12]
+        let endM   = formatter.monthSymbols[(endMonth   - 1) % 12]
+        
+        // Hide the arrows
+        if month == startM{
+            leftCalendarArrow.isHidden = true
+            rightCalendarArrow.isHidden = false
+        }
+        else if month == endM{
+            leftCalendarArrow.isHidden = false
+            rightCalendarArrow.isHidden = true
+        }
+        else{
+            leftCalendarArrow.isHidden = false
+            rightCalendarArrow.isHidden = false
+        }
+        
+    }
+    
     // Sets up the month and year for the header view.
     func setUpHeaderView(_ startingMonth: Date) -> String {
         print("Set Up Header Method")
@@ -208,12 +234,15 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
         let monthName = formatter.monthSymbols[(month - 1) % 12]
         let year = (userCalendar as NSCalendar).component([.year], from: startingMonth)
         let dateString = monthName + " " + String(year)
+        isStartOrEndMonth(month: monthName)
         return dateString
     }
 
     // Display the section header
     func calendar(_ calendar: JTAppleCalendarView, willDisplaySectionHeader header: JTAppleHeaderView, range: (start: Date, end: Date), identifier: String) {
         print("Will Display Section Header Method")
+        print("Calendar Header Identifier \(identifier)")
+        
         if let headerView = header as? CalendarHeaderView{
             headerView.topLabel.text = setUpHeaderView(range.start)
             
@@ -221,7 +250,6 @@ class CalendarViewController: UIViewController, JTAppleCalendarViewDelegate, JTA
             
             for index in 1...7 {
                 let day : NSString = formatter.weekdaySymbols[index - 1 % 7] as NSString
-                //              print("Day: \(day)")
                 let spaces = String(repeating: String((" " as Character)), count: 12)
                 weekdayString += day.substring(to: 3).uppercased() + spaces
             }

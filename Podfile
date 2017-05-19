@@ -21,7 +21,9 @@ target 'CreativeCalendar' do
   pod 'RAMAnimatedTabBarController', "~> 2.0.13"
 
   # Pods for firebase
+  pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/RemoteConfig'
   
 
   target 'CreativeCalendarTests' do

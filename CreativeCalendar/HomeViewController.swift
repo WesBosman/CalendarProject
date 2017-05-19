@@ -16,6 +16,7 @@ import UIKit
 import ChameleonFramework
 
 // Dates for Calendar starting and ending dates. 
+
 /*
     Note that changing the calendar start and end dates here will change them for the entire calendar
     Useful for starting and stopping of the study. 
@@ -24,9 +25,12 @@ import ChameleonFramework
 extension Date{
     fileprivate struct CalendarDates{
         fileprivate static let calendarStartDate:Date = {
-            let startDate = DateFormatter().calendarFormat.date(from: "1/01/2017")
-            print("Calendar Dates StartDate: \(startDate!)")
-            return startDate!
+            let startDate = RemoteConfigValues
+                              .sharedInstance
+                              .getCalendarStartDate(forKey: "calendarStartDate")
+            
+            print("Calendar Dates StartDate: \(startDate)")
+            return startDate
         }()
         
         fileprivate static let calendarEndDate:Date = {

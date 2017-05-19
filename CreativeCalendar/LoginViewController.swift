@@ -46,6 +46,7 @@ class LoginViewController: UIViewController {
         signupButton.setTitleColor(UIColor.white, for: .normal)
         signupButton.layer.cornerRadius = 5
         
+        
         let notFirstRun  = UserDefaults.standard.bool(forKey: "firstLaunchKey")
         let userSignedUp = UserDefaults.standard.bool(forKey: "signedUp")
         
@@ -74,10 +75,12 @@ class LoginViewController: UIViewController {
             loginEmail.text = userEmail
             signupButton.isEnabled = false
             signupButton.isHidden  = true
+            print("User Signed Up")
         }
         else{
             signupButton.isEnabled = true
             signupButton.isHidden = false
+            print("User Not Signed Up")
         }
         
         // Testing Local Authentication
@@ -96,9 +99,17 @@ class LoginViewController: UIViewController {
                     self.userEmail = email
                 }
                 
+                // Disable the sign up button
+                self.signupButton.isEnabled = false
+                self.signupButton.backgroundColor = UIColor.lightGray
+                
             } else {
                 // No user is signed in.
                 print("User is not Signed In")
+                
+                // Enable the sign up button
+                self.signupButton.isEnabled = true
+                self.signupButton.backgroundColor = UIColor.flatSkyBlue
                 
             }
         })
@@ -112,7 +123,9 @@ class LoginViewController: UIViewController {
             if let email = loginEmail.text, let password = loginPassword.text{
                     
                 // user has access to Internet
-                auth.signIn(withEmail: email , password: password , completion:
+                auth.signIn(withEmail: email ,
+                            password: password ,
+                            completion:
                     { (user, error) in
                             
                         // Let us know which user is trying to login
@@ -132,18 +145,27 @@ class LoginViewController: UIViewController {
                             print("\(error.localizedDescription)")
                             print("")
                             
-                            self.loginMessage.text = error.localizedDescription
-                            self.loginMessage.isHidden = false
                             
                             // Try to compare the login info to what is in the keychain
                             let dictionary = Locksmith.loadDataForUserAccount(userAccount: email)
                             
+                            // Check the login locally
                             if(self.userEmail == email){
-                                let userPassword = dictionary?[email] as! String
+                                if let userPassword = dictionary?[email] as?String{
                                 
-                                if(userPassword == password){
-                                    self.performSegue(withIdentifier: "Login", sender: sender)
+                                    if(userPassword == password){
+                                        self.performSegue(withIdentifier: "Login", sender: sender)
+                                    }
+                                    else{
+                                        self.loginMessage.text = "Password does not match the one stored on this device"
+                                        self.loginMessage.isHidden = false
+                                    }
                                 }
+                            }
+                            //  If the local login fails then show the error
+                            else{
+                                self.loginMessage.text = error.localizedDescription
+                                self.loginMessage.isHidden = false
                             }
                         }
                 })
@@ -181,7 +203,9 @@ class LoginViewController: UIViewController {
     
     func showNoTouchIDAlert(){
         let alertController: UIAlertController = UIAlertController(title: "No Touch ID Detected", message: "Sorry, your device does not support fingerprint identification", preferredStyle: .alert)
-        let okAction: UIAlertAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        let okAction: UIAlertAction = UIAlertAction(title: "Dismiss",
+                                                    style: .cancel,
+                                                    handler: nil)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
     }
@@ -257,7 +281,6 @@ class LoginViewController: UIViewController {
             showNoTouchIDAlert()
             return
         }
-        
     }
     
     func userFallBack(){

@@ -31,15 +31,15 @@ class CalendarCell: JTAppleDayCellView{
     var appointmentCounter = 0
     var taskCounter = 0
     var journalCounter = 0
-    var dayDotWidth: CGFloat  = 48
-    var dayDotHeight: CGFloat = 48
+    var dayDotWidth: CGFloat  = 40
+    var dayDotHeight: CGFloat = 40
     fileprivate var drawAppointment:Bool = false
     fileprivate var drawTask:Bool = false
     fileprivate var drawJournal:Bool = false
     @IBOutlet weak var appointmentCounterLabel: UILabel!
     @IBOutlet weak var taskCounterLabel: UILabel!
     @IBOutlet weak var journalCounterLabel: UILabel!
-    @IBOutlet weak var selectedCellView: UIView!
+
     
     func setUpCellBeforeDisplay(_ cellState: CellState){
         // Assign the cell state as a property of this class

@@ -53,6 +53,7 @@
 		DE62D00C1D159987003ED54E /* DatabaseFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */; };
 		DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00D1D1B0066003ED54E /* TaskCell.swift */; };
 		DE62D0121D1D8FF7003ED54E /* DatabaseFunctionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */; };
+		DE632C821ECE285500DC63CF /* RemoteConfigValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE632C811ECE285500DC63CF /* RemoteConfigValues.swift */; };
 		DE8E7D561D77E67B00C69B71 /* JournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E7D551D77E67B00C69B71 /* JournalCell.swift */; };
 		DE97D10A1E2CB5850054920E /* AlertTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97D1091E2CB5850054920E /* AlertTableViewController.swift */; };
 		DE97D10C1E2CB6030054920E /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97D10B1E2CB6030054920E /* RepeatTableViewController.swift */; };
@@ -159,6 +160,7 @@
 		DE62D00B1D159987003ED54E /* DatabaseFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctions.swift; sourceTree = "<group>"; };
 		DE62D00D1D1B0066003ED54E /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctionsTest.swift; sourceTree = "<group>"; };
+		DE632C811ECE285500DC63CF /* RemoteConfigValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfigValues.swift; sourceTree = "<group>"; };
 		DE8E7D551D77E67B00C69B71 /* JournalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalCell.swift; sourceTree = "<group>"; };
 		DE97D1081E2C155F0054920E /* CreativeCalendar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CreativeCalendar.entitlements; sourceTree = "<group>"; };
 		DE97D1091E2CB5850054920E /* AlertTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTableViewController.swift; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				DE4CAA701D243A9900197FEF /* CalendarHeaderView.swift */,
 				DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */,
 				DE4CAA721D24679400197FEF /* CalendarViewController.swift */,
+				DE632C811ECE285500DC63CF /* RemoteConfigValues.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -498,6 +501,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -744,6 +750,7 @@
 				DE4CAA6D1D2437D600197FEF /* CalendarCell.swift in Sources */,
 				DE62D0031D147B26003ED54E /* FMDatabaseQueue.m in Sources */,
 				DE2736261D05CF26000583A7 /* JournalTableViewController.swift in Sources */,
+				DE632C821ECE285500DC63CF /* RemoteConfigValues.swift in Sources */,
 				DE4CAA711D243A9900197FEF /* CalendarHeaderView.swift in Sources */,
 				DE364A171E27EF8400F33C8D /* HomeJournalCell.swift in Sources */,
 				DE2DCB501C6526EB004D3220 /* JournalViewController.swift in Sources */,
