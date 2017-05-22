@@ -24,7 +24,7 @@ class ForgotPasswordViewController: UIViewController {
         super.viewDidLoad()
 
         // Set up the header text.
-        forgotPasswordHeader.text = "Please enter your email address and we will send you a message allowing you to reset your password"
+        forgotPasswordHeader.text = "Please enter your email address and we will send you a message allowing you to reset your password. Not you must be connected to the internet to send a password reset email."
         forgotPasswordHeader.lineBreakMode = .byWordWrapping
         forgotPasswordHeader.numberOfLines = 0
         
@@ -43,7 +43,6 @@ class ForgotPasswordViewController: UIViewController {
             forgotPasswordTextField.text = email
         }
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -64,8 +63,9 @@ class ForgotPasswordViewController: UIViewController {
                     }
                     // Let the user know the password reset email was sent
                     else{
-                        self.forgotPasswordMessage.text = "Sent a password reset email to the following address: \(email)"
+                        self.forgotPasswordMessage.text = "Sent a password reset email to the following address: \(email). Please login while connected to the internet."
                         self.forgotPasswordMessage.isHidden = false
+                        self.forgotPasswordTextField.text = nil
                     }
                 })
             }

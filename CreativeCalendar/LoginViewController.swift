@@ -20,19 +20,17 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
-    
-
     var userEmail: String = String()
-    // What if they don't have WIFI Access?!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Hide the error message label
-        loginMessage.text = "This is where errors will appear"
+        loginMessage.text = "Please note the when logging in for the first time internet conenction is required. \nIf you forget your password please connect to the internet change your password using your email address and login before disconnecting from the internet."
         loginMessage.lineBreakMode = .byWordWrapping
         loginMessage.numberOfLines = 0
-        loginMessage.isHidden = true
+        loginMessage.isHidden = false
         
         loginButton.backgroundColor = UIColor.flatSkyBlue
         loginButton.setTitleColor(UIColor.white, for: .normal)
@@ -92,25 +90,16 @@ class LoginViewController: UIViewController {
             
             if let user = auth.currentUser {
                 // User is signed in.
-                print("User is Signed In")
+                print("There is a current user")
                 
                 if let email = user.email{
                     print("Email \(email)")
                     self.userEmail = email
                 }
                 
-                // Disable the sign up button
-                self.signupButton.isEnabled = false
-                self.signupButton.backgroundColor = UIColor.lightGray
-                
             } else {
                 // No user is signed in.
-                print("User is not Signed In")
-                
-                // Enable the sign up button
-                self.signupButton.isEnabled = true
-                self.signupButton.backgroundColor = UIColor.flatSkyBlue
-                
+                print("There is no current user")
             }
         })
     }
@@ -120,13 +109,18 @@ class LoginViewController: UIViewController {
             
         if let auth = FIRAuth.auth(){
                 
-            if let email = loginEmail.text, let password = loginPassword.text{
+            if let email    = loginEmail.text,
+               let password = loginPassword.text{
+                
+                print("User Email: \(userEmail)")
+                print("Email: \(email)")
+                print("Password: \(password)")
                     
                 // user has access to Internet
                 auth.signIn(withEmail: email ,
                             password: password ,
                             completion:
-                    { (user, error) in
+                        { (user, error) in
                             
                         // Let us know which user is trying to login
                         if let user = user{
@@ -134,9 +128,30 @@ class LoginViewController: UIViewController {
                             print("User Email = \(user.email!)")
                             print("")
                             
+                            // If the password stored in the dictionary is different than what is in the keychain change it here
+                            let dictionary = Locksmith.loadDataForUserAccount(userAccount: email)
+                            
+                            if (self.userEmail == user.email){
+                                if let userPassword = dictionary?[email] as? String{
+                                    
+                                    // If the user's password in the keychain is different from the password they entered in then change the value of the keychain password
+                                    if userPassword != password{
+                                        print("Password in keychain is different than user's firebase password")
+                                        do{
+                                            try Locksmith.updateData(data: [user.email! : password], forUserAccount: user.email!)
+                                            print("Updated the user's keychain data")
+                                        }
+                                        catch let err as NSError{
+                                            print("Error updating keychain data: \(err.localizedDescription)"
+                                            )
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                            
                             // Perform Segue
                             self.performSegue(withIdentifier: "Login", sender: sender)
-                                
                         }
                             
                         // Catch any errors
@@ -149,14 +164,26 @@ class LoginViewController: UIViewController {
                             // Try to compare the login info to what is in the keychain
                             let dictionary = Locksmith.loadDataForUserAccount(userAccount: email)
                             
+                            print(dictionary?[email] ?? "nothing")
+                            print("Self.userEmail: \(self.userEmail)")
+                            print("Email: \(email)")
+                            
                             // Check the login locally
                             if(self.userEmail == email){
-                                if let userPassword = dictionary?[email] as?String{
+                                print("User Email == email")
                                 
+                                if let userPassword = dictionary?[email] as?String{
+                                    print("User Password: \(userPassword)")
                                     if(userPassword == password){
+                                        print("")
+                                        print("User Password equals password stored in keychain")
+                                        print("Continue Logging in")
                                         self.performSegue(withIdentifier: "Login", sender: sender)
                                     }
                                     else{
+                                        print("")
+                                        print("Password does not match the one stored in the keychain")
+                                        print("Do not log the user in")
                                         self.loginMessage.text = "Password does not match the one stored on this device"
                                         self.loginMessage.isHidden = false
                                     }
@@ -164,6 +191,8 @@ class LoginViewController: UIViewController {
                             }
                             //  If the local login fails then show the error
                             else{
+                                print("")
+                                print("Error localized description")
                                 self.loginMessage.text = error.localizedDescription
                                 self.loginMessage.isHidden = false
                             }
@@ -186,13 +215,9 @@ class LoginViewController: UIViewController {
         let submitAction: UIAlertAction = UIAlertAction(title: "Submit", style:.default, handler: {(action: UIAlertAction) -> Void in
             
         })
-        
         passwordAlert.addTextField(configurationHandler: {(textField: UITextField) -> Void in
-            
         })
-        
         passwordAlert.addTextField(configurationHandler: {(textField:UITextField) -> Void in
-            
         })
         
         passwordAlert.addAction(cancelAction)
