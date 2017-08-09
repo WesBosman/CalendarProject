@@ -14,9 +14,7 @@ protocol JTAppleCalendarLayoutProtocol: class {
     var cellCache: [Int: [UICollectionViewLayoutAttributes]] {get set}
     var headerCache: [Int: UICollectionViewLayoutAttributes] {get set}
     var sectionSize: [CGFloat] {get set}
-    func targetContentOffsetForProposedContentOffset(
-        _ proposedContentOffset: CGPoint) -> CGPoint
-    func sectionFromRectOffset(_ offset: CGPoint) -> Int
+    func targetContentOffsetForProposedContentOffset(_ proposedContentOffset: CGPoint) -> CGPoint
     func sectionFromOffset(_ theOffSet: CGFloat) -> Int
     func sizeOfContentForSection(_ section: Int) -> CGFloat
     func clearCache()

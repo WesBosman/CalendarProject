@@ -123,18 +123,11 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if let
             delegate = self.delegate,
-            let infoOfDateUserSelected = dateInfoFromPath(indexPath),
-            let cell = collectionView
-                .cellForItem(at: indexPath) as? JTAppleDayCell,
-            cellWasNotDisabledOrHiddenByTheUser(cell) {
+            let infoOfDateUserSelected = dateOwnerInfoFromPath(indexPath),
+            let cell = collectionView.cellForItem(at: indexPath) as? JTAppleDayCell, cellWasNotDisabledOrHiddenByTheUser(cell) {
             let cellState = cellStateFromIndexPath(indexPath,
                 withDateInfo: infoOfDateUserSelected)
-            return delegate.calendar(
-                self,
-                canSelectDate: infoOfDateUserSelected.date,
-                cell: cell.view!,
-                cellState: cellState
-            )
+            return delegate.calendar(self, canSelectDate: infoOfDateUserSelected.date, cell: cell.view!, cellState: cellState)
         }
         return false
     }
@@ -156,33 +149,26 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
     func internalCollectionView(_ collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: IndexPath, indexPathsToReload: [IndexPath] = []) {
             if let
                 delegate = self.delegate,
-                let dateInfoDeselectedByUser = dateInfoFromPath(indexPath) {
+                let dateInfoDeselectedByUser = dateOwnerInfoFromPath(indexPath) {
                 // Update model
                 deleteCellFromSelectedSetIfSelected(indexPath)
-                let selectedCell = collectionView
-                    .cellForItem(at: indexPath) as? JTAppleDayCell
+                var pathsToReload = indexPathsToReload
+                let selectedCell = collectionView.cellForItem(at: indexPath) as? JTAppleDayCell
+                if selectedCell == nil {
+                    pathsToReload.append(indexPath)
+                }
                 // Cell may be nil if user switches month sections
                 // Although the cell may be nil, we still want to
                 // return the cellstate
-                let cellState = cellStateFromIndexPath(
-                    indexPath,
-                    withDateInfo: dateInfoDeselectedByUser,
-                    cell: selectedCell
-                )
-                var pathsToReload = indexPathsToReload
-                let deselectCPCell = deselectCounterPartCellIndexPath(
-                        indexPath,
-                        date: dateInfoDeselectedByUser.date,
-                        dateOwner: cellState.dateBelongsTo)
-                if let unselectedCounterPartIndexPath = deselectCPCell {
+                let cellState = cellStateFromIndexPath(indexPath, withDateInfo: dateInfoDeselectedByUser, cell: selectedCell)
+                let deselectedCell = deselectCounterPartCellIndexPath(indexPath, date: dateInfoDeselectedByUser.date, dateOwner: cellState.dateBelongsTo)
+                if let unselectedCounterPartIndexPath = deselectedCell {
                     deleteCellFromSelectedSetIfSelected(
                         unselectedCounterPartIndexPath)
                     // ONLY if the counterPart cell is visible,
                     // then we need to inform the delegate
-                    if !pathsToReload
-                        .contains(unselectedCounterPartIndexPath) {
-                            pathsToReload
-                                .append(unselectedCounterPartIndexPath)
+                    if !pathsToReload.contains(unselectedCounterPartIndexPath) {
+                        pathsToReload.append(unselectedCounterPartIndexPath)
                     }
                 }
                 if pathsToReload.count > 0 {
@@ -190,12 +176,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
                         self.batchReloadIndexPaths(pathsToReload)
                     }
                 }
-                delegate.calendar(
-                    self,
-                    didDeselectDate: dateInfoDeselectedByUser.date,
-                    cell: selectedCell?.view,
-                    cellState: cellState
-                )
+                delegate.calendar(self, didDeselectDate: dateInfoDeselectedByUser.date, cell: selectedCell?.view, cellState: cellState)
             }
     }
 
@@ -205,7 +186,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
         shouldDeselectItemAt indexPath: IndexPath) -> Bool {
             if let
                 delegate = self.delegate,
-                let infoOfDateDeSelectedByUser = dateInfoFromPath(indexPath),
+                let infoOfDateDeSelectedByUser = dateOwnerInfoFromPath(indexPath),
                 let cell = collectionView
                     .cellForItem(at: indexPath) as? JTAppleDayCell,
                 cellWasNotDisabledOrHiddenByTheUser(cell) {
@@ -226,30 +207,23 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
     /// user successfully selects an item in the collection view.
     /// It does not call this method when you programmatically
     /// set the selection.
-    public func collectionView(_ collectionView: UICollectionView,
-                               didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // index paths to be reloaded should be index
         // to the left and right of the selected index
-        let indexPathsToBeReloaded = rangeSelectionWillBeUsed ?
-            validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) :
-            [IndexPath]()
+        let indexPathsToBeReloaded = rangeSelectionWillBeUsed ? validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) : [IndexPath]()
         internalCollectionView(collectionView,
                                didSelectItemAtIndexPath: indexPath,
                                indexPathsToReload: indexPathsToBeReloaded)
     }
 
-    func internalCollectionView(_ collectionView: UICollectionView,
-                                didSelectItemAtIndexPath indexPath: IndexPath,
-                                indexPathsToReload: [IndexPath] = []) {
+    func internalCollectionView(_ collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: IndexPath, indexPathsToReload: [IndexPath] = []) {
         guard let delegate = self.delegate,
-            let infoOfDateSelectedByUser = dateInfoFromPath(indexPath) else {
+            let infoOfDateSelectedByUser = dateOwnerInfoFromPath(indexPath) else {
                 return
         }
         // Update model
-        addCellToSelectedSetIfUnselected(indexPath,
-                                         date: infoOfDateSelectedByUser.date)
-        let selectedCell = collectionView
-            .cellForItem(at: indexPath) as? JTAppleDayCell
+        addCellToSelectedSetIfUnselected(indexPath, date: infoOfDateSelectedByUser.date)
+        let selectedCell = collectionView.cellForItem(at: indexPath) as? JTAppleDayCell
         // If cell has a counterpart cell, then select it as well
         let cellState = cellStateFromIndexPath(indexPath,
             withDateInfo: infoOfDateSelectedByUser, cell: selectedCell)

@@ -54,6 +54,7 @@
 		DE62D00E1D1B0066003ED54E /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D00D1D1B0066003ED54E /* TaskCell.swift */; };
 		DE62D0121D1D8FF7003ED54E /* DatabaseFunctionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */; };
 		DE632C821ECE285500DC63CF /* RemoteConfigValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE632C811ECE285500DC63CF /* RemoteConfigValues.swift */; };
+		DE83430D1F3A257E0098F4DA /* CalendarSpreadSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83430C1F3A257E0098F4DA /* CalendarSpreadSheetViewController.swift */; };
 		DE8E7D561D77E67B00C69B71 /* JournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E7D551D77E67B00C69B71 /* JournalCell.swift */; };
 		DE97D10A1E2CB5850054920E /* AlertTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97D1091E2CB5850054920E /* AlertTableViewController.swift */; };
 		DE97D10C1E2CB6030054920E /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97D10B1E2CB6030054920E /* RepeatTableViewController.swift */; };
@@ -161,6 +162,7 @@
 		DE62D00D1D1B0066003ED54E /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		DE62D0111D1D8FF7003ED54E /* DatabaseFunctionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFunctionsTest.swift; sourceTree = "<group>"; };
 		DE632C811ECE285500DC63CF /* RemoteConfigValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfigValues.swift; sourceTree = "<group>"; };
+		DE83430C1F3A257E0098F4DA /* CalendarSpreadSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarSpreadSheetViewController.swift; sourceTree = "<group>"; };
 		DE8E7D551D77E67B00C69B71 /* JournalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalCell.swift; sourceTree = "<group>"; };
 		DE97D1081E2C155F0054920E /* CreativeCalendar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CreativeCalendar.entitlements; sourceTree = "<group>"; };
 		DE97D1091E2CB5850054920E /* AlertTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTableViewController.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				DE4CAA6C1D2437D600197FEF /* CalendarCell.swift */,
 				DE4CAA721D24679400197FEF /* CalendarViewController.swift */,
 				DE632C811ECE285500DC63CF /* RemoteConfigValues.swift */,
+				DE83430C1F3A257E0098F4DA /* CalendarSpreadSheetViewController.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -727,6 +730,7 @@
 				DE53EF211CEA385C00E629A2 /* HomeTaskCell.swift in Sources */,
 				DE553AB11CE781B4006288E6 /* AppointmentCell.swift in Sources */,
 				DE62D0011D147AAD003ED54E /* FMDatabaseAdditions.m in Sources */,
+				DE83430D1F3A257E0098F4DA /* CalendarSpreadSheetViewController.swift in Sources */,
 				DE8E7D561D77E67B00C69B71 /* JournalCell.swift in Sources */,
 				DE4D91601CE7C57400CF89C4 /* TaskItem.swift in Sources */,
 				DE58D3CA1CECE0B30032CB9C /* JournalItem.swift in Sources */,

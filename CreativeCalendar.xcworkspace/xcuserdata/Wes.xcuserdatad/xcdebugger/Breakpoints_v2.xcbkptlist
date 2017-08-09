@@ -121,11 +121,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CreativeCalendar/LoginViewController.swift"
-            timestampString = "517170585.475537"
+            timestampString = "523934846.544282"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
             <Locations>
@@ -169,11 +169,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CreativeCalendar/LoginViewController.swift"
-            timestampString = "517171847.898822"
+            timestampString = "523934846.544282"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
             landmarkName = "userFallBack()"
             landmarkType = "7">
          </BreakpointContent>

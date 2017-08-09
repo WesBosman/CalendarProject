@@ -45,15 +45,6 @@ public struct CellState {
     /// Useful if you wish to display something at the cell's frame/position
     public var cell: () -> JTAppleDayCell?
 }
-//struct DateConfigParameters {
-//    var inCellGeneration: InDateCellGeneration = .forAllMonths
-//    var outCellGeneration: OutDateCellGeneration = .tillEndOfGrid
-//    var numberOfRows = 6
-//    var startOfMonthCache: Date?
-//    var endOfMonthCache: Date?
-//    var configuredCalendar: Calendar?
-//    var firstDayOfWeek: DaysOfWeek = .sunday
-//}
 
 /// Defines the parameters which configures the calendar.
 public struct ConfigurationParameters {
@@ -71,6 +62,11 @@ public struct ConfigurationParameters {
     var generateOutDates: OutDateCellGeneration
     /// Sets the first day of week
     var firstDayOfWeek: DaysOfWeek
+    /// Determine if dates of a month should stay in its section 
+    /// or if it can flow into another months section. This value is ignored
+    /// if your calendar has registered headers
+    var hasStrictBoundaries: Bool
+    
     /// init-function
     public init(startDate: Date,
                 endDate: Date,
@@ -78,22 +74,25 @@ public struct ConfigurationParameters {
                 calendar: Calendar? = nil,
                 generateInDates: InDateCellGeneration? = nil,
                 generateOutDates: OutDateCellGeneration? = nil,
-                firstDayOfWeek: DaysOfWeek? = nil) {
+                firstDayOfWeek: DaysOfWeek? = nil,
+                hasStrictBoundaries: Bool? = nil) {
         self.startDate = startDate
         self.endDate = endDate
-
+        self.numberOfRows = 6
+        
         if let validNumberOfRows = numberOfRows {
             switch validNumberOfRows {
             case 1, 2, 3:
                 self.numberOfRows = validNumberOfRows
             default:
-                self.numberOfRows = 6
+                break
             }
-        } else {
-            self.numberOfRows = 6
         }
-        
-        self.numberOfRows = numberOfRows ?? 6
+        if let nonNilHasStrictBoundaries = hasStrictBoundaries {
+            self.hasStrictBoundaries = nonNilHasStrictBoundaries
+        } else {
+            self.hasStrictBoundaries = self.numberOfRows > 1 ? true : false
+        }
         self.calendar = calendar ?? Calendar.current
         self.generateInDates = generateInDates ?? .forAllMonths
         self.generateOutDates = generateOutDates ?? .tillEndOfGrid
@@ -104,27 +103,30 @@ public struct ConfigurationParameters {
 struct CalendarData {
     var months: [Month]
     var totalSections: Int
-    var monthMap: [Int: Int]
+    var sectionToMonthMap: [Int: Int]
     var totalDays: Int
 }
 
-struct Month {
+/// Defines a month structure.
+public struct Month {
 
-    // Start index day for the month.
-    // The start is total number of days of previous months
+    /// Start index day for the month.
+    /// The start is total number of days of previous months
     let startDayIndex: Int
 
-    // Start cell index for the month.
-    // The start is total number of cells of previous months
+    /// Start cell index for the month.
+    /// The start is total number of cells of previous months
     let startCellIndex: Int
 
-    // The total number of items in this array are the total number
-    // of sections. The actual number is the number of items in each section
+    /// The total number of items in this array are the total number
+    /// of sections. The actual number is the number of items in each section
     let sections: [Int]
 
-    let preDates: Int
+    /// Number of inDates for this month
+    let inDates: Int
 
-    let postDates: Int
+    /// Number of outDates for this month
+    let outDates: Int
 
     // Maps a section to the index in the total number of sections
     let sectionIndexMaps: [Int: Int]
@@ -135,7 +137,7 @@ struct Month {
     // Return the total number of days for the represented month
     var numberOfDaysInMonth: Int {
         get {
-            return numberOfDaysInMonthGrid - preDates - postDates
+            return numberOfDaysInMonthGrid - inDates - outDates
         }
     }
 
@@ -151,27 +153,44 @@ struct Month {
         return sectionIndexMaps.keys.min()!
     }
 
+//    func firstIndexPathForExternal(section: Int) -> IndexPath? {
+//        guard let internalSection = sectionIndexMaps[section] else {
+//            return nil
+//        }
+//        if internalSection == 0 {
+//            // Then we need to consider predates
+//            return indexPath(forDay: 1 - inDates)
+//        } else {
+//            let startDay = startDayFor(section: internalSection)!
+//            let path = indexPath(forDay: startDay)
+//            return path
+//        }
+//    }
     // Return the section in which a day is contained
     func indexPath(forDay number: Int) -> IndexPath? {
-        var variableNumber = number
+        let sectionInfo = sectionFor(day: number)
+        let externalSection = sectionInfo.externalSection
+        let internalSection = sectionInfo.internalSection
+        let dateOfStartIndex = sections[0..<internalSection].reduce(0, +) - inDates + 1
+        let itemIndex = number - dateOfStartIndex
+
+        return IndexPath(item: itemIndex, section: externalSection)
+    }
+    
+    private func sectionFor(day: Int) -> (externalSection: Int, internalSection: Int) {
+        var variableNumber = day
         let possibleSection = sections.index {
-            let retval = variableNumber + preDates <= $0
+            let retval = variableNumber + inDates <= $0
             variableNumber -= $0
             return retval
             }!
-        let theSection = sectionIndexMaps.key(for: possibleSection)!
-
-        let dateOfStartIndex =
-            sections[0..<possibleSection].reduce(0, +) - preDates + 1
-        let itemIndex = number - dateOfStartIndex
-
-        return IndexPath(item: itemIndex, section: theSection)
+        return (sectionIndexMaps.key(for: possibleSection)!, possibleSection)
     }
 
     // Return the number of rows for a section in the month
     func numberOfRows(for section: Int, developerSetRows: Int) -> Int {
         var retval: Int
-        guard let  theSection = sectionIndexMaps[section] else {
+        guard let theSection = sectionIndexMaps[section] else {
             return 0
         }
         let fullRows = rows / developerSetRows
@@ -200,27 +219,42 @@ struct Month {
     }
     
     func boundaryIndicesFor(section: Int) -> (startIndex: Int, endIndex: Int)? {
-        if !(0...sections.count ~=  section) {
+        // Check internal sections to see
+        if !(0..<sections.count ~=  section) {
             return nil
         }
-        let startIndex = section == 0 ? preDates : 0
+        let startIndex = section == 0 ? inDates : 0
         var endIndex =  sections[section] - 1
         if section + 1  == sections.count {
-            endIndex -= postDates
+            endIndex -= inDates + 1
         }
         return (startIndex: startIndex, endIndex: endIndex)
     }
+    
+//    func startDayFor(section: Int) -> Int? {
+//        var retval: Int?
+//        
+//        if !(0..<sections.count ~= section)  {
+//            return nil
+//        }
+//        if section == 0 {
+//            retval = 1
+//        } else {
+//            var diff: Int = 0
+//            for (index, _) in sections.enumerated() {
+//                guard let bounds = boundaryIndicesFor(section: index), index < section else {
+//                    break
+//                }
+//                diff += bounds.endIndex - bounds.startIndex + 1
+//            }
+//            retval = diff + 1
+//        }
+//        return retval
+//    }
 }
 
-
-
 struct JTAppleDateConfigGenerator {
-    weak var delegate: JTAppleCalendarDelegateProtocol?
-    init(delegate: JTAppleCalendarDelegateProtocol) {
-        self.delegate = delegate
-    }
-
-    mutating func setupMonthInfoDataForStartAndEndDate(_ parameters: ConfigurationParameters)
+    func setupMonthInfoDataForStartAndEndDate(_ parameters: ConfigurationParameters)
         -> (months: [Month], monthMap: [Int: Int], totalSections: Int, totalDays: Int) {
             let differenceComponents = parameters.calendar.dateComponents([.month], from: parameters.startDate, to: parameters.endDate)
             let numberOfMonths = differenceComponents.month! + 1
@@ -235,21 +269,16 @@ struct JTAppleDateConfigGenerator {
             let numberOfRowsPerSectionThatUserWants = parameters.numberOfRows
             // Section represents # of months. section is used as an offset
             // to determine which month to calculate
-            guard let nonNilDelegate = delegate else {
-                return ([], [:], 0, 0 )
-            }
+
             for monthIndex in 0 ..< numberOfMonths {
-                if let currentMonth = parameters.calendar.date(byAdding: .month,
-                                                    value: monthIndex,
-                                                    to: parameters.startDate) {
-                    var numberOfDaysInMonthVariable = parameters.calendar.range(
-                        of: .day, in: .month, for: currentMonth)!.count
+                if let currentMonthDate = parameters.calendar.date(byAdding: .month, value: monthIndex, to: parameters.startDate) {
+                    var numberOfDaysInMonthVariable = parameters.calendar.range(of: .day, in: .month, for: currentMonthDate)!.count
                     let numberOfDaysInMonthFixed = numberOfDaysInMonthVariable
                     var numberOfRowsToGenerateForCurrentMonth = 0
                     var numberOfPreDatesForThisMonth = 0
-                    let predatesGeneration = nonNilDelegate.preDatesAreGenerated()
+                    let predatesGeneration = parameters.generateInDates
                     if predatesGeneration != .off {
-                        numberOfPreDatesForThisMonth = nonNilDelegate.numberOfPreDatesForMonth(currentMonth)
+                        numberOfPreDatesForThisMonth = numberOfPreDatesForMonth(currentMonthDate, firstDayOfWeek: parameters.firstDayOfWeek, calendar: parameters.calendar)
                         numberOfDaysInMonthVariable += numberOfPreDatesForThisMonth
                         if predatesGeneration == .forFirstMonthOnly && monthIndex != 0 {
                             numberOfDaysInMonthVariable -= numberOfPreDatesForThisMonth
@@ -264,11 +293,11 @@ struct JTAppleDateConfigGenerator {
                         numberOfRowsToGenerateForCurrentMonth = actualNumberOfRowsForThisMonth
                     }
                     var numberOfPostDatesForThisMonth = 0
-                    let postGeneration = nonNilDelegate.postDatesAreGenerated()
+                    let postGeneration = parameters.generateOutDates
                     switch postGeneration {
                     case .tillEndOfGrid, .tillEndOfRow:
-                        numberOfPostDatesForThisMonth = maxNumberOfDaysInWeek * numberOfRowsToGenerateForCurrentMonth -
-                            (numberOfDaysInMonthFixed + numberOfPreDatesForThisMonth)
+                        numberOfPostDatesForThisMonth =
+                            maxNumberOfDaysInWeek * numberOfRowsToGenerateForCurrentMonth - (numberOfDaysInMonthFixed + numberOfPreDatesForThisMonth)
                         numberOfDaysInMonthVariable += numberOfPostDatesForThisMonth
                     default:
                         break
@@ -282,40 +311,51 @@ struct JTAppleDateConfigGenerator {
                         }
                         monthIndexMap[section] = monthIndex
                         sectionIndexMaps[section] = index
-                        var numberOfDaysInCurrentSection =
-                            numberOfRowsPerSectionThatUserWants *
-                            maxNumberOfDaysInWeek
-                        if numberOfDaysInCurrentSection >
-                            numberOfDaysInMonthVariable {
-                                numberOfDaysInCurrentSection =
-                                    numberOfDaysInMonthVariable
-                                // assert(false)
+                        var numberOfDaysInCurrentSection = numberOfRowsPerSectionThatUserWants * maxNumberOfDaysInWeek
+                        if numberOfDaysInCurrentSection > numberOfDaysInMonthVariable {
+                            numberOfDaysInCurrentSection = numberOfDaysInMonthVariable
+                            // assert(false)
                         }
                         totalDays += numberOfDaysInCurrentSection
-                        sectionsForTheMonth
-                            .append(numberOfDaysInCurrentSection)
-                        numberOfDaysInMonthVariable -=
-                            numberOfDaysInCurrentSection
+                        sectionsForTheMonth.append(numberOfDaysInCurrentSection)
+                        numberOfDaysInMonthVariable -= numberOfDaysInCurrentSection
                         section += 1
                     }
                     monthArray.append(Month(
                         startDayIndex: startIndexForMonth,
                         startCellIndex: startCellIndexForMonth,
                         sections: sectionsForTheMonth,
-                        preDates: numberOfPreDatesForThisMonth,
-                        postDates: numberOfPostDatesForThisMonth,
+                        inDates: numberOfPreDatesForThisMonth,
+                        outDates: numberOfPostDatesForThisMonth,
                         sectionIndexMaps: sectionIndexMaps,
                         rows: numberOfRowsToGenerateForCurrentMonth
                     ))
                     startIndexForMonth += numberOfDaysInMonthFixed
-                    startCellIndexForMonth += numberOfDaysInMonthFixed +
-                        numberOfPreDatesForThisMonth +
-                    numberOfPostDatesForThisMonth
+                    startCellIndexForMonth += numberOfDaysInMonthFixed + numberOfPreDatesForThisMonth + numberOfPostDatesForThisMonth
                 }
             }
             return (monthArray, monthIndexMap, section, totalDays)
     }
-
+    
+    private func numberOfPreDatesForMonth(_ date: Date, firstDayOfWeek: DaysOfWeek, calendar: Calendar) -> Int {
+        let firstDayCalValue: Int
+        switch firstDayOfWeek {
+        case .monday: firstDayCalValue = 6
+        case .tuesday: firstDayCalValue = 5
+        case .wednesday: firstDayCalValue = 4
+        case .thursday: firstDayCalValue = 10
+        case .friday: firstDayCalValue = 9
+        case .saturday: firstDayCalValue = 8
+        default: firstDayCalValue = 7
+        }
+        
+        var firstWeekdayOfMonthIndex = calendar.component(.weekday, from: date)
+        firstWeekdayOfMonthIndex -= 1
+        // firstWeekdayOfMonthIndex should be 0-Indexed
+        // push it modularly so that we take it back one day so that the
+        // first day is Monday instead of Sunday which is the default
+        return (firstWeekdayOfMonthIndex + firstDayCalValue) % maxNumberOfDaysInWeek
+    }
 }
 
 /// Contains the information for visible dates of the calendar.
@@ -326,4 +366,8 @@ public struct DateSegmentInfo {
     public let monthDates: [Date]
     /// Visible post-dates
     public let outdates: [Date]
+    
+    internal let indateIndexes: [IndexPath]
+    internal let monthDateIndexes: [IndexPath]
+    internal let outdateIndexes: [IndexPath]
 }

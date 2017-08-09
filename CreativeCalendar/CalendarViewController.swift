@@ -7,6 +7,7 @@
 
 import UIKit
 import JTAppleCalendar
+import SpreadsheetView
 
 
 class CalendarViewController:
@@ -41,6 +42,7 @@ class CalendarViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Calendar View View Did Load Method")
+        
         calendarView.registerCellViewXib(file: "CellView")
         calendarView.registerHeaderView(xibFileNames: ["HeaderView"])
         calendarView.delegate = self
@@ -86,6 +88,9 @@ class CalendarViewController:
         // Try to set up the automatic dimensioning of the table view
         self.calendarTableView.rowHeight = UITableViewAutomaticDimension
         self.calendarTableView.estimatedRowHeight = 100
+        
+        // Set up spreadsheet View
+//        spreadsheetView.dataSource = self
     }
     
     // Failable Initializer for tab bar controller
@@ -112,7 +117,7 @@ class CalendarViewController:
     
     @IBAction func rightCalendarArrowPressed(_ sender: AnyObject) {
         print("Right Arrow Pressed Action")
-        calendarView.scrollToNextSegment()
+        calendarView.scrollToSegment(SegmentDestination.next)
         calendarView.reloadData(){
             self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
@@ -120,7 +125,7 @@ class CalendarViewController:
     
     @IBAction func leftCalendarArrowPressed(_ sender: AnyObject) {
         print("Left Arrow Pressed Action")
-        calendarView.scrollToPreviousSegment()
+        calendarView.scrollToSegment(SegmentDestination.previous)
         calendarView.reloadData(){
             self.calendarView.selectDates([Date()], triggerSelectionDelegate: true)
         }
@@ -199,6 +204,23 @@ class CalendarViewController:
         if let calendarCell = cell as? CalendarCell{
             calendarCell.updateCell(cellState)
         }
+    }
+    
+    // MARK - Spreadsheet View Methods
+    func numberOfColumns(in spreadsheetView: SpreadsheetView) -> Int {
+        return 200
+    }
+    
+    func numberOfRows(in spreadsheetView: SpreadsheetView) -> Int {
+        return 400
+    }
+    
+    func spreadsheetView(_ spreadsheetView: SpreadsheetView, widthForColumn column: Int) -> CGFloat {
+        return 80
+    }
+    
+    func spreadsheetView(_ spreadsheetView: SpreadsheetView, heightForRow row: Int) -> CGFloat {
+        return 40
     }
     
     // MARK - Calendar Header Methods

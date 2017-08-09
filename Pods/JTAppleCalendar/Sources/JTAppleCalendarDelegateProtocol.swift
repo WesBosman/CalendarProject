@@ -14,16 +14,14 @@ protocol JTAppleCalendarDelegateProtocol: class {
     var monthInfo: [Month] {get set}
     var monthMap: [Int: Int] {get set}
     var totalDays: Int {get}
+    var lastIndexOffset: (IndexPath, UICollectionElementCategory)? {get set}
+    
     func numberOfRows() -> Int
+    func hasStrictBoundaries() -> Bool
     func cachedDate() -> (start: Date, end: Date, calendar: Calendar)
     func numberOfMonthsInCalendar() -> Int
-    func numberOfPreDatesForMonth(_ month: Date) -> Int
-
     func referenceSizeForHeaderInSection(_ section: Int) -> CGSize
-    func firstDayIndexForMonth(_ date: Date) -> Int
     func rowsAreStatic() -> Bool
-    func preDatesAreGenerated() -> InDateCellGeneration
-    func postDatesAreGenerated() -> OutDateCellGeneration
 }
 
 extension JTAppleCalendarView: JTAppleCalendarDelegateProtocol {
@@ -32,6 +30,10 @@ extension JTAppleCalendarView: JTAppleCalendarDelegateProtocol {
         return (start: startDateCache,
                 end: endDateCache,
                 calendar: calendar)
+    }
+    
+    func hasStrictBoundaries() -> Bool {
+        return cachedConfiguration.hasStrictBoundaries
     }
 
     func numberOfRows() -> Int {
@@ -42,26 +44,12 @@ extension JTAppleCalendarView: JTAppleCalendarDelegateProtocol {
         return numberOfMonths
     }
 
-    func numberOfPreDatesForMonth(_ month: Date) -> Int {
-        return firstDayIndexForMonth(month)
-    }
-
-    func preDatesAreGenerated() -> InDateCellGeneration {
-        return cachedConfiguration.generateInDates
-    }
-
-    func postDatesAreGenerated() -> OutDateCellGeneration {
-        return cachedConfiguration.generateOutDates
-    }
-
     func referenceSizeForHeaderInSection(_ section: Int) -> CGSize {
         return calendarViewHeaderSizeForSection(section)
     }
 
     func rowsAreStatic() -> Bool {
         // jt101 is the inDateCellGeneration check needed? because tillEndOfGrid will always compenste
-        return cachedConfiguration.generateInDates != .off &&
-            cachedConfiguration.generateOutDates == .tillEndOfGrid
+        return cachedConfiguration.generateInDates != .off && cachedConfiguration.generateOutDates == .tillEndOfGrid
     }
-
 }

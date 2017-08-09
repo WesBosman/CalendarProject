@@ -6,7 +6,8 @@ target 'CreativeCalendar' do
   use_frameworks!
 
   # Pods for JTAppleCalendar
-  pod 'JTAppleCalendar' #, :git => 'https://github.com/patchthecode/JTAppleCalendar.git'
+  #pod 'JTAppleCalendar' #, :git => 'https://github.com/patchthecode/JTAppleCalendar.git'
+  pod 'JTAppleCalendar', '~> 6.0.1'
   
   # Pod for Chameleon
   pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
@@ -24,7 +25,10 @@ target 'CreativeCalendar' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/RemoteConfig'
-  
+
+  # Pods for SpreadsheetView
+  pod 'SpreadsheetView'
+
 
   target 'CreativeCalendarTests' do
     inherit! :search_paths

@@ -22,9 +22,12 @@ class ForgotPasswordViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // We could keep a record of user emails in the database to 
+        // help us securely understand who should be receiving the email.
 
         // Set up the header text.
-        forgotPasswordHeader.text = "Please enter your email address and we will send you a message allowing you to reset your password. Not you must be connected to the internet to send a password reset email."
+        forgotPasswordHeader.text = "Please enter your email address and we will send you a message allowing you to reset your password. Note you must be connected to the internet to send a password reset email. Otherwise, please contact Dr. Lageman for help reseting your password."
         forgotPasswordHeader.lineBreakMode = .byWordWrapping
         forgotPasswordHeader.numberOfLines = 0
         
@@ -53,33 +56,38 @@ class ForgotPasswordViewController: UIViewController {
         
         if let auth = FIRAuth.auth(){
             if let email = forgotPasswordTextField.text{
-                print("Forgoten Password Email \(email)")
-                auth.sendPasswordReset(withEmail: email, completion: {
-                (error) in
-                    // Let the user see the error
-                    if let error = error{
-                        self.forgotPasswordMessage.text = error.localizedDescription
-                        self.forgotPasswordMessage.isHidden = false
-                    }
-                    // Let the user know the password reset email was sent
-                    else{
-                        self.forgotPasswordMessage.text = "Sent a password reset email to the following address: \(email). Please login while connected to the internet."
-                        self.forgotPasswordMessage.isHidden = false
-                        self.forgotPasswordTextField.text = nil
-                    }
+                // Use an alert to help let the user confirm 
+                // they are sending the email to the correct address
+                let alert = UIAlertController(title: "Confirmation", message: "Are you sure we should send a password reset email to the following address: \(email)", preferredStyle: .alert)
+                let yesAction = UIAlertAction(title: "Yes", style: .default, handler: {(action: UIAlertAction) in
+                    
+                    // Attempting to send a password reset email
+                    print("Forgoten Password Email \(email)")
+                    auth.sendPasswordReset(withEmail: email, completion: {
+                        (error) in
+                        // Let the user see the error
+                        if let error = error{
+                            self.forgotPasswordMessage.text = error.localizedDescription
+                            self.forgotPasswordMessage.isHidden = false
+                        }
+                            // Let the user know the password reset email was sent
+                        else{
+                            self.forgotPasswordMessage.text = "Sent a password reset email to the following address: \(email). Please login while connected to the internet."
+                            self.forgotPasswordMessage.isHidden = false
+                            self.forgotPasswordTextField.text = nil
+                        }
+                    })
+                    
                 })
+                
+                // No Action
+                let noAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                // Present the alert
+                alert.addAction(yesAction)
+                alert.addAction(noAction)
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

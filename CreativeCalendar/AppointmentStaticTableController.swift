@@ -26,7 +26,12 @@ extension Date
     }
 }
 
-class AppointmentStaticTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate, UITextFieldDelegate{
+class AppointmentStaticTableViewController:
+    UITableViewController,
+    UIPickerViewDelegate,
+    UIPickerViewDataSource,
+    UITextViewDelegate,
+    UITextFieldDelegate{
     
     @IBOutlet weak var appointmentNameTextField: UITextField!
     @IBOutlet weak var startingTimeDetailLabel: UILabel!
@@ -120,6 +125,7 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
         additionalInfoTextBox.font = UIFont(name: "Helvetica", size: 18.0)
         additionalInfoTextBox.textColor = UIColor.lightGray
         otherTextField.placeholder = "Please enter the type of appointment"
+        otherTextField.delegate = self
     }
     
     // MARK - Text View Methods
@@ -127,18 +133,26 @@ class AppointmentStaticTableViewController: UITableViewController, UIPickerViewD
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == otherTextField{
             print("Other Text Field did end editing")
-//            textField.resignFirstResponder()
+            otherTextField.resignFirstResponder()
             
         }
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == otherTextField{
-            print("Other Text Field Should end editing")
-            textField.resignFirstResponder()
+            print("Other Text Field should return")
+            otherTextField.resignFirstResponder()
         }
         return true
     }
+    
+//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+//        if textField == otherTextField{
+//            print("Other Text Field Should end editing")
+//            textField.resignFirstResponder()
+//        }
+//        return true
+//    }
     
     // MARK - Picker View Methods
     

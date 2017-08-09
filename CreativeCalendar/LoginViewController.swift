@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     var userEmail: String = String()
-
+    let todaysDate = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +83,22 @@ class LoginViewController: UIViewController {
         
         // Testing Local Authentication
 //        locallyAuthenticateUser()
+        
+        // If the date is past the calendar end date
+        if(todaysDate > Date().calendarEndDate){
+            // hide the sign up, forgot password button and the login button
+            signupButton.isHidden = true
+            loginButton.isHidden = true
+            forgotPasswordButton.isHidden = true
+            
+            // hide the password and email text fields as well
+            loginPassword.isHidden = true
+            loginEmail.isHidden = true
+            
+            // Present a message informing the user to return the iPad to Dr. Lageman
+            appHeaderLabel.text = "Study Complete!"
+            loginMessage.text = "The app study has passed its due date. Please take the iPad with the application back to Dr. Lageman for analysis. Thank you for your participation!"
+        }
         
         // If User is already logged in let them into the application
         FIRAuth.auth()?.addStateDidChangeListener({
@@ -338,9 +354,9 @@ class LoginViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        print("Segue Identifier \(segue.identifier)")
+//        print("Segue Identifier \(segue.identifier)")
         if segue.identifier == "Login"{
-            
+            print("User is logging in")
         }
     }
 }
