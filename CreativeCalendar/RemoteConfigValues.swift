@@ -47,9 +47,9 @@ class RemoteConfigValues{
                 return
             }
             
-            if let stat = status as? FIRRemoteConfigFetchStatus{
-                print("Status Loading Remote Config Values: \(stat)")
-            }
+//            if let stat = status as? FIRRemoteConfigFetchStatus{
+//                print("Status Loading Remote Config Values: \(stat)")
+//            }
             
             FIRRemoteConfig.remoteConfig().activateFetched()
             print("Retrieved remote config values from cloud")

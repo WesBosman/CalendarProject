@@ -49,7 +49,7 @@ class DatabaseFunctions{
         }
         // Create the three tables for storing our information.
         do{
-            print("Application ID: \(db?.applicationID())")
+//            print("Application ID: \(db?.applicationID())")
             
             try db?.executeUpdate("create table if not exists Appointments(id integer primary key autoincrement, date_created text, title text, type text, start_date text, end_date text, location text, additional text,repeat_time, alert_time, completed bool, canceled bool, deleted bool, date_completed text, date_canceled text, date_deleted, cancel_reason, delete_reason, uuid text)", values: nil)
             
@@ -848,7 +848,7 @@ class DatabaseFunctions{
             print("Remove Appointment Notification")
             print("\(notification)")
             let identifier = notification.userInfo!["UUID"] as! String
-            print("Appointment Notification Identifier \(String(identifier))")
+//            print("Appointment Notification Identifier \(String(identifier))")
             
             if (identifier == item.UUID){
                 UIApplication.shared.cancelLocalNotification(notification)
@@ -864,9 +864,9 @@ class DatabaseFunctions{
     func setTaskNotification(_ item: TaskItem){
         print("Task Notification Estimated Complete Date: \(item.estimateCompletionDate)")
         let itemDateString = DateFormatter().universalFormatter.string(from: item.estimateCompletionDate)
-        let formattedDate = DateFormatter().universalFormatter.date(from: itemDateString)
+//        let formattedDate = DateFormatter().universalFormatter.date(from: itemDateString)
         print("Task Notification Estimated Complete Date as string -> \(itemDateString)")
-        print("Task Notification Estimated Complete Date as Date -> \(formattedDate)")
+//        print("Task Notification Estimated Complete Date as Date -> \(formattedDate)")
         let alert = item.alert
         
         // So Far This Works
@@ -913,8 +913,8 @@ class DatabaseFunctions{
             let newStart = (calendar as NSCalendar).date(byAdding: timeComponents, to: item.estimateCompletionDate as Date, options: .matchStrictly)
             let newStartString = DateFormatter().universalFormatter.string(from: newStart!)
             print("New Task Notification Time \(newStartString)")
-            let newStartAsDate = DateFormatter().universalFormatter.date(from: newStartString)
-            print("New Task Notification Time as String \(newStartAsDate)")
+//            let newStartAsDate = DateFormatter().universalFormatter.date(from: newStartString)
+//            print("New Task Notification Time as String \(newStartAsDate)")
             
             let taskAlertNotification = UILocalNotification()
             taskAlertNotification.alertTitle = "Task Alert"

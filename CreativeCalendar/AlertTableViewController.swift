@@ -69,7 +69,7 @@ class AlertTableViewController: UITableViewController {
         }
         
         alertToPass = alertArray[indexPath.row]
-        print("Selected String to pass -> \(alertToPass)")
+//        print("Selected String to pass -> \(alertToPass)")
 
         // Update the checkmark
         let cell = tableView.cellForRow(at: indexPath)

@@ -113,7 +113,7 @@ class Journals{
     }
 }
 
-class JournalItem:CustomStringConvertible {
+class JournalItem {
     var journalDate: Date    = Date()
     var journalTitle: String = String()
     var journalEntry: String = String()
@@ -136,9 +136,9 @@ class JournalItem:CustomStringConvertible {
         self.journalUUID    = UUID
     }
     
-    var description: String {
-        return "\nCreated Date = \(self.journalDate)\nJournal Title = \(self.journalTitle)\nJournal = \(self.journalEntry)\nDeleted = \(self.journalDeleted)\nDeleted Reason = \(self.journalDeletedReason)\nUUID = \(self.journalUUID)\n"
-    }
+//    var description: String {
+//        return "\nCreated Date = \(self.journalDate)\nJournal Title = \(self.journalTitle)\nJournal = \(self.journalEntry)\nDeleted = \(self.journalDeleted)\nDeleted Reason = \(self.journalDeletedReason)\nUUID = \(self.journalUUID)\n"
+//    }
     
     // Get a simplified date that does not contain the hours and seconds
 //    func getSimplifiedDate() -> String{

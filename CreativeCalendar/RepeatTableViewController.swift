@@ -66,7 +66,7 @@ class RepeatTableViewController: UITableViewController {
         }
         
         repeatToPass = repeatArray[indexPath.row]
-        print("Selected Repeat to Pass \(repeatToPass)")
+//        print("Selected Repeat to Pass \(repeatToPass)")
         
         let cell = tableView.cellForRow(at: indexPath)
         cell?.accessoryType = .checkmark

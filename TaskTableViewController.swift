@@ -187,7 +187,11 @@ class TaskTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
                                         && task.taskInfo == taskForAction.taskInfo{
                                         
                                         if let index = k.index(where: {$0.taskTitle == taskForAction.taskTitle}){
-                                            print("Removing Task \(Tasks.taskDictionary[key]?.remove(at: index))")
+                                            
+                                            // Remove the task and print what we remove
+                                            if let removedTask = Tasks.taskDictionary[key]?.remove(at: index){
+                                                print("Removing Task: \(removedTask)")
+                                            }
                                         }
                                     }
                                 }

@@ -273,7 +273,7 @@ class LoginViewController: UIViewController {
                                         
                 // Catch any errors
                 print("Error = \(error!.localizedDescription)")
-                print("Auth Error = \(authError?.code)")
+//                print("Auth Error = \(authError?.code)")
                                         
                 if let err = authError{
                     // Check the error codes and act accordingly

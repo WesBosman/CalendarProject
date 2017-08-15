@@ -94,7 +94,7 @@ class JournalViewController: UIViewController, UITextViewDelegate {
                 let journalDate = newDateFormat.string(from: journalItem.journalDate)
                 var journalArray = JournalStructures.journalDictionary[journalDate]
                 print("Journal Date: \(journalDate)")
-                print("Journal Array: \(journalArray)")
+//                print("Journal Array: \(journalArray)")
                 
                 // Add the journal item to the Global Dictionary
                 // If the journal array we get from the dictionary is nil

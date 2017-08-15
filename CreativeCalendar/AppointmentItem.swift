@@ -65,7 +65,7 @@ class Appointments{
             
             Appointments.appointmentDictionary[appointmentDate] = newAppointmentArray
             
-            print("Global Appointment Dictionary for key: \(appointmentDate) value: \(Appointments.appointmentDictionary[appointmentDate])")
+//            print("Global Appointment Dictionary for key: \(appointmentDate) value: \(Appointments.appointmentDictionary[appointmentDate])")
         }
         else{
             print("Did find key already in dictionary \(appointmentDate)")

@@ -16,7 +16,10 @@ class CalendarViewController:
     JTAppleCalendarViewDataSource,
     UIPopoverPresentationControllerDelegate,
     UITableViewDelegate,
-    UITableViewDataSource{
+    UITableViewDataSource {
+    
+    @IBOutlet weak var spreadSheetView: SpreadsheetView!
+    
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
     let userCalendar = Calendar.current
@@ -30,8 +33,8 @@ class CalendarViewController:
     @IBOutlet weak var rightCalendarArrow: UIButton!
     var calendarSectionTitles: [String] = ["Appointments", "Tasks", "Journals"]
     var calendarAppointmentList: [AppointmentItem] = []
-    var calendarTaskList: [TaskItem] = []
-    var calendarJournalList: [JournalItem] = []
+    var calendarTaskList:        [TaskItem] = []
+    var calendarJournalList:     [JournalItem] = []
     var selectedIndexPath: IndexPath? = nil
     @IBOutlet weak var calendarTableView: UITableView!
     let calendarDateFormatter = DateFormatter().dateWithoutTime
@@ -88,9 +91,6 @@ class CalendarViewController:
         // Try to set up the automatic dimensioning of the table view
         self.calendarTableView.rowHeight = UITableViewAutomaticDimension
         self.calendarTableView.estimatedRowHeight = 100
-        
-        // Set up spreadsheet View
-//        spreadsheetView.dataSource = self
     }
     
     // Failable Initializer for tab bar controller
@@ -204,23 +204,6 @@ class CalendarViewController:
         if let calendarCell = cell as? CalendarCell{
             calendarCell.updateCell(cellState)
         }
-    }
-    
-    // MARK - Spreadsheet View Methods
-    func numberOfColumns(in spreadsheetView: SpreadsheetView) -> Int {
-        return 200
-    }
-    
-    func numberOfRows(in spreadsheetView: SpreadsheetView) -> Int {
-        return 400
-    }
-    
-    func spreadsheetView(_ spreadsheetView: SpreadsheetView, widthForColumn column: Int) -> CGFloat {
-        return 80
-    }
-    
-    func spreadsheetView(_ spreadsheetView: SpreadsheetView, heightForRow row: Int) -> CGFloat {
-        return 40
     }
     
     // MARK - Calendar Header Methods

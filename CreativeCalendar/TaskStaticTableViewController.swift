@@ -266,13 +266,13 @@ class TaskStaticTableViewController: UITableViewController {
         // Segue to repeating a task
         if segue.identifier == "toRepeatTask"{
             let destinationVC = segue.destination as! RepeatTableViewController
-            print("Select Repeat \(selectedRepeat) to Repeat Task Segue")
+//            print("Select Repeat \(selectedRepeat) to Repeat Task Segue")
             destinationVC.repeatToPass = selectedRepeat
         }
         // Segue to setting a task alert
         else if segue.identifier == "toAlertTask"{
             let destinationVC = segue.destination as! AlertTableViewController
-            print("Selected Alert \(selectedAlert) to Alert Task Segue")
+//            print("Selected Alert \(selectedAlert) to Alert Task Segue")
             destinationVC.alertToPass = selectedAlert
         }
     }

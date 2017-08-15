@@ -61,8 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notificationFireDate = dateformatter.string(from: notification.fireDate!)
         print("Todays Date -> \(todaysDate)")
         print("Notification Date -> \(notificationFireDate)")
-        print("Alert Title for notification -> \(notification.alertTitle)")
-        print("Alert Body for notification -> \(notification.alertBody)")
+        print("Alert Title for notification -> \(String(describing: notification.alertTitle))")
+        print("Alert Body for notification -> \(String(describing: notification.alertBody))")
         
         // Compare the current date with the notification fire date
         let dateIsEqual = Date().compare(notification.fireDate!) == ComparisonResult.orderedSame
